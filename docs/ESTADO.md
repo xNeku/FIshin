@@ -13,6 +13,7 @@ Fase 2 hecha: bucle pescar → vender → mejorar. Cañas por profundidad, cebo,
 - `scripts/ui/tienda.gd` + `scenes/ui/tienda.tscn` (filas desde `fila_tienda.tscn`). Los artículos del comerciante se asignan en `barco_comerciante.tscn`.
 - Datos: `data/canas/*.tres` (CanaData, se carga por id), `data/articulos/*.tres` (ArticuloData: CANA, CEBO, HUECO).
 - Menú y tienda pausan el árbol (`process_mode = Always` en ellos).
+- `scripts/pesca/celebracion.gd` (nodo Celebracion en main): levantar pez, luz, brillos, fanfarria y primer plano de la cámara. Los nodos visuales están en barca.tscn (PezLevantado, LuzTrofeo, Brillos).
 - `scenes/main.tscn`: lo monta todo.
 - Peces: `data/peces/*.tres` (PezData). Arte placeholder en `art/` (generado por script, sustituible).
 
@@ -28,6 +29,7 @@ Fase 2 hecha: bucle pescar → vender → mejorar. Cañas por profundidad, cebo,
 
 ## Decisiones recientes
 - 2.5D, Forward+, juego de PC. Moneda: rublos (₽). Fuente DejaVu Sans Bold (tiene ₽ y flechas).
+- La intensidad visual va por botones seguidos (no por % del pez). Las dobles salen desde el 5º botón.
 - Largo de cadena aleatorio por picada (CanaData.tirar_largo_cadena), sesgado a corto.
 - Machacar fallido: los extraños y legendarios se escapan, los demás pierden valor.
 - Niebla desactivada (en Compatibility lo dejaba todo gris).

@@ -5,6 +5,9 @@
 [ext_resource type="PackedScene" path="res://scenes/ui/hud.tscn" id="3_hud"]
 [ext_resource type="PackedScene" path="res://scenes/ui/menu.tscn" id="11_menu"]
 [ext_resource type="PackedScene" path="res://scenes/ui/tienda.tscn" id="12_tienda"]
+[ext_resource type="Script" path="res://scripts/pesca/celebracion.gd" id="13_celebracion"]
+[ext_resource type="Texture2D" path="res://art/personajes/naufrago_trofeo.png" id="14_trofeo"]
+[ext_resource type="AudioStream" path="res://art/sfx/fanfarria.wav" id="15_fanfarria"]
 [ext_resource type="Script" path="res://scripts/pesca/pesca.gd" id="4_pesca"]
 [ext_resource type="Script" path="res://scripts/pesca/camara_pesca.gd" id="5_camara"]
 [ext_resource type="Script" path="res://scripts/pesca/sonido_pesca.gd" id="6_sonido"]
@@ -104,6 +107,21 @@ script = ExtResource("4_pesca")
 stats = ExtResource("8_stats")
 peces = Array[ExtResource("7_pez_data")]([ExtResource("pez_sardina"), ExtResource("pez_caballa"), ExtResource("pez_lubina"), ExtResource("pez_atun"), ExtResource("pez_bota_vieja"), ExtResource("pez_kraken_bebe")])
 
+[node name="Celebracion" type="Node" parent="." node_paths=PackedStringArray("pesca", "camara", "protagonista", "pez_levantado", "luz", "brillos", "fanfarria", "ocultar")]
+script = ExtResource("13_celebracion")
+pesca = NodePath("../Pesca")
+camara = NodePath("../Camara")
+protagonista = NodePath("../Barca/Protagonista")
+textura_trofeo = ExtResource("14_trofeo")
+pez_levantado = NodePath("../Barca/PezLevantado")
+luz = NodePath("../Barca/LuzTrofeo")
+brillos = NodePath("../Barca/Brillos")
+fanfarria = NodePath("Fanfarria")
+ocultar = [NodePath("../Barca/Cana"), NodePath("../Barca/Sedal"), NodePath("../Barca/Flotador")]
+
+[node name="Fanfarria" type="AudioStreamPlayer" parent="Celebracion"]
+stream = ExtResource("15_fanfarria")
+
 [node name="Sonido" type="Node" parent="." node_paths=PackedStringArray("pesca")]
 script = ExtResource("6_sonido")
 pesca = NodePath("../Pesca")
@@ -139,9 +157,10 @@ volume_db = -6.0
 [node name="Latido" type="AudioStreamPlayer" parent="Sonido"]
 stream = ExtResource("sfx_latido")
 
-[node name="HUD" parent="." node_paths=PackedStringArray("pesca", "barco") instance=ExtResource("3_hud")]
+[node name="HUD" parent="." node_paths=PackedStringArray("pesca", "barco", "celebracion") instance=ExtResource("3_hud")]
 pesca = NodePath("../Pesca")
 barco = NodePath("../BarcoComerciante")
+celebracion = NodePath("../Celebracion")
 
 [node name="Menu" parent="." instance=ExtResource("11_menu")]
 

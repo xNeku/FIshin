@@ -41,6 +41,11 @@ Marcas: [DECIDIDO] lo decidió el diseñador · [PROPUESTA] sugerencia de Claude
 - [DECIDIDO] Futuro: modo infinito (zoom de ida y vuelta en bucle) y música con el beat cuadrado a las pulsaciones.
 - [PROPUESTA] Implementado: viñeta, aberración cromática, latido que acelera, tono de acierto que sube, el botón salta por la pantalla cuanto más dentro estás, y un congelado breve al capturar.
 - [PROPUESTA] Si la caña tiene menos límite que los pasos del pez, no llegas al perfect (gancho para mejorar la caña).
+- [DECIDIDO] El espectáculo (shake, zoom, efectos, frases) se descubre poco a poco según avanzas; al principio es suave.
+- [PROPUESTA] Va por botones seguidos en la cadena: el máximo llega a los 15 (`StatsPesca.botones_intensidad_maxima`). Las frases suben por umbrales (1, 3, 5, 8, 11, 15) y el latido no suena hasta el 25 % de intensidad. Como la cadena depende de la caña, el espectáculo crece al mejorarla.
+- [DECIDIDO] Las dobles tardan en salir. [PROPUESTA] Solo desde el 5º botón de la cadena (`dobles_desde_boton`).
+- [DECIDIDO] Celebración al sacar algo muy tocho: el náufrago levanta el pez con las manos, luz encima, primer plano y musiquilla (estilo Zelda).
+- [PROPUESTA] Se celebra lo extraño o legendario, o cualquier pez de 15 kg o más (nodo `Celebracion` en main.tscn).
 - [DECIDIDO] Peces pesados o especiales tienen tramos de machacar un botón para llenar una barra. Si no la llenas, pierdes el pez o te lo quedas con peores stats.
 - [DECIDIDO] Al no llenar la barra depende del pez: los legendarios y los extraños se escapan, y los normales salen peores.
 - [DECIDIDO] También hay pulsaciones dobles (tipo R2 + X).

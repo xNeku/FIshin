@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" path="res://scripts/mundo/barca.gd" id="1_script"]
 [ext_resource type="Texture2D" path="res://art/personajes/naufrago.png" id="2_naufrago"]
+[ext_resource type="Texture2D" path="res://art/peces/kraken_bebe.png" id="3_pez"]
 
 [sub_resource type="StandardMaterial3D" id="m_madera"]
 albedo_color = Color(0.4196, 0.2588, 0.149, 1)
@@ -81,6 +82,15 @@ height = 1.0
 radial_segments = 4
 rings = 1
 
+[sub_resource type="StandardMaterial3D" id="m_brillo"]
+shading_mode = 0
+albedo_color = Color(1, 0.9, 0.45, 1)
+billboard_mode = 1
+
+[sub_resource type="QuadMesh" id="q_brillo"]
+material = SubResource("m_brillo")
+size = Vector2(0.04, 0.04)
+
 [node name="Barca" type="Node3D"]
 script = ExtResource("1_script")
 
@@ -150,3 +160,36 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.6, 0.05, -2.8)
 mesh = SubResource("s_flotador")
 top_level = true
 
+[node name="PezLevantado" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.2, 0.35)
+visible = false
+billboard = 1
+alpha_cut = 1
+texture_filter = 0
+shaded = false
+pixel_size = 0.05
+texture = ExtResource("3_pez")
+
+[node name="LuzTrofeo" type="SpotLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 5, 0.35)
+light_color = Color(1, 0.9, 0.65, 1)
+light_energy = 0.0
+shadow_enabled = true
+spot_range = 8.0
+spot_angle = 16.0
+
+[node name="Brillos" type="CPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.2, 0.35)
+emitting = false
+amount = 30
+lifetime = 1.2
+mesh = SubResource("q_brillo")
+emission_shape = 1
+emission_sphere_radius = 0.6
+direction = Vector3(0, 1, 0)
+spread = 180.0
+gravity = Vector3(0, 0.4, 0)
+initial_velocity_min = 0.2
+initial_velocity_max = 0.8
+scale_amount_min = 0.5
+scale_amount_max = 1.2
