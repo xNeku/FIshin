@@ -10,7 +10,7 @@ Marcas: [DECIDIDO] lo decidió el diseñador · [PROPUESTA] sugerencia de Claude
 
 ## 2. Estilo visual
 - [DECIDIDO] Pixel art simple con personalidad. Placeholders hechos por Claude (nada de bloques grises), arte final del diseñador.
-- [ABIERTO] 2D puro o 2.5D (mundo 3D con sprites pixel art, tipo HD-2D), con shaders y efectos.
+- [DECIDIDO] 2.5D: mundo 3D de casillas low-poly con personajes pixel art en sprites mirando a cámara (tipo HD-2D), con shaders y efectos. Renderer Forward+.
 - [DECIDIDO] Plataformas: Windows y Mac. Móvil más adelante.
 
 ## 3. Protagonista
@@ -37,14 +37,14 @@ Marcas: [DECIDIDO] lo decidió el diseñador · [PROPUESTA] sugerencia de Claude
 - [DECIDIDO] Peces pesados o especiales tienen tramos de machacar un botón para llenar una barra. Si no la llenas, pierdes el pez o te lo quedas con peores stats.
 - [ABIERTO] Al no llenar la barra: ¿pierdes el pez o te lo quedas peor? ¿Depende del pez?
 - [DECIDIDO] También hay pulsaciones dobles (tipo R2 + X).
-- [ABIERTO] Teclas en teclado. Idea del diseñador: flechas y números. Nota de Claude: no están juntas en el teclado, revisarlo.
+- [DECIDIDO] Teclado: números con la mano izquierda y flechas con la derecha. Las dobles combinan una de cada.
 - [DECIDIDO] Auto: más adelante, si no pulsas, consigues el pez igualmente (mejora desbloqueable).
-- [ABIERTO] Al principio, si no pulsas el primer botón, ¿se escapa el pez?
+- [DECIDIDO] Si no pulsas el primer botón, el pez se escapa hasta que mejores la caña.
 - [ABIERTO] Input táctil para móvil.
 
 ## 7. Economía
 - [DECIDIDO] Una sola moneda que lo es todo: dinero, experiencia y economía.
-- [ABIERTO] Nombre de la moneda: en el texto aparecen "rublos" y "euros".
+- [DECIDIDO] Moneda: rublos. Símbolo ₽ (U+20BD); comprobar que la fuente lo tiene. El primer hito son 100 ₽.
 - [DECIDIDO] Al poco de empezar a pescar aparece un barco comerciante: le vendes peces y le compras cosas.
 - [ABIERTO] Cuándo aparece exactamente el barco (tiempo, nº de peces, dinero).
 - [DECIDIDO] La barca tiene inventario (los peces que llevas encima).

@@ -14,8 +14,8 @@ Incremental de pesca con expansión de terreno tipo Forager. Náufrago carismát
 - Godot **4.7.2**. No uses APIs más nuevas.
 - Solo GDScript **tipado**. Sin addons compilados.
 - Escenas y Resources en texto (`.tscn` / `.tres`).
-- Renderer: Compatibility (Android). Comprueba que cualquier efecto funciona en Compatibility.
-- Objetivo: Windows y Mac. Móvil después, pero la UI y el input se piensan táctiles desde el principio.
+- Renderer: Forward+. El juego se hace para PC; la tablet (Lenovo Legion Y300) lo mueve sin problema.
+- Objetivo: Windows y Mac. Móvil después: la UI y el input se piensan táctiles desde el principio.
 - Nombres de propiedades y señales de Godot 4 exactos. Si dudas, compruébalo en headless.
 - Los `Control` dentro de escenas de juego llevan `mouse_filter = 2` (Ignore) salvo los que tengan que recibir clics.
 - En `.tscn` a mano, las propiedades que apuntan a nodos llevan `node_paths=PackedStringArray(...)` en la cabecera.
@@ -29,13 +29,18 @@ Incremental de pesca con expansión de terreno tipo Forager. Náufrago carismát
 - `scenes/`, `data/` (contenido como `.tres` con ID: peces, mejoras, edificios, hitos), `art/`.
 - `tmp_tests/`: pruebas temporales; se borran antes del commit.
 
+## REGLA CLAVE: escenas siempre en el editor
+- **NUNCA generes escenas ni montes nodos por código** salvo que sea imprescindible, y en ese caso **pregunta antes** al humano.
+- Todo se monta en `.tscn` accesibles y escalables, con todos sus nodos visibles y tratables, para que el humano lo retoque desde el engine.
+- Lo dinámico (peces que aparecen, popups, piezas que se colocan en la cuadrícula) se instancia desde una escena `.tscn` hecha a mano, nunca se construye nodo a nodo en código.
+- Excepción: los scripts de prueba en `tmp_tests/`.
+
 ## Principios de código
 - Lógica separada de lo visual.
 - Input solo por acciones del Input Map (teclado, mando y táctil).
 - Valores de feel y de balance como `@export` o en Resources, para que el humano los ajuste en el inspector.
 - Contenido por datos con ID. Nunca código por ítem.
 - Lo que el humano vaya a retocar (mapa, personaje, UI, edificios) va en escenas `.tscn` editables con nodos claros.
-- Por código solo lo dinámico: spawns, efectos temporales, colocación automática en la cuadrícula.
 - Dinero: usar `float` mientras quepa (hasta 1e308). Formatear siempre con una función común.
 - Guardado desde el día 1, versionado (campo `version` en el save).
 
