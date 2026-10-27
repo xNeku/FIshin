@@ -31,7 +31,7 @@ Regla: no se pasa de fase hasta que la actual sea jugable y divertida. Cada tare
 - **Hito:** se nota que el mundo crece.
 
 ## Fase 4 — Menú y progresión
-- [x] Menú ESC con pestañas (barca con huecos apilados, stats, opciones; árbol vacío)
+- [x] Menú (Tab) con pestañas (barca con huecos apilados, stats, opciones; árbol vacío)
 - [ ] Árbol de habilidades (datos + UI)
 - [x] Mecánicas avanzadas de pesca: machacar y pulsación doble (adelantado)
 - [ ] Auto-pesca

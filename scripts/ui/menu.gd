@@ -34,15 +34,25 @@ func _ready() -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if not event.is_action_pressed("menu"):
-		return
+	if event.is_action_pressed("menu") and _alternar():
+		get_viewport().set_input_as_handled()
+
+
+func _notification(what: int) -> void:
+	# Botón "atrás" de Android (quit_on_go_back está desactivado en el proyecto).
+	if what == NOTIFICATION_WM_GO_BACK_REQUEST:
+		_alternar()
+
+
+## Abre o cierra el menú. Devuelve false si no hizo nada (otra ventana tiene la pausa).
+func _alternar() -> bool:
 	if abierto:
 		cerrar()
 	elif not get_tree().paused:
 		abrir()
 	else:
-		return
-	get_viewport().set_input_as_handled()
+		return false
+	return true
 
 
 func abrir() -> void:

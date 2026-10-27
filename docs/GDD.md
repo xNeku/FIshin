@@ -64,7 +64,7 @@ Marcas: [DECIDIDO] lo decidió el diseñador · [PROPUESTA] sugerencia de Claude
 - [PROPUESTA] Si pescas una especie nueva con la barca llena, el pez se suelta (aviso "Sin hueco").
 - [ABIERTO] Comportamiento con la barca llena: ¿soltar, elegir qué tirar, o que no piquen especies nuevas?
 
-## 8. Menú (ESC)
+## 8. Menú (Tab / Esc / atrás de Android)
 - [DECIDIDO] Pestañas:
   - **Árbol de habilidades**, pagado con dinero. Ramas de ejemplo: Carisma (mejores acuerdos y posibilidades), Suerte, Fuerza (peces más pesados), Destreza (más progresión de botones y más valor por acierto).
   - **Barca**: inventario.

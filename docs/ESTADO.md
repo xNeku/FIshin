@@ -1,7 +1,7 @@
 # ESTADO (traspaso entre sesiones)
 
 ## Dónde estamos
-Fase 2 hecha: bucle pescar → vender → mejorar. Cañas por profundidad, cebo, huecos de barca apilados por especie, tienda del comerciante (E) y menú ESC (Barca, Stats, Árbol vacío, Opciones). Save v2. Falta que el diseñador lo pruebe a mano.
+Fase 2 hecha: bucle pescar → vender → mejorar. Cañas por profundidad, cebo, huecos de barca apilados por especie, tienda del comerciante (E) y menú (Tab) (Barca, Stats, Árbol vacío, Opciones). Save v2. Falta que el diseñador lo pruebe a mano.
 
 ## Mapa rápido del código
 - `scripts/pesca/pesca.gd` (Pesca): lógica del minijuego, solo señales. Las stats van en `data/stats_pesca.tres`.

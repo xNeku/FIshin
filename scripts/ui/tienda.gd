@@ -37,6 +37,11 @@ func _unhandled_input(event: InputEvent) -> void:
 		cerrar()
 
 
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_WM_GO_BACK_REQUEST and abierta:
+		cerrar()
+
+
 func abrir(barco: BarcoComerciante) -> void:
 	_barco = barco
 	abierta = true
