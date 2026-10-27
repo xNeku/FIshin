@@ -45,15 +45,22 @@ Marcas: [DECIDIDO] lo decidió el diseñador · [PROPUESTA] sugerencia de Claude
 - [DECIDIDO] Teclado: números con la mano izquierda y flechas con la derecha. Las dobles combinan una de cada.
 - [DECIDIDO] Auto: más adelante, si no pulsas, consigues el pez igualmente (mejora desbloqueable).
 - [DECIDIDO] Si no pulsas el primer botón, el pez se escapa hasta que mejores la caña.
+- [DECIDIDO] **Cañas**: mejorar la caña da acceso a mejores peces y llega más profundo (más profundo = peces más complejos). Además mejora los rates y puede dar pesca automática.
+- [PROPUESTA] Implementado: cada caña (`data/canas/`) tiene profundidad, límite de cadena, tiempo de reacción, espera, probabilidad de raros y auto del primer botón. Cada pez tiene profundidad mínima.
 - [ABIERTO] Input táctil para móvil.
 
 ## 7. Economía
 - [DECIDIDO] Una sola moneda que lo es todo: dinero, experiencia y economía.
 - [DECIDIDO] Moneda: rublos. Símbolo ₽ (U+20BD); comprobar que la fuente lo tiene. El primer hito son 100 ₽.
 - [DECIDIDO] Al poco de empezar a pescar aparece un barco comerciante: le vendes peces y le compras cosas.
-- [PROPUESTA] El barco aparece tras 3 capturas (ajustable en el inspector: `BarcoComerciante.capturas_para_aparecer`). De momento solo compra, con E vende todo.
+- [PROPUESTA] El barco aparece tras 3 capturas (ajustable en el inspector: `BarcoComerciante.capturas_para_aparecer`).
+- [DECIDIDO] El primer comerciante vende: la siguiente caña, cebo (boost de tiempo) y +1 hueco.
+- [PROPUESTA] Precios: caña decente 150 ₽, cebo 15 ₽ (5 pescas, +30% de tiempo de reacción) y cajón 60 ₽ (×1.8 por compra, máximo 4). Con E se abre su tienda, que también compra todo lo de la barca.
+- [ABIERTO] El "boost de tiempo" del cebo: ¿más tiempo para reaccionar, que piquen antes, o ambas? (El dato admite las dos: `cebo_mult_tiempo` / `cebo_mult_espera`.)
 - [DECIDIDO] La barca tiene inventario (los peces que llevas encima).
-- [ABIERTO] ¿Tiene capacidad máxima el inventario de la barca?
+- [DECIDIDO] Inventario por huecos: empiezas con 6. Cada especie ocupa un hueco y se apila ahí con todas sus variantes y pesos. Al pulsar el hueco se despliegan las variantes. Los huecos solo son para lo que pescas.
+- [PROPUESTA] Si pescas una especie nueva con la barca llena, el pez se suelta (aviso "Sin hueco").
+- [ABIERTO] Comportamiento con la barca llena: ¿soltar, elegir qué tirar, o que no piquen especies nuevas?
 
 ## 8. Menú (ESC)
 - [DECIDIDO] Pestañas:

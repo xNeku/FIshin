@@ -18,9 +18,9 @@ Regla: no se pasa de fase hasta que la actual sea jugable y divertida. Cada tare
 
 ## Fase 2 — Economía mínima
 - [x] Inventario de la barca
-- [~] Barco comerciante: vender (hecho) y comprar (falta)
+- [x] Barco comerciante: tienda (caña, cebo, hueco) y vender todo
 - [x] HUD de dinero
-- [ ] Primeras mejoras compradas
+- [x] Primeras mejoras compradas (cañas con profundidad, cebo, huecos)
 - **Hito:** bucle pescar → vender → mejorar.
 
 ## Fase 3 — Mundo y expansión
@@ -31,7 +31,7 @@ Regla: no se pasa de fase hasta que la actual sea jugable y divertida. Cada tare
 - **Hito:** se nota que el mundo crece.
 
 ## Fase 4 — Menú y progresión
-- [ ] Menú ESC con pestañas (barca, stats, opciones)
+- [x] Menú ESC con pestañas (barca con huecos apilados, stats, opciones; árbol vacío)
 - [ ] Árbol de habilidades (datos + UI)
 - [x] Mecánicas avanzadas de pesca: machacar y pulsación doble (adelantado)
 - [ ] Auto-pesca
