@@ -83,6 +83,9 @@ aside { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
 .item b { display: block; }
 .item small { display: block; color: var(--ink-soft); font-size: 12px; overflow-wrap: anywhere; }
 .estado { font-size: 11px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; }
+.presets { display: flex; flex-wrap: wrap; gap: 6px; }
+.presets button { border: 1px solid var(--line-strong); background: var(--paper); color: var(--ink); border-radius: 6px; padding: 5px 9px; font: 600 13px var(--f-mono); cursor: pointer; }
+.presets button:hover { border-color: var(--accent); }
 .legend { display: flex; flex-wrap: wrap; gap: 10px; font-size: 12px; color: var(--ink-soft); }
 .legend i { display: inline-block; width: 12px; height: 12px; border-radius: 3px; vertical-align: -2px; margin-right: 4px; }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
@@ -92,7 +95,7 @@ aside { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
   <header>
     <div>
       <h1>Carta de Fishin</h1>
-      <p class="sub">La barca está en (0,0) y su agua de pesca ocupa el 3×3. Arrastra o toca dos casillas para marcar una zona y descríbela en la ficha. Toca algo ya colocado para editarlo.</p>
+      <p class="sub">La barca está en (0,0) y su agua de pesca ocupa el 3×3. Las zonas pueden tener cualquier tamaño: arrastra, o toca una esquina y luego la opuesta (un 2×3, un 5×1…). Toca algo ya colocado para editarlo.</p>
     </div>
     <div class="tools">
       <div class="seg" role="group" aria-label="Modo">
@@ -128,6 +131,7 @@ aside { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
           <div class="field"><span>Ancho</span><input id="f-w" type="number" min="1" step="1"></div>
           <div class="field"><span>Alto</span><input id="f-h" type="number" min="1" step="1"></div>
         </div>
+        <div class="presets" id="presets" aria-label="Tamaños rápidos"></div>
         <div class="row">
           <div class="field"><span>Orden de llegada</span><input id="f-orden" type="number" min="1" step="1" placeholder="1"></div>
           <div class="field"><span>Aparece cuando…</span><input id="f-cond" placeholder="Ganas 100 ₽"></div>
@@ -162,7 +166,8 @@ let R = 25, CELDA = 26, modo = "marcar";
 let elementos = [];            // [{id, ...datos}]
 let editando = null;           // id del elemento en la ficha, o null
 let sel = null;                // {x, y, w, h} selección actual
-let arrastre = null;           // {x0, y0}
+let arrastre = null;           // celda donde empezó el gesto
+let ancla = null;              // primera esquina tras un toque suelto; el siguiente toque cierra el rectángulo
 let db = null, col = null;
 let confirmarBorrar = false;
 
@@ -362,15 +367,26 @@ cv.addEventListener("pointerup", (ev) => {
   if (!arrastre || modo !== "marcar") return;
   const fin = celdaEvento(ev);
   const r = rectDe(arrastre, fin); arrastre = null;
-  if (r.w === 1 && r.h === 1) {
-    const toc = [...elementos].sort((a, b) => a.w * a.h - b.w * b.h)
-      .find((e) => r.x >= e.x && r.x < e.x + e.w && r.y >= e.y && r.y < e.y + e.h);
-    if (toc) { editar(toc); return; }
+  if (r.w > 1 || r.h > 1) { ancla = null; aplicarSeleccion(r); return; }
+  // Toque suelto: o cierra el rectángulo empezado, o edita lo tocado, o empieza uno nuevo.
+  if (ancla && (ancla[0] !== fin[0] || ancla[1] !== fin[1])) {
+    const r2 = rectDe(ancla, fin); ancla = null; aplicarSeleccion(r2); return;
   }
-  sel = r;
-  if (editando) { ponerCoords(r); comprobarSolapes(); dibujar(); avisar("Nueva posición para " + ($("f-nombre").value || "esta zona") + ". Guarda para moverla.", "ok"); }
-  else nuevaFicha(r);
+  const toc = [...elementos].sort((a, b) => a.w * a.h - b.w * b.h)
+    .find((e) => r.x >= e.x && r.x < e.x + e.w && r.y >= e.y && r.y < e.y + e.h);
+  if (toc && !ancla) { editar(toc); return; }
+  ancla = fin;
+  aplicarSeleccion(r);
+  avisar("Esquina marcada en (" + fin[0] + ", " + fin[1] + "). Toca la esquina opuesta para hacerla más grande, o guárdala así.", "ok");
 });
+
+function aplicarSeleccion(r) {
+  sel = r;
+  if (editando || $("f-nombre").value.trim()) {
+    ponerCoords(r); comprobarSolapes(); dibujar();
+    if (editando) avisar("Nueva posición para " + ($("f-nombre").value || "esta zona") + ": " + r.w + "×" + r.h + ". Guarda para moverla.", "ok");
+  } else nuevaFicha(r);
+}
 
 // Panear arrastrando en modo Mover (ratón); en táctil el scroll nativo ya mueve.
 let pan = null;
@@ -400,7 +416,19 @@ $("radio").addEventListener("change", (e) => reescalar(parseInt(e.target.value, 
 ["f-x", "f-y", "f-w", "f-h"].forEach((id) => $(id).addEventListener("input", () => {
   const d = leerFicha(); sel = { x: d.x, y: d.y, w: d.w, h: d.h }; comprobarSolapes(); dibujar();
 }));
-$("b-nuevo").onclick = () => { sel = null; nuevaFicha(null); };
+$("b-nuevo").onclick = () => { sel = null; ancla = null; nuevaFicha(null); };
+
+const TAMANOS = [[1, 1], [2, 2], [2, 3], [3, 2], [3, 3], [4, 4]];
+$("presets").replaceChildren(...TAMANOS.map(([w, h]) => {
+  const b = document.createElement("button"); b.type = "button"; b.textContent = w + "×" + h;
+  b.title = "Ancho " + w + ", alto " + h;
+  b.onclick = () => {
+    $("f-w").value = w; $("f-h").value = h;
+    if ($("f-x").value === "") { $("f-x").value = 0; $("f-y").value = 3; }
+    $("f-w").dispatchEvent(new Event("input"));
+  };
+  return b;
+}));
 
 $("ficha").addEventListener("submit", async (ev) => {
   ev.preventDefault();
