@@ -16,9 +16,15 @@ Fase 2 hecha: bucle pescar → vender → mejorar. Cañas por profundidad, cebo,
 - `scenes/main.tscn`: lo monta todo.
 - Peces: `data/peces/*.tres` (PezData). Arte placeholder en `art/` (generado por script, sustituible).
 
+## Herramientas de diseño (artefactos)
+- Carta de Fishin (mapa): https://claude.ai/artifact/2oRoaePEyuUyDUYBJnK9oA. Colección `elementos` con {nombre, tipo, estado, x, y, w, h, orden, condicion, descripcion}. Coordenadas: barca en (0,0), x a la derecha, y hacia arriba (en Godot, y+ = -Z). 1 casilla = 2 m.
+- Árbol de Fishin: https://claude.ai/artifact/UtP4gNUbFFwpX9SPeTcTnu. Colecciones `ramas` {nombre, descripcion, orden, color} y `nodos` {nombre, rama (id), nivel, coste, estado, efecto, descripcion, requisitos[]}.
+- Se leen con ArtifactData (list). El código fuente está en `docs/herramientas/`.
+
 ## Siguiente paso
-1. Feedback del diseñador sobre el feel de la pesca y la tienda.
-2. Fase 3: hito de 100 ₽ → islote 1x1, cuadrícula, modo movimiento (Q) y salto barca ↔ isla.
+1. El diseñador rellena la carta y el árbol. Leerlos y pasarlos a datos.
+2. Rehacer el cebo: probabilidades + duración en segundos.
+3. Fase 3: hito de 100 ₽ → islote 1x1, cuadrícula, modo movimiento (Q) y salto barca ↔ isla.
 
 ## Decisiones recientes
 - 2.5D, Forward+, juego de PC. Moneda: rublos (₽). Fuente DejaVu Sans Bold (tiene ₽ y flechas).
@@ -26,7 +32,7 @@ Fase 2 hecha: bucle pescar → vender → mejorar. Cañas por profundidad, cebo,
 - Niebla desactivada (en Compatibility lo dejaba todo gris).
 
 ## Pendiente de preguntar (en orden)
-1. Cebo: ¿más tiempo de reacción, que piquen antes, o ambas?
+1. Qué cebos hay y qué sube cada uno.
 2. Barca llena: ¿soltar, elegir qué tirar, o que no piquen especies nuevas?
 3. Progreso offline.
 4. Lista ordenada de islas y edificios (la escribirá el diseñador).

@@ -1,0 +1,384 @@
+<title>Árbol de Fishin</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@500;700&family=Atkinson+Hyperlegible:wght@400;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Tablero de ramas en columnas y niveles en filas; ficha de edición a la derecha. */
+:root {
+  --bg: #eceae6;
+  --paper: #f8f7f4;
+  --ink: #1d1f2a;
+  --ink-soft: #5d6070;
+  --line: #d6d3cc;
+  --line-strong: #a9a59b;
+  --accent: #e2553a;
+  --accent-ink: #ffffff;
+  --gold: #b8860b;
+  --r-coral: #e2553a;
+  --r-oro: #c9971c;
+  --r-verde: #4f9a3a;
+  --r-azul: #2f74c0;
+  --r-morado: #8a5cc4;
+  --r-turquesa: #1f9aa8;
+  --ok: #2e8b57;
+  --warn: #c0392b;
+  --f-display: "Pixelify Sans", "Courier New", monospace;
+  --f-body: "Atkinson Hyperlegible", system-ui, sans-serif;
+  --f-mono: "JetBrains Mono", ui-monospace, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #15161c; --paper: #1e2029; --ink: #ecebf2; --ink-soft: #a2a4b4; --line: #2d303c; --line-strong: #4a4e5e;
+  --accent: #ff7a5c; --accent-ink: #1a0d08; --gold: #f0c048;
+  --r-coral: #ff7a5c; --r-oro: #f0c048; --r-verde: #7cc160; --r-azul: #5c9ee8; --r-morado: #a67ee0; --r-turquesa: #3cc3d4;
+  --ok: #5bc98b; --warn: #ff6b5c; color-scheme: dark; } }
+:root[data-theme="dark"] {
+  --bg: #15161c; --paper: #1e2029; --ink: #ecebf2; --ink-soft: #a2a4b4; --line: #2d303c; --line-strong: #4a4e5e;
+  --accent: #ff7a5c; --accent-ink: #1a0d08; --gold: #f0c048;
+  --r-coral: #ff7a5c; --r-oro: #f0c048; --r-verde: #7cc160; --r-azul: #5c9ee8; --r-morado: #a67ee0; --r-turquesa: #3cc3d4;
+  --ok: #5bc98b; --warn: #ff6b5c; color-scheme: dark; }
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: var(--f-body); font-size: 15px; line-height: 1.45;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 20px 32px; }
+.wrap { max-width: 1500px; margin: 0 auto; display: flex; flex-direction: column; gap: 16px; }
+header { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 12px; }
+h1 { font-family: var(--f-display); font-weight: 700; font-size: 34px; margin: 0; text-wrap: balance; }
+.sub { margin: 4px 0 0; color: var(--ink-soft); max-width: 62ch; }
+.tools { display: flex; flex-wrap: wrap; gap: 8px; }
+.btn { border: 1px solid var(--line-strong); background: var(--paper); color: var(--ink); padding: 9px 14px; border-radius: 8px; font: 700 14px var(--f-body); cursor: pointer; }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.btn.danger { color: var(--warn); border-color: var(--warn); }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+select, input, textarea { font: inherit; color: var(--ink); background: var(--paper); border: 1px solid var(--line-strong); border-radius: 6px; padding: 7px 9px; width: 100%; }
+textarea { resize: vertical; min-height: 80px; }
+.layout { display: grid; grid-template-columns: minmax(0, 1fr) 380px; gap: 16px; align-items: start; }
+@media (max-width: 900px) { .layout { grid-template-columns: minmax(0, 1fr); } }
+.tablero-caja { background: var(--paper); border: 1px solid var(--line-strong); border-radius: 10px; overflow: auto; max-height: 80vh; }
+.tablero { position: relative; display: grid; gap: 0; min-width: max-content; }
+.tablero svg { position: absolute; inset: 0; pointer-events: none; overflow: visible; }
+.cab { position: sticky; top: 0; z-index: 2; background: var(--paper); border-bottom: 1px solid var(--line); padding: 12px 14px 10px; display: flex; flex-direction: column; gap: 2px; cursor: pointer; text-align: left; border-left: 0; border-right: 0; border-top: 0; font: inherit; color: var(--ink); }
+.cab b { font-family: var(--f-display); font-size: 20px; }
+.cab small { color: var(--ink-soft); font-size: 12px; }
+.nivel { font-family: var(--f-mono); font-size: 11px; color: var(--ink-soft); padding: 8px 10px; border-right: 1px solid var(--line); display: flex; align-items: flex-start; justify-content: center; letter-spacing: 1px; text-transform: uppercase; }
+.celda { padding: 14px 12px; border-right: 1px dashed var(--line); border-bottom: 1px dashed var(--line); display: flex; flex-direction: column; gap: 10px; align-items: center; min-height: 110px; position: relative; z-index: 1; }
+.nodo { width: 200px; text-align: left; background: var(--paper); border: 2px solid var(--c, var(--line-strong)); border-radius: 10px; padding: 8px 10px; cursor: pointer; color: var(--ink); font: inherit; display: flex; flex-direction: column; gap: 2px; box-shadow: 0 2px 0 var(--c, var(--line-strong)); }
+.nodo:hover, .nodo.sel { transform: translateY(-1px); box-shadow: 0 4px 0 var(--c, var(--line-strong)); }
+.nodo.sel { outline: 2px solid var(--accent); outline-offset: 2px; }
+.nodo.abierto { border-style: dashed; }
+.nodo b { font-size: 15px; }
+.nodo .coste { font-family: var(--f-mono); font-size: 12px; color: var(--gold); font-weight: 600; }
+.nodo .efecto { font-size: 12px; color: var(--ink-soft); overflow-wrap: anywhere; }
+.anadir { width: 200px; border: 1px dashed var(--line-strong); background: transparent; color: var(--ink-soft); border-radius: 10px; padding: 6px; cursor: pointer; font: 600 13px var(--f-body); opacity: 0.7; }
+.anadir:hover { opacity: 1; color: var(--ink); }
+.vacio { padding: 40px 24px; color: var(--ink-soft); max-width: 50ch; }
+aside { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+.card { background: var(--paper); border: 1px solid var(--line); border-radius: 10px; padding: 16px; display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.card h2 { font-family: var(--f-display); font-size: 20px; margin: 0; }
+.eyebrow { font-size: 11px; text-transform: uppercase; letter-spacing: 1.2px; color: var(--ink-soft); font-weight: 700; }
+.row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.field { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.field > span { font-size: 12px; color: var(--ink-soft); font-weight: 700; }
+.reqs { display: flex; flex-direction: column; gap: 4px; max-height: 180px; overflow: auto; border: 1px solid var(--line); border-radius: 6px; padding: 8px; }
+.reqs label { display: flex; gap: 8px; align-items: center; font-size: 14px; }
+.reqs input { width: auto; }
+.colores { display: flex; flex-wrap: wrap; gap: 8px; }
+.colores label { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; }
+.colores input { width: auto; }
+.colores i { width: 16px; height: 16px; border-radius: 4px; display: inline-block; }
+.actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.note { font-size: 13px; color: var(--ink-soft); margin: 0; }
+.note.warn { color: var(--warn); }
+.note.ok { color: var(--ok); }
+@media (prefers-reduced-motion: reduce) { .nodo { transition: none; } .nodo:hover, .nodo.sel { transform: none; } }
+</style>
+
+<div class="wrap">
+  <header>
+    <div>
+      <h1>Árbol de Fishin</h1>
+      <p class="sub">Cada columna es una rama y cada fila un nivel. Todo se paga en rublos. Toca un nodo para editarlo, o el hueco "+" de una casilla para crear uno ahí. Los requisitos dibujan las líneas.</p>
+    </div>
+    <div class="tools">
+      <button class="btn" id="b-rama">Nueva rama</button>
+      <button class="btn primary" id="b-nodo">Nuevo nodo</button>
+    </div>
+  </header>
+  <div class="layout">
+    <div class="tablero-caja"><div class="tablero" id="tablero"><p class="vacio">Cargando el árbol…</p></div></div>
+    <aside>
+      <form class="card" id="ficha-nodo" autocomplete="off">
+        <div class="eyebrow" id="n-eyebrow">Nuevo nodo</div>
+        <h2 id="n-titulo">Habilidad nueva</h2>
+        <div class="field"><span>Nombre</span><input id="n-nombre" required placeholder="Labia de taberna"></div>
+        <div class="row">
+          <div class="field"><span>Rama</span><select id="n-rama"></select></div>
+          <div class="field"><span>Nivel</span><input id="n-nivel" type="number" min="1" step="1" value="1"></div>
+        </div>
+        <div class="row">
+          <div class="field"><span>Coste (₽)</span><input id="n-coste" type="number" min="0" step="1" placeholder="250"></div>
+          <div class="field"><span>Estado</span>
+            <select id="n-estado"><option value="decidido">Decidido</option><option value="propuesta">Propuesta</option><option value="abierto">Abierto</option></select></div>
+        </div>
+        <div class="field"><span>Efecto</span><input id="n-efecto" placeholder="+10% de rublos al vender"></div>
+        <div class="field"><span>Descripción</span><textarea id="n-desc" placeholder="Cómo se siente, de dónde sale, cualquier detalle."></textarea></div>
+        <div class="field"><span>Requisitos (hay que tener antes)</span><div class="reqs" id="n-reqs"></div></div>
+        <p class="note" id="n-aviso"></p>
+        <div class="actions">
+          <button class="btn primary" id="n-guardar" type="submit">Guardar nodo</button>
+          <button class="btn danger" id="n-borrar" type="button" hidden>Borrar</button>
+        </div>
+      </form>
+      <form class="card" id="ficha-rama" autocomplete="off" hidden>
+        <div class="eyebrow" id="r-eyebrow">Nueva rama</div>
+        <h2 id="r-titulo">Rama nueva</h2>
+        <div class="row">
+          <div class="field"><span>Nombre</span><input id="r-nombre" required placeholder="Carisma"></div>
+          <div class="field"><span>Orden</span><input id="r-orden" type="number" step="1" value="1"></div>
+        </div>
+        <div class="field"><span>De qué va</span><textarea id="r-desc" placeholder="Mejores acuerdos y posibilidades"></textarea></div>
+        <div class="field"><span>Color</span><div class="colores" id="r-colores"></div></div>
+        <p class="note" id="r-aviso"></p>
+        <div class="actions">
+          <button class="btn primary" type="submit">Guardar rama</button>
+          <button class="btn" id="r-cancelar" type="button">Volver al nodo</button>
+          <button class="btn danger" id="r-borrar" type="button" hidden>Borrar rama</button>
+        </div>
+      </form>
+    </aside>
+  </div>
+</div>
+
+<script>
+const COLORES = ["coral", "oro", "verde", "azul", "morado", "turquesa"];
+const $ = (id) => document.getElementById(id);
+const tablero = $("tablero");
+let ramas = [], nodos = [], cargadas = { ramas: false, nodos: false };
+let editNodo = null, editRama = null, borrarNodo = false, borrarRama = false;
+let db = null, colRamas = null, colNodos = null;
+
+const ramasOrdenadas = () => [...ramas].sort((a, b) => (a.orden ?? 0) - (b.orden ?? 0) || (a.nombre || "").localeCompare(b.nombre || ""));
+const colorRama = (id) => { const r = ramas.find((x) => x.id === id); return `var(--r-${r && COLORES.includes(r.color) ? r.color : "coral"})`; };
+const fmt = (n) => (n == null || n === "" ? "" : Number(n).toLocaleString("es-ES") + " ₽");
+function avisar(el, txt, tipo) { el.textContent = txt || ""; el.className = "note" + (tipo ? " " + tipo : ""); }
+
+function pintar() {
+  tablero.replaceChildren();
+  if (!cargadas.ramas || !cargadas.nodos) {
+    const p = document.createElement("p"); p.className = "vacio";
+    p.textContent = db ? "Cargando el árbol…" : "Esta vista no puede leer el árbol guardado.";
+    tablero.append(p); return;
+  }
+  const rs = ramasOrdenadas();
+  if (!rs.length) {
+    const p = document.createElement("p"); p.className = "vacio";
+    p.textContent = "Todavía no hay ramas. Pulsa «Nueva rama» para crear la primera (Carisma, Suerte…).";
+    tablero.append(p); return;
+  }
+  const maxNivel = Math.max(1, ...nodos.map((n) => n.nivel || 1)) + 1;
+  tablero.style.gridTemplateColumns = `56px repeat(${rs.length}, 240px)`;
+  tablero.style.gridTemplateRows = `auto repeat(${maxNivel}, auto)`;
+
+  const esquina = document.createElement("div"); esquina.className = "cab"; esquina.style.gridColumn = 1; esquina.style.gridRow = 1;
+  tablero.append(esquina);
+  rs.forEach((r, i) => {
+    const c = document.createElement("button"); c.type = "button"; c.className = "cab";
+    c.style.gridColumn = i + 2; c.style.gridRow = 1; c.style.borderTop = `4px solid var(--r-${COLORES.includes(r.color) ? r.color : "coral"})`;
+    const b = document.createElement("b"); b.textContent = r.nombre || "Sin nombre";
+    const s = document.createElement("small"); s.textContent = r.descripcion || "Toca para describir la rama";
+    c.append(b, s); c.title = "Editar rama"; c.onclick = () => abrirRama(r);
+    tablero.append(c);
+  });
+  for (let nv = 1; nv <= maxNivel; nv++) {
+    const l = document.createElement("div"); l.className = "nivel"; l.textContent = "Nv " + nv;
+    l.style.gridColumn = 1; l.style.gridRow = nv + 1; tablero.append(l);
+    rs.forEach((r, i) => {
+      const celda = document.createElement("div"); celda.className = "celda";
+      celda.style.gridColumn = i + 2; celda.style.gridRow = nv + 1;
+      nodos.filter((n) => n.rama === r.id && (n.nivel || 1) === nv)
+        .sort((a, b) => (a.coste || 0) - (b.coste || 0))
+        .forEach((n) => {
+          const b = document.createElement("button"); b.type = "button";
+          b.className = "nodo" + (n.id === editNodo ? " sel" : "") + (n.estado === "abierto" ? " abierto" : "");
+          b.dataset.id = n.id; b.style.setProperty("--c", colorRama(r.id));
+          const t = document.createElement("b"); t.textContent = n.nombre || "Sin nombre";
+          const c = document.createElement("span"); c.className = "coste"; c.textContent = fmt(n.coste) || "Sin coste";
+          const e = document.createElement("span"); e.className = "efecto"; e.textContent = n.efecto || "";
+          b.append(t, c); if (n.efecto) b.append(e);
+          b.onclick = () => abrirNodo(n);
+          celda.append(b);
+        });
+      const mas = document.createElement("button"); mas.type = "button"; mas.className = "anadir"; mas.textContent = "+ nodo aquí";
+      mas.onclick = () => nuevoNodo(r.id, nv);
+      celda.append(mas);
+      tablero.append(celda);
+    });
+  }
+  requestAnimationFrame(lineas);
+}
+
+function lineas() {
+  tablero.querySelector("svg")?.remove();
+  const ns = "http://www.w3.org/2000/svg";
+  const svg = document.createElementNS(ns, "svg");
+  svg.setAttribute("width", tablero.scrollWidth); svg.setAttribute("height", tablero.scrollHeight);
+  const base = tablero.getBoundingClientRect();
+  for (const n of nodos) {
+    const hijo = tablero.querySelector(`.nodo[data-id="${CSS.escape(n.id)}"]`);
+    if (!hijo) continue;
+    for (const req of n.requisitos || []) {
+      const padre = tablero.querySelector(`.nodo[data-id="${CSS.escape(req)}"]`);
+      if (!padre) continue;
+      const a = padre.getBoundingClientRect(), b = hijo.getBoundingClientRect();
+      const x1 = a.left + a.width / 2 - base.left, y1 = a.bottom - base.top;
+      const x2 = b.left + b.width / 2 - base.left, y2 = b.top - base.top;
+      const p = document.createElementNS(ns, "path");
+      const my = (y1 + y2) / 2;
+      p.setAttribute("d", `M${x1},${y1} C${x1},${my} ${x2},${my} ${x2},${y2}`);
+      p.setAttribute("fill", "none"); p.setAttribute("stroke", colorRama(n.rama));
+      p.setAttribute("stroke-width", "2.5"); p.setAttribute("stroke-linecap", "round");
+      if (n.estado === "abierto") p.setAttribute("stroke-dasharray", "5 4");
+      svg.append(p);
+    }
+  }
+  tablero.prepend(svg);
+}
+window.addEventListener("resize", () => requestAnimationFrame(lineas));
+
+// --- Ficha de nodo ---
+function rellenarRamas(sel) {
+  $("n-rama").replaceChildren(...ramasOrdenadas().map((r) => { const o = document.createElement("option"); o.value = r.id; o.textContent = r.nombre; return o; }));
+  if (sel) $("n-rama").value = sel;
+}
+function rellenarReqs(marcados) {
+  const caja = $("n-reqs"); caja.replaceChildren();
+  const otros = nodos.filter((n) => n.id !== editNodo).sort((a, b) => (a.nivel || 1) - (b.nivel || 1));
+  if (!otros.length) { const p = document.createElement("p"); p.className = "note"; p.textContent = "No hay otros nodos todavía."; caja.append(p); return; }
+  for (const n of otros) {
+    const l = document.createElement("label"); const c = document.createElement("input");
+    c.type = "checkbox"; c.value = n.id; c.checked = (marcados || []).includes(n.id); c.id = "req-" + n.id;
+    const r = ramas.find((x) => x.id === n.rama);
+    l.append(c, `${n.nombre} · ${r ? r.nombre : "?"} Nv ${n.nivel || 1}`);
+    caja.append(l);
+  }
+}
+function mostrarFicha(cual) { $("ficha-nodo").hidden = cual !== "nodo"; $("ficha-rama").hidden = cual !== "rama"; }
+
+function nuevoNodo(rama, nivel) {
+  editNodo = null; borrarNodo = false; mostrarFicha("nodo");
+  $("ficha-nodo").reset();
+  $("n-eyebrow").textContent = "Nuevo nodo"; $("n-titulo").textContent = "Habilidad nueva";
+  rellenarRamas(rama || (ramasOrdenadas()[0] || {}).id); $("n-nivel").value = nivel || 1;
+  rellenarReqs([]); $("n-borrar").hidden = true; avisar($("n-aviso"), ramas.length ? "" : "Crea una rama primero.", ramas.length ? "" : "warn");
+  pintar(); $("n-nombre").focus();
+}
+function abrirNodo(n) {
+  editNodo = n.id; borrarNodo = false; mostrarFicha("nodo");
+  $("n-eyebrow").textContent = "Editando nodo"; $("n-titulo").textContent = n.nombre || "Sin nombre";
+  $("n-nombre").value = n.nombre || ""; rellenarRamas(n.rama); $("n-nivel").value = n.nivel || 1;
+  $("n-coste").value = n.coste ?? ""; $("n-estado").value = n.estado || "decidido";
+  $("n-efecto").value = n.efecto || ""; $("n-desc").value = n.descripcion || "";
+  rellenarReqs(n.requisitos); $("n-borrar").hidden = false; $("n-borrar").textContent = "Borrar";
+  avisar($("n-aviso"), ""); pintar();
+}
+$("b-nodo").onclick = () => nuevoNodo();
+$("ficha-nodo").addEventListener("submit", async (ev) => {
+  ev.preventDefault();
+  if (!colNodos) return avisar($("n-aviso"), "Esta vista no puede guardar.", "warn");
+  if (!ramas.length) return avisar($("n-aviso"), "Crea una rama primero.", "warn");
+  const d = {
+    nombre: $("n-nombre").value.trim(), rama: $("n-rama").value,
+    nivel: Math.max(1, parseInt($("n-nivel").value, 10) || 1),
+    coste: $("n-coste").value === "" ? null : Number($("n-coste").value),
+    estado: $("n-estado").value, efecto: $("n-efecto").value.trim(), descripcion: $("n-desc").value.trim(),
+    requisitos: [...$("n-reqs").querySelectorAll("input:checked")].map((c) => c.value),
+    actualizado: new Date().toISOString(),
+  };
+  if (!d.nombre) return avisar($("n-aviso"), "Ponle un nombre.", "warn");
+  const mal = d.requisitos.map((id) => nodos.find((n) => n.id === id)).filter((n) => n && (n.nivel || 1) >= d.nivel);
+  $("n-guardar").disabled = true;
+  try {
+    if (editNodo) await colNodos.doc(editNodo).set(d);
+    else { const ref = await colNodos.add(d); editNodo = ref.id; }
+    $("n-eyebrow").textContent = "Editando nodo"; $("n-titulo").textContent = d.nombre; $("n-borrar").hidden = false;
+    avisar($("n-aviso"), mal.length ? "Guardado. Ojo: " + mal.map((n) => n.nombre).join(", ") + " está en un nivel igual o mayor." : "Guardado.", mal.length ? "warn" : "ok");
+  } catch (e) { avisar($("n-aviso"), "No se ha podido guardar (" + (e && e.code || "error") + ").", "warn"); }
+  finally { $("n-guardar").disabled = false; }
+});
+$("n-borrar").onclick = async () => {
+  if (!editNodo || !colNodos) return;
+  if (!borrarNodo) { borrarNodo = true; $("n-borrar").textContent = "Pulsa otra vez para borrar"; return; }
+  try {
+    const id = editNodo;
+    await colNodos.doc(id).delete();
+    for (const n of nodos.filter((x) => (x.requisitos || []).includes(id))) {
+      await colNodos.doc(n.id).update({ requisitos: n.requisitos.filter((r) => r !== id) });
+    }
+    nuevoNodo();
+  } catch (e) { avisar($("n-aviso"), "No se ha podido borrar (" + (e && e.code || "error") + ").", "warn"); }
+};
+
+// --- Ficha de rama ---
+$("r-colores").replaceChildren(...COLORES.map((c) => {
+  const l = document.createElement("label"); const i = document.createElement("input");
+  i.type = "radio"; i.name = "r-color"; i.value = c; i.id = "rc-" + c;
+  const m = document.createElement("i"); m.style.background = `var(--r-${c})`;
+  l.append(i, m, c); return l;
+}));
+function abrirRama(r) {
+  editRama = r ? r.id : null; borrarRama = false; mostrarFicha("rama");
+  $("ficha-rama").reset();
+  $("r-eyebrow").textContent = r ? "Editando rama" : "Nueva rama"; $("r-titulo").textContent = r ? r.nombre : "Rama nueva";
+  $("r-nombre").value = r ? r.nombre || "" : ""; $("r-desc").value = r ? r.descripcion || "" : "";
+  $("r-orden").value = r ? r.orden ?? 1 : ramas.length + 1;
+  const color = r && COLORES.includes(r.color) ? r.color : COLORES[ramas.length % COLORES.length];
+  $("rc-" + color).checked = true;
+  $("r-borrar").hidden = !r; $("r-borrar").textContent = "Borrar rama"; avisar($("r-aviso"), "");
+  $("r-nombre").focus();
+}
+$("b-rama").onclick = () => abrirRama(null);
+$("r-cancelar").onclick = () => (editNodo ? abrirNodo(nodos.find((n) => n.id === editNodo)) : nuevoNodo());
+$("ficha-rama").addEventListener("submit", async (ev) => {
+  ev.preventDefault();
+  if (!colRamas) return avisar($("r-aviso"), "Esta vista no puede guardar.", "warn");
+  const d = { nombre: $("r-nombre").value.trim(), descripcion: $("r-desc").value.trim(),
+    orden: parseInt($("r-orden").value, 10) || 0, color: (document.querySelector('input[name="r-color"]:checked') || {}).value || "coral" };
+  if (!d.nombre) return avisar($("r-aviso"), "Ponle un nombre.", "warn");
+  try {
+    if (editRama) await colRamas.doc(editRama).set(d);
+    else { const ref = await colRamas.add(d); editRama = ref.id; }
+    $("r-eyebrow").textContent = "Editando rama"; $("r-titulo").textContent = d.nombre; $("r-borrar").hidden = false;
+    avisar($("r-aviso"), "Guardada.", "ok");
+  } catch (e) { avisar($("r-aviso"), "No se ha podido guardar (" + (e && e.code || "error") + ").", "warn"); }
+});
+$("r-borrar").onclick = async () => {
+  if (!editRama || !colRamas) return;
+  const usados = nodos.filter((n) => n.rama === editRama).length;
+  if (usados) return avisar($("r-aviso"), `Tiene ${usados} nodo(s). Muévelos o bórralos antes.`, "warn");
+  if (!borrarRama) { borrarRama = true; $("r-borrar").textContent = "Pulsa otra vez para borrar"; return; }
+  try { await colRamas.doc(editRama).delete(); nuevoNodo(); }
+  catch (e) { avisar($("r-aviso"), "No se ha podido borrar (" + (e && e.code || "error") + ").", "warn"); }
+};
+
+// --- Arranque ---
+pintar(); nuevoNodo();
+(async () => {
+  db = window.claude ? await window.claude.use("db") : null;
+  if (!db) { pintar(); avisar($("n-aviso"), "Esta vista no puede guardar el árbol.", "warn"); return; }
+  colRamas = db.collection("ramas"); colNodos = db.collection("nodos");
+  const error = () => avisar($("n-aviso"), "Se ha perdido la conexión con el árbol. Recarga la página.", "warn");
+  colRamas.onSnapshot((s) => {
+    ramas = s.docs.map((d) => ({ id: d.id, ...d.data() })); cargadas.ramas = true;
+    if (!$("ficha-nodo").hidden) rellenarRamas($("n-rama").value || (ramasOrdenadas()[0] || {}).id);
+    pintar();
+  }, error);
+  colNodos.onSnapshot((s) => {
+    nodos = s.docs.map((d) => ({ id: d.id, ...d.data() })); cargadas.nodos = true;
+    if (!$("ficha-nodo").hidden) {
+      const marcados = [...$("n-reqs").querySelectorAll("input:checked")].map((c) => c.value);
+      rellenarReqs(marcados);
+    }
+    pintar();
+  }, error);
+})();
+document.fonts && document.fonts.ready.then(() => requestAnimationFrame(lineas));
+</script>

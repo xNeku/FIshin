@@ -56,7 +56,9 @@ Marcas: [DECIDIDO] lo decidió el diseñador · [PROPUESTA] sugerencia de Claude
 - [PROPUESTA] El barco aparece tras 3 capturas (ajustable en el inspector: `BarcoComerciante.capturas_para_aparecer`).
 - [DECIDIDO] El primer comerciante vende: la siguiente caña, cebo (boost de tiempo) y +1 hueco.
 - [PROPUESTA] Precios: caña decente 150 ₽, cebo 15 ₽ (5 pescas, +30% de tiempo de reacción) y cajón 60 ₽ (×1.8 por compra, máximo 4). Con E se abre su tienda, que también compra todo lo de la barca.
-- [ABIERTO] El "boost de tiempo" del cebo: ¿más tiempo para reaccionar, que piquen antes, o ambas? (El dato admite las dos: `cebo_mult_tiempo` / `cebo_mult_espera`.)
+- [DECIDIDO] El cebo da X probabilidad de X cosas (p. ej. más probabilidad de cierto pez o rareza) y su efecto dura un tiempo.
+- [ABIERTO] Qué cebos hay, qué sube cada uno y cuánto dura (pendiente del diseñador).
+- Nota: el código actual del cebo (5 pescas y +30% de tiempo de reacción) está mal y hay que rehacerlo con duración en segundos y efectos de probabilidad.
 - [DECIDIDO] La barca tiene inventario (los peces que llevas encima).
 - [DECIDIDO] Inventario por huecos: empiezas con 6. Cada especie ocupa un hueco y se apila ahí con todas sus variantes y pesos. Al pulsar el hueco se despliegan las variantes. Los huecos solo son para lo que pescas.
 - [PROPUESTA] Si pescas una especie nueva con la barca llena, el pez se suelta (aviso "Sin hueco").
@@ -77,4 +79,5 @@ Marcas: [DECIDIDO] lo decidió el diseñador · [PROPUESTA] sugerencia de Claude
 - [ABIERTO] ¿Se genera dinero con el juego cerrado?
 
 ## 11. Progresión del mundo
-- [ABIERTO] Lista ordenada de islas y cosas que van llegando según avances (pendiente del diseñador).
+- [ABIERTO] Lista ordenada de islas y cosas que van llegando según avances. El diseñador la escribe en la **Carta de Fishin**: https://claude.ai/artifact/2oRoaePEyuUyDUYBJnK9oA (colección `elementos`).
+- Árbol de habilidades: el diseñador lo escribe en el **Árbol de Fishin**: https://claude.ai/artifact/UtP4gNUbFFwpX9SPeTcTnu (colecciones `ramas` y `nodos`).

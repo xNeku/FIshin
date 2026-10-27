@@ -1,0 +1,455 @@
+<title>Carta de Fishin</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@500;700&family=Atkinson+Hyperlegible:wght@400;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Carta náutica de trabajo: rejilla grande a la izquierda, ficha de la zona a la derecha. */
+:root {
+  --bg: #e6edf0;
+  --paper: #f3f7f8;
+  --ink: #12283a;
+  --ink-soft: #4d6677;
+  --line: #c3d2da;
+  --line-strong: #8fa8b6;
+  --sea: #cfe0e7;
+  --sea-zone: #a9d3df;
+  --accent: #e2553a;
+  --accent-ink: #ffffff;
+  --t-isla: #6aa84f;
+  --t-edificio: #d9822b;
+  --t-barco: #2f74c0;
+  --t-agua: #2aa7b8;
+  --t-decorado: #8a8f98;
+  --t-otro: #8a5cc4;
+  --ok: #2e8b57;
+  --warn: #c0392b;
+  --f-display: "Pixelify Sans", "Courier New", monospace;
+  --f-body: "Atkinson Hyperlegible", system-ui, sans-serif;
+  --f-mono: "JetBrains Mono", ui-monospace, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #0c1820; --paper: #12222d; --ink: #e3eef3; --ink-soft: #93abba; --line: #1f3544; --line-strong: #36556a;
+  --sea: #0f2633; --sea-zone: #164556; --accent: #ff7a5c; --accent-ink: #1a0d08;
+  --t-isla: #7cc160; --t-edificio: #f0a04b; --t-barco: #5c9ee8; --t-agua: #3cc3d4; --t-decorado: #a3a9b3; --t-otro: #a67ee0;
+  --ok: #5bc98b; --warn: #ff6b5c; color-scheme: dark; } }
+:root[data-theme="dark"] {
+  --bg: #0c1820; --paper: #12222d; --ink: #e3eef3; --ink-soft: #93abba; --line: #1f3544; --line-strong: #36556a;
+  --sea: #0f2633; --sea-zone: #164556; --accent: #ff7a5c; --accent-ink: #1a0d08;
+  --t-isla: #7cc160; --t-edificio: #f0a04b; --t-barco: #5c9ee8; --t-agua: #3cc3d4; --t-decorado: #a3a9b3; --t-otro: #a67ee0;
+  --ok: #5bc98b; --warn: #ff6b5c; color-scheme: dark; }
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: var(--f-body); font-size: 15px; line-height: 1.45;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 20px 32px; }
+.wrap { max-width: 1500px; margin: 0 auto; display: flex; flex-direction: column; gap: 16px; }
+header { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 12px; }
+h1 { font-family: var(--f-display); font-weight: 700; font-size: 34px; margin: 0; letter-spacing: 0.5px; text-wrap: balance; }
+.sub { margin: 4px 0 0; color: var(--ink-soft); max-width: 62ch; }
+.tools { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+.seg { display: inline-flex; border: 1px solid var(--line-strong); border-radius: 8px; overflow: hidden; }
+.seg button { border: 0; background: var(--paper); color: var(--ink); padding: 8px 14px; font: 600 14px var(--f-body); cursor: pointer; }
+.seg button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+label.inline { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; color: var(--ink-soft); }
+select, input, textarea { font: inherit; color: var(--ink); background: var(--paper); border: 1px solid var(--line-strong); border-radius: 6px; padding: 7px 9px; }
+textarea { resize: vertical; min-height: 84px; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.coord { font-family: var(--f-mono); font-size: 13px; color: var(--ink-soft); min-width: 11ch; }
+.layout { display: grid; grid-template-columns: minmax(0, 1fr) 380px; gap: 16px; align-items: start; }
+@media (max-width: 900px) { .layout { grid-template-columns: minmax(0, 1fr); } }
+.chart { background: var(--paper); border: 1px solid var(--line-strong); border-radius: 10px; overflow: auto; max-height: 78vh; position: relative; }
+.chart.pan { cursor: grab; }
+canvas { display: block; touch-action: none; }
+.chart.pan canvas { touch-action: auto; }
+aside { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+.card { background: var(--paper); border: 1px solid var(--line); border-radius: 10px; padding: 16px; display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.card h2 { font-family: var(--f-display); font-size: 20px; margin: 0; font-weight: 700; }
+.eyebrow { font-size: 11px; text-transform: uppercase; letter-spacing: 1.2px; color: var(--ink-soft); font-weight: 700; }
+.row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.row4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.field { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.field span { font-size: 12px; color: var(--ink-soft); font-weight: 700; }
+.field input, .field select, .field textarea { width: 100%; }
+.actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.btn { border: 1px solid var(--line-strong); background: var(--paper); color: var(--ink); padding: 9px 14px; border-radius: 8px; font: 700 14px var(--f-body); cursor: pointer; }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.btn.danger { color: var(--warn); border-color: var(--warn); }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.note { font-size: 13px; color: var(--ink-soft); }
+.note.warn { color: var(--warn); }
+.note.ok { color: var(--ok); }
+.list { display: flex; flex-direction: column; gap: 6px; max-height: 46vh; overflow: auto; }
+.item { display: grid; grid-template-columns: 34px minmax(0, 1fr); gap: 10px; align-items: start; text-align: left; border: 1px solid var(--line); background: transparent; border-radius: 8px; padding: 8px; cursor: pointer; color: var(--ink); font: inherit; }
+.item:hover, .item.sel { border-color: var(--accent); }
+.badge { font-family: var(--f-mono); font-weight: 600; font-size: 13px; border-radius: 6px; display: grid; place-items: center; height: 28px; color: #fff; }
+.item b { display: block; }
+.item small { display: block; color: var(--ink-soft); font-size: 12px; overflow-wrap: anywhere; }
+.estado { font-size: 11px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; }
+.legend { display: flex; flex-wrap: wrap; gap: 10px; font-size: 12px; color: var(--ink-soft); }
+.legend i { display: inline-block; width: 12px; height: 12px; border-radius: 3px; vertical-align: -2px; margin-right: 4px; }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<div class="wrap">
+  <header>
+    <div>
+      <h1>Carta de Fishin</h1>
+      <p class="sub">La barca está en (0,0) y su agua de pesca ocupa el 3×3. Arrastra o toca dos casillas para marcar una zona y descríbela en la ficha. Toca algo ya colocado para editarlo.</p>
+    </div>
+    <div class="tools">
+      <div class="seg" role="group" aria-label="Modo">
+        <button id="modo-marcar" aria-pressed="true">Marcar</button>
+        <button id="modo-mover" aria-pressed="false">Mover</button>
+      </div>
+      <label class="inline" for="zoom">Zoom <input id="zoom" type="range" min="14" max="48" value="26"></label>
+      <label class="inline" for="radio">Tamaño
+        <select id="radio"><option value="15">31×31</option><option value="25" selected>51×51</option><option value="40">81×81</option></select>
+      </label>
+      <span class="coord" id="coord">—</span>
+    </div>
+  </header>
+
+  <div class="layout">
+    <div>
+      <div class="chart" id="chart"><canvas id="cv"></canvas></div>
+      <div class="legend" id="legend" style="margin-top:10px"></div>
+    </div>
+    <aside>
+      <form class="card" id="ficha" autocomplete="off">
+        <div class="eyebrow" id="ficha-eyebrow">Nueva zona</div>
+        <h2 id="ficha-titulo">Marca una zona en la carta</h2>
+        <div class="field"><span>Nombre</span><input id="f-nombre" required placeholder="Casino flotante"></div>
+        <div class="row">
+          <div class="field"><span>Tipo</span><select id="f-tipo"></select></div>
+          <div class="field"><span>Estado</span>
+            <select id="f-estado"><option value="decidido">Decidido</option><option value="propuesta">Propuesta</option><option value="abierto">Abierto</option></select></div>
+        </div>
+        <div class="row4">
+          <div class="field"><span>x</span><input id="f-x" type="number" step="1"></div>
+          <div class="field"><span>y</span><input id="f-y" type="number" step="1"></div>
+          <div class="field"><span>Ancho</span><input id="f-w" type="number" min="1" step="1"></div>
+          <div class="field"><span>Alto</span><input id="f-h" type="number" min="1" step="1"></div>
+        </div>
+        <div class="row">
+          <div class="field"><span>Orden de llegada</span><input id="f-orden" type="number" min="1" step="1" placeholder="1"></div>
+          <div class="field"><span>Aparece cuando…</span><input id="f-cond" placeholder="Ganas 100 ₽"></div>
+        </div>
+        <div class="field"><span>Descripción</span><textarea id="f-desc" placeholder="Qué es, qué hace, quién hay, qué vende…"></textarea></div>
+        <p class="note" id="f-aviso"></p>
+        <div class="actions">
+          <button class="btn primary" id="b-guardar" type="submit">Guardar</button>
+          <button class="btn" id="b-nuevo" type="button">Nueva zona</button>
+          <button class="btn danger" id="b-borrar" type="button" hidden>Borrar</button>
+        </div>
+      </form>
+      <section class="card">
+        <div class="eyebrow">Por orden de llegada</div>
+        <div class="list" id="lista"><p class="note">Cargando la carta…</p></div>
+      </section>
+    </aside>
+  </div>
+</div>
+
+<script>
+const TIPOS = [
+  ["isla", "Isla / islote"], ["edificio", "Edificio"], ["barco", "Barco"],
+  ["agua", "Agua / zona"], ["decorado", "Decorado"], ["otro", "Otro"],
+];
+const ESTADOS = { decidido: "Decidido", propuesta: "Propuesta", abierto: "Abierto" };
+const $ = (id) => document.getElementById(id);
+const cv = $("cv"), ctx = cv.getContext("2d"), chart = $("chart");
+const MARGEN = 30;
+
+let R = 25, CELDA = 26, modo = "marcar";
+let elementos = [];            // [{id, ...datos}]
+let editando = null;           // id del elemento en la ficha, o null
+let sel = null;                // {x, y, w, h} selección actual
+let arrastre = null;           // {x0, y0}
+let db = null, col = null;
+let confirmarBorrar = false;
+
+function tok(n) { return getComputedStyle(document.documentElement).getPropertyValue(n).trim(); }
+function colorTipo(t) { return tok("--t-" + (TIPOS.some(([k]) => k === t) ? t : "otro")); }
+
+// Celdas: x crece a la derecha, y crece hacia arriba.
+function aPantalla(x, y) { return [MARGEN + (x + R) * CELDA, MARGEN + (R - y) * CELDA]; }
+function aCelda(px, py) {
+  const x = Math.floor((px - MARGEN) / CELDA) - R;
+  const y = R - Math.floor((py - MARGEN) / CELDA);
+  return [Math.max(-R, Math.min(R, x)), Math.max(-R, Math.min(R, y))];
+}
+function rectDe(a, b) {
+  const x = Math.min(a[0], b[0]), y = Math.min(a[1], b[1]);
+  return { x, y, w: Math.abs(a[0] - b[0]) + 1, h: Math.abs(a[1] - b[1]) + 1 };
+}
+
+function tamano() {
+  const lado = (2 * R + 1) * CELDA + MARGEN * 2;
+  const dpr = window.devicePixelRatio || 1;
+  cv.width = lado * dpr; cv.height = lado * dpr;
+  cv.style.width = lado + "px"; cv.style.height = lado + "px";
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+}
+
+function dibujarRect(r, relleno, borde, ancho, dash) {
+  const [px, py] = aPantalla(r.x, r.y + r.h - 1);
+  ctx.fillStyle = relleno; ctx.fillRect(px, py, r.w * CELDA, r.h * CELDA);
+  ctx.setLineDash(dash || []); ctx.lineWidth = ancho; ctx.strokeStyle = borde;
+  ctx.strokeRect(px + ancho / 2, py + ancho / 2, r.w * CELDA - ancho, r.h * CELDA - ancho);
+  ctx.setLineDash([]);
+  return [px, py];
+}
+
+function conAlfa(hex, a) {
+  const m = hex.replace("#", "");
+  const n = parseInt(m.length === 3 ? m.split("").map((c) => c + c).join("") : m, 16);
+  return `rgba(${(n >> 16) & 255}, ${(n >> 8) & 255}, ${n & 255}, ${a})`;
+}
+
+function dibujar() {
+  const lado = (2 * R + 1) * CELDA;
+  ctx.clearRect(0, 0, cv.width, cv.height);
+  ctx.fillStyle = tok("--paper"); ctx.fillRect(0, 0, lado + MARGEN * 2, lado + MARGEN * 2);
+  ctx.fillStyle = tok("--sea"); ctx.fillRect(MARGEN, MARGEN, lado, lado);
+
+  // Zona de pesca 3x3 y barca, fijas.
+  dibujarRect({ x: -1, y: -1, w: 3, h: 3 }, tok("--sea-zone"), tok("--t-agua"), 2, [5, 4]);
+
+  // Rejilla
+  for (let i = 0; i <= 2 * R + 1; i++) {
+    const v = i - R;
+    const fuerte = (v % 5 === 0);
+    ctx.strokeStyle = fuerte ? tok("--line-strong") : tok("--line");
+    ctx.lineWidth = fuerte ? 1 : 0.5;
+    const p = MARGEN + i * CELDA + 0.5;
+    ctx.beginPath(); ctx.moveTo(p, MARGEN); ctx.lineTo(p, MARGEN + lado); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(MARGEN, p); ctx.lineTo(MARGEN + lado, p); ctx.stroke();
+  }
+  // Reglas con coordenadas cada 5
+  ctx.fillStyle = tok("--ink-soft"); ctx.font = `600 11px ${tok("--f-mono")}`;
+  ctx.textAlign = "center"; ctx.textBaseline = "middle";
+  for (let v = -R; v <= R; v++) {
+    if (v % 5 !== 0) continue;
+    const [px] = aPantalla(v, 0); const [, py] = aPantalla(0, v);
+    ctx.fillText(v, px + CELDA / 2, MARGEN / 2);
+    ctx.fillText(v, px + CELDA / 2, MARGEN * 1.5 + lado);
+    ctx.fillText(v, MARGEN / 2, py + CELDA / 2);
+    ctx.fillText(v, MARGEN * 1.5 + lado, py + CELDA / 2);
+  }
+
+  // Elementos
+  const ordenados = [...elementos].sort((a, b) => (a.w * a.h < b.w * b.h ? 1 : -1));
+  for (const e of ordenados) {
+    const c = colorTipo(e.tipo);
+    const marcado = e.id === editando;
+    const [px, py] = dibujarRect(e, conAlfa(c, marcado ? 0.55 : 0.38), c, marcado ? 3 : 2, e.estado === "abierto" ? [4, 3] : null);
+    ctx.save();
+    ctx.beginPath(); ctx.rect(px, py, e.w * CELDA, e.h * CELDA); ctx.clip();
+    ctx.fillStyle = tok("--ink"); ctx.textAlign = "left"; ctx.textBaseline = "top";
+    const fs = Math.max(10, Math.min(14, CELDA * 0.5));
+    ctx.font = `700 ${fs}px ${tok("--f-body")}`;
+    const etiqueta = (e.orden ? e.orden + ". " : "") + (e.nombre || "Sin nombre");
+    ctx.fillText(etiqueta, px + 4, py + 3);
+    ctx.restore();
+  }
+
+  // Barca en (0,0)
+  const [bx, by] = aPantalla(0, 0);
+  ctx.fillStyle = "#7a4a26";
+  ctx.beginPath();
+  ctx.moveTo(bx + CELDA * 0.15, by + CELDA * 0.45);
+  ctx.lineTo(bx + CELDA * 0.85, by + CELDA * 0.45);
+  ctx.lineTo(bx + CELDA * 0.7, by + CELDA * 0.75);
+  ctx.lineTo(bx + CELDA * 0.3, by + CELDA * 0.75);
+  ctx.closePath(); ctx.fill();
+  ctx.fillStyle = "#1e1a18"; ctx.fillRect(bx + CELDA * 0.46, by + CELDA * 0.18, CELDA * 0.08, CELDA * 0.28);
+
+  if (sel) dibujarRect(sel, conAlfa(tok("--accent"), 0.18), tok("--accent"), 2, [6, 4]);
+}
+
+function solapes(r, ignorar) {
+  return elementos.filter((e) => e.id !== ignorar &&
+    r.x < e.x + e.w && e.x < r.x + r.w && r.y < e.y + e.h && e.y < r.y + r.h).map((e) => e.nombre);
+}
+
+// --- Ficha ---
+function leerFicha() {
+  return {
+    nombre: $("f-nombre").value.trim(), tipo: $("f-tipo").value, estado: $("f-estado").value,
+    x: parseInt($("f-x").value, 10) || 0, y: parseInt($("f-y").value, 10) || 0,
+    w: Math.max(1, parseInt($("f-w").value, 10) || 1), h: Math.max(1, parseInt($("f-h").value, 10) || 1),
+    orden: parseInt($("f-orden").value, 10) || null,
+    condicion: $("f-cond").value.trim(), descripcion: $("f-desc").value.trim(),
+  };
+}
+function ponerCoords(r) { $("f-x").value = r.x; $("f-y").value = r.y; $("f-w").value = r.w; $("f-h").value = r.h; }
+function avisar(txt, tipo) { const n = $("f-aviso"); n.textContent = txt || ""; n.className = "note" + (tipo ? " " + tipo : ""); }
+function comprobarSolapes() {
+  const d = leerFicha();
+  const s = solapes(d, editando);
+  if (d.x <= 1 && d.x + d.w - 1 >= -1 && d.y <= 1 && d.y + d.h - 1 >= -1) avisar("Pisa el agua de pesca 3×3 de la barca, que está siempre despejada.", "warn");
+  else if (s.length) avisar("Se solapa con: " + s.join(", "), "warn");
+  else avisar(d.w + "×" + d.h + " casillas, desde (" + d.x + ", " + d.y + ").");
+}
+
+function nuevaFicha(r) {
+  editando = null; confirmarBorrar = false;
+  $("ficha").reset();
+  $("ficha-eyebrow").textContent = "Nueva zona";
+  $("ficha-titulo").textContent = r ? "Describe esta zona" : "Marca una zona en la carta";
+  $("b-borrar").hidden = true;
+  const siguiente = elementos.reduce((m, e) => Math.max(m, e.orden || 0), 0) + 1;
+  $("f-orden").value = siguiente;
+  if (r) { ponerCoords(r); comprobarSolapes(); } else avisar("");
+  pintarLista(); dibujar();
+}
+
+function editar(e) {
+  editando = e.id; confirmarBorrar = false; sel = null;
+  $("ficha-eyebrow").textContent = "Editando";
+  $("ficha-titulo").textContent = e.nombre || "Sin nombre";
+  $("f-nombre").value = e.nombre || ""; $("f-tipo").value = e.tipo || "otro"; $("f-estado").value = e.estado || "decidido";
+  ponerCoords(e); $("f-orden").value = e.orden || ""; $("f-cond").value = e.condicion || ""; $("f-desc").value = e.descripcion || "";
+  $("b-borrar").hidden = false; $("b-borrar").textContent = "Borrar";
+  comprobarSolapes(); pintarLista(); dibujar();
+}
+
+function pintarLista() {
+  const l = $("lista");
+  l.replaceChildren();
+  if (!elementos.length) {
+    const p = document.createElement("p"); p.className = "note";
+    p.textContent = db ? "Aún no hay nada en la carta. Marca una zona y guárdala para empezar." : "Esta vista no puede leer la carta guardada.";
+    l.append(p); return;
+  }
+  const orden = [...elementos].sort((a, b) => ((a.orden || 1e9) - (b.orden || 1e9)) || (a.nombre || "").localeCompare(b.nombre || ""));
+  for (const e of orden) {
+    const b = document.createElement("button");
+    b.type = "button"; b.className = "item" + (e.id === editando ? " sel" : "");
+    const badge = document.createElement("span"); badge.className = "badge";
+    badge.style.background = colorTipo(e.tipo); badge.textContent = e.orden || "–";
+    const t = document.createElement("span");
+    const n = document.createElement("b"); n.textContent = e.nombre || "Sin nombre";
+    const s1 = document.createElement("small");
+    s1.textContent = `${(TIPOS.find(([k]) => k === e.tipo) || ["", "Otro"])[1]} · ${e.w}×${e.h} en (${e.x}, ${e.y})`;
+    const s2 = document.createElement("small"); s2.textContent = e.condicion ? "Aparece: " + e.condicion : "Sin condición de aparición";
+    const es = document.createElement("small"); es.className = "estado"; es.textContent = ESTADOS[e.estado] || "Decidido";
+    t.append(n, s1, s2, es); b.append(badge, t);
+    b.addEventListener("click", () => { editar(e); centrar(e); });
+    l.append(b);
+  }
+}
+
+function centrar(e) {
+  const [px, py] = aPantalla(e.x + e.w / 2, e.y + e.h / 2);
+  chart.scrollTo({ left: px - chart.clientWidth / 2, top: py - chart.clientHeight / 2, behavior: "smooth" });
+}
+
+// --- Interacción con la carta ---
+function celdaEvento(ev) {
+  const r = cv.getBoundingClientRect();
+  return aCelda(ev.clientX - r.left, ev.clientY - r.top);
+}
+cv.addEventListener("pointermove", (ev) => {
+  const c = celdaEvento(ev);
+  $("coord").textContent = `x ${c[0]}, y ${c[1]}`;
+  if (arrastre && modo === "marcar") { sel = rectDe(arrastre, c); dibujar(); }
+});
+cv.addEventListener("pointerdown", (ev) => {
+  if (modo !== "marcar") return;
+  cv.setPointerCapture(ev.pointerId);
+  arrastre = celdaEvento(ev); sel = rectDe(arrastre, arrastre); dibujar();
+});
+cv.addEventListener("pointerup", (ev) => {
+  if (!arrastre || modo !== "marcar") return;
+  const fin = celdaEvento(ev);
+  const r = rectDe(arrastre, fin); arrastre = null;
+  if (r.w === 1 && r.h === 1) {
+    const toc = [...elementos].sort((a, b) => a.w * a.h - b.w * b.h)
+      .find((e) => r.x >= e.x && r.x < e.x + e.w && r.y >= e.y && r.y < e.y + e.h);
+    if (toc) { editar(toc); return; }
+  }
+  sel = r;
+  if (editando) { ponerCoords(r); comprobarSolapes(); dibujar(); avisar("Nueva posición para " + ($("f-nombre").value || "esta zona") + ". Guarda para moverla.", "ok"); }
+  else nuevaFicha(r);
+});
+
+// Panear arrastrando en modo Mover (ratón); en táctil el scroll nativo ya mueve.
+let pan = null;
+chart.addEventListener("pointerdown", (ev) => { if (modo === "mover" && ev.pointerType === "mouse") pan = [ev.clientX, ev.clientY, chart.scrollLeft, chart.scrollTop]; });
+window.addEventListener("pointermove", (ev) => { if (pan) { chart.scrollLeft = pan[2] - (ev.clientX - pan[0]); chart.scrollTop = pan[3] - (ev.clientY - pan[1]); } });
+window.addEventListener("pointerup", () => { pan = null; });
+
+function ponerModo(m) {
+  modo = m;
+  $("modo-marcar").setAttribute("aria-pressed", m === "marcar");
+  $("modo-mover").setAttribute("aria-pressed", m === "mover");
+  chart.classList.toggle("pan", m === "mover");
+}
+$("modo-marcar").onclick = () => ponerModo("marcar");
+$("modo-mover").onclick = () => ponerModo("mover");
+
+function reescalar(nuevoR, nuevaCelda) {
+  const cx = (chart.scrollLeft + chart.clientWidth / 2 - MARGEN) / CELDA - R;
+  const cy = R - (chart.scrollTop + chart.clientHeight / 2 - MARGEN) / CELDA;
+  R = nuevoR; CELDA = nuevaCelda; tamano(); dibujar();
+  const [px, py] = aPantalla(cx, cy);
+  chart.scrollLeft = px - chart.clientWidth / 2; chart.scrollTop = py - chart.clientHeight / 2;
+}
+$("zoom").addEventListener("input", (e) => reescalar(R, parseInt(e.target.value, 10)));
+$("radio").addEventListener("change", (e) => reescalar(parseInt(e.target.value, 10), CELDA));
+
+["f-x", "f-y", "f-w", "f-h"].forEach((id) => $(id).addEventListener("input", () => {
+  const d = leerFicha(); sel = { x: d.x, y: d.y, w: d.w, h: d.h }; comprobarSolapes(); dibujar();
+}));
+$("b-nuevo").onclick = () => { sel = null; nuevaFicha(null); };
+
+$("ficha").addEventListener("submit", async (ev) => {
+  ev.preventDefault();
+  if (!col) { avisar("Esta vista no puede guardar. Ábrela desde tu cuenta.", "warn"); return; }
+  const d = leerFicha();
+  if (!d.nombre) { avisar("Ponle un nombre antes de guardar.", "warn"); $("f-nombre").focus(); return; }
+  d.actualizado = new Date().toISOString();
+  $("b-guardar").disabled = true;
+  try {
+    if (editando) await col.doc(editando).set(d);
+    else { const ref = await col.add(d); editando = ref.id; }
+    sel = null;
+    avisar("Guardado.", "ok");
+    $("ficha-eyebrow").textContent = "Editando"; $("ficha-titulo").textContent = d.nombre; $("b-borrar").hidden = false;
+  } catch (e) {
+    avisar(e && e.code === "quota_exceeded" ? "La carta está llena: borra algo para guardar más." : "No se ha podido guardar (" + (e && e.code || "error") + "). Prueba otra vez.", "warn");
+  } finally { $("b-guardar").disabled = false; }
+});
+
+$("b-borrar").addEventListener("click", async () => {
+  if (!editando || !col) return;
+  if (!confirmarBorrar) { confirmarBorrar = true; $("b-borrar").textContent = "Pulsa otra vez para borrar"; return; }
+  try { await col.doc(editando).delete(); sel = null; nuevaFicha(null); }
+  catch (e) { avisar("No se ha podido borrar (" + (e && e.code || "error") + ").", "warn"); }
+});
+
+// --- Arranque ---
+$("f-tipo").replaceChildren(...TIPOS.map(([k, n]) => { const o = document.createElement("option"); o.value = k; o.textContent = n; return o; }));
+$("legend").replaceChildren(...TIPOS.map(([k, n]) => {
+  const s = document.createElement("span"); const i = document.createElement("i"); i.style.background = colorTipo(k);
+  s.append(i, n); return s;
+}));
+tamano(); dibujar(); nuevaFicha(null);
+requestAnimationFrame(() => { const [px, py] = aPantalla(0, 0); chart.scrollLeft = px - chart.clientWidth / 2; chart.scrollTop = py - chart.clientHeight / 2; });
+
+const repintarTema = () => { dibujar(); pintarLista();
+  $("legend").querySelectorAll("i").forEach((i, n) => i.style.background = colorTipo(TIPOS[n][0])); };
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change", repintarTema);
+new MutationObserver(repintarTema).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+document.fonts && document.fonts.ready.then(dibujar);
+
+(async () => {
+  db = window.claude ? await window.claude.use("db") : null;
+  if (!db) { pintarLista(); avisar("Esta vista no puede guardar en la carta.", "warn"); return; }
+  col = db.collection("elementos");
+  col.onSnapshot((snap) => {
+    elementos = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+    if (editando && !elementos.some((e) => e.id === editando)) editando = null;
+    pintarLista(); dibujar();
+  }, (e) => { avisar("Se ha perdido la conexión con la carta. Recarga la página.", "warn"); });
+})();
+</script>
