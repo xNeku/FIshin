@@ -49,6 +49,7 @@ var tiempo_restante: float = 0.0
 var golpes: int = 0
 var _pulsadas: Array[StringName] = []
 var _contador: float = 0.0
+var _bloqueo: float = 0.0
 
 
 func _ready() -> void:
@@ -57,6 +58,10 @@ func _ready() -> void:
 
 
 func _process(delta: float) -> void:
+	if _bloqueo > 0.0:
+		_bloqueo -= delta
+		if estado == Estado.ESPERANDO:
+			return
 	match estado:
 		Estado.ESPERANDO:
 			_contador -= delta
@@ -128,6 +133,11 @@ func en_curso() -> bool:
 
 func intensidad() -> float:
 	return clampf(float(indice) / float(maxi(1, stats.botones_intensidad_maxima)), 0.0, 1.0)
+
+
+## Durante estos segundos no pica nada (cinemáticas del mundo).
+func bloquear(segundos: float) -> void:
+	_bloqueo = maxf(_bloqueo, segundos)
 
 
 ## Alarga la pausa tras el resultado (para celebraciones).

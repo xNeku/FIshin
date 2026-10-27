@@ -8,6 +8,13 @@
 [ext_resource type="Script" path="res://scripts/pesca/celebracion.gd" id="13_celebracion"]
 [ext_resource type="Texture2D" path="res://art/personajes/naufrago_trofeo.png" id="14_trofeo"]
 [ext_resource type="AudioStream" path="res://art/sfx/fanfarria.wav" id="15_fanfarria"]
+[ext_resource type="Script" path="res://scripts/mundo/mundo.gd" id="16_mundo"]
+[ext_resource type="Script" path="res://scripts/datos/aparicion_data.gd" id="17_aparicion"]
+[ext_resource type="Resource" path="res://data/apariciones/primera_isla.tres" id="18_primera_isla"]
+[ext_resource type="Resource" path="res://data/apariciones/isla_skilltree.tres" id="19_isla_skilltree"]
+[ext_resource type="AudioStream" path="res://art/sfx/llegada_mar.wav" id="20_sfx_mar"]
+[ext_resource type="AudioStream" path="res://art/sfx/caida.wav" id="21_sfx_caida"]
+[ext_resource type="AudioStream" path="res://art/sfx/impacto.wav" id="22_sfx_impacto"]
 [ext_resource type="Script" path="res://scripts/pesca/pesca.gd" id="4_pesca"]
 [ext_resource type="Script" path="res://scripts/pesca/camara_pesca.gd" id="5_camara"]
 [ext_resource type="Script" path="res://scripts/pesca/sonido_pesca.gd" id="6_sonido"]
@@ -69,6 +76,19 @@ shader = ExtResource("10_zona")
 material = SubResource("mat_zona")
 size = Vector2(6, 6)
 
+[sub_resource type="StandardMaterial3D" id="mat_sombra"]
+transparency = 1
+shading_mode = 0
+albedo_color = Color(0, 0.02, 0.06, 0.5)
+
+[sub_resource type="CylinderMesh" id="malla_sombra"]
+material = SubResource("mat_sombra")
+top_radius = 0.5
+bottom_radius = 0.5
+height = 0.02
+radial_segments = 32
+rings = 1
+
 [node name="Main" type="Node3D"]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
@@ -92,7 +112,7 @@ mesh = SubResource("malla_zona")
 pesca = NodePath("../Pesca")
 
 [node name="BarcoComerciante" parent="." node_paths=PackedStringArray("tienda") instance=ExtResource("2_barco")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, -2.5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 2)
 tienda = NodePath("../Tienda")
 
 [node name="Camara" type="Camera3D" parent="." node_paths=PackedStringArray("pesca", "objetivo")]
@@ -157,10 +177,36 @@ volume_db = -6.0
 [node name="Latido" type="AudioStreamPlayer" parent="Sonido"]
 stream = ExtResource("sfx_latido")
 
-[node name="HUD" parent="." node_paths=PackedStringArray("pesca", "barco", "celebracion") instance=ExtResource("3_hud")]
+[node name="Mundo" type="Node3D" parent="." node_paths=PackedStringArray("pesca", "camara", "celebracion", "sombra", "sfx_mar", "sfx_caida", "sfx_impacto")]
+script = ExtResource("16_mundo")
+apariciones = Array[ExtResource("17_aparicion")]([ExtResource("18_primera_isla"), ExtResource("19_isla_skilltree")])
+pesca = NodePath("../Pesca")
+camara = NodePath("../Camara")
+celebracion = NodePath("../Celebracion")
+sombra = NodePath("SombraCaida")
+sfx_mar = NodePath("SfxMar")
+sfx_caida = NodePath("SfxCaida")
+sfx_impacto = NodePath("SfxImpacto")
+
+[node name="SombraCaida" type="MeshInstance3D" parent="Mundo"]
+visible = false
+cast_shadow = 0
+mesh = SubResource("malla_sombra")
+
+[node name="SfxMar" type="AudioStreamPlayer" parent="Mundo"]
+stream = ExtResource("20_sfx_mar")
+
+[node name="SfxCaida" type="AudioStreamPlayer" parent="Mundo"]
+stream = ExtResource("21_sfx_caida")
+
+[node name="SfxImpacto" type="AudioStreamPlayer" parent="Mundo"]
+stream = ExtResource("22_sfx_impacto")
+
+[node name="HUD" parent="." node_paths=PackedStringArray("pesca", "barco", "celebracion", "mundo") instance=ExtResource("3_hud")]
 pesca = NodePath("../Pesca")
 barco = NodePath("../BarcoComerciante")
 celebracion = NodePath("../Celebracion")
+mundo = NodePath("../Mundo")
 
 [node name="Menu" parent="." instance=ExtResource("11_menu")]
 

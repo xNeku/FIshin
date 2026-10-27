@@ -24,8 +24,8 @@ Regla: no se pasa de fase hasta que la actual sea jugable y divertida. Cada tare
 - **Hito:** bucle pescar → vender → mejorar.
 
 ## Fase 3 — Mundo y expansión
-- [ ] Cuadrícula y colocación automática
-- [ ] Hitos que hacen aparecer cosas (primer islote a 100)
+- [x] Cuadrícula y colocación (apariciones por datos desde la carta)
+- [x] Hitos que hacen aparecer cosas, con llegada por mar o caída del cielo
 - [ ] Modo movimiento, salto barca ↔ isla
 - [ ] Interacción (E) y diálogo
 - **Hito:** se nota que el mundo crece.

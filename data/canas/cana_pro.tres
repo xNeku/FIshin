@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_script")
 id = &"cana_pro"
-nombre = "Caña de profesional"
+nombre = "Sabia caña"
 descripcion = "Si se te pasa el primer botón, el pez se queda igual."
 profundidad = 3
 cadena_min = 3

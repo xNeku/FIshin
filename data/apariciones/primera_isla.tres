@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="AparicionData" format=3]
+
+[ext_resource type="Script" path="res://scripts/datos/aparicion_data.gd" id="1_script"]
+[ext_resource type="PackedScene" path="res://scenes/mundo/islas/primera_isla.tscn" id="2_escena"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"primera_isla"
+nombre = "Primera isla"
+escena = ExtResource("2_escena")
+ancla = Vector2i(0, -2)
+celdas = Array[Vector2i]([Vector2i(-1, -2), Vector2i(0, -2), Vector2i(1, -2)])
+orden = 4
+condicion = 1
+valor = 200.0
+llegada = 0
+texto_llegada = "¡Tierra a la vista!"

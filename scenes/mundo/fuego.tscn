@@ -1,0 +1,64 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/mundo/fuego.gd" id="1_script"]
+
+[sub_resource type="StandardMaterial3D" id="m_llama"]
+shading_mode = 0
+albedo_color = Color(1, 0.55, 0.12, 1)
+
+[sub_resource type="StandardMaterial3D" id="m_nucleo"]
+shading_mode = 0
+albedo_color = Color(1, 0.92, 0.5, 1)
+
+[sub_resource type="PrismMesh" id="p_llama"]
+material = SubResource("m_llama")
+size = Vector3(0.35, 0.5, 0.35)
+
+[sub_resource type="PrismMesh" id="p_nucleo"]
+material = SubResource("m_nucleo")
+size = Vector3(0.18, 0.3, 0.18)
+
+[sub_resource type="StandardMaterial3D" id="m_brasa"]
+shading_mode = 0
+albedo_color = Color(1, 0.6, 0.2, 1)
+billboard_mode = 1
+
+[sub_resource type="QuadMesh" id="q_brasa"]
+material = SubResource("m_brasa")
+size = Vector2(0.04, 0.04)
+
+[node name="Fuego" type="Node3D"]
+script = ExtResource("1_script")
+
+[node name="Llama" type="Node3D" parent="."]
+
+[node name="Exterior" type="MeshInstance3D" parent="Llama"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
+cast_shadow = 0
+mesh = SubResource("p_llama")
+
+[node name="Nucleo" type="MeshInstance3D" parent="Llama"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.17, 0.02)
+cast_shadow = 0
+mesh = SubResource("p_nucleo")
+
+[node name="Luz" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+light_color = Color(1, 0.62, 0.3, 1)
+light_energy = 2.5
+shadow_enabled = true
+omni_range = 6.0
+
+[node name="Brasas" type="CPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+emitting = false
+amount = 14
+lifetime = 1.4
+mesh = SubResource("q_brasa")
+emission_shape = 1
+emission_sphere_radius = 0.15
+direction = Vector3(0, 1, 0)
+spread = 20.0
+gravity = Vector3(0, 0.6, 0)
+initial_velocity_min = 0.3
+initial_velocity_max = 0.8

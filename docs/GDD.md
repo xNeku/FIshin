@@ -87,5 +87,12 @@ Marcas: [DECIDIDO] lo decidió el diseñador · [PROPUESTA] sugerencia de Claude
 - [ABIERTO] ¿Se genera dinero con el juego cerrado?
 
 ## 11. Progresión del mundo
+- [DECIDIDO] Todo lo que se pega al mundo llega con animación: por defecto viene navegando por el mar. Algunos especiales tienen mini cinemática épica; el diseñador lo indica en la descripción de la carta.
+- [DECIDIDO] Barco comerciante en la casilla (2,−1), tras 3 capturas.
+- [DECIDIDO] **SkillTreeMan** (forma libre de 7 casillas, x −4..−2): aparece al pescar 100 peces y **cae del cielo**. En (−4,0) hay un viejo senil de barba blanca meditando, tapado solo por un libro, con una hoguera delante y bonsáis a los lados que crecerán con el árbol. Al interactuar con él se abre el árbol de habilidades (ya no está en el menú Tab). Vende la **Sabia caña** (caña nivel 3) por 2000 ₽.
+- [DECIDIDO] **Primera isla** (3×1 en y −2, delante de la zona de pesca): bestiario (libro con todos los peces) a la izquierda y antorcha a la derecha. Llega por mar.
+- [ABIERTO] La condición de la primera isla dice "200": ¿200 ₽ ganados en total? (Implementado así de momento.)
+- [ABIERTO] En la carta el orden pone SkillTreeMan (3) antes que la primera isla (4), pero 100 peces llegan mucho después que 200 ₽. ¿Vale que lleguen en el orden en que se cumplan?
+- Nota: el antiguo "primer islote a 100 ₽" se ha sustituido por la primera isla.
 - [ABIERTO] Lista ordenada de islas y cosas que van llegando según avances. El diseñador la escribe en la **Carta de Fishin**: https://claude.ai/artifact/2oRoaePEyuUyDUYBJnK9oA (colección `elementos`).
 - Árbol de habilidades: el diseñador lo escribe en el **Árbol de Fishin**: https://claude.ai/artifact/UtP4gNUbFFwpX9SPeTcTnu (colecciones `ramas` y `nodos`).

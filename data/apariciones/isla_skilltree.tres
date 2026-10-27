@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="AparicionData" format=3]
+
+[ext_resource type="Script" path="res://scripts/datos/aparicion_data.gd" id="1_script"]
+[ext_resource type="PackedScene" path="res://scenes/mundo/islas/isla_skilltree.tscn" id="2_escena"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"isla_skilltree"
+nombre = "SkillTreeMan"
+escena = ExtResource("2_escena")
+ancla = Vector2i(-3, 0)
+celdas = Array[Vector2i]([Vector2i(-4, 1), Vector2i(-3, 1), Vector2i(-4, 0), Vector2i(-3, 0), Vector2i(-2, 0), Vector2i(-4, -1), Vector2i(-3, -1)])
+orden = 3
+condicion = 0
+valor = 100.0
+llegada = 1
+texto_llegada = "SKILLTREEMAN"

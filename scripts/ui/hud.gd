@@ -4,6 +4,7 @@ extends CanvasLayer
 @export var pesca: Pesca
 @export var barco: BarcoComerciante
 @export var celebracion: Node
+@export var mundo: Node
 @export var escena_popup: PackedScene
 @export var velocidad_contador: float = 6.0
 ## Cuánto salta de sitio el botón al tope de intensidad (píxeles).
@@ -80,6 +81,10 @@ func _ready() -> void:
 		pesca.barca_llena.connect(_on_barca_llena)
 		pesca.intensidad_cambiada.connect(func(i: float) -> void: _intensidad_objetivo = i)
 		_on_estado(pesca.estado)
+	if mundo:
+		mundo.aparicion_llegada.connect(func(a: AparicionData) -> void:
+			var t: String = a.texto_llegada if a.texto_llegada != "" else "¡Ha llegado %s!" % a.nombre
+			_popup(t, color_perfecto, Vector2(0.5, 0.22), 2.0))
 	if celebracion:
 		celebracion.empezada.connect(func(pez: PezData) -> void:
 			estado.text = "¡%s!" % pez.nombre.to_upper()

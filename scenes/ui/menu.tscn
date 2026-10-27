@@ -117,24 +117,12 @@ mouse_filter = 2
 theme_override_font_sizes/font_size = 32
 text = "Stats"
 
-[node name="Árbol" type="CenterContainer" parent="Raiz/Panel/Margen/Pestanas"]
-visible = false
-layout_mode = 2
-mouse_filter = 2
-metadata/_tab_index = 2
-
-[node name="Texto" type="Label" parent="Raiz/Panel/Margen/Pestanas/Árbol"]
-layout_mode = 2
-mouse_filter = 2
-theme_override_font_sizes/font_size = 40
-text = "Árbol de habilidades: próximamente"
-
 [node name="Opciones" type="VBoxContainer" parent="Raiz/Panel/Margen/Pestanas"]
 visible = false
 layout_mode = 2
 theme_override_constants/separation = 16
 alignment = 1
-metadata/_tab_index = 3
+metadata/_tab_index = 2
 
 [node name="Volver" type="Button" parent="Raiz/Panel/Margen/Pestanas/Opciones"]
 custom_minimum_size = Vector2(420, 80)
