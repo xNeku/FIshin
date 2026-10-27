@@ -3,16 +3,19 @@ extends CanvasLayer
 
 @export var pesca: Pesca
 @export var barco: BarcoComerciante
+@export var celebracion: Node
 @export var escena_popup: PackedScene
 @export var velocidad_contador: float = 6.0
-## Cuánto salta de sitio el botón al tope del progreso (píxeles).
+## Cuánto salta de sitio el botón al tope de intensidad (píxeles).
 @export var salto_prompt_maximo: float = 220.0
 @export var color_numeros: Color = Color("ff9a3c")
 @export var color_flechas: Color = Color("4fd6ff")
 @export var color_perfecto: Color = Color("ffd84a")
 @export var color_fallo: Color = Color("ff4a4a")
 @export var colores_rareza: Array[Color] = [Color("e8e8e8"), Color("4fa3ff"), Color("b56bff"), Color("ffb02e")]
+## Frase de cada acierto según cuántos botones llevas: la palabra i sale desde el botón umbrales_palabras[i].
 @export var palabras_acierto: Array[String] = ["Bien", "Genial", "¡Brutal!", "¡LOCURA!", "¡¡DIOS!!", "¡¡¡INHUMANO!!!"]
+@export var umbrales_palabras: Array[int] = [1, 3, 5, 8, 11, 15]
 
 const TEXTO_TECLA: Dictionary = {
 	&"pesca_1": "1", &"pesca_2": "2", &"pesca_3": "3", &"pesca_4": "4",
@@ -43,7 +46,7 @@ const NOMBRES_RAREZA: Array[String] = ["Común", "Raro", "Extraño", "Legendario
 @onready var aviso: Label = $Aviso
 
 var _rublos_mostrados: float = 0.0
-var _progreso: float = 0.0
+var _intensidad_objetivo: float = 0.0
 var _intensidad: float = 0.0
 var _destello: float = 0.0
 var _pos_prompt: Vector2
@@ -68,8 +71,13 @@ func _ready() -> void:
 		pesca.pez_capturado.connect(_on_capturado)
 		pesca.pez_escapado.connect(_on_escapado)
 		pesca.barca_llena.connect(_on_barca_llena)
-		pesca.progreso_cambiado.connect(func(p: float) -> void: _progreso = p)
+		pesca.intensidad_cambiada.connect(func(i: float) -> void: _intensidad_objetivo = i)
 		_on_estado(pesca.estado)
+	if celebracion:
+		celebracion.empezada.connect(func(pez: PezData) -> void:
+			estado.text = "¡%s!" % pez.nombre.to_upper()
+			combo.visible = false
+			_popup("¡%s!" % pez.nombre.to_upper(), colores_rareza[pez.rareza], Vector2(0.5, 0.18), 2.0))
 	if barco:
 		barco.vendido.connect(_on_vendido)
 		barco.llegado.connect(func() -> void: _popup("¡Ha llegado un comerciante!", colores_rareza[1], Vector2(0.5, 0.3), 0.8))
@@ -94,7 +102,7 @@ func _process(delta: float) -> void:
 	if p:
 		barra_tiempo.value = pesca.tiempo_restante / p.tiempo * 100.0
 
-	_intensidad = lerpf(_intensidad, _progreso, 1.0 - exp(-4.0 * dt))
+	_intensidad = lerpf(_intensidad, _intensidad_objetivo, 1.0 - exp(-4.0 * dt))
 	_destello = lerpf(_destello, 0.0, 1.0 - exp(-8.0 * dt))
 	if _mat:
 		_mat.set_shader_parameter("intensidad", _intensidad)
@@ -136,7 +144,7 @@ func _on_paso(p: Pesca.Paso, _i: int) -> void:
 		barra_machacar.value = 0
 		machacar.text = "¡MACHACA %s!" % TEXTO_TECLA.get(p.acciones[0], "?")
 	# Cuanto más dentro, más loco salta el botón por la pantalla.
-	var salto: float = salto_prompt_maximo * _progreso
+	var salto: float = salto_prompt_maximo * _intensidad_objetivo * _intensidad_objetivo
 	prompt.position = _pos_prompt + Vector2(randf_range(-salto, salto), randf_range(-salto, salto) * 0.5)
 	teclas.pivot_offset = teclas.size * 0.5
 	teclas.scale = Vector2.ONE * 1.5
@@ -149,17 +157,24 @@ func _pintar_tecla(panel: PanelContainer, accion: StringName) -> void:
 	panel.self_modulate = color_flechas if accion in Pesca.FLECHAS else color_numeros
 
 
-func _on_acierto(indice: int, total: int) -> void:
-	_destello = 0.35 + 0.4 * float(indice) / float(total)
-	combo.visible = true
+func _on_acierto(indice: int, _total: int) -> void:
+	var k: float = clampf(float(indice) / float(maxi(1, pesca.stats.botones_intensidad_maxima)), 0.0, 1.0)
+	_destello = 0.15 + 0.5 * k
+	combo.visible = indice >= 2
 	combo.text = "x%d" % indice
 	combo.pivot_offset = combo.size * 0.5
-	combo.scale = Vector2.ONE * (1.6 + float(indice) / float(total))
-	create_tween().tween_property(combo, "scale", Vector2.ONE * (1.0 + 0.5 * float(indice) / float(total)), 0.15)
-	var n: int = clampi(int(float(indice - 1) / float(total) * palabras_acierto.size()), 0, palabras_acierto.size() - 1)
-	var c: Color = color_numeros.lerp(color_perfecto, float(indice) / float(total))
-	_popup_en(palabras_acierto[n], c, prompt.position + teclas.position + teclas.size * 0.5 + Vector2(0, -120), 0.8 + 0.5 * float(indice) / float(total))
+	combo.scale = Vector2.ONE * (1.2 + k)
+	create_tween().tween_property(combo, "scale", Vector2.ONE * (0.8 + 0.6 * k), 0.15)
+	var c: Color = color_numeros.lerp(color_perfecto, k)
+	_popup_en(_palabra(indice), c, prompt.position + teclas.position + teclas.size * 0.5 + Vector2(0, -120), 0.7 + 0.7 * k)
 
+
+func _palabra(indice: int) -> String:
+	var texto: String = palabras_acierto[0] if not palabras_acierto.is_empty() else ""
+	for n in mini(palabras_acierto.size(), umbrales_palabras.size()):
+		if indice >= umbrales_palabras[n]:
+			texto = palabras_acierto[n]
+	return texto
 
 func _on_fallo() -> void:
 	_popup_en("¡FALLO!", color_fallo, prompt.position + teclas.position + teclas.size * 0.5, 1.0)
@@ -176,7 +191,8 @@ func _on_machacar_fallido(escapa: bool) -> void:
 
 func _on_capturado(c: Dictionary, pez: PezData) -> void:
 	var col: Color = colores_rareza[pez.rareza]
-	estado.text = "¡Capturado!"
+	if not (celebracion and celebracion.celebrando):
+		estado.text = "¡Capturado!"
 	resultado.visible = true
 	icono.texture = pez.icono
 	nombre.text = "%s  ·  %s" % [pez.nombre, NOMBRES_RAREZA[pez.rareza]]

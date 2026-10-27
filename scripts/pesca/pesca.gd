@@ -9,8 +9,9 @@ signal acierto(indice: int, total_perfect: int)
 signal fallo
 signal machacar_progreso(golpes: int, necesarios: int)
 signal machacar_fallido(escapa: bool)
-## 0..1 respecto a las pulsaciones del perfect del pez actual.
-signal progreso_cambiado(progreso: float)
+## 0..1 según cuántos botones llevas en esta cadena (ver StatsPesca.botones_intensidad_maxima).
+## Lo visual (zoom, shake, efectos, frases) crece con esto: con cadenas cortas apenas se nota.
+signal intensidad_cambiada(intensidad: float)
 signal pez_capturado(captura: Dictionary, pez: PezData)
 signal pez_escapado(pez: PezData)
 ## Pez capturado pero sin hueco en la barca: se suelta.
@@ -117,7 +118,7 @@ func esperar() -> void:
 	pez = null
 	_contador = randf_range(stats.espera_min, stats.espera_max) * Juego.cana().mult_espera * Juego.mult_espera_cebo()
 	_cambiar_estado(Estado.ESPERANDO)
-	progreso_cambiado.emit(0.0)
+	intensidad_cambiada.emit(0.0)
 
 
 ## True mientras hay un pez enganchado (botones en pantalla o entre botones).
@@ -125,10 +126,14 @@ func en_curso() -> bool:
 	return estado == Estado.PASO or estado == Estado.ENTRE_PASOS
 
 
-func progreso() -> float:
-	if pez == null:
-		return 0.0
-	return clampf(float(indice) / float(pez.pasos_perfect), 0.0, 1.0)
+func intensidad() -> float:
+	return clampf(float(indice) / float(maxi(1, stats.botones_intensidad_maxima)), 0.0, 1.0)
+
+
+## Alarga la pausa tras el resultado (para celebraciones).
+func retener(segundos: float) -> void:
+	if estado == Estado.RESULTADO:
+		_contador = maxf(_contador, segundos)
 
 
 func paso_actual() -> Paso:
@@ -185,7 +190,7 @@ func _generar_pasos() -> void:
 			p.acciones = [todas.pick_random()]
 			p.pulsaciones = pez.pulsaciones_machacar
 			p.tiempo = pez.tiempo_machacar * mult
-		elif i > 0 and randf() < pez.prob_doble:
+		elif i + 1 >= stats.dobles_desde_boton and randf() < pez.prob_doble:
 			p.tipo = Tipo.DOBLE
 			p.acciones = [NUMEROS.pick_random(), FLECHAS.pick_random()]
 			p.tiempo *= stats.mult_tiempo_doble
@@ -216,7 +221,7 @@ func _acertar() -> void:
 
 func _avanzar() -> void:
 	indice += 1
-	progreso_cambiado.emit(progreso())
+	intensidad_cambiada.emit(intensidad())
 	if indice >= pasos.size():
 		_capturar()
 	else:

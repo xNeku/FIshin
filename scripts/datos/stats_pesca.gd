@@ -7,8 +7,15 @@ extends Resource
 @export var factor_tiempo: float = 0.88
 @export var tiempo_minimo: float = 0.4
 @export var mult_tiempo_doble: float = 1.4
+## Las dobles solo pueden salir a partir de este botón de la cadena (1 = desde el primero).
+@export var dobles_desde_boton: int = 5
 @export var espera_min: float = 1.5
 @export var espera_max: float = 3.5
+
+@export_group("Sensación")
+## Botones seguidos que hacen falta para el máximo de zoom, shake y efectos.
+## Alto = el espectáculo se descubre poco a poco, según mejoras la caña.
+@export var botones_intensidad_maxima: int = 15
 
 @export_group("Calidad")
 ## Multiplicador de valor con 0 aciertos (1.0 con todos).

@@ -7,11 +7,11 @@ extends Node3D
 @export var balanceo_grados: float = 2.5
 @export var velocidad_balanceo: float = 1.1
 @export var flote: float = 0.04
-## Balanceo extra al tope de progreso (tensión).
+## Balanceo extra al tope de intensidad (tensión).
 @export var balanceo_tension: float = 4.0
 
 @export_group("Caña")
-## Lo que se dobla la caña al tope de progreso (grados).
+## Lo que se dobla la caña al tope de intensidad (grados).
 @export var doblez_cana: float = 25.0
 
 @export_group("Flotador")
@@ -29,7 +29,7 @@ var _pos_flotador: Vector3
 var _rot_cana: Vector3
 var _escala_prota: Vector3
 var _hundido: float = 0.0
-var _progreso: float = 0.0
+var _intensidad: float = 0.0
 
 
 func _ready() -> void:
@@ -39,22 +39,22 @@ func _ready() -> void:
 	if pesca:
 		pesca.pez_pica.connect(func(_p: PezData) -> void: _hundido = hundimiento_picada)
 		pesca.acierto.connect(func(_i: int, _n: int) -> void: _apretar())
-		pesca.progreso_cambiado.connect(func(p: float) -> void: _progreso = p)
+		pesca.intensidad_cambiada.connect(func(i: float) -> void: _intensidad = i)
 
 
 func _process(delta: float) -> void:
 	_t += delta
-	var tension: float = _progreso * balanceo_tension
+	var tension: float = _intensidad * balanceo_tension
 	rotation_degrees.z = sin(_t * velocidad_balanceo) * (balanceo_grados + tension)
 	rotation_degrees.x = sin(_t * velocidad_balanceo * 0.7) * (balanceo_grados + tension) * 0.5
 	position.y = sin(_t * velocidad_balanceo * 1.3) * flote
-	cana.rotation = _rot_cana + Vector3(deg_to_rad(doblez_cana * _progreso), 0.0, 0.0)
+	cana.rotation = _rot_cana + Vector3(deg_to_rad(doblez_cana * _intensidad), 0.0, 0.0)
 
 	var activo: bool = pesca != null and pesca.en_curso()
 	_hundido = lerpf(_hundido, 0.08 if activo else 0.0, 1.0 - exp(-3.0 * delta))
 	var temblor := Vector3.ZERO
 	if activo:
-		var amp: float = 0.02 + temblor_maximo * _progreso
+		var amp: float = 0.02 + temblor_maximo * _intensidad
 		temblor = Vector3(randf_range(-amp, amp), randf_range(-amp, amp) * 0.5, randf_range(-amp, amp))
 	flotador.global_position = _pos_flotador + Vector3(0.0, sin(_t * 2.0) * 0.03 - _hundido, 0.0) + temblor
 	_colocar_sedal()

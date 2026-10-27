@@ -13,3 +13,5 @@ espera_max = 3.5
 mult_calidad_min = 0.3
 mult_perfecto = 2.0
 penalizacion_machacar = 0.25
+dobles_desde_boton = 5
+botones_intensidad_maxima = 15
