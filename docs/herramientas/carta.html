@@ -95,11 +95,12 @@ aside { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
   <header>
     <div>
       <h1>Carta de Fishin</h1>
-      <p class="sub">La barca está en (0,0) y su agua de pesca ocupa el 3×3. Las zonas pueden tener cualquier tamaño: arrastra, o toca una esquina y luego la opuesta (un 2×3, un 5×1…). Toca algo ya colocado para editarlo.</p>
+      <p class="sub">La barca está en (0,0) y su agua de pesca ocupa el 3×3. <b>Marcar</b>: arrastra o toca dos esquinas para un rectángulo; toca algo colocado para editarlo. <b>Pintar</b>: pasa el dedo por las casillas para dar cualquier forma (una L, una isla irregular…); empezar sobre una casilla ya pintada la borra.</p>
     </div>
     <div class="tools">
       <div class="seg" role="group" aria-label="Modo">
         <button id="modo-marcar" aria-pressed="true">Marcar</button>
+        <button id="modo-pintar" aria-pressed="false">Pintar</button>
         <button id="modo-mover" aria-pressed="false">Mover</button>
       </div>
       <label class="inline" for="zoom">Zoom <input id="zoom" type="range" min="14" max="48" value="26"></label>
@@ -165,9 +166,11 @@ const MARGEN = 30;
 let R = 25, CELDA = 26, modo = "marcar";
 let elementos = [];            // [{id, ...datos}]
 let editando = null;           // id del elemento en la ficha, o null
-let sel = null;                // {x, y, w, h} selección actual
-let arrastre = null;           // celda donde empezó el gesto
+let forma = null;              // Set de "x,y": la forma de la zona de la ficha
+let arrastre = null;           // celda donde empezó el gesto en Marcar
 let ancla = null;              // primera esquina tras un toque suelto; el siguiente toque cierra el rectángulo
+let pincel = null;             // {borrando, ultima} mientras se pinta
+let cajaPrev = null;           // caja de la forma antes de editar x/y a mano
 let db = null, col = null;
 let confirmarBorrar = false;
 
@@ -175,6 +178,8 @@ function tok(n) { return getComputedStyle(document.documentElement).getPropertyV
 function colorTipo(t) { return tok("--t-" + (TIPOS.some(([k]) => k === t) ? t : "otro")); }
 
 // Celdas: x crece a la derecha, y crece hacia arriba.
+const clave = (x, y) => x + "," + y;
+const deClave = (k) => k.split(",").map(Number);
 function aPantalla(x, y) { return [MARGEN + (x + R) * CELDA, MARGEN + (R - y) * CELDA]; }
 function aCelda(px, py) {
   const x = Math.floor((px - MARGEN) / CELDA) - R;
@@ -185,6 +190,22 @@ function rectDe(a, b) {
   const x = Math.min(a[0], b[0]), y = Math.min(a[1], b[1]);
   return { x, y, w: Math.abs(a[0] - b[0]) + 1, h: Math.abs(a[1] - b[1]) + 1 };
 }
+function setDeRect(r) {
+  const s = new Set();
+  for (let x = r.x; x < r.x + r.w; x++) for (let y = r.y; y < r.y + r.h; y++) s.add(clave(x, y));
+  return s;
+}
+// Las zonas antiguas solo tienen x, y, w, h; las nuevas guardan sus celdas.
+function setDe(e) {
+  if (Array.isArray(e.celdas) && e.celdas.length) return new Set(e.celdas.map(([x, y]) => clave(x, y)));
+  return setDeRect(e);
+}
+function caja(set) {
+  let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
+  for (const k of set) { const [x, y] = deClave(k); x0 = Math.min(x0, x); y0 = Math.min(y0, y); x1 = Math.max(x1, x); y1 = Math.max(y1, y); }
+  return { x: x0, y: y0, w: x1 - x0 + 1, h: y1 - y0 + 1 };
+}
+const esRect = (set) => { const c = caja(set); return set.size === c.w * c.h; };
 
 function tamano() {
   const lado = (2 * R + 1) * CELDA + MARGEN * 2;
@@ -194,19 +215,26 @@ function tamano() {
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 }
 
-function dibujarRect(r, relleno, borde, ancho, dash) {
-  const [px, py] = aPantalla(r.x, r.y + r.h - 1);
-  ctx.fillStyle = relleno; ctx.fillRect(px, py, r.w * CELDA, r.h * CELDA);
-  ctx.setLineDash(dash || []); ctx.lineWidth = ancho; ctx.strokeStyle = borde;
-  ctx.strokeRect(px + ancho / 2, py + ancho / 2, r.w * CELDA - ancho, r.h * CELDA - ancho);
-  ctx.setLineDash([]);
-  return [px, py];
-}
-
 function conAlfa(hex, a) {
   const m = hex.replace("#", "");
   const n = parseInt(m.length === 3 ? m.split("").map((c) => c + c).join("") : m, 16);
   return `rgba(${(n >> 16) & 255}, ${(n >> 8) & 255}, ${n & 255}, ${a})`;
+}
+
+// Rellena cada casilla y traza solo el contorno exterior de la forma.
+function dibujarForma(set, relleno, borde, ancho, dash) {
+  ctx.fillStyle = relleno;
+  for (const k of set) { const [x, y] = deClave(k); const [px, py] = aPantalla(x, y); ctx.fillRect(px, py, CELDA, CELDA); }
+  ctx.strokeStyle = borde; ctx.lineWidth = ancho; ctx.setLineDash(dash || []); ctx.lineCap = "square";
+  ctx.beginPath();
+  for (const k of set) {
+    const [x, y] = deClave(k); const [px, py] = aPantalla(x, y);
+    if (!set.has(clave(x, y + 1))) { ctx.moveTo(px, py); ctx.lineTo(px + CELDA, py); }
+    if (!set.has(clave(x, y - 1))) { ctx.moveTo(px, py + CELDA); ctx.lineTo(px + CELDA, py + CELDA); }
+    if (!set.has(clave(x - 1, y))) { ctx.moveTo(px, py); ctx.lineTo(px, py + CELDA); }
+    if (!set.has(clave(x + 1, y))) { ctx.moveTo(px + CELDA, py); ctx.lineTo(px + CELDA, py + CELDA); }
+  }
+  ctx.stroke(); ctx.setLineDash([]);
 }
 
 function dibujar() {
@@ -215,8 +243,8 @@ function dibujar() {
   ctx.fillStyle = tok("--paper"); ctx.fillRect(0, 0, lado + MARGEN * 2, lado + MARGEN * 2);
   ctx.fillStyle = tok("--sea"); ctx.fillRect(MARGEN, MARGEN, lado, lado);
 
-  // Zona de pesca 3x3 y barca, fijas.
-  dibujarRect({ x: -1, y: -1, w: 3, h: 3 }, tok("--sea-zone"), tok("--t-agua"), 2, [5, 4]);
+  // Zona de pesca 3x3, fija.
+  dibujarForma(setDeRect({ x: -1, y: -1, w: 3, h: 3 }), tok("--sea-zone"), tok("--t-agua"), 2, [5, 4]);
 
   // Rejilla
   for (let i = 0; i <= 2 * R + 1; i++) {
@@ -240,20 +268,14 @@ function dibujar() {
     ctx.fillText(v, MARGEN * 1.5 + lado, py + CELDA / 2);
   }
 
-  // Elementos
-  const ordenados = [...elementos].sort((a, b) => (a.w * a.h < b.w * b.h ? 1 : -1));
-  for (const e of ordenados) {
+  // Elementos (los grandes debajo)
+  const conSets = elementos.map((e) => [e, setDe(e)]).sort((a, b) => b[1].size - a[1].size);
+  for (const [e, set] of conSets) {
     const c = colorTipo(e.tipo);
     const marcado = e.id === editando;
-    const [px, py] = dibujarRect(e, conAlfa(c, marcado ? 0.55 : 0.38), c, marcado ? 3 : 2, e.estado === "abierto" ? [4, 3] : null);
-    ctx.save();
-    ctx.beginPath(); ctx.rect(px, py, e.w * CELDA, e.h * CELDA); ctx.clip();
-    ctx.fillStyle = tok("--ink"); ctx.textAlign = "left"; ctx.textBaseline = "top";
-    const fs = Math.max(10, Math.min(14, CELDA * 0.5));
-    ctx.font = `700 ${fs}px ${tok("--f-body")}`;
-    const etiqueta = (e.orden ? e.orden + ". " : "") + (e.nombre || "Sin nombre");
-    ctx.fillText(etiqueta, px + 4, py + 3);
-    ctx.restore();
+    if (marcado && forma) continue; // se dibuja abajo con la forma en edición
+    dibujarForma(set, conAlfa(c, marcado ? 0.55 : 0.38), c, marcado ? 3 : 2, e.estado === "abierto" ? [4, 3] : null);
+    etiqueta(e, set);
   }
 
   // Barca en (0,0)
@@ -267,54 +289,89 @@ function dibujar() {
   ctx.closePath(); ctx.fill();
   ctx.fillStyle = "#1e1a18"; ctx.fillRect(bx + CELDA * 0.46, by + CELDA * 0.18, CELDA * 0.08, CELDA * 0.28);
 
-  if (sel) dibujarRect(sel, conAlfa(tok("--accent"), 0.18), tok("--accent"), 2, [6, 4]);
+  if (forma && forma.size) {
+    const c = colorTipo($("f-tipo").value);
+    dibujarForma(forma, conAlfa(c, 0.5), tok("--accent"), 2.5, [6, 4]);
+  }
 }
 
-function solapes(r, ignorar) {
-  return elementos.filter((e) => e.id !== ignorar &&
-    r.x < e.x + e.w && e.x < r.x + r.w && r.y < e.y + e.h && e.y < r.y + r.h).map((e) => e.nombre);
+// Nombre en la casilla de arriba a la izquierda, recortado a la forma.
+function etiqueta(e, set) {
+  let mejor = null;
+  for (const k of set) { const [x, y] = deClave(k); if (!mejor || y > mejor[1] || (y === mejor[1] && x < mejor[0])) mejor = [x, y]; }
+  if (!mejor) return;
+  ctx.save();
+  ctx.beginPath();
+  for (const k of set) { const [x, y] = deClave(k); const [px, py] = aPantalla(x, y); ctx.rect(px, py, CELDA, CELDA); }
+  ctx.clip();
+  const [px, py] = aPantalla(mejor[0], mejor[1]);
+  ctx.fillStyle = tok("--ink"); ctx.textAlign = "left"; ctx.textBaseline = "top";
+  ctx.font = `700 ${Math.max(10, Math.min(14, CELDA * 0.5))}px ${tok("--f-body")}`;
+  ctx.fillText((e.orden ? e.orden + ". " : "") + (e.nombre || "Sin nombre"), px + 4, py + 3);
+  ctx.restore();
+}
+
+function solapes(set, ignorar) {
+  return elementos.filter((e) => e.id !== ignorar && [...setDe(e)].some((k) => set.has(k))).map((e) => e.nombre);
 }
 
 // --- Ficha ---
 function leerFicha() {
   return {
     nombre: $("f-nombre").value.trim(), tipo: $("f-tipo").value, estado: $("f-estado").value,
-    x: parseInt($("f-x").value, 10) || 0, y: parseInt($("f-y").value, 10) || 0,
-    w: Math.max(1, parseInt($("f-w").value, 10) || 1), h: Math.max(1, parseInt($("f-h").value, 10) || 1),
     orden: parseInt($("f-orden").value, 10) || null,
     condicion: $("f-cond").value.trim(), descripcion: $("f-desc").value.trim(),
   };
 }
-function ponerCoords(r) { $("f-x").value = r.x; $("f-y").value = r.y; $("f-w").value = r.w; $("f-h").value = r.h; }
-function avisar(txt, tipo) { const n = $("f-aviso"); n.textContent = txt || ""; n.className = "note" + (tipo ? " " + tipo : ""); }
-function comprobarSolapes() {
-  const d = leerFicha();
-  const s = solapes(d, editando);
-  if (d.x <= 1 && d.x + d.w - 1 >= -1 && d.y <= 1 && d.y + d.h - 1 >= -1) avisar("Pisa el agua de pesca 3×3 de la barca, que está siempre despejada.", "warn");
-  else if (s.length) avisar("Se solapa con: " + s.join(", "), "warn");
-  else avisar(d.w + "×" + d.h + " casillas, desde (" + d.x + ", " + d.y + ").");
+function ponerCoords() {
+  if (!forma || !forma.size) { ["f-x", "f-y", "f-w", "f-h"].forEach((id) => $(id).value = ""); cajaPrev = null; return; }
+  const c = caja(forma);
+  $("f-x").value = c.x; $("f-y").value = c.y; $("f-w").value = c.w; $("f-h").value = c.h;
+  cajaPrev = c;
 }
+function avisar(txt, tipo) { const n = $("f-aviso"); n.textContent = txt || ""; n.className = "note" + (tipo ? " " + tipo : ""); }
+function describirForma(set) {
+  const c = caja(set);
+  return esRect(set) ? `${c.w}×${c.h} casillas, desde (${c.x}, ${c.y})` : `Forma libre de ${set.size} casillas (caja ${c.w}×${c.h} desde (${c.x}, ${c.y}))`;
+}
+function comprobarSolapes() {
+  if (!forma || !forma.size) { avisar(""); return; }
+  const agua = [...setDeRect({ x: -1, y: -1, w: 3, h: 3 })].some((k) => forma.has(k));
+  const s = solapes(forma, editando);
+  if (agua) avisar("Pisa el agua de pesca 3×3 de la barca, que está siempre despejada.", "warn");
+  else if (s.length) avisar("Se solapa con: " + s.join(", "), "warn");
+  else avisar(describirForma(forma) + ".");
+}
+function ponerForma(set) { forma = set; ponerCoords(); comprobarSolapes(); dibujar(); }
 
-function nuevaFicha(r) {
+function nuevaFicha(set) {
   editando = null; confirmarBorrar = false;
   $("ficha").reset();
   $("ficha-eyebrow").textContent = "Nueva zona";
-  $("ficha-titulo").textContent = r ? "Describe esta zona" : "Marca una zona en la carta";
+  $("ficha-titulo").textContent = set ? "Describe esta zona" : "Marca o pinta una zona en la carta";
   $("b-borrar").hidden = true;
-  const siguiente = elementos.reduce((m, e) => Math.max(m, e.orden || 0), 0) + 1;
-  $("f-orden").value = siguiente;
-  if (r) { ponerCoords(r); comprobarSolapes(); } else avisar("");
-  pintarLista(); dibujar();
+  $("f-orden").value = elementos.reduce((m, e) => Math.max(m, e.orden || 0), 0) + 1;
+  ponerForma(set);
+  pintarLista();
 }
 
 function editar(e) {
-  editando = e.id; confirmarBorrar = false; sel = null;
+  editando = e.id; confirmarBorrar = false; ancla = null;
   $("ficha-eyebrow").textContent = "Editando";
   $("ficha-titulo").textContent = e.nombre || "Sin nombre";
   $("f-nombre").value = e.nombre || ""; $("f-tipo").value = e.tipo || "otro"; $("f-estado").value = e.estado || "decidido";
-  ponerCoords(e); $("f-orden").value = e.orden || ""; $("f-cond").value = e.condicion || ""; $("f-desc").value = e.descripcion || "";
+  $("f-orden").value = e.orden || ""; $("f-cond").value = e.condicion || ""; $("f-desc").value = e.descripcion || "";
   $("b-borrar").hidden = false; $("b-borrar").textContent = "Borrar";
-  comprobarSolapes(); pintarLista(); dibujar();
+  ponerForma(setDe(e));
+  pintarLista();
+}
+
+// Aplica una forma nueva a la ficha sin perder lo ya escrito.
+function aplicarForma(set, msg) {
+  if (editando || $("f-nombre").value.trim()) {
+    ponerForma(set);
+    if (msg) avisar(msg, "ok");
+  } else nuevaFicha(set);
 }
 
 function pintarLista() {
@@ -322,7 +379,7 @@ function pintarLista() {
   l.replaceChildren();
   if (!elementos.length) {
     const p = document.createElement("p"); p.className = "note";
-    p.textContent = db ? "Aún no hay nada en la carta. Marca una zona y guárdala para empezar." : "Esta vista no puede leer la carta guardada.";
+    p.textContent = db ? "Aún no hay nada en la carta. Marca o pinta una zona y guárdala para empezar." : "Esta vista no puede leer la carta guardada.";
     l.append(p); return;
   }
   const orden = [...elementos].sort((a, b) => ((a.orden || 1e9) - (b.orden || 1e9)) || (a.nombre || "").localeCompare(b.nombre || ""));
@@ -334,17 +391,18 @@ function pintarLista() {
     const t = document.createElement("span");
     const n = document.createElement("b"); n.textContent = e.nombre || "Sin nombre";
     const s1 = document.createElement("small");
-    s1.textContent = `${(TIPOS.find(([k]) => k === e.tipo) || ["", "Otro"])[1]} · ${e.w}×${e.h} en (${e.x}, ${e.y})`;
+    s1.textContent = `${(TIPOS.find(([k]) => k === e.tipo) || ["", "Otro"])[1]} · ${describirForma(setDe(e))}`;
     const s2 = document.createElement("small"); s2.textContent = e.condicion ? "Aparece: " + e.condicion : "Sin condición de aparición";
     const es = document.createElement("small"); es.className = "estado"; es.textContent = ESTADOS[e.estado] || "Decidido";
     t.append(n, s1, s2, es); b.append(badge, t);
-    b.addEventListener("click", () => { editar(e); centrar(e); });
+    b.addEventListener("click", () => { editar(e); centrar(setDe(e)); });
     l.append(b);
   }
 }
 
-function centrar(e) {
-  const [px, py] = aPantalla(e.x + e.w / 2, e.y + e.h / 2);
+function centrar(set) {
+  const c = caja(set);
+  const [px, py] = aPantalla(c.x + c.w / 2, c.y + c.h / 2);
   chart.scrollTo({ left: px - chart.clientWidth / 2, top: py - chart.clientHeight / 2, behavior: "smooth" });
 }
 
@@ -353,40 +411,50 @@ function celdaEvento(ev) {
   const r = cv.getBoundingClientRect();
   return aCelda(ev.clientX - r.left, ev.clientY - r.top);
 }
+function tocarConPincel(c) {
+  const k = clave(c[0], c[1]);
+  if (pincel.ultima === k) return;
+  pincel.ultima = k;
+  if (pincel.borrando) forma.delete(k); else forma.add(k);
+  dibujar();
+}
 cv.addEventListener("pointermove", (ev) => {
   const c = celdaEvento(ev);
   $("coord").textContent = `x ${c[0]}, y ${c[1]}`;
-  if (arrastre && modo === "marcar") { sel = rectDe(arrastre, c); dibujar(); }
+  if (arrastre && modo === "marcar") { forma = setDeRect(rectDe(arrastre, c)); dibujar(); }
+  if (pincel && modo === "pintar") tocarConPincel(c);
 });
 cv.addEventListener("pointerdown", (ev) => {
-  if (modo !== "marcar") return;
+  if (modo === "mover") return;
   cv.setPointerCapture(ev.pointerId);
-  arrastre = celdaEvento(ev); sel = rectDe(arrastre, arrastre); dibujar();
+  const c = celdaEvento(ev);
+  if (modo === "marcar") { arrastre = c; return; }
+  // Pintar: si no hay forma en la ficha, empieza una zona nueva.
+  if (!forma) { if (!editando && !$("f-nombre").value.trim()) nuevaFicha(new Set()); else forma = new Set(); }
+  pincel = { borrando: forma.has(clave(c[0], c[1])), ultima: null };
+  tocarConPincel(c);
 });
 cv.addEventListener("pointerup", (ev) => {
+  if (modo === "pintar" && pincel) {
+    pincel = null;
+    if (!forma.size) { ponerForma(null); avisar("La forma se ha quedado vacía. Pinta alguna casilla."); return; }
+    ponerCoords(); comprobarSolapes(); return;
+  }
   if (!arrastre || modo !== "marcar") return;
   const fin = celdaEvento(ev);
   const r = rectDe(arrastre, fin); arrastre = null;
-  if (r.w > 1 || r.h > 1) { ancla = null; aplicarSeleccion(r); return; }
-  // Toque suelto: o cierra el rectángulo empezado, o edita lo tocado, o empieza uno nuevo.
+  if (r.w > 1 || r.h > 1) { ancla = null; aplicarForma(setDeRect(r), editando ? "Nueva forma: guarda para aplicarla." : null); return; }
+  // Toque suelto: cierra el rectángulo empezado, edita lo tocado o empieza uno nuevo.
   if (ancla && (ancla[0] !== fin[0] || ancla[1] !== fin[1])) {
-    const r2 = rectDe(ancla, fin); ancla = null; aplicarSeleccion(r2); return;
+    const r2 = rectDe(ancla, fin); ancla = null; aplicarForma(setDeRect(r2), editando ? "Nueva forma: guarda para aplicarla." : null); return;
   }
-  const toc = [...elementos].sort((a, b) => a.w * a.h - b.w * b.h)
-    .find((e) => r.x >= e.x && r.x < e.x + e.w && r.y >= e.y && r.y < e.y + e.h);
-  if (toc && !ancla) { editar(toc); return; }
+  const k = clave(fin[0], fin[1]);
+  const toc = elementos.map((e) => [e, setDe(e)]).filter(([, s]) => s.has(k)).sort((a, b) => a[1].size - b[1].size)[0];
+  if (toc && !ancla) { editar(toc[0]); return; }
   ancla = fin;
-  aplicarSeleccion(r);
-  avisar("Esquina marcada en (" + fin[0] + ", " + fin[1] + "). Toca la esquina opuesta para hacerla más grande, o guárdala así.", "ok");
+  aplicarForma(setDeRect(r));
+  avisar("Esquina marcada en (" + fin[0] + ", " + fin[1] + "). Toca la esquina opuesta para un rectángulo, o cambia a Pintar para darle otra forma.", "ok");
 });
-
-function aplicarSeleccion(r) {
-  sel = r;
-  if (editando || $("f-nombre").value.trim()) {
-    ponerCoords(r); comprobarSolapes(); dibujar();
-    if (editando) avisar("Nueva posición para " + ($("f-nombre").value || "esta zona") + ": " + r.w + "×" + r.h + ". Guarda para moverla.", "ok");
-  } else nuevaFicha(r);
-}
 
 // Panear arrastrando en modo Mover (ratón); en táctil el scroll nativo ya mueve.
 let pan = null;
@@ -395,12 +463,13 @@ window.addEventListener("pointermove", (ev) => { if (pan) { chart.scrollLeft = p
 window.addEventListener("pointerup", () => { pan = null; });
 
 function ponerModo(m) {
-  modo = m;
-  $("modo-marcar").setAttribute("aria-pressed", m === "marcar");
-  $("modo-mover").setAttribute("aria-pressed", m === "mover");
+  modo = m; ancla = null; arrastre = null; pincel = null;
+  for (const n of ["marcar", "pintar", "mover"]) $("modo-" + n).setAttribute("aria-pressed", m === n);
   chart.classList.toggle("pan", m === "mover");
+  if (m === "pintar") avisar(forma && forma.size ? "Pinta para añadir casillas; empieza sobre una pintada para borrar." : "Pasa el dedo por las casillas para dibujar la forma.", "ok");
 }
 $("modo-marcar").onclick = () => ponerModo("marcar");
+$("modo-pintar").onclick = () => ponerModo("pintar");
 $("modo-mover").onclick = () => ponerModo("mover");
 
 function reescalar(nuevoR, nuevaCelda) {
@@ -413,19 +482,28 @@ function reescalar(nuevoR, nuevaCelda) {
 $("zoom").addEventListener("input", (e) => reescalar(R, parseInt(e.target.value, 10)));
 $("radio").addEventListener("change", (e) => reescalar(parseInt(e.target.value, 10), CELDA));
 
-["f-x", "f-y", "f-w", "f-h"].forEach((id) => $(id).addEventListener("input", () => {
-  const d = leerFicha(); sel = { x: d.x, y: d.y, w: d.w, h: d.h }; comprobarSolapes(); dibujar();
+// x/y mueven la forma tal cual; ancho/alto la convierten en rectángulo.
+function numero(id, def) { const v = parseInt($(id).value, 10); return Number.isFinite(v) ? v : def; }
+["f-x", "f-y"].forEach((id) => $(id).addEventListener("input", () => {
+  if (!forma || !forma.size || !cajaPrev) return;
+  const dx = numero("f-x", cajaPrev.x) - cajaPrev.x, dy = numero("f-y", cajaPrev.y) - cajaPrev.y;
+  forma = new Set([...forma].map((k) => { const [x, y] = deClave(k); return clave(x + dx, y + dy); }));
+  cajaPrev = caja(forma); comprobarSolapes(); dibujar();
 }));
-$("b-nuevo").onclick = () => { sel = null; ancla = null; nuevaFicha(null); };
+["f-w", "f-h"].forEach((id) => $(id).addEventListener("input", () => {
+  const r = { x: numero("f-x", 0), y: numero("f-y", 3), w: Math.max(1, numero("f-w", 1)), h: Math.max(1, numero("f-h", 1)) };
+  forma = setDeRect(r); cajaPrev = caja(forma); comprobarSolapes(); dibujar();
+}));
+$("f-tipo").addEventListener("change", dibujar);
+$("b-nuevo").onclick = () => { ancla = null; nuevaFicha(null); };
 
 const TAMANOS = [[1, 1], [2, 2], [2, 3], [3, 2], [3, 3], [4, 4]];
 $("presets").replaceChildren(...TAMANOS.map(([w, h]) => {
   const b = document.createElement("button"); b.type = "button"; b.textContent = w + "×" + h;
-  b.title = "Ancho " + w + ", alto " + h;
+  b.title = "Rectángulo de ancho " + w + " y alto " + h;
   b.onclick = () => {
-    $("f-w").value = w; $("f-h").value = h;
-    if ($("f-x").value === "") { $("f-x").value = 0; $("f-y").value = 3; }
-    $("f-w").dispatchEvent(new Event("input"));
+    const base = forma && forma.size ? caja(forma) : { x: 0, y: 3 };
+    aplicarForma(setDeRect({ x: base.x, y: base.y, w, h }));
   };
   return b;
 }));
@@ -435,12 +513,14 @@ $("ficha").addEventListener("submit", async (ev) => {
   if (!col) { avisar("Esta vista no puede guardar. Ábrela desde tu cuenta.", "warn"); return; }
   const d = leerFicha();
   if (!d.nombre) { avisar("Ponle un nombre antes de guardar.", "warn"); $("f-nombre").focus(); return; }
+  if (!forma || !forma.size) { avisar("Marca o pinta la zona en la carta antes de guardar.", "warn"); return; }
+  Object.assign(d, caja(forma));
+  d.celdas = [...forma].map(deClave).sort((a, b) => b[1] - a[1] || a[0] - b[0]);
   d.actualizado = new Date().toISOString();
   $("b-guardar").disabled = true;
   try {
     if (editando) await col.doc(editando).set(d);
     else { const ref = await col.add(d); editando = ref.id; }
-    sel = null;
     avisar("Guardado.", "ok");
     $("ficha-eyebrow").textContent = "Editando"; $("ficha-titulo").textContent = d.nombre; $("b-borrar").hidden = false;
   } catch (e) {
@@ -451,7 +531,7 @@ $("ficha").addEventListener("submit", async (ev) => {
 $("b-borrar").addEventListener("click", async () => {
   if (!editando || !col) return;
   if (!confirmarBorrar) { confirmarBorrar = true; $("b-borrar").textContent = "Pulsa otra vez para borrar"; return; }
-  try { await col.doc(editando).delete(); sel = null; nuevaFicha(null); }
+  try { await col.doc(editando).delete(); nuevaFicha(null); }
   catch (e) { avisar("No se ha podido borrar (" + (e && e.code || "error") + ").", "warn"); }
 });
 
@@ -461,7 +541,7 @@ $("legend").replaceChildren(...TIPOS.map(([k, n]) => {
   const s = document.createElement("span"); const i = document.createElement("i"); i.style.background = colorTipo(k);
   s.append(i, n); return s;
 }));
-tamano(); dibujar(); nuevaFicha(null);
+tamano(); nuevaFicha(null);
 requestAnimationFrame(() => { const [px, py] = aPantalla(0, 0); chart.scrollLeft = px - chart.clientWidth / 2; chart.scrollTop = py - chart.clientHeight / 2; });
 
 const repintarTema = () => { dibujar(); pintarLista();
@@ -478,6 +558,6 @@ document.fonts && document.fonts.ready.then(dibujar);
     elementos = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
     if (editando && !elementos.some((e) => e.id === editando)) editando = null;
     pintarLista(); dibujar();
-  }, (e) => { avisar("Se ha perdido la conexión con la carta. Recarga la página.", "warn"); });
+  }, () => { avisar("Se ha perdido la conexión con la carta. Recarga la página.", "warn"); });
 })();
 </script>
