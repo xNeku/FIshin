@@ -29,7 +29,7 @@ Fase 2 hecha: bucle pescar → vender → mejorar. Cañas por profundidad, cebo,
 
 ## Decisiones recientes
 - 2.5D, Forward+, juego de PC. Moneda: rublos (₽). Fuente DejaVu Sans Bold (tiene ₽ y flechas).
-- La intensidad visual va por botones seguidos (no por % del pez). Las dobles salen desde el 5º botón.
+- La intensidad visual va por botones seguidos (no por % del pez); el máximo llega con combos de 50 (final de juego). Las dobles salen desde el 5º botón.
 - Largo de cadena aleatorio por picada (CanaData.tirar_largo_cadena), sesgado a corto.
 - Machacar fallido: los extraños y legendarios se escapan, los demás pierden valor.
 - Niebla desactivada (en Compatibility lo dejaba todo gris).

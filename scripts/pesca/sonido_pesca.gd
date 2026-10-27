@@ -4,7 +4,7 @@ extends Node
 @export var pesca: Pesca
 @export var subida_tono_por_acierto: float = 0.06
 ## El latido no suena hasta llegar a esta intensidad: se descubre con cadenas largas.
-@export var latido_desde: float = 0.25
+@export var latido_desde: float = 0.2
 @export var latido_volumen_min_db: float = -30.0
 @export var latido_volumen_max_db: float = 0.0
 @export var latido_tono_min: float = 0.8

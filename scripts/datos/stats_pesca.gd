@@ -14,8 +14,8 @@ extends Resource
 
 @export_group("Sensación")
 ## Botones seguidos que hacen falta para el máximo de zoom, shake y efectos.
-## Alto = el espectáculo se descubre poco a poco, según mejoras la caña.
-@export var botones_intensidad_maxima: int = 15
+## Pensado para los combos de final de juego (~50): al principio todo es muy ligero.
+@export var botones_intensidad_maxima: int = 50
 
 @export_group("Calidad")
 ## Multiplicador de valor con 0 aciertos (1.0 con todos).

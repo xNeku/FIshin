@@ -15,7 +15,14 @@ extends CanvasLayer
 @export var colores_rareza: Array[Color] = [Color("e8e8e8"), Color("4fa3ff"), Color("b56bff"), Color("ffb02e")]
 ## Frase de cada acierto según cuántos botones llevas: la palabra i sale desde el botón umbrales_palabras[i].
 @export var palabras_acierto: Array[String] = ["Bien", "Genial", "¡Brutal!", "¡LOCURA!", "¡¡DIOS!!", "¡¡¡INHUMANO!!!"]
-@export var umbrales_palabras: Array[int] = [1, 3, 5, 8, 11, 15]
+@export var umbrales_palabras: Array[int] = [1, 5, 10, 20, 35, 50]
+
+@export_group("Destellos de pantalla (0..1)")
+@export var destello_picada: float = 0.15
+@export var destello_acierto_min: float = 0.05
+@export var destello_acierto_max: float = 0.6
+@export var destello_captura: float = 0.2
+@export var destello_perfecto: float = 0.5
 
 const TEXTO_TECLA: Dictionary = {
 	&"pesca_1": "1", &"pesca_2": "2", &"pesca_3": "3", &"pesca_4": "4",
@@ -124,8 +131,8 @@ func _on_estado(e: Pesca.Estado) -> void:
 func _on_pica(_pez: PezData) -> void:
 	estado.text = "¡¡HA PICADO!!"
 	resultado.visible = false
-	_destello = 0.5
-	_popup("¡PICA!", Color.WHITE, Vector2(0.5, 0.35), 1.3)
+	_destello = destello_picada
+	_popup("¡PICA!", Color.WHITE, Vector2(0.5, 0.35), 1.0)
 
 
 func _on_paso(p: Pesca.Paso, _i: int) -> void:
@@ -159,7 +166,7 @@ func _pintar_tecla(panel: PanelContainer, accion: StringName) -> void:
 
 func _on_acierto(indice: int, _total: int) -> void:
 	var k: float = clampf(float(indice) / float(maxi(1, pesca.stats.botones_intensidad_maxima)), 0.0, 1.0)
-	_destello = 0.15 + 0.5 * k
+	_destello = lerpf(destello_acierto_min, destello_acierto_max, k)
 	combo.visible = indice >= 2
 	combo.text = "x%d" % indice
 	combo.pivot_offset = combo.size * 0.5
@@ -182,7 +189,7 @@ func _on_fallo() -> void:
 
 func _on_machacar_progreso(golpes: int, _necesarios: int) -> void:
 	barra_machacar.value = golpes
-	_destello = maxf(_destello, 0.15)
+	_destello = maxf(_destello, destello_acierto_min)
 
 
 func _on_machacar_fallido(escapa: bool) -> void:
@@ -198,11 +205,11 @@ func _on_capturado(c: Dictionary, pez: PezData) -> void:
 	nombre.text = "%s  ·  %s" % [pez.nombre, NOMBRES_RAREZA[pez.rareza]]
 	nombre.modulate = col
 	detalle.text = "%s  ·  %s  ·  %s" % [Formato.calidad(c.calidad, c.perfecto), Formato.peso(c.peso), Formato.dinero(c.valor)]
-	_destello = 1.0 if c.perfecto else 0.6
+	_destello = destello_perfecto if c.perfecto else destello_captura
 	if c.perfecto:
-		_popup("¡¡PERFECTO!!", color_perfecto, Vector2(0.5, 0.4), 2.0)
+		_popup("¡¡PERFECTO!!", color_perfecto, Vector2(0.5, 0.4), 1.5)
 	else:
-		_popup(Formato.calidad(c.calidad, false), col, Vector2(0.5, 0.4), 1.3)
+		_popup(Formato.calidad(c.calidad, false), col, Vector2(0.5, 0.4), 1.0)
 
 
 func _on_escapado(pez: PezData) -> void:

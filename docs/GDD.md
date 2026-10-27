@@ -42,7 +42,8 @@ Marcas: [DECIDIDO] lo decidió el diseñador · [PROPUESTA] sugerencia de Claude
 - [PROPUESTA] Implementado: viñeta, aberración cromática, latido que acelera, tono de acierto que sube, el botón salta por la pantalla cuanto más dentro estás, y un congelado breve al capturar.
 - [PROPUESTA] Si la caña tiene menos límite que los pasos del pez, no llegas al perfect (gancho para mejorar la caña).
 - [DECIDIDO] El espectáculo (shake, zoom, efectos, frases) se descubre poco a poco según avanzas; al principio es suave.
-- [PROPUESTA] Va por botones seguidos en la cadena: el máximo llega a los 15 (`StatsPesca.botones_intensidad_maxima`). Las frases suben por umbrales (1, 3, 5, 8, 11, 15) y el latido no suena hasta el 25 % de intensidad. Como la cadena depende de la caña, el espectáculo crece al mejorarla.
+- [DECIDIDO] La escala es de juego entero: al final habrá combos de ~50 botones y ahí es donde se tiene que notar la locura. Al principio, muy ligero.
+- [PROPUESTA] Va por botones seguidos: el máximo llega a los 50 (`StatsPesca.botones_intensidad_maxima`). Las frases suben en 1, 5, 10, 20, 35 y 50. El latido empieza hacia los 10 botones.
 - [DECIDIDO] Las dobles tardan en salir. [PROPUESTA] Solo desde el 5º botón de la cadena (`dobles_desde_boton`).
 - [DECIDIDO] Celebración al sacar algo muy tocho: el náufrago levanta el pez con las manos, luz encima, primer plano y musiquilla (estilo Zelda).
 - [PROPUESTA] Se celebra lo extraño o legendario, o cualquier pez de 15 kg o más (nodo `Celebracion` en main.tscn).

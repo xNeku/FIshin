@@ -15,15 +15,15 @@ extends Camera3D
 @export var suavizado: float = 5.0
 ## Golpe de fov en cada acierto al máximo de intensidad (grados). Con poca intensidad es menor.
 @export var patada_fov: float = 2.5
-@export var patada_fov_minima: float = 0.6
+@export var patada_fov_minima: float = 0.3
 
 @export_group("Shake")
 @export var shake_base: float = 0.0
 @export var shake_maximo: float = 0.08
-@export var golpe_picada: float = 0.12
-@export var golpe_acierto: float = 0.05
-@export var golpe_fallo: float = 0.3
-@export var golpe_captura: float = 0.4
+@export var golpe_picada: float = 0.05
+@export var golpe_acierto: float = 0.03
+@export var golpe_fallo: float = 0.12
+@export var golpe_captura: float = 0.15
 @export var decaimiento_golpe: float = 5.0
 @export var giro_maximo_grados: float = 3.0
 @export var frecuencia: float = 22.0
