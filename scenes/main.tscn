@@ -1,25 +1,141 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene format=3]
 
-[sub_resource type="ProceduralSkyMaterial" id="sky_mat"]
+[ext_resource type="PackedScene" path="res://scenes/mundo/barca.tscn" id="1_barca"]
+[ext_resource type="PackedScene" path="res://scenes/mundo/barco_comerciante.tscn" id="2_barco"]
+[ext_resource type="PackedScene" path="res://scenes/ui/hud.tscn" id="3_hud"]
+[ext_resource type="Script" path="res://scripts/pesca/pesca.gd" id="4_pesca"]
+[ext_resource type="Script" path="res://scripts/pesca/camara_pesca.gd" id="5_camara"]
+[ext_resource type="Script" path="res://scripts/pesca/sonido_pesca.gd" id="6_sonido"]
+[ext_resource type="Script" path="res://scripts/datos/pez_data.gd" id="7_pez_data"]
+[ext_resource type="Resource" path="res://data/stats_pesca.tres" id="8_stats"]
+[ext_resource type="Shader" path="res://shaders/agua.gdshader" id="9_agua"]
+[ext_resource type="Shader" path="res://shaders/zona_pesca.gdshader" id="10_zona"]
+[ext_resource type="Resource" path="res://data/peces/sardina.tres" id="pez_sardina"]
+[ext_resource type="Resource" path="res://data/peces/caballa.tres" id="pez_caballa"]
+[ext_resource type="Resource" path="res://data/peces/lubina.tres" id="pez_lubina"]
+[ext_resource type="Resource" path="res://data/peces/atun.tres" id="pez_atun"]
+[ext_resource type="Resource" path="res://data/peces/bota_vieja.tres" id="pez_bota_vieja"]
+[ext_resource type="Resource" path="res://data/peces/kraken_bebe.tres" id="pez_kraken_bebe"]
+[ext_resource type="AudioStream" path="res://art/sfx/acierto.wav" id="sfx_acierto"]
+[ext_resource type="AudioStream" path="res://art/sfx/fallo.wav" id="sfx_fallo"]
+[ext_resource type="AudioStream" path="res://art/sfx/picada.wav" id="sfx_picada"]
+[ext_resource type="AudioStream" path="res://art/sfx/golpe.wav" id="sfx_golpe"]
+[ext_resource type="AudioStream" path="res://art/sfx/captura.wav" id="sfx_captura"]
+[ext_resource type="AudioStream" path="res://art/sfx/perfecto.wav" id="sfx_perfecto"]
+[ext_resource type="AudioStream" path="res://art/sfx/escapa.wav" id="sfx_escapa"]
+[ext_resource type="AudioStream" path="res://art/sfx/latido.wav" id="sfx_latido"]
 
-[sub_resource type="Sky" id="sky"]
-sky_material = SubResource("sky_mat")
+[sub_resource type="ProceduralSkyMaterial" id="cielo_mat"]
+sky_top_color = Color(0.32, 0.5, 0.78, 1)
+sky_horizon_color = Color(0.95, 0.72, 0.55, 1)
+ground_horizon_color = Color(0.95, 0.72, 0.55, 1)
+ground_bottom_color = Color(0.1, 0.2, 0.3, 1)
 
-[sub_resource type="Environment" id="env"]
+[sub_resource type="Sky" id="cielo"]
+sky_material = SubResource("cielo_mat")
+
+[sub_resource type="Environment" id="entorno"]
 background_mode = 2
-sky = SubResource("sky")
+sky = SubResource("cielo")
+ambient_light_source = 3
 tonemap_mode = 2
 glow_enabled = true
+glow_intensity = 0.6
+glow_bloom = 0.05
+fog_enabled = false
+fog_light_color = Color(0.85, 0.7, 0.6, 1)
+fog_density = 0.012
+
+[sub_resource type="ShaderMaterial" id="mat_agua"]
+render_priority = 0
+shader = ExtResource("9_agua")
+
+[sub_resource type="PlaneMesh" id="malla_agua"]
+material = SubResource("mat_agua")
+size = Vector2(120, 120)
+subdivide_width = 120
+subdivide_depth = 120
+
+[sub_resource type="ShaderMaterial" id="mat_zona"]
+render_priority = 1
+shader = ExtResource("10_zona")
+
+[sub_resource type="PlaneMesh" id="malla_zona"]
+material = SubResource("mat_zona")
+size = Vector2(6, 6)
 
 [node name="Main" type="Node3D"]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource("env")
+environment = SubResource("entorno")
 
 [node name="Sol" type="DirectionalLight3D" parent="."]
-transform = Transform3D(0.866025, -0.25, 0.433013, 0, 0.866025, 0.5, -0.5, -0.433013, 0.75, 0, 10, 0)
+transform = Transform3D(0.819152, 0.439385, -0.368688, 0, 0.642788, 0.766044, 0.573576, -0.627507, 0.526541, 0, 10, 0)
+light_color = Color(1, 0.93, 0.82, 1)
 shadow_enabled = true
 
-[node name="Camara" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.766044, 0.642788, 0, -0.642788, 0.766044, 0, 8, 9)
-fov = 40.0
+[node name="Agua" type="MeshInstance3D" parent="."]
+cast_shadow = 0
+mesh = SubResource("malla_agua")
+
+[node name="ZonaPesca" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.16, 0)
+cast_shadow = 0
+mesh = SubResource("malla_zona")
+
+[node name="Barca" parent="." node_paths=PackedStringArray("pesca") instance=ExtResource("1_barca")]
+pesca = NodePath("../Pesca")
+
+[node name="BarcoComerciante" parent="." instance=ExtResource("2_barco")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, -2.5)
+
+[node name="Camara" type="Camera3D" parent="." node_paths=PackedStringArray("pesca", "objetivo")]
+transform = Transform3D(1, 0, 0, 0, 0.766044, 0.642788, 0, -0.642788, 0.766044, 0, 7, 8.5)
+fov = 45.0
+script = ExtResource("5_camara")
+pesca = NodePath("../Pesca")
+objetivo = NodePath("../Barca/Protagonista")
+
+[node name="Pesca" type="Node" parent="."]
+script = ExtResource("4_pesca")
+stats = ExtResource("8_stats")
+peces = Array[ExtResource("7_pez_data")]([ExtResource("pez_sardina"), ExtResource("pez_caballa"), ExtResource("pez_lubina"), ExtResource("pez_atun"), ExtResource("pez_bota_vieja"), ExtResource("pez_kraken_bebe")])
+
+[node name="Sonido" type="Node" parent="." node_paths=PackedStringArray("pesca")]
+script = ExtResource("6_sonido")
+pesca = NodePath("../Pesca")
+
+[node name="Acierto" type="AudioStreamPlayer" parent="Sonido"]
+stream = ExtResource("sfx_acierto")
+volume_db = -6.0
+
+[node name="Fallo" type="AudioStreamPlayer" parent="Sonido"]
+stream = ExtResource("sfx_fallo")
+volume_db = -6.0
+
+[node name="Picada" type="AudioStreamPlayer" parent="Sonido"]
+stream = ExtResource("sfx_picada")
+volume_db = -6.0
+
+[node name="Golpe" type="AudioStreamPlayer" parent="Sonido"]
+stream = ExtResource("sfx_golpe")
+volume_db = -6.0
+
+[node name="Captura" type="AudioStreamPlayer" parent="Sonido"]
+stream = ExtResource("sfx_captura")
+volume_db = -6.0
+
+[node name="Perfecto" type="AudioStreamPlayer" parent="Sonido"]
+stream = ExtResource("sfx_perfecto")
+volume_db = -6.0
+
+[node name="Escapa" type="AudioStreamPlayer" parent="Sonido"]
+stream = ExtResource("sfx_escapa")
+volume_db = -6.0
+
+[node name="Latido" type="AudioStreamPlayer" parent="Sonido"]
+stream = ExtResource("sfx_latido")
+
+[node name="HUD" parent="." node_paths=PackedStringArray("pesca", "barco") instance=ExtResource("3_hud")]
+pesca = NodePath("../Pesca")
+barco = NodePath("../BarcoComerciante")

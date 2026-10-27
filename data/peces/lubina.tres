@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="PezData" format=3]
+
+[ext_resource type="Script" path="res://scripts/datos/pez_data.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://art/peces/lubina.png" id="2_icono"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"lubina"
+nombre = "Lubina"
+rareza = 1
+icono = ExtResource("2_icono")
+color = Color(0.6667, 0.6863, 0.6471, 1)
+valor_base = 18.0
+peso_min = 1.0
+peso_max = 4.0
+probabilidad = 4.0
+pasos_perfect = 8
+mult_tiempo = 0.95
+prob_doble = 0.25
+machacar_cada = 0
+pulsaciones_machacar = 10
+tiempo_machacar = 2.0

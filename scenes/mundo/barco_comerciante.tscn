@@ -1,0 +1,94 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/mundo/barco_comerciante.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://art/personajes/comerciante.png" id="2_comerciante"]
+[ext_resource type="AudioStream" path="res://art/sfx/venta.wav" id="3_venta"]
+
+[sub_resource type="StandardMaterial3D" id="m_casco"]
+albedo_color = Color(0.1843, 0.3647, 0.5412, 1)
+roughness = 0.9
+
+[sub_resource type="StandardMaterial3D" id="m_cubierta"]
+albedo_color = Color(0.6275, 0.4392, 0.251, 1)
+roughness = 0.9
+
+[sub_resource type="StandardMaterial3D" id="m_cabina"]
+albedo_color = Color(0.9098, 0.8627, 0.7529, 1)
+roughness = 0.9
+
+[sub_resource type="StandardMaterial3D" id="m_vela"]
+albedo_color = Color(0.949, 0.9176, 0.8235, 1)
+roughness = 0.9
+
+[sub_resource type="StandardMaterial3D" id="m_bandera"]
+albedo_color = Color(0.8471, 0.2275, 0.2275, 1)
+roughness = 0.9
+
+[sub_resource type="StandardMaterial3D" id="m_mastil"]
+albedo_color = Color(0.3529, 0.2275, 0.1255, 1)
+roughness = 0.9
+
+[sub_resource type="BoxMesh" id="b_casco"]
+material = SubResource("m_casco")
+size = Vector3(1.6, 0.5, 3.0)
+
+[sub_resource type="BoxMesh" id="b_cubierta"]
+material = SubResource("m_cubierta")
+size = Vector3(1.5, 0.05, 2.9)
+
+[sub_resource type="BoxMesh" id="b_cabina"]
+material = SubResource("m_cabina")
+size = Vector3(1.0, 0.8, 1.0)
+
+[sub_resource type="BoxMesh" id="b_vela"]
+material = SubResource("m_vela")
+size = Vector3(0.04, 1.8, 1.3)
+
+[sub_resource type="BoxMesh" id="b_bandera"]
+material = SubResource("m_bandera")
+size = Vector3(0.02, 0.25, 0.4)
+
+[sub_resource type="CylinderMesh" id="c_mastil"]
+material = SubResource("m_mastil")
+top_radius = 0.04
+bottom_radius = 0.06
+height = 3.0
+
+[node name="BarcoComerciante" type="Node3D"]
+script = ExtResource("1_script")
+
+[node name="Casco" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+mesh = SubResource("b_casco")
+
+[node name="Cubierta" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.37, 0)
+mesh = SubResource("b_cubierta")
+
+[node name="Cabina" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0.8)
+mesh = SubResource("b_cabina")
+
+[node name="Mastil" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.9, -0.3)
+mesh = SubResource("c_mastil")
+
+[node name="Vela" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.05, 2.2, -0.95)
+mesh = SubResource("b_vela")
+
+[node name="Bandera" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.45, -0.5)
+mesh = SubResource("b_bandera")
+
+[node name="Comerciante" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.88, -0.5)
+billboard = 2
+alpha_cut = 1
+texture_filter = 0
+shaded = false
+pixel_size = 0.04
+texture = ExtResource("2_comerciante")
+
+[node name="SfxVenta" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_venta")

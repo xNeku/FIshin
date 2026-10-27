@@ -1,0 +1,283 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/hud.gd" id="1_script"]
+[ext_resource type="Shader" path="res://shaders/efecto_pantalla.gdshader" id="2_efecto"]
+[ext_resource type="PackedScene" path="res://scenes/ui/popup_texto.tscn" id="3_popup"]
+
+[sub_resource type="ShaderMaterial" id="mat_efecto"]
+shader = ExtResource("2_efecto")
+shader_parameter/intensidad = 0.0
+shader_parameter/destello = 0.0
+
+[sub_resource type="StyleBoxFlat" id="estilo_tecla"]
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 10
+border_color = Color(0.08, 0.05, 0.1, 1)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+
+[sub_resource type="StyleBoxFlat" id="estilo_panel"]
+bg_color = Color(0.06, 0.05, 0.1, 0.82)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(1, 1, 1, 0.25)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxFlat" id="barra_fondo"]
+bg_color = Color(0.05, 0.03, 0.08, 0.8)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="barra_tiempo"]
+bg_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="barra_machacar"]
+bg_color = Color(1, 0.55, 0.2, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[node name="HUD" type="CanvasLayer"]
+script = ExtResource("1_script")
+escena_popup = ExtResource("3_popup")
+
+[node name="EfectoPantalla" type="ColorRect" parent="."]
+material = SubResource("mat_efecto")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Info" type="VBoxContainer" parent="."]
+offset_left = 32.0
+offset_top = 24.0
+offset_right = 700.0
+offset_bottom = 140.0
+mouse_filter = 2
+
+[node name="Rublos" type="Label" parent="Info"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.85, 0.3, 1)
+theme_override_font_sizes/font_size = 56
+text = "0 ₽"
+
+[node name="Barca" type="Label" parent="Info"]
+layout_mode = 2
+text = "Barca: 0 peces"
+
+[node name="Estado" type="Label" parent="."]
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 40.0
+offset_bottom = 100.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 40
+text = "Esperando que piquen..."
+horizontal_alignment = 1
+
+[node name="Prompt" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_top = 250.0
+offset_bottom = 250.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Machacar" type="Label" parent="Prompt"]
+layout_mode = 0
+offset_left = -300.0
+offset_top = -150.0
+offset_right = 300.0
+offset_bottom = -90.0
+theme_override_colors/font_color = Color(1, 0.55, 0.2, 1)
+theme_override_font_sizes/font_size = 44
+text = "¡MACHACA!"
+horizontal_alignment = 1
+
+[node name="Teclas" type="HBoxContainer" parent="Prompt"]
+layout_mode = 0
+offset_left = -200.0
+offset_top = -70.0
+offset_right = 200.0
+offset_bottom = 70.0
+mouse_filter = 2
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="Tecla1" type="PanelContainer" parent="Prompt/Teclas"]
+custom_minimum_size = Vector2(130, 130)
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("estilo_tecla")
+
+[node name="Texto" type="Label" parent="Prompt/Teclas/Tecla1"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.08, 0.05, 0.1, 1)
+theme_override_constants/outline_size = 0
+theme_override_font_sizes/font_size = 80
+text = "1"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Mas" type="Label" parent="Prompt/Teclas"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 64
+text = "+"
+
+[node name="Tecla2" type="PanelContainer" parent="Prompt/Teclas"]
+custom_minimum_size = Vector2(130, 130)
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("estilo_tecla")
+
+[node name="Texto" type="Label" parent="Prompt/Teclas/Tecla2"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.08, 0.05, 0.1, 1)
+theme_override_constants/outline_size = 0
+theme_override_font_sizes/font_size = 80
+text = "→"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BarraTiempo" type="ProgressBar" parent="Prompt"]
+layout_mode = 0
+offset_left = -160.0
+offset_top = 85.0
+offset_right = 160.0
+offset_bottom = 105.0
+mouse_filter = 2
+theme_override_styles/background = SubResource("barra_fondo")
+theme_override_styles/fill = SubResource("barra_tiempo")
+value = 100.0
+show_percentage = false
+
+[node name="BarraMachacar" type="ProgressBar" parent="Prompt"]
+layout_mode = 0
+offset_left = -260.0
+offset_top = 120.0
+offset_right = 260.0
+offset_bottom = 160.0
+mouse_filter = 2
+theme_override_styles/background = SubResource("barra_fondo")
+theme_override_styles/fill = SubResource("barra_machacar")
+max_value = 10.0
+show_percentage = false
+
+[node name="Combo" type="Label" parent="."]
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -420.0
+offset_top = -80.0
+offset_right = -80.0
+offset_bottom = 40.0
+grow_horizontal = 0
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 0.85, 0.3, 1)
+theme_override_constants/outline_size = 16
+theme_override_font_sizes/font_size = 96
+text = "x0"
+horizontal_alignment = 1
+
+[node name="Popups" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Aviso" type="Label" parent="."]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -500.0
+offset_top = -250.0
+offset_right = 500.0
+offset_bottom = -200.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.5, 0.85, 1, 1)
+theme_override_font_sizes/font_size = 34
+text = "[E] Vender todo al comerciante"
+horizontal_alignment = 1
+
+[node name="Resultado" type="PanelContainer" parent="."]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -420.0
+offset_top = -180.0
+offset_right = 420.0
+offset_bottom = -40.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("estilo_panel")
+
+[node name="Margen" type="MarginContainer" parent="Resultado"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 12
+
+[node name="Fila" type="HBoxContainer" parent="Resultado/Margen"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 24
+
+[node name="Icono" type="TextureRect" parent="Resultado/Margen/Fila"]
+texture_filter = 1
+custom_minimum_size = Vector2(160, 100)
+layout_mode = 2
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Textos" type="VBoxContainer" parent="Resultado/Margen/Fila"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+alignment = 1
+
+[node name="Nombre" type="Label" parent="Resultado/Margen/Fila/Textos"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+text = "Sardina · Común"
+
+[node name="Detalle" type="Label" parent="Resultado/Margen/Fila/Textos"]
+layout_mode = 2
+text = "Buena · 0.20 kg · 4 ₽"

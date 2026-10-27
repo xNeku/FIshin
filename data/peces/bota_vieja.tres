@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="PezData" format=3]
+
+[ext_resource type="Script" path="res://scripts/datos/pez_data.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://art/peces/bota_vieja.png" id="2_icono"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"bota_vieja"
+nombre = "Bota con alma"
+rareza = 2
+icono = ExtResource("2_icono")
+color = Color(0.4706, 0.3137, 0.1765, 1)
+valor_base = 25.0
+peso_min = 0.5
+peso_max = 1.0
+probabilidad = 1.2
+pasos_perfect = 7
+mult_tiempo = 0.9
+prob_doble = 0.4
+machacar_cada = 4
+pulsaciones_machacar = 8
+tiempo_machacar = 1.8
