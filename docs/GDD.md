@@ -28,14 +28,19 @@ Marcas: [DECIDIDO] lo decidió el diseñador · [PROPUESTA] sugerencia de Claude
 - [DECIDIDO] **Modo pesca** (en la barca). Es la única acción manual de pesca; todo lo demás lo automatizan fábricas y trabajadores.
 - [DECIDIDO] **Modo movimiento**: un botón saca del modo pesca y el personaje se mueve como en cualquier juego. Si anda desde la barca hacia una isla adyacente, salta por encima del agua (y al revés para volver).
 - [DECIDIDO] Al principio no puedes moverte porque no hay suelo.
+- [PROPUESTA] Teclas: WASD para moverse, Q para entrar y salir del modo pesca.
 - [PROPUESTA] Interactuar con la tecla E abre un diálogo tipo Pokémon.
 
 ## 6. Pesca (núcleo)
 - [DECIDIDO] En la barca el personaje espera a que pique. Cuando pica, sale un botón en pantalla.
 - [DECIDIDO] Cadena de botones: cada acierto mejora la calidad del pez y cada botón da menos tiempo para reaccionar que el anterior.
 - [DECIDIDO] La pesca acaba al fallar o al llegar al límite natural de la cadena. El límite sube con el árbol de habilidades.
+- [DECIDIDO] Sensación de adentrarse: zoom con shake hacia el jugador según el progreso. El juego sabe cuántas pulsaciones hacen falta para el perfect.
+- [DECIDIDO] Futuro: modo infinito (zoom de ida y vuelta en bucle) y música con el beat cuadrado a las pulsaciones.
+- [PROPUESTA] Implementado: viñeta, aberración cromática, latido que acelera, tono de acierto que sube, el botón salta por la pantalla cuanto más dentro estás, y un congelado breve al capturar.
+- [PROPUESTA] Si la caña tiene menos límite que los pasos del pez, no llegas al perfect (gancho para mejorar la caña).
 - [DECIDIDO] Peces pesados o especiales tienen tramos de machacar un botón para llenar una barra. Si no la llenas, pierdes el pez o te lo quedas con peores stats.
-- [ABIERTO] Al no llenar la barra: ¿pierdes el pez o te lo quedas peor? ¿Depende del pez?
+- [DECIDIDO] Al no llenar la barra depende del pez: los legendarios y los extraños se escapan, y los normales salen peores.
 - [DECIDIDO] También hay pulsaciones dobles (tipo R2 + X).
 - [DECIDIDO] Teclado: números con la mano izquierda y flechas con la derecha. Las dobles combinan una de cada.
 - [DECIDIDO] Auto: más adelante, si no pulsas, consigues el pez igualmente (mejora desbloqueable).
@@ -46,7 +51,7 @@ Marcas: [DECIDIDO] lo decidió el diseñador · [PROPUESTA] sugerencia de Claude
 - [DECIDIDO] Una sola moneda que lo es todo: dinero, experiencia y economía.
 - [DECIDIDO] Moneda: rublos. Símbolo ₽ (U+20BD); comprobar que la fuente lo tiene. El primer hito son 100 ₽.
 - [DECIDIDO] Al poco de empezar a pescar aparece un barco comerciante: le vendes peces y le compras cosas.
-- [ABIERTO] Cuándo aparece exactamente el barco (tiempo, nº de peces, dinero).
+- [PROPUESTA] El barco aparece tras 3 capturas (ajustable en el inspector: `BarcoComerciante.capturas_para_aparecer`). De momento solo compra, con E vende todo.
 - [DECIDIDO] La barca tiene inventario (los peces que llevas encima).
 - [ABIERTO] ¿Tiene capacidad máxima el inventario de la barca?
 
@@ -63,3 +68,6 @@ Marcas: [DECIDIDO] lo decidió el diseñador · [PROPUESTA] sugerencia de Claude
 
 ## 10. Progreso offline
 - [ABIERTO] ¿Se genera dinero con el juego cerrado?
+
+## 11. Progresión del mundo
+- [ABIERTO] Lista ordenada de islas y cosas que van llegando según avances (pendiente del diseñador).

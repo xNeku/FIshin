@@ -3,23 +3,23 @@
 Regla: no se pasa de fase hasta que la actual sea jugable y divertida. Cada tarea = un commit.
 
 ## Fase 0 — Setup
-- [ ] Proyecto Godot 4.7.2 (Compatibility, carpetas, Input Map, resolución y escalado para PC y móvil)
-- [ ] Autoload de estado del juego + guardado y carga versionados
-- [ ] Formateo de números grandes
+- [x] Proyecto Godot 4.7.2 (Forward+, carpetas, Input Map, resolución y escalado para PC y móvil)
+- [x] Autoload de estado del juego + guardado y carga versionados
+- [x] Formateo de números grandes
 
 ## Fase 1 — Núcleo: pescar es divertido
-- [ ] Escena barca + zona 3x3 + protagonista placeholder
-- [ ] Espera y picada
-- [ ] Minijuego: cadena de botones con tiempo decreciente, fallo y límite
-- [ ] Calidad del pez según la cadena
-- [ ] Datos de peces (`.tres`) y tirada de pez
-- [ ] Juice básico (sonido placeholder, screenshake, popups)
+- [x] Escena barca + zona 3x3 + protagonista placeholder
+- [x] Espera y picada
+- [x] Minijuego: cadena de botones con tiempo decreciente, fallo y límite
+- [x] Calidad del pez según la cadena
+- [x] Datos de peces (`.tres`) y tirada de pez
+- [x] Juice básico (sonido placeholder, screenshake, popups)
 - **Hito:** pescar 5 minutos seguidos engancha.
 
 ## Fase 2 — Economía mínima
-- [ ] Inventario de la barca
-- [ ] Barco comerciante: vender y comprar
-- [ ] HUD de dinero
+- [x] Inventario de la barca
+- [~] Barco comerciante: vender (hecho) y comprar (falta)
+- [x] HUD de dinero
 - [ ] Primeras mejoras compradas
 - **Hito:** bucle pescar → vender → mejorar.
 
@@ -33,7 +33,7 @@ Regla: no se pasa de fase hasta que la actual sea jugable y divertida. Cada tare
 ## Fase 4 — Menú y progresión
 - [ ] Menú ESC con pestañas (barca, stats, opciones)
 - [ ] Árbol de habilidades (datos + UI)
-- [ ] Mecánicas avanzadas de pesca: machacar y pulsación doble
+- [x] Mecánicas avanzadas de pesca: machacar y pulsación doble (adelantado)
 - [ ] Auto-pesca
 
 ## Fase 5 — Villa e incremental
