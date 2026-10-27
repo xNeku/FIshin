@@ -35,6 +35,8 @@ Marcas: [DECIDIDO] lo decidió el diseñador · [PROPUESTA] sugerencia de Claude
 - [DECIDIDO] En la barca el personaje espera a que pique. Cuando pica, sale un botón en pantalla.
 - [DECIDIDO] Cadena de botones: cada acierto mejora la calidad del pez y cada botón da menos tiempo para reaccionar que el anterior.
 - [DECIDIDO] La pesca acaba al fallar o al llegar al límite natural de la cadena. El límite sube con el árbol de habilidades.
+- [DECIDIDO] El largo de la cadena no es fijo: en cada picada sale uno distinto, muchas veces solo 1 o 2 botones. El juego es lento y progresivo.
+- [PROPUESTA] Cada caña define `cadena_min`, `cadena_max` y `sesgo_cadena` (cuánto tira a corto). Caña rota 1–5 (el 44 % de las picadas da 1 botón), decente 2–9 y pro 3–15. La rama Destreza podría bajar el sesgo.
 - [DECIDIDO] Sensación de adentrarse: zoom con shake hacia el jugador según el progreso. El juego sabe cuántas pulsaciones hacen falta para el perfect.
 - [DECIDIDO] Futuro: modo infinito (zoom de ida y vuelta en bucle) y música con el beat cuadrado a las pulsaciones.
 - [PROPUESTA] Implementado: viñeta, aberración cromática, latido que acelera, tono de acierto que sube, el botón salta por la pantalla cuanto más dentro estás, y un congelado breve al capturar.

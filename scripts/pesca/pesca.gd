@@ -173,7 +173,8 @@ func _generar_pasos() -> void:
 	var todas: Array[StringName] = []
 	todas.append_array(NUMEROS)
 	todas.append_array(FLECHAS)
-	var n: int = mini(pez.pasos_perfect, cana.limite_cadena)
+	# Cada picada da un largo distinto: muchas veces solo 1 o 2 botones. Solo llegas al perfect si sale largo.
+	var n: int = mini(pez.pasos_perfect, cana.tirar_largo_cadena())
 	var mult: float = pez.mult_tiempo * cana.mult_tiempo * Juego.mult_tiempo_cebo()
 	var anterior: StringName = &""
 	for i in n:
