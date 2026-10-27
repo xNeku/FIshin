@@ -1,0 +1,56 @@
+# ROADMAP
+
+Regla: no se pasa de fase hasta que la actual sea jugable y divertida. Cada tarea = un commit.
+
+## Fase 0 — Setup
+- [ ] Proyecto Godot 4.7.2 (Compatibility, carpetas, Input Map, resolución y escalado para PC y móvil)
+- [ ] Autoload de estado del juego + guardado y carga versionados
+- [ ] Formateo de números grandes
+
+## Fase 1 — Núcleo: pescar es divertido
+- [ ] Escena barca + zona 3x3 + protagonista placeholder
+- [ ] Espera y picada
+- [ ] Minijuego: cadena de botones con tiempo decreciente, fallo y límite
+- [ ] Calidad del pez según la cadena
+- [ ] Datos de peces (`.tres`) y tirada de pez
+- [ ] Juice básico (sonido placeholder, screenshake, popups)
+- **Hito:** pescar 5 minutos seguidos engancha.
+
+## Fase 2 — Economía mínima
+- [ ] Inventario de la barca
+- [ ] Barco comerciante: vender y comprar
+- [ ] HUD de dinero
+- [ ] Primeras mejoras compradas
+- **Hito:** bucle pescar → vender → mejorar.
+
+## Fase 3 — Mundo y expansión
+- [ ] Cuadrícula y colocación automática
+- [ ] Hitos que hacen aparecer cosas (primer islote a 100)
+- [ ] Modo movimiento, salto barca ↔ isla
+- [ ] Interacción (E) y diálogo
+- **Hito:** se nota que el mundo crece.
+
+## Fase 4 — Menú y progresión
+- [ ] Menú ESC con pestañas (barca, stats, opciones)
+- [ ] Árbol de habilidades (datos + UI)
+- [ ] Mecánicas avanzadas de pesca: machacar y pulsación doble
+- [ ] Auto-pesca
+
+## Fase 5 — Villa e incremental
+- [ ] Edificios y trabajadores automáticos
+- [ ] Ingresos pasivos, stats por segundo
+- [ ] Progreso offline (si se decide)
+- [ ] Balance de curvas
+
+## Fase 6 — Contenido
+- [ ] Catálogo de peces, legendarios, colección (la meta)
+- [ ] Más edificios, ramas e hitos
+
+## Fase 7 — Pulido
+- [ ] Shaders (agua, luz), partículas, música y SFX
+- [ ] Arte final del diseñador
+
+## Fase 8 — Export y release
+- [ ] GitHub Actions: builds de Windows, Mac (y Android)
+- [ ] Input táctil y UI móvil
+- [ ] Release
