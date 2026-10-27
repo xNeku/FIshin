@@ -3,6 +3,10 @@
 [ext_resource type="Script" path="res://scripts/mundo/barco_comerciante.gd" id="1_script"]
 [ext_resource type="Texture2D" path="res://art/personajes/comerciante.png" id="2_comerciante"]
 [ext_resource type="AudioStream" path="res://art/sfx/venta.wav" id="3_venta"]
+[ext_resource type="Script" path="res://scripts/datos/articulo_data.gd" id="4_articulo"]
+[ext_resource type="Resource" path="res://data/articulos/cana_decente.tres" id="5_cana"]
+[ext_resource type="Resource" path="res://data/articulos/cebo_gusano.tres" id="6_cebo"]
+[ext_resource type="Resource" path="res://data/articulos/hueco_extra.tres" id="7_hueco"]
 
 [sub_resource type="StandardMaterial3D" id="m_casco"]
 albedo_color = Color(0.1843, 0.3647, 0.5412, 1)
@@ -56,6 +60,7 @@ height = 3.0
 
 [node name="BarcoComerciante" type="Node3D"]
 script = ExtResource("1_script")
+articulos = Array[ExtResource("4_articulo")]([ExtResource("5_cana"), ExtResource("6_cebo"), ExtResource("7_hueco")])
 
 [node name="Casco" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
@@ -91,4 +96,5 @@ pixel_size = 0.04
 texture = ExtResource("2_comerciante")
 
 [node name="SfxVenta" type="AudioStreamPlayer" parent="."]
+process_mode = 3
 stream = ExtResource("3_venta")

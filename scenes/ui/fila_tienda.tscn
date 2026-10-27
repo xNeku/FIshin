@@ -1,0 +1,67 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/fila_tienda.gd" id="1_script"]
+
+[sub_resource type="StyleBoxFlat" id="estilo_fila"]
+bg_color = Color(1, 1, 1, 0.06)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+content_margin_left = 16.0
+content_margin_top = 10.0
+content_margin_right = 16.0
+content_margin_bottom = 10.0
+
+[node name="FilaTienda" type="PanelContainer"]
+mouse_filter = 2
+theme_override_styles/panel = SubResource("estilo_fila")
+script = ExtResource("1_script")
+
+[node name="Fila" type="HBoxContainer" parent="."]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 20
+
+[node name="Icono" type="TextureRect" parent="Fila"]
+texture_filter = 1
+custom_minimum_size = Vector2(84, 84)
+layout_mode = 2
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Textos" type="VBoxContainer" parent="Fila"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+alignment = 1
+
+[node name="Nombre" type="Label" parent="Fila/Textos"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_font_sizes/font_size = 32
+text = "Caña decente"
+
+[node name="Descripcion" type="Label" parent="Fila/Textos"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.75, 0.75, 0.8, 1)
+theme_override_font_sizes/font_size = 22
+text = "Llega más hondo."
+autowrap_mode = 3
+
+[node name="Precio" type="Label" parent="Fila"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(1, 0.85, 0.3, 1)
+theme_override_font_sizes/font_size = 32
+text = "150 ₽"
+horizontal_alignment = 2
+
+[node name="Comprar" type="Button" parent="Fila"]
+custom_minimum_size = Vector2(260, 70)
+layout_mode = 2
+size_flags_vertical = 4
+text = "Comprar"

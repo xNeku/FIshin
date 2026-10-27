@@ -1,10 +1,13 @@
 class_name BarcoComerciante
 extends Node3D
-## Barco que aparece tras las primeras capturas. Con "interactuar" le vendes todo lo de la barca.
+## Barco que aparece tras las primeras capturas. Con "interactuar" abre su tienda.
 
 signal llegado
 signal vendido(total: float)
 
+@export var nombre: String = "Comerciante"
+@export var articulos: Array[ArticuloData] = []
+@export var tienda: Tienda
 @export var capturas_para_aparecer: int = 3
 @export var distancia_entrada: float = 25.0
 @export var duracion_entrada: float = 3.5
@@ -34,12 +37,12 @@ func _process(delta: float) -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if listo and event.is_action_pressed("interactuar") and puede_vender():
+	if listo and tienda and event.is_action_pressed("interactuar"):
 		get_viewport().set_input_as_handled()
-		vender()
+		tienda.abrir(self)
 
 
-func puede_vender() -> bool:
+func puede_hablar() -> bool:
 	return listo
 
 

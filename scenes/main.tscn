@@ -4,6 +4,7 @@
 [ext_resource type="PackedScene" path="res://scenes/mundo/barco_comerciante.tscn" id="2_barco"]
 [ext_resource type="PackedScene" path="res://scenes/ui/hud.tscn" id="3_hud"]
 [ext_resource type="PackedScene" path="res://scenes/ui/menu.tscn" id="11_menu"]
+[ext_resource type="PackedScene" path="res://scenes/ui/tienda.tscn" id="12_tienda"]
 [ext_resource type="Script" path="res://scripts/pesca/pesca.gd" id="4_pesca"]
 [ext_resource type="Script" path="res://scripts/pesca/camara_pesca.gd" id="5_camara"]
 [ext_resource type="Script" path="res://scripts/pesca/sonido_pesca.gd" id="6_sonido"]
@@ -87,8 +88,9 @@ mesh = SubResource("malla_zona")
 [node name="Barca" parent="." node_paths=PackedStringArray("pesca") instance=ExtResource("1_barca")]
 pesca = NodePath("../Pesca")
 
-[node name="BarcoComerciante" parent="." instance=ExtResource("2_barco")]
+[node name="BarcoComerciante" parent="." node_paths=PackedStringArray("tienda") instance=ExtResource("2_barco")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, -2.5)
+tienda = NodePath("../Tienda")
 
 [node name="Camara" type="Camera3D" parent="." node_paths=PackedStringArray("pesca", "objetivo")]
 transform = Transform3D(1, 0, 0, 0, 0.766044, 0.642788, 0, -0.642788, 0.766044, 0, 7, 8.5)
@@ -142,3 +144,5 @@ pesca = NodePath("../Pesca")
 barco = NodePath("../BarcoComerciante")
 
 [node name="Menu" parent="." instance=ExtResource("11_menu")]
+
+[node name="Tienda" parent="." instance=ExtResource("12_tienda")]

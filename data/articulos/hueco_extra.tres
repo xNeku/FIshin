@@ -1,10 +1,12 @@
 [gd_resource type="Resource" script_class="ArticuloData" format=3]
 
 [ext_resource type="Script" path="res://scripts/datos/articulo_data.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://art/articulos/cajon.png" id="3_icono"]
 
 [resource]
 script = ExtResource("1_script")
 id = &"hueco_extra"
+icono = ExtResource("3_icono")
 nombre = "Cajón extra"
 descripcion = "+1 hueco en la barca para otra especie."
 tipo = 2
