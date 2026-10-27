@@ -52,6 +52,11 @@ func _process(delta: float) -> void:
 		guardar()
 
 
+## Delta sin el time_scale (para efectos que siguen durante el congelado de impacto).
+static func delta_real(delta: float) -> float:
+	return delta / maxf(Engine.time_scale, 0.001)
+
+
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_WM_CLOSE_REQUEST or what == NOTIFICATION_APPLICATION_PAUSED:
 		guardar()

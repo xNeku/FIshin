@@ -50,7 +50,7 @@ func _process(delta: float) -> void:
 	position.y = sin(_t * velocidad_balanceo * 1.3) * flote
 	cana.rotation = _rot_cana + Vector3(deg_to_rad(doblez_cana * _progreso), 0.0, 0.0)
 
-	var activo: bool = pesca != null and pesca.estado in [Pesca.Estado.PASO, Pesca.Estado.ENTRE_PASOS]
+	var activo: bool = pesca != null and pesca.en_curso()
 	_hundido = lerpf(_hundido, 0.08 if activo else 0.0, 1.0 - exp(-3.0 * delta))
 	var temblor := Vector3.ZERO
 	if activo:

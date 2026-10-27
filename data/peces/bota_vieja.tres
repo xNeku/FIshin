@@ -9,7 +9,6 @@ id = &"bota_vieja"
 nombre = "Bota con alma"
 rareza = 2
 icono = ExtResource("2_icono")
-color = Color(0.4706, 0.3137, 0.1765, 1)
 profundidad = 1
 valor_base = 25.0
 peso_min = 0.5

@@ -37,8 +37,7 @@ func _ready() -> void:
 
 
 func _process(_delta: float) -> void:
-	var activo: bool = pesca != null and pesca.estado in [Pesca.Estado.PASO, Pesca.Estado.ENTRE_PASOS]
-	if activo and not latido.playing:
+	if pesca and pesca.en_curso() and not latido.playing:
 		latido.volume_db = lerpf(latido_volumen_min_db, latido_volumen_max_db, _progreso)
 		latido.pitch_scale = lerpf(latido_tono_min, latido_tono_max, _progreso)
 		latido.play()

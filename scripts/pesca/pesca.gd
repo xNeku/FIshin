@@ -120,9 +120,9 @@ func esperar() -> void:
 	progreso_cambiado.emit(0.0)
 
 
-func detener() -> void:
-	_cambiar_estado(Estado.INACTIVO)
-	progreso_cambiado.emit(0.0)
+## True mientras hay un pez enganchado (botones en pantalla o entre botones).
+func en_curso() -> bool:
+	return estado == Estado.PASO or estado == Estado.ENTRE_PASOS
 
 
 func progreso() -> float:

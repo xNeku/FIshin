@@ -76,7 +76,7 @@ func _ready() -> void:
 
 
 func _process(delta: float) -> void:
-	var dt: float = delta / maxf(Engine.time_scale, 0.001)
+	var dt: float = Juego.delta_real(delta)
 	_rublos_mostrados = lerpf(_rublos_mostrados, Juego.rublos, 1.0 - exp(-velocidad_contador * dt))
 	if absf(_rublos_mostrados - Juego.rublos) < 0.05:
 		_rublos_mostrados = Juego.rublos

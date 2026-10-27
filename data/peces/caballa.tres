@@ -9,7 +9,6 @@ id = &"caballa"
 nombre = "Caballa"
 rareza = 0
 icono = ExtResource("2_icono")
-color = Color(0.2902, 0.5412, 0.6, 1)
 profundidad = 1
 valor_base = 7.0
 peso_min = 0.3

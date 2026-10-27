@@ -59,7 +59,7 @@ func _ready() -> void:
 
 
 func _process(delta: float) -> void:
-	var dt: float = delta / maxf(Engine.time_scale, 0.001)
+	var dt: float = Juego.delta_real(delta)
 	_t += dt
 	_progreso = lerpf(_progreso, _progreso_objetivo, 1.0 - exp(-suavizado * dt))
 	var z: float = curva_zoom.sample(_progreso) if curva_zoom else _progreso

@@ -9,7 +9,6 @@ id = &"kraken_bebe"
 nombre = "Kraken bebé"
 rareza = 3
 icono = ExtResource("2_icono")
-color = Color(0.7451, 0.2745, 0.6275, 1)
 profundidad = 3
 valor_base = 400.0
 peso_min = 5.0

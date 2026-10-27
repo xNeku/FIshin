@@ -8,7 +8,6 @@ enum Rareza { COMUN, RARO, EXTRANO, LEGENDARIO }
 @export var nombre: String = ""
 @export var rareza: Rareza = Rareza.COMUN
 @export var icono: Texture2D
-@export var color: Color = Color.WHITE
 ## Profundidad mínima de caña para que pueda picar.
 @export var profundidad: int = 1
 
