@@ -10,6 +10,7 @@ nombre = "Atún"
 rareza = 1
 icono = ExtResource("2_icono")
 color = Color(0.1961, 0.2745, 0.4706, 1)
+profundidad = 2
 valor_base = 45.0
 peso_min = 20.0
 peso_max = 60.0

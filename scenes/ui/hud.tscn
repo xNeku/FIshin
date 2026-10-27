@@ -71,7 +71,7 @@ mouse_filter = 2
 offset_left = 32.0
 offset_top = 24.0
 offset_right = 700.0
-offset_bottom = 140.0
+offset_bottom = 220.0
 mouse_filter = 2
 
 [node name="Rublos" type="Label" parent="Info"]
@@ -83,6 +83,17 @@ text = "0 ₽"
 [node name="Barca" type="Label" parent="Info"]
 layout_mode = 2
 text = "Barca: 0 peces"
+
+[node name="Cana" type="Label" parent="Info"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Caña rota"
+
+[node name="Cebo" type="Label" parent="Info"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.6, 1, 0.5, 1)
+theme_override_font_sizes/font_size = 24
+text = "Cebo: 5 pescas"
 
 [node name="Estado" type="Label" parent="."]
 anchors_preset = 10

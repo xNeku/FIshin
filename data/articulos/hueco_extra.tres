@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="ArticuloData" format=3]
+
+[ext_resource type="Script" path="res://scripts/datos/articulo_data.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"hueco_extra"
+nombre = "Cajón extra"
+descripcion = "+1 hueco en la barca para otra especie."
+tipo = 2
+precio = 60.0
+crecimiento_precio = 1.8
+max_compras = 4
+huecos = 1

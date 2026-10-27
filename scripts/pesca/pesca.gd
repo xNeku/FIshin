@@ -13,6 +13,8 @@ signal machacar_fallido(escapa: bool)
 signal progreso_cambiado(progreso: float)
 signal pez_capturado(captura: Dictionary, pez: PezData)
 signal pez_escapado(pez: PezData)
+## Pez capturado pero sin hueco en la barca: se suelta.
+signal barca_llena(pez: PezData)
 
 enum Estado { INACTIVO, ESPERANDO, PASO, ENTRE_PASOS, RESULTADO }
 enum Tipo { SIMPLE, DOBLE, MACHACAR }
@@ -29,6 +31,7 @@ class Paso:
 
 
 @export var stats: StatsPesca
+## Peces que pueden picar. Se filtran por la profundidad de la caña.
 @export var peces: Array[PezData] = []
 @export var activa: bool = true
 @export var pausa_entre_pasos: float = 0.12
@@ -36,6 +39,7 @@ class Paso:
 
 var estado: Estado = Estado.INACTIVO
 var pez: PezData
+var cana: CanaData
 var pasos: Array[Paso] = []
 var indice: int = 0
 var aciertos: int = 0
@@ -111,7 +115,7 @@ func pulsar(accion: StringName) -> void:
 
 func esperar() -> void:
 	pez = null
-	_contador = randf_range(stats.espera_min, stats.espera_max)
+	_contador = randf_range(stats.espera_min, stats.espera_max) * Juego.cana().mult_espera * Juego.mult_espera_cebo()
 	_cambiar_estado(Estado.ESPERANDO)
 	progreso_cambiado.emit(0.0)
 
@@ -132,6 +136,7 @@ func paso_actual() -> Paso:
 
 
 func _picar() -> void:
+	cana = Juego.cana()
 	pez = _tirar_pez()
 	if pez == null:
 		esperar()
@@ -145,15 +150,22 @@ func _picar() -> void:
 
 
 func _tirar_pez() -> PezData:
+	var posibles: Array[PezData] = []
+	var pesos: Array[float] = []
 	var total: float = 0.0
 	for p: PezData in peces:
-		total += p.probabilidad
+		if p.profundidad > cana.profundidad:
+			continue
+		var w: float = p.probabilidad * (1.0 if p.rareza == PezData.Rareza.COMUN else cana.mult_rareza)
+		posibles.append(p)
+		pesos.append(w)
+		total += w
 	var r: float = randf() * total
-	for p: PezData in peces:
-		r -= p.probabilidad
+	for i in posibles.size():
+		r -= pesos[i]
 		if r <= 0.0:
-			return p
-	return peces.back() if not peces.is_empty() else null
+			return posibles[i]
+	return posibles.back() if not posibles.is_empty() else null
 
 
 func _generar_pasos() -> void:
@@ -161,16 +173,17 @@ func _generar_pasos() -> void:
 	var todas: Array[StringName] = []
 	todas.append_array(NUMEROS)
 	todas.append_array(FLECHAS)
-	var n: int = mini(pez.pasos_perfect, stats.limite_cadena)
+	var n: int = mini(pez.pasos_perfect, cana.limite_cadena)
+	var mult: float = pez.mult_tiempo * cana.mult_tiempo * Juego.mult_tiempo_cebo()
 	var anterior: StringName = &""
 	for i in n:
 		var p := Paso.new()
-		p.tiempo = maxf(stats.tiempo_minimo, stats.tiempo_inicial * pow(stats.factor_tiempo, i)) * pez.mult_tiempo
+		p.tiempo = maxf(stats.tiempo_minimo, stats.tiempo_inicial * pow(stats.factor_tiempo, i)) * mult
 		if pez.machacar_cada > 0 and i > 0 and (i + 1) % pez.machacar_cada == 0:
 			p.tipo = Tipo.MACHACAR
 			p.acciones = [todas.pick_random()]
 			p.pulsaciones = pez.pulsaciones_machacar
-			p.tiempo = pez.tiempo_machacar
+			p.tiempo = pez.tiempo_machacar * mult
 		elif i > 0 and randf() < pez.prob_doble:
 			p.tipo = Tipo.DOBLE
 			p.acciones = [NUMEROS.pick_random(), FLECHAS.pick_random()]
@@ -225,7 +238,7 @@ func _tiempo_agotado() -> void:
 
 func _fallar() -> void:
 	fallo.emit()
-	if aciertos == 0 and not stats.auto_primer_boton:
+	if aciertos == 0 and not cana.auto_primer_boton:
 		_escapar()
 	else:
 		_capturar()
@@ -249,12 +262,15 @@ func _capturar() -> void:
 	var captura: Dictionary = {
 		"id": String(pez.id), "peso": peso, "calidad": ratio, "perfecto": perfecto, "valor": valor,
 	}
-	Juego.anadir_captura(captura, pez)
-	pez_capturado.emit(captura, pez)
+	if Juego.anadir_captura(captura, pez):
+		pez_capturado.emit(captura, pez)
+	else:
+		barca_llena.emit(pez)
 	_terminar()
 
 
 func _terminar() -> void:
+	Juego.consumir_cebo()
 	# El zoom se mantiene durante el resultado y se suelta al volver a esperar.
 	_contador = duracion_resultado
 	_cambiar_estado(Estado.RESULTADO)

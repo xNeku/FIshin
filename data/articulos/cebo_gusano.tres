@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="ArticuloData" format=3]
+
+[ext_resource type="Script" path="res://scripts/datos/articulo_data.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"cebo_gusano"
+nombre = "Cebo de gusano"
+descripcion = "Los peces se lo piensan menos: +30% de tiempo para reaccionar durante 5 pescas."
+tipo = 1
+precio = 15.0
+crecimiento_precio = 1.0
+max_compras = 0
+cebo_pescas = 5
+cebo_mult_tiempo = 1.3
+cebo_mult_espera = 1.0

@@ -10,6 +10,7 @@ nombre = "Sardina"
 rareza = 0
 icono = ExtResource("2_icono")
 color = Color(0.6588, 0.7373, 0.8, 1)
+profundidad = 1
 valor_base = 4.0
 peso_min = 0.1
 peso_max = 0.3

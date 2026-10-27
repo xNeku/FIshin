@@ -24,7 +24,7 @@ func _ready() -> void:
 	if Juego.flags.get("barco_comerciante", false):
 		_aparecer(true)
 	else:
-		Juego.capturas_cambiadas.connect(_on_capturas)
+		Juego.inventario_cambiado.connect(_on_inventario)
 
 
 func _process(delta: float) -> void:
@@ -40,7 +40,7 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func puede_vender() -> bool:
-	return listo and not Juego.capturas.is_empty()
+	return listo
 
 
 func vender() -> float:
@@ -50,7 +50,7 @@ func vender() -> float:
 	return total
 
 
-func _on_capturas(_n: int) -> void:
+func _on_inventario() -> void:
 	if not presente and Juego.stats.peces_pescados >= capturas_para_aparecer:
 		_aparecer(false)
 

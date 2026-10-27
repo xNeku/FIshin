@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ArticuloData" format=3]
+
+[ext_resource type="Script" path="res://scripts/datos/articulo_data.gd" id="1_script"]
+[ext_resource type="Resource" path="res://data/canas/cana_buena.tres" id="2_cana"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"cana_decente"
+nombre = "Caña decente"
+descripcion = "Llega más hondo. Ahí abajo hay bichos gordos."
+tipo = 0
+precio = 150.0
+crecimiento_precio = 1.0
+max_compras = 1
+cana = ExtResource("2_cana")

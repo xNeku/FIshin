@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="CanaData" format=3]
+
+[ext_resource type="Script" path="res://scripts/datos/cana_data.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"cana_pro"
+nombre = "Caña de profesional"
+descripcion = "Si se te pasa el primer botón, el pez se queda igual."
+profundidad = 3
+limite_cadena = 15
+mult_tiempo = 1.1
+mult_espera = 0.8
+mult_rareza = 1.6
+auto_primer_boton = true

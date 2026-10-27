@@ -23,6 +23,8 @@ const NOMBRES_RAREZA: Array[String] = ["Común", "Raro", "Extraño", "Legendario
 @onready var efecto: ColorRect = $EfectoPantalla
 @onready var rublos: Label = $Info/Rublos
 @onready var barca: Label = $Info/Barca
+@onready var cana: Label = $Info/Cana
+@onready var cebo: Label = $Info/Cebo
 @onready var estado: Label = $Estado
 @onready var prompt: Control = $Prompt
 @onready var teclas: Control = $Prompt/Teclas
@@ -65,6 +67,7 @@ func _ready() -> void:
 		pesca.machacar_fallido.connect(_on_machacar_fallido)
 		pesca.pez_capturado.connect(_on_capturado)
 		pesca.pez_escapado.connect(_on_escapado)
+		pesca.barca_llena.connect(_on_barca_llena)
 		pesca.progreso_cambiado.connect(func(p: float) -> void: _progreso = p)
 		_on_estado(pesca.estado)
 	if barco:
@@ -78,10 +81,14 @@ func _process(delta: float) -> void:
 	if absf(_rublos_mostrados - Juego.rublos) < 0.05:
 		_rublos_mostrados = Juego.rublos
 	rublos.text = Formato.dinero(_rublos_mostrados)
-	barca.text = "Barca: %d peces (%s)" % [Juego.capturas.size(), Formato.dinero(Juego.valor_inventario())]
+	barca.text = "Barca: %d/%d huecos · %d peces (%s)" % [Juego.huecos_usados(), Juego.huecos, Juego.capturas.size(), Formato.dinero(Juego.valor_inventario())]
+	cana.text = Juego.cana().nombre
+	cebo.visible = not Juego.cebo.is_empty()
+	if cebo.visible:
+		cebo.text = "Cebo: %d pescas" % int(Juego.cebo.pescas)
 	aviso.visible = barco != null and barco.puede_vender()
 	if aviso.visible:
-		aviso.text = "[E] Vender todo al comerciante (%s)" % Formato.dinero(Juego.valor_inventario())
+		aviso.text = "[E] Hablar con el comerciante"
 
 	var p: Pesca.Paso = pesca.paso_actual() if pesca else null
 	if p:
@@ -188,6 +195,11 @@ func _on_escapado(pez: PezData) -> void:
 		_popup("Era un %s..." % pez.nombre, colores_rareza[pez.rareza], Vector2(0.5, 0.4), 1.2)
 	else:
 		_popup("Se escapó", color_fallo, Vector2(0.5, 0.4), 1.0)
+
+
+func _on_barca_llena(pez: PezData) -> void:
+	estado.text = "¡Barca llena!"
+	_popup("Sin hueco: sueltas el %s" % pez.nombre, color_fallo, Vector2(0.5, 0.4), 1.1)
 
 
 func _on_vendido(total: float) -> void:
