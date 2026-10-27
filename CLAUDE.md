@@ -49,6 +49,7 @@ Incremental de pesca con expansión de terreno tipo Forager. Náufrago carismát
 - El humano: pull en Termux, prueba, ajusta en el inspector y hace push. Antes de continuar, haz pull y respeta sus cambios.
 - Avisa siempre de qué `.tscn` tocas. No reescribas una escena entera sin necesidad.
 - Los comandos para el humano van SIEMPRE en bloque de código.
+- Al acabar cada cosa, da SIEMPRE una única línea lista para copiar y pegar en Termux que lo actualice todo. NUNCA incluyas `cd`: el humano ya está en la carpeta del repo (`~/storage/shared/Godot/FIshin`). Normalmente basta `git pull`.
 - Si el humano tiene que tocar nodos en el editor, dale la jerarquía completa en un bloque.
 
 ## Cada tarea
