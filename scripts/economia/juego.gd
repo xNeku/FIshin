@@ -9,6 +9,7 @@ signal cebo_cambiado
 const VERSION_SAVE := 2
 const RUTA_SAVE := "user://partida.json"
 const RUTA_CANAS := "res://data/canas/%s.tres"
+const RUTA_PECES := "res://data/peces/%s.tres"
 
 @export var segundos_autoguardado: float = 20.0
 @export var huecos_iniciales: int = 6
@@ -89,6 +90,19 @@ func consumir_cebo() -> void:
 
 
 # --- Inventario ---
+
+func pez_data(id_pez: String) -> PezData:
+	return load(RUTA_PECES % id_pez) as PezData
+
+
+## Cuántas especies existen (para la colección).
+func total_especies() -> int:
+	var n: int = 0
+	for f: String in DirAccess.get_files_at("res://data/peces"):
+		if f.trim_suffix(".remap").ends_with(".tres"):
+			n += 1
+	return n
+
 
 ## Especies en la barca, en orden de llegada.
 func especies() -> Array[String]:

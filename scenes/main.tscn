@@ -3,6 +3,7 @@
 [ext_resource type="PackedScene" path="res://scenes/mundo/barca.tscn" id="1_barca"]
 [ext_resource type="PackedScene" path="res://scenes/mundo/barco_comerciante.tscn" id="2_barco"]
 [ext_resource type="PackedScene" path="res://scenes/ui/hud.tscn" id="3_hud"]
+[ext_resource type="PackedScene" path="res://scenes/ui/menu.tscn" id="11_menu"]
 [ext_resource type="Script" path="res://scripts/pesca/pesca.gd" id="4_pesca"]
 [ext_resource type="Script" path="res://scripts/pesca/camara_pesca.gd" id="5_camara"]
 [ext_resource type="Script" path="res://scripts/pesca/sonido_pesca.gd" id="6_sonido"]
@@ -139,3 +140,5 @@ stream = ExtResource("sfx_latido")
 [node name="HUD" parent="." node_paths=PackedStringArray("pesca", "barco") instance=ExtResource("3_hud")]
 pesca = NodePath("../Pesca")
 barco = NodePath("../BarcoComerciante")
+
+[node name="Menu" parent="." instance=ExtResource("11_menu")]

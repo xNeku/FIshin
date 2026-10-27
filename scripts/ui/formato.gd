@@ -33,3 +33,10 @@ static func calidad(ratio: float, perfecto: bool) -> String:
 
 static func peso(kg: float) -> String:
 	return "%.2f kg" % kg if kg < 10.0 else "%.1f kg" % kg
+
+
+static func tiempo(segundos: float) -> String:
+	var s: int = floori(segundos)
+	if s >= 3600:
+		return "%dh %02dm" % [s / 3600, (s % 3600) / 60]
+	return "%dm %02ds" % [s / 60, s % 60]
