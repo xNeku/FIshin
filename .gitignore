@@ -1,0 +1,5 @@
+.godot/
+/android/
+*.tmp
+tmp_tests/
+export_presets.cfg
