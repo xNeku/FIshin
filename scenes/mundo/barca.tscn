@@ -103,6 +103,9 @@ texture = ExtResource("9_piernas")
 [node name="Foco" type="Marker3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.05, 0)
 
+[node name="Cabeza" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.1, 2.15, 0)
+
 [node name="Cana" type="Node3D" parent="."]
 
 [node name="Punta" type="Marker3D" parent="Cana"]

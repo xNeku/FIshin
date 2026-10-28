@@ -280,13 +280,15 @@ comercio = NodePath("../Comercio")
 barca = NodePath("../Barca")
 ocultar_al_andar = [NodePath("../Barca/Protagonista"), NodePath("../Barca/Piernas"), NodePath("../Barca/Cana"), NodePath("../Barca/Sedal"), NodePath("../Barca/Flotador")]
 
-[node name="HUD" parent="." node_paths=PackedStringArray("pesca", "barco", "celebracion", "mundo", "jugador", "comercio") instance=ExtResource("3_hud")]
+[node name="HUD" parent="." node_paths=PackedStringArray("pesca", "barco", "celebracion", "mundo", "jugador", "comercio", "camara", "cabeza") instance=ExtResource("3_hud")]
 pesca = NodePath("../Pesca")
 barco = NodePath("../BarcoComerciante")
 celebracion = NodePath("../Celebracion")
 mundo = NodePath("../Mundo")
 jugador = NodePath("../Jugador")
 comercio = NodePath("../Comercio")
+camara = NodePath("../Camara")
+cabeza = NodePath("../Barca/Cabeza")
 
 [node name="Menu" parent="." instance=ExtResource("11_menu")]
 

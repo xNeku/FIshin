@@ -11,6 +11,11 @@ extends CanvasLayer
 ## La X roja de fallo o escape (popup_icono.tscn).
 @export var escena_x: PackedScene
 @export var escala_x: float = 1.0
+## Para poner la X encima de la cabeza: la cámara del juego y el punto de la cabeza en el donut.
+@export var camara: Camera3D
+@export var cabeza: Node3D
+## Altura de la X sobre los pies del náufrago cuando va andando.
+@export var altura_cabeza_andando: float = 2.0
 @export var velocidad_contador: float = 6.0
 ## Cuánto salta de sitio el botón al tope de intensidad (píxeles).
 @export var salto_prompt_maximo: float = 220.0
@@ -194,7 +199,7 @@ func _palabra(indice: int) -> String:
 	return texto
 
 func _on_fallo() -> void:
-	_equis(prompt.position + teclas.position + teclas.size * 0.5)
+	_equis()
 
 
 func _on_machacar_progreso(golpes: int, _necesarios: int) -> void:
@@ -203,7 +208,7 @@ func _on_machacar_progreso(golpes: int, _necesarios: int) -> void:
 
 
 func _on_machacar_fallido(escapa: bool) -> void:
-	_equis(popups.size * Vector2(0.5, 0.45), 1.0 if escapa else 0.7)
+	_equis(1.0 if escapa else 0.7)
 
 
 func _on_capturado(c: Dictionary, pez: PezData) -> void:
@@ -217,11 +222,11 @@ func _on_capturado(c: Dictionary, pez: PezData) -> void:
 
 
 func _on_escapado(pez: PezData) -> void:
-	_equis(popups.size * Vector2(0.5, 0.4), 1.4 if pez.rareza >= PezData.Rareza.RARO else 1.0)
+	_equis(1.4 if pez.rareza >= PezData.Rareza.RARO else 1.0)
 
 
 func _on_barca_llena(_pez: PezData) -> void:
-	_equis(popups.size * Vector2(0.5, 0.4))
+	_equis()
 
 
 func _on_bloqueo_barca_llena(llena: bool) -> void:
@@ -240,7 +245,7 @@ func _on_vendido(total: float) -> void:
 	_popup_en("+" + Formato.dinero(total), color_perfecto, rublos.global_position + Vector2(rublos.size.x * 0.5, 80), 1.4)
 
 
-func _equis(centro: Vector2, escala: float = 1.0) -> void:
+func _equis(escala: float = 1.0) -> void:
 	# Un fallo que hace escapar al pez lanza dos avisos seguidos: solo se ve una X.
 	var ahora: int = Time.get_ticks_msec()
 	if escena_x == null or ahora - _ultima_x < 300:
@@ -248,7 +253,21 @@ func _equis(centro: Vector2, escala: float = 1.0) -> void:
 	_ultima_x = ahora
 	var x: Node = escena_x.instantiate()
 	popups.add_child(x)
-	x.mostrar(centro, escala * escala_x)
+	x.mostrar(_sobre_la_cabeza(), escala * escala_x)
+
+
+## Punto de pantalla (en coordenadas de Popups) encima de la cabeza del náufrago.
+func _sobre_la_cabeza() -> Vector2:
+	if camara == null:
+		return popups.size * Vector2(0.5, 0.4)
+	var p: Vector3
+	if Juego.en_movimiento and jugador:
+		p = jugador.global_position + Vector3.UP * altura_cabeza_andando
+	elif cabeza:
+		p = cabeza.global_position
+	else:
+		return popups.size * Vector2(0.5, 0.4)
+	return popups.get_global_transform().affine_inverse() * camara.unproject_position(p)
 
 
 ## Popup en coordenadas relativas de pantalla (0..1).
