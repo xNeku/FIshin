@@ -7,6 +7,8 @@ signal vendido(total: float)
 
 @export var nombre: String = "Comerciante"
 @export var articulos: Array[ArticuloData] = []
+## Para la tienda: este vendedor compra lo de la barca.
+var compra_peces: bool = true
 @export var tienda: Tienda
 @export var capturas_para_aparecer: int = 3
 @export var distancia_entrada: float = 25.0
@@ -37,13 +39,13 @@ func _process(delta: float) -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if listo and tienda and event.is_action_pressed("interactuar"):
+	if listo and tienda and not Juego.en_movimiento and event.is_action_pressed("interactuar"):
 		get_viewport().set_input_as_handled()
 		tienda.abrir(self)
 
 
 func puede_hablar() -> bool:
-	return listo
+	return listo and not Juego.en_movimiento
 
 
 func vender() -> float:

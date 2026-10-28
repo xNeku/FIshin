@@ -1,0 +1,93 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/bestiario.gd" id="1_script"]
+[ext_resource type="PackedScene" path="res://scenes/ui/ficha_bestiario.tscn" id="2_ficha"]
+
+[sub_resource type="StyleBoxFlat" id="estilo_libro"]
+bg_color = Color(0.45, 0.13, 0.12, 0.98)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(0.25, 0.07, 0.06, 1)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+
+[node name="Bestiario" type="CanvasLayer"]
+process_mode = 3
+layer = 11
+script = ExtResource("1_script")
+escena_ficha = ExtResource("2_ficha")
+
+[node name="Raiz" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.55)
+
+[node name="Panel" type="PanelContainer" parent="Raiz"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -660.0
+offset_top = -420.0
+offset_right = 660.0
+offset_bottom = 420.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("estilo_libro")
+
+[node name="Margen" type="MarginContainer" parent="Raiz/Panel"]
+layout_mode = 2
+theme_override_constants/margin_left = 28
+theme_override_constants/margin_top = 22
+theme_override_constants/margin_right = 28
+theme_override_constants/margin_bottom = 22
+
+[node name="Contenido" type="VBoxContainer" parent="Raiz/Panel/Margen"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Cabecera" type="HBoxContainer" parent="Raiz/Panel/Margen/Contenido"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Titulo" type="Label" parent="Raiz/Panel/Margen/Contenido/Cabecera"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+theme_override_colors/font_color = Color(1, 0.88, 0.6, 1)
+theme_override_font_sizes/font_size = 48
+text = "Bestiario"
+
+[node name="Progreso" type="Label" parent="Raiz/Panel/Margen/Contenido/Cabecera"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(1, 0.88, 0.6, 1)
+theme_override_font_sizes/font_size = 32
+text = "0 / 6 especies"
+
+[node name="Lista" type="ScrollContainer" parent="Raiz/Panel/Margen/Contenido"]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="Rejilla" type="GridContainer" parent="Raiz/Panel/Margen/Contenido/Lista"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/h_separation = 14
+theme_override_constants/v_separation = 14
+columns = 5
+
+[node name="Cerrar" type="Button" parent="Raiz/Panel/Margen/Contenido"]
+custom_minimum_size = Vector2(240, 70)
+layout_mode = 2
+size_flags_horizontal = 8
+text = "Cerrar [E]"

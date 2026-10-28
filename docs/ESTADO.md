@@ -1,7 +1,7 @@
 # ESTADO (traspaso entre sesiones)
 
 ## Dónde estamos
-Fase 3 empezada: el mundo crece. Apariciones por datos (primera isla por mar a 200 ₽ totales, SkillTreeMan cae del cielo a 100 peces). Falta moverse e interactuar (árbol, bestiario, tienda del viejo).
+Fase 3 casi completa: el mundo crece (apariciones por datos) y ya se puede andar (Q), saltar entre barca e islas e interactuar (E) con el viejo (tienda) y el bestiario. Falta el árbol de habilidades (espera al diseñador).
 Fase 2 hecha: bucle pescar → vender → mejorar. Cañas por profundidad, cebo, huecos de barca apilados por especie, tienda del comerciante (E) y menú (Tab) (Barca, Stats, Árbol vacío, Opciones). Save v2. Falta que el diseñador lo pruebe a mano.
 
 ## Mapa rápido del código
@@ -18,6 +18,9 @@ Fase 2 hecha: bucle pescar → vender → mejorar. Cañas por profundidad, cebo,
 - `scripts/mundo/mundo.gd` (nodo Mundo en main): lista de AparicionData (`data/apariciones/*.tres`), vigila condiciones, instancia la escena en su casilla ancla y la trae por MAR o desde el CIELO (sombra, caída, impacto). Guarda `aparecido_<id>` en Juego.flags. Bloquea la pesca (Pesca.bloquear) y mueve la cámara (CamaraPesca.enfocar / sacudir).
 - Islas: `scenes/mundo/islas/*.tscn` con raíz `isla.gd` (salpicadura + al_llegar_activar). Fuego reutilizable: `scenes/mundo/fuego.tscn` (fuego.gd, activar()).
 - Casilla de la carta → mundo: (x, y) → Vector3(x*2, 0, -y*2).
+- `scripts/jugador/jugador.gd` + `scenes/jugador/jugador.tscn` (nodo Jugador en main): modo andar, casillas pisables (Mundo.celdas_pisables), salto, interacción con el grupo "interactuables". Juego.en_movimiento = true mientras anda.
+- `scripts/mundo/interactuable.gd` (Interactuable): nodos en las islas con accion TIENDA (nombre, articulos, compra_peces, saludos) o BESTIARIO. La Tienda acepta cualquier vendedor con esos campos.
+- `scripts/ui/bestiario.gd` + `scenes/ui/bestiario.tscn` (fichas desde `ficha_bestiario.tscn`).
 - `scenes/main.tscn`: lo monta todo.
 - Peces: `data/peces/*.tres` (PezData). Arte placeholder en `art/` (generado por script, sustituible).
 
@@ -27,7 +30,7 @@ Fase 2 hecha: bucle pescar → vender → mejorar. Cañas por profundidad, cebo,
 - Se leen con ArtifactData (list). El código fuente está en `docs/herramientas/`.
 
 ## Siguiente paso
-1. Modo movimiento (Q): andar por las islas, salto barca ↔ isla, interactuar con E (viejo → árbol + tienda de la Sabia caña; bestiario).
+1. Feedback del diseñador sobre andar/saltar.
 2. Árbol de habilidades: pasar el artefacto a datos cuando el diseñador lo rellene.
 3. Rehacer el cebo: probabilidades + duración en segundos.
 

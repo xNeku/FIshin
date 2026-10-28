@@ -126,6 +126,17 @@ func esperar() -> void:
 	intensidad_cambiada.emit(0.0)
 
 
+## Deja de pescar (el náufrago se baja a andar).
+func pausar() -> void:
+	_cambiar_estado(Estado.INACTIVO)
+	intensidad_cambiada.emit(0.0)
+
+
+func reanudar() -> void:
+	if estado == Estado.INACTIVO:
+		esperar()
+
+
 ## True mientras hay un pez enganchado (botones en pantalla o entre botones).
 func en_curso() -> bool:
 	return estado == Estado.PASO or estado == Estado.ENTRE_PASOS

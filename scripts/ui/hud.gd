@@ -5,6 +5,7 @@ extends CanvasLayer
 @export var barco: BarcoComerciante
 @export var celebracion: Node
 @export var mundo: Node
+@export var jugador: Node
 @export var escena_popup: PackedScene
 @export var velocidad_contador: float = 6.0
 ## Cuánto salta de sitio el botón al tope de intensidad (píxeles).
@@ -52,6 +53,7 @@ const NOMBRES_RAREZA: Array[String] = ["Común", "Raro", "Extraño", "Legendario
 @onready var nombre: Label = $Resultado/Margen/Fila/Textos/Nombre
 @onready var detalle: Label = $Resultado/Margen/Fila/Textos/Detalle
 @onready var aviso: Label = $Aviso
+@onready var ayuda_modo: Label = $AyudaModo
 
 var _rublos_mostrados: float = 0.0
 var _intensidad_objetivo: float = 0.0
@@ -109,6 +111,12 @@ func _process(delta: float) -> void:
 	aviso.visible = barco != null and barco.puede_hablar()
 	if aviso.visible:
 		aviso.text = "[E] Hablar con el comerciante"
+	var texto_modo: String = jugador.ayuda() if jugador else ""
+	ayuda_modo.visible = texto_modo != ""
+	ayuda_modo.text = texto_modo
+	if Juego.en_movimiento:
+		estado.text = "Explorando"
+		resultado.visible = false
 
 	var p: Pesca.Paso = pesca.paso_actual() if pesca else null
 	if p:

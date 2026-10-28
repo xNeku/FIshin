@@ -55,6 +55,7 @@ var _foco: Vector3
 var _t_foco: float = 0.0
 var _peso_foco: float = 0.0
 var _alejar_foco: float = 0.0
+var _seguido: Node3D
 var _t: float = 0.0
 var _ruido := FastNoiseLite.new()
 
@@ -88,6 +89,9 @@ func _process(delta: float) -> void:
 		_zoom_celebracion = lerpf(_zoom_celebracion, 0.0, 1.0 - exp(-2.0 * dt))
 	z = maxf(z, _zoom_celebracion)
 	obj += Vector3.UP * altura_primer_plano * _zoom_celebracion
+	if _seguido:
+		_foco = Vector3(_seguido.global_position.x, 0.0, _seguido.global_position.z)
+		_t_foco = maxf(_t_foco, 0.5)
 	_t_foco = maxf(0.0, _t_foco - dt)
 	_peso_foco = lerpf(_peso_foco, 1.0 if _t_foco > 0.0 else 0.0, 1.0 - exp(-velocidad_foco * dt))
 	var desp: Vector3 = (_foco - _mirar_base) * _peso_foco
@@ -109,6 +113,14 @@ func enfocar(punto: Vector3, segundos: float, alejar: float = 0.0) -> void:
 	_foco = Vector3(punto.x, 0.0, punto.z)
 	_t_foco = segundos
 	_alejar_foco = alejar
+
+
+## La cámara sigue a un nodo (el náufrago andando). null = deja de seguir.
+func seguir(nodo: Node3D, alejar: float = 0.0) -> void:
+	_seguido = nodo
+	_alejar_foco = alejar
+	if nodo == null:
+		_t_foco = 0.0
 
 
 ## Golpe de cámara puntual (impactos).

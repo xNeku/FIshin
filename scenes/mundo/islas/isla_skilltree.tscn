@@ -3,6 +3,9 @@
 [ext_resource type="Script" path="res://scripts/mundo/isla.gd" id="1_script"]
 [ext_resource type="PackedScene" path="res://scenes/mundo/fuego.tscn" id="2_fuego"]
 [ext_resource type="Texture2D" path="res://art/personajes/viejo.png" id="3_viejo"]
+[ext_resource type="Script" path="res://scripts/mundo/interactuable.gd" id="4_interactuable"]
+[ext_resource type="Script" path="res://scripts/datos/articulo_data.gd" id="5_articulo"]
+[ext_resource type="Resource" path="res://data/articulos/cana_sabia.tres" id="6_cana_sabia"]
 
 [sub_resource type="StandardMaterial3D" id="m_hierba"]
 albedo_color = Color(0.310, 0.520, 0.240, 1)
@@ -160,6 +163,15 @@ texture_filter = 0
 shaded = false
 pixel_size = 0.04
 texture = ExtResource("3_viejo")
+
+[node name="InteraccionViejo" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 0)
+script = ExtResource("4_interactuable")
+texto_accion = "Hablar con el viejo"
+radio = 1.9
+nombre = "SkillTreeMan"
+articulos = Array[ExtResource("5_articulo")]([ExtResource("6_cana_sabia")])
+saludos = Array[String](["Mmmh... el árbol aún está brotando, chaval. Vuelve cuando tenga ramas.", "Ommm... ¿Una caña? Esta la tallé yo con paciencia. Y con un cuchillo.", "La paz no se pesca. Bueno, a veces sí."])
 
 [node name="Hoguera" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0.25, 1.1)

@@ -1,0 +1,38 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/jugador/jugador.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://art/personajes/naufrago.png" id="2_naufrago"]
+[ext_resource type="AudioStream" path="res://art/sfx/salto.wav" id="3_salto"]
+
+[sub_resource type="StandardMaterial3D" id="mat_sombra"]
+transparency = 1
+shading_mode = 0
+albedo_color = Color(0, 0, 0, 0.35)
+
+[sub_resource type="CylinderMesh" id="malla_sombra"]
+material = SubResource("mat_sombra")
+top_radius = 0.35
+bottom_radius = 0.35
+height = 0.01
+radial_segments = 20
+rings = 1
+
+[node name="Jugador" type="Node3D"]
+script = ExtResource("1_script")
+
+[node name="Sprite" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
+billboard = 2
+alpha_cut = 1
+texture_filter = 0
+shaded = false
+pixel_size = 0.04
+texture = ExtResource("2_naufrago")
+
+[node name="Sombra" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.02, 0)
+cast_shadow = 0
+mesh = SubResource("malla_sombra")
+
+[node name="SfxSalto" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_salto")

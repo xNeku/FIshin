@@ -1,0 +1,61 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/ficha_bestiario.gd" id="1_script"]
+
+[sub_resource type="StyleBoxFlat" id="estilo_ficha"]
+bg_color = Color(0.95, 0.91, 0.8, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 5
+border_color = Color(0.35, 0.22, 0.12, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[node name="FichaBestiario" type="PanelContainer"]
+custom_minimum_size = Vector2(230, 0)
+mouse_filter = 2
+theme_override_styles/panel = SubResource("estilo_ficha")
+script = ExtResource("1_script")
+
+[node name="Margen" type="MarginContainer" parent="."]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 10
+
+[node name="Contenido" type="VBoxContainer" parent="Margen"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 4
+
+[node name="Icono" type="TextureRect" parent="Margen/Contenido"]
+texture_filter = 1
+custom_minimum_size = Vector2(0, 90)
+layout_mode = 2
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Nombre" type="Label" parent="Margen/Contenido"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.2, 0.12, 0.08, 1)
+theme_override_constants/outline_size = 0
+theme_override_font_sizes/font_size = 26
+text = "Sardina"
+horizontal_alignment = 1
+
+[node name="Detalle" type="Label" parent="Margen/Contenido"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.4, 0.3, 0.22, 1)
+theme_override_constants/outline_size = 0
+theme_override_font_sizes/font_size = 18
+text = "Común · mejor: Buena"
+horizontal_alignment = 1
+autowrap_mode = 3

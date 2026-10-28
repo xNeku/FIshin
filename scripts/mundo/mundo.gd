@@ -37,6 +37,7 @@ signal aparicion_terminada(datos: AparicionData)
 @export var reposo_cielo: float = 2.2
 
 var _ocupado: bool = false
+var _llegando: AparicionData
 
 
 func _ready() -> void:
@@ -59,6 +60,24 @@ func _process(_delta: float) -> void:
 	traer(pendientes[0])
 
 
+## True mientras algo está llegando (no se puede cambiar de modo).
+func ocupado() -> bool:
+	return _ocupado
+
+
+## Casillas por las que se puede andar: la barca y todo lo que ya ha llegado.
+func celdas_pisables() -> Array[Vector2i]:
+	var r: Array[Vector2i] = [Vector2i.ZERO]
+	for a: AparicionData in apariciones:
+		if ya_aparecio(a) and a != _llegando:
+			r.append_array(a.celdas)
+	return r
+
+
+func mundo_a_celda(p: Vector3) -> Vector2i:
+	return Vector2i(roundi(p.x / tamano_celda), roundi(-p.z / tamano_celda))
+
+
 func ya_aparecio(a: AparicionData) -> bool:
 	return Juego.flags.get("aparecido_" + String(a.id), false)
 
@@ -78,6 +97,7 @@ func celda_a_mundo(c: Vector2i) -> Vector3:
 
 func traer(a: AparicionData) -> void:
 	_ocupado = true
+	_llegando = a
 	Juego.flags["aparecido_" + String(a.id)] = true
 	Juego.guardar()
 	var n: Node3D = _instanciar(a)
@@ -88,6 +108,7 @@ func traer(a: AparicionData) -> void:
 		AparicionData.Llegada.CIELO:
 			await _desde_cielo(n, a)
 	aparicion_terminada.emit(a)
+	_llegando = null
 	_ocupado = false
 
 

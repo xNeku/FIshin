@@ -1,6 +1,7 @@
 class_name Tienda
 extends CanvasLayer
-## Tienda de un comerciante: comprar sus artículos y venderle todo lo de la barca. Pausa el juego.
+## Tienda de un vendedor (barco comerciante, viejo...). Pausa el juego.
+## El vendedor es cualquier nodo con: nombre, articulos, compra_peces y, opcionalmente, saludos y vender().
 
 @export var escena_fila: PackedScene
 @export var saludos: Array[String] = [
@@ -22,7 +23,7 @@ extends CanvasLayer
 @onready var sfx_compra: AudioStreamPlayer = $SfxCompra
 
 var abierta: bool = false
-var _barco: BarcoComerciante
+var _vendedor: Node
 
 
 func _ready() -> void:
@@ -42,13 +43,17 @@ func _notification(what: int) -> void:
 		cerrar()
 
 
-func abrir(barco: BarcoComerciante) -> void:
-	_barco = barco
+func abrir(vendedor: Node) -> void:
+	_vendedor = vendedor
 	abierta = true
 	raiz.visible = true
 	get_tree().paused = true
-	titulo.text = barco.nombre
-	dialogo.text = saludos.pick_random() if not saludos.is_empty() else ""
+	titulo.text = vendedor.nombre
+	var frases: Array[String] = saludos
+	if "saludos" in vendedor and not vendedor.saludos.is_empty():
+		frases = vendedor.saludos
+	dialogo.text = frases.pick_random() if not frases.is_empty() else ""
+	boton_vender.visible = vendedor.compra_peces
 	_refrescar()
 
 
@@ -62,7 +67,7 @@ func _refrescar() -> void:
 	rublos.text = Formato.dinero(Juego.rublos)
 	for n: Node in lista.get_children():
 		n.queue_free()
-	for art: ArticuloData in _barco.articulos:
+	for art: ArticuloData in _vendedor.articulos:
 		var f: Node = escena_fila.instantiate()
 		lista.add_child(f)
 		f.mostrar(art)
@@ -83,6 +88,6 @@ func _vender() -> void:
 	if Juego.capturas.is_empty():
 		dialogo.text = frase_sin_peces
 		return
-	var total: float = _barco.vender()
+	var total: float = _vendedor.vender() if _vendedor.has_method("vender") else Juego.vender_todo()
 	dialogo.text = frase_venta % Formato.dinero(total)
 	_refrescar()

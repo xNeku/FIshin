@@ -26,8 +26,8 @@ Regla: no se pasa de fase hasta que la actual sea jugable y divertida. Cada tare
 ## Fase 3 — Mundo y expansión
 - [x] Cuadrícula y colocación (apariciones por datos desde la carta)
 - [x] Hitos que hacen aparecer cosas, con llegada por mar o caída del cielo
-- [ ] Modo movimiento, salto barca ↔ isla
-- [ ] Interacción (E) y diálogo
+- [x] Modo movimiento (Q), salto barca ↔ isla
+- [x] Interacción (E): tienda del viejo y bestiario. Falta el diálogo tipo Pokémon y el árbol
 - **Hito:** se nota que el mundo crece.
 
 ## Fase 4 — Menú y progresión

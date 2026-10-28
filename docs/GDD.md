@@ -29,6 +29,8 @@ Marcas: [DECIDIDO] lo decidió el diseñador · [PROPUESTA] sugerencia de Claude
 - [DECIDIDO] **Modo movimiento**: un botón saca del modo pesca y el personaje se mueve como en cualquier juego. Si anda desde la barca hacia una isla adyacente, salta por encima del agua (y al revés para volver).
 - [DECIDIDO] Al principio no puedes moverte porque no hay suelo.
 - [PROPUESTA] Teclas: WASD para moverse, Q para entrar y salir del modo pesca.
+- [PROPUESTA] Implementado: Q solo baja a tierra si ya ha llegado alguna isla y no estás en mitad de una pesca; para volver a pescar hay que estar en la barca. Saltas el agua si al empujar contra ella hay suelo a dos casillas, enfrente o en la diagonal (la barca es 1×1). Mientras andas no pica nada.
+- [PROPUESTA] E con el viejo abre su tienda (Sabia caña) con frases suyas; el árbol aún no existe y lo dice él. E en el bestiario abre el libro: especies pescadas con su mejor calidad y las demás en silueta "???".
 - [PROPUESTA] Interactuar con la tecla E abre un diálogo tipo Pokémon.
 
 ## 6. Pesca (núcleo)

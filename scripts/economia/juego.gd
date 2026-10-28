@@ -34,6 +34,9 @@ var coleccion: Dictionary = {}
 ## Hitos y cosas desbloqueadas (ej. "barco_comerciante": true)
 var flags: Dictionary = {}
 
+## true mientras el náufrago anda fuera de la barca (no se guarda).
+var en_movimiento: bool = false
+
 var _t_guardado: float = 0.0
 var _cana: CanaData
 
