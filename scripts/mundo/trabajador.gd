@@ -23,7 +23,8 @@ enum Estado { YENDO_A_PUESTO, PESCANDO, YENDO_AL_CUBO, ESPERANDO_CUBO, DEJANDO }
 @export var altura_salto: float = 1.2
 
 @onready var sprite: Sprite3D = $Sprite
-@onready var cuenta: Label3D = $Cuenta
+## Contador opcional encima (si se añade un Label3D llamado Cuenta).
+@onready var cuenta: Label3D = get_node_or_null("Cuenta")
 @onready var pez_pescado: Sprite3D = $PezPescado
 @onready var charla: Interactuable = $Charla
 
@@ -186,5 +187,7 @@ func _mostrar_pez() -> void:
 
 
 func _actualizar_cuenta() -> void:
+	if cuenta == null:
+		return
 	cuenta.text = "%d/%d" % [bolsa.size(), capacidad]
 	cuenta.visible = bolsa.size() > 0

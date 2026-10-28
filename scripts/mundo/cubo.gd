@@ -2,7 +2,8 @@ extends Node3D
 ## El cubo del puerto. Los pescadores lo llenan; el náufrago lo coge (E), lo vende y vuelve solo.
 
 @onready var sprite: Sprite3D = $Sprite
-@onready var cuenta: Label3D = $Cuenta
+## Contador opcional encima del cubo (si se añade un Label3D llamado Cuenta).
+@onready var cuenta: Label3D = get_node_or_null("Cuenta")
 @onready var interaccion: Interactuable = $Interaccion
 
 
@@ -15,8 +16,9 @@ func _ready() -> void:
 func _refrescar() -> void:
 	var aqui: bool = not Juego.cubo_en_mano
 	sprite.visible = aqui
-	cuenta.visible = aqui and not Juego.cubo_capturas.is_empty()
-	cuenta.text = "%d peces" % Juego.cubo_capturas.size()
+	if cuenta:
+		cuenta.visible = aqui and not Juego.cubo_capturas.is_empty()
+		cuenta.text = "%d peces" % Juego.cubo_capturas.size()
 	interaccion.texto_accion = "Coger el cubo (%d peces)" % Juego.cubo_capturas.size()
 	# Mientras no esté aquí no se puede coger.
 	if aqui:

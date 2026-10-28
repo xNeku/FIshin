@@ -189,8 +189,9 @@ func _on_acierto(indice: int, _total: int) -> void:
 	combo.pivot_offset = combo.size * 0.5
 	combo.scale = Vector2.ONE * (1.2 + k)
 	create_tween().tween_property(combo, "scale", Vector2.ONE * (0.8 + 0.6 * k), 0.15)
-	var c: Color = color_numeros.lerp(color_perfecto, k)
-	_popup_en(_palabra(indice), c, prompt.position + teclas.position + teclas.size * 0.5 + Vector2(0, -120), 0.7 + 0.7 * k)
+	# Frases de acierto ("Genial", "¡Brutal!"...): quitadas por ahora, se retomarán más adelante.
+	#var c: Color = color_numeros.lerp(color_perfecto, k)
+	#_popup_en(_palabra(indice), c, prompt.position + teclas.position + teclas.size * 0.5 + Vector2(0, -120), 0.7 + 0.7 * k)
 
 
 func _palabra(indice: int) -> String:

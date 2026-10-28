@@ -56,6 +56,7 @@ Fase 2 hecha: bucle pescar → vender → mejorar. Cañas por profundidad, cebo,
 - Barca llena (todos los huecos): no pica nada hasta vender. Sin progreso offline.
 - Machacar fallido: los extraños y legendarios se escapan, los demás pierden valor.
 - Niebla del clima activa (Forward+); en Compatibility lo dejaba todo gris.
+- Nada de textos flotantes en el mundo (ni carteles, ni contadores encima de pescadores o cubo). Las frases de acierto del minijuego están comentadas en hud.gd (_on_acierto) para retomarlas más adelante.
 - Estilo B pixelado, sin desenfoque. Nada de modelos 3D en objetos. Prota en donut rosa (no hay barca), piernas de frente, caña a la derecha. Viejo entre palmeras con hoguera delante.
 
 ## Pendiente del diseñador

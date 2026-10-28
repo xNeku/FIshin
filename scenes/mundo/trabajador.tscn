@@ -36,14 +36,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.02, 0)
 cast_shadow = 0
 mesh = SubResource("malla_sombra")
 
-[node name="Cuenta" type="Label3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.55, 0)
-billboard = 1
-pixel_size = 0.005
-outline_size = 8
-font_size = 40
-text = "0/10"
-
 [node name="PezPescado" type="Sprite3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
 billboard = 1

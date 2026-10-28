@@ -106,15 +106,6 @@ texture_filter = 0
 pixel_size = 0.05
 texture = ExtResource("2_casa")
 
-[node name="Letrero" type="Label3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.7, -1.2)
-billboard = 1
-pixel_size = 0.008
-outline_size = 10
-modulate = Color(0.25, 0.45, 0.85, 1)
-text = "LONJA"
-font_size = 64
-
 [node name="Venta" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.6)
 script = ExtResource("3_interactuable")
