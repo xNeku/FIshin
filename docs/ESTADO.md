@@ -39,7 +39,6 @@ Fase 2 hecha: bucle pescar → vender → mejorar. Cañas por profundidad, cebo,
 - Niebla desactivada (en Compatibility lo dejaba todo gris).
 
 ## Pendiente de preguntar (en orden)
-0. Primera isla: ¿"200" son ₽ ganados en total? ¿Orden real por condición cumplida?
 1. Qué cebos hay y qué sube cada uno.
 2. Barca llena: ¿soltar, elegir qué tirar, o que no piquen especies nuevas?
 3. Progreso offline.
