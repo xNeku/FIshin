@@ -2,8 +2,6 @@
 
 [ext_resource type="Script" path="res://scripts/efectos/pixelador.gd" id="1_script"]
 
-[sub_resource type="CameraAttributesPractical" id="atributos"]
-
 [node name="Pixelador" type="CanvasLayer"]
 layer = -10
 script = ExtResource("1_script")
@@ -25,5 +23,4 @@ size = Vector2i(480, 270)
 render_target_update_mode = 4
 
 [node name="CamaraPixel" type="Camera3D" parent="Contenedor/Vista"]
-attributes = SubResource("atributos")
 fov = 45.0

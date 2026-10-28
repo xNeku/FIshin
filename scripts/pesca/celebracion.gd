@@ -79,9 +79,6 @@ func celebrar(pez: PezData) -> void:
 	tw.tween_property(luz, "light_energy", energia_luz, 0.5)
 	brillos.emitting = true
 	fanfarria.play()
-	var pix: Node = get_tree().get_first_node_in_group("pixelador")
-	if pix:
-		pix.cine(true, pez_levantado.global_position)
 	empezada.emit(pez)
 	await get_tree().create_timer(duracion - 0.5).timeout
 	var fuera := create_tween().set_parallel(true)
@@ -90,8 +87,6 @@ func celebrar(pez: PezData) -> void:
 	brillos.emitting = false
 	await fuera.finished
 	pez_levantado.visible = false
-	if pix:
-		pix.cine(false)
 	protagonista.texture = _textura_normal
 	for n: Node3D in ocultar:
 		n.visible = true
