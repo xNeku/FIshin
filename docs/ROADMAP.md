@@ -50,7 +50,10 @@ Regla: no se pasa de fase hasta que la actual sea jugable y divertida. Cada tare
 - [ ] Más edificios, ramas e hitos
 
 ## Fase 7 — Pulido
-- [ ] Shaders (agua, luz), partículas, música y SFX
+- [x] Estilo pixelado (B) con desenfoque en cinemáticas, mar con olas y reflejos, clima
+- [x] Prota en donut con caña, corcho y ondas; suelos con textura y props en sprite
+- [ ] Barco comerciante en sprite, guía de medidas del arte
+- [ ] Partículas, música y SFX
 - [ ] Arte final del diseñador
 
 ## Fase 8 — Export y release

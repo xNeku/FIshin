@@ -16,6 +16,8 @@ Marcas: [DECIDIDO] lo decidió el diseñador · [PROPUESTA] sugerencia de Claude
 ## 3. Protagonista
 - [DECIDIDO] Náufrago dejado, consumido por tabaco, alcohol y malos vicios, pero carismático y buen rollero. Está de puto chill porque es un máquina.
 - [DECIDIDO] Inspirado en el personaje de Hotline Miami de la referencia: barba y melena de náufrago, sin gafas, pelo negro, más moreno de piel, sonrisa pícara.
+- [DECIDIDO] No va en barca: pesca tumbado de chill en un donut flotador rosa, con la caña en la mano. La celebración del pez gordo (brazos arriba con el pez) la hace tumbado. Con Q se pone de pie sobre el donut.
+- [PROPUESTA] Implementado: al esperar lanza el corcho en arco al agua (salpicadura y ondas lentas); al picar cambia a pose de tirar, el corcho se hunde y las ondas se aceleran; tiembla más con la intensidad.
 
 ## 4. Mundo y cuadrícula
 - [DECIDIDO] El mapa es una cuadrícula/matriz. La barca está en (0,0).
@@ -91,9 +93,15 @@ Marcas: [DECIDIDO] lo decidió el diseñador · [PROPUESTA] sugerencia de Claude
 ## 10. Progreso offline
 - [DECIDIDO] No hay progreso offline: solo avanza con el juego abierto.
 
-## 12. Dirección de arte (en discusión)
+## 12. Dirección de arte
 - [DECIDIDO] Se mantiene el 2.5D pero con todo en sprites 2D muy simples (personajes con su caña en la mano, objetos, barcos...), estilo Octopath. Excepciones más trabajadas: paisaje (cielo, mar, clima), VFX, peces y menús.
-- [PROPUESTA] Suelos de islas y tablones como bloques con textura pixel art. Guía de medidas para el arte (píxeles por casilla, alto de personaje, paleta, frames por animación) antes de dibujar.
+- [DECIDIDO] Estilo B: todo el mundo se dibuja pixelado (a 1/4 de resolución, sin suavizar) y el HUD va nítido encima. Con un toque del A: desenfoque de maqueta (tilt-shift) en cinemáticas y celebraciones.
+- [DECIDIDO] La referencia es la demo B (suelos de hierba y arena con textura, tablones, palmeras, sprites), con el mar nuevo.
+- [DECIDIDO] Mar con reflejos y clima que se nota (cielo, nubes, mar, lluvia, tormenta).
+- [DECIDIDO] El viejo, entre palmeras con la hoguera delante (y los bonsáis a los lados).
+- [PROPUESTA] Implementado: suelos de islas y tablones como bloques con textura pixel (materiales en `art/materiales/`, ~24 px por metro, igual que los sprites). Los sprites del mundo reciben luz (se oscurecen con la tormenta, la hoguera los ilumina); la llama no.
+- [PROPUESTA] Climas por datos (`data/climas/`): soleado, nublado, lluvia y tormenta, al azar con peso y transición suave. F6 cambia de clima.
+- [PROPUESTA] Guía de medidas para el arte (píxeles por casilla, alto de personaje, paleta, frames por animación) antes de dibujar.
 
 ## 11. Progresión del mundo
 - [DECIDIDO] Todo lo que se pega al mundo llega con animación: por defecto viene navegando por el mar. Algunos especiales tienen mini cinemática épica; el diseñador lo indica en la descripción de la carta.
