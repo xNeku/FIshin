@@ -113,6 +113,8 @@ Marcas: [DECIDIDO] lo decidió el diseñador · [PROPUESTA] sugerencia de Claude
 - [DECIDIDO] **Dinero y peces visuales y gustosos**: siempre que cualquier personaje deposite dinero o peces, salen volando uno a uno en parábola hacia quien los recibe. Al vender, primero van tus peces y después vuelve el dinero. Puedes moverte mientras: las piezas te siguen.
 - [PROPUESTA] El dinero vuela en monedas de 10; si es mucho, en billetes (100), fajos (1.000) o sacos (10.000), como mucho 25 piezas. Si hay muchos peces, cada pieza representa varios. El contador de rublos sube con cada pieza que llega.
 - Nota: el combo x10 solo es posible con la Sabia caña (rota: hasta 5, decente: hasta 9). El puerto queda para después del viejo.
+- [DECIDIDO] **Lonja** (3×3 en x −1..1, y 7..9, al final del camino): edificio principal de venta de pescado. Al acercarte e interactuar se vende de golpe todo lo que llevas (barca y cubo), con la animación de peces y dinero. Emerge del fondo del mar. Casa blanca medio moruna con toldo azul y blanco, bandera con un pez pocho y flotadores rojos y blancos alrededor.
+- [PROPUESTA] La lonja aparece cuando ya existe el camino y has ganado 1.500 ₽ en total (el diseñador preguntó qué se me ocurría). La fila de la casa (y = 9) no se pisa.
 - [PROPUESTA] Camino y pantalán llegan "construyéndose": las tablas salen del agua una a una, desde la barca hacia fuera.
 - [ABIERTO] Lista ordenada de islas y cosas que van llegando según avances. El diseñador la escribe en la **Carta de Fishin**: https://claude.ai/artifact/2oRoaePEyuUyDUYBJnK9oA (colección `elementos`).
 - Árbol de habilidades: el diseñador lo escribe en el **Árbol de Fishin**: https://claude.ai/artifact/UtP4gNUbFFwpX9SPeTcTnu (colecciones `ramas` y `nodos`).

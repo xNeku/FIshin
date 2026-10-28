@@ -105,6 +105,9 @@ func intentar_volver() -> void:
 
 
 func interactuar(i: Interactuable) -> void:
+	if i.accion == Interactuable.Accion.VENTA:
+		comercio.vender_todo(i)
+		return
 	# Con el cubo en la mano, cualquiera que compre peces se lo queda.
 	if Juego.cubo_en_mano and i.compra_peces:
 		comercio.vender_cubo(i)
@@ -134,6 +137,9 @@ func _refrescar_cubo() -> void:
 func ayuda() -> String:
 	if andando:
 		if cercano:
+			if cercano.accion == Interactuable.Accion.VENTA:
+				var n: int = comercio.peces_para_vender()
+				return "[E] Vender todo (%d peces)" % n if n > 0 else "Lonja: no llevas nada que vender"
 			if Juego.cubo_en_mano and cercano.compra_peces:
 				return "[E] Vender el cubo (%d peces)" % Juego.cubo_capturas.size()
 			return "[E] " + cercano.texto_accion

@@ -2,7 +2,8 @@ class_name Interactuable
 extends Node3D
 ## Algo con lo que el náufrago puede interactuar (E) al estar cerca: un vendedor, el bestiario...
 
-enum Accion { TIENDA, BESTIARIO, DIALOGO, CUBO }
+## VENTA: vende de golpe todo lo que llevas (barca y cubo), sin menú.
+enum Accion { TIENDA, BESTIARIO, DIALOGO, CUBO, VENTA }
 
 @export var accion: Accion = Accion.TIENDA
 ## Texto de la ayuda: "[E] <texto>".

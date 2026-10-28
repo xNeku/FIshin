@@ -20,15 +20,36 @@ func vender_barca(comprador: Node3D) -> float:
 	return await _vender(Juego.sacar_capturas(), origen(), comprador)
 
 
+## Vende de golpe todo lo que llevas: lo de la barca y, si lo tienes en la mano, el cubo.
+func vender_todo(comprador: Node3D) -> float:
+	var capturas: Array[Dictionary] = Juego.sacar_capturas()
+	var con_cubo: bool = Juego.cubo_en_mano
+	if con_cubo:
+		capturas.append_array(Juego.vaciar_cubo())
+	var total: float = await _vender(capturas, origen(), comprador)
+	if con_cubo:
+		await _devolver_cubo()
+	return total
+
+
+## Lo que se puede vender ahora mismo (barca + cubo en la mano).
+func peces_para_vender() -> int:
+	return Juego.capturas.size() + (Juego.cubo_capturas.size() if Juego.cubo_en_mano else 0)
+
+
 ## Vende el cubo que lleva el náufrago. Después el cubo vuelve volando a su sitio.
 func vender_cubo(comprador: Node3D) -> float:
 	var total: float = await _vender(Juego.vaciar_cubo(), jugador, comprador)
+	await _devolver_cubo()
+	return total
+
+
+func _devolver_cubo() -> void:
 	var cubo: Node3D = get_tree().get_first_node_in_group("cubo")
 	if cubo and textura_cubo:
 		jugador.soltar_cubo_visual()
 		await Vuelos.enviar(jugador, cubo, [textura_cubo], Callable(), null, 2.0)
 	Juego.soltar_cubo()
-	return total
 
 
 func _vender(capturas: Array[Dictionary], desde: Node3D, comprador: Node3D) -> float:

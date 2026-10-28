@@ -32,6 +32,11 @@ signal aparicion_terminada(datos: AparicionData)
 @export var ritmo_construccion: float = 0.12
 @export var subida_pieza: float = 1.2
 
+@export_group("Emerger del fondo")
+@export var profundidad_emerger: float = 7.0
+@export var duracion_emerger: float = 3.2
+@export var golpe_emerger: float = 0.35
+
 @export_group("Caída del cielo")
 @export var altura_cielo: float = 45.0
 ## Tiempo de sombra creciendo antes de que se vea caer.
@@ -78,7 +83,9 @@ func celdas_pisables() -> Array[Vector2i]:
 	var r: Array[Vector2i] = [Vector2i.ZERO]
 	for a: AparicionData in apariciones:
 		if ya_aparecio(a) and a != _llegando:
-			r.append_array(a.celdas)
+			for c: Vector2i in a.celdas:
+				if not c in a.celdas_bloqueadas:
+					r.append(c)
 	return r
 
 
@@ -141,6 +148,9 @@ func ya_aparecio(a: AparicionData) -> bool:
 
 
 func cumple(a: AparicionData) -> bool:
+	for r: StringName in a.requiere:
+		if not Juego.flags.get("aparecido_" + String(r), false):
+			return false
 	match a.condicion:
 		AparicionData.Condicion.PECES_PESCADOS:
 			return Juego.stats.peces_pescados >= a.valor
@@ -171,6 +181,8 @@ func traer(a: AparicionData) -> void:
 			await _desde_cielo(n, a)
 		AparicionData.Llegada.CONSTRUIR:
 			await _construir(n, a)
+		AparicionData.Llegada.EMERGER:
+			await _emerger(n, a)
 	aparicion_terminada.emit(a)
 	_llegando = null
 	_ocupado = false
@@ -265,6 +277,34 @@ func _construir(n: Node3D, a: AparicionData) -> void:
 		n.llegar()
 	aparicion_llegada.emit(a)
 	await get_tree().create_timer(1.0).timeout
+
+
+func _emerger(n: Node3D, a: AparicionData) -> void:
+	var destino: Vector3 = n.position
+	var total: float = duracion_emerger + 1.8
+	pesca.bloquear(total + 1.0)
+	camara.enfocar(destino, total, 4.0)
+	n.position = destino + Vector3.DOWN * profundidad_emerger
+	var burbujas: CPUParticles3D = n.get_node_or_null("Burbujas")
+	if burbujas:
+		# Las burbujas salen en la superficie, encima de donde viene.
+		burbujas.top_level = true
+		burbujas.global_position = destino + Vector3.UP * 0.1
+		burbujas.emitting = true
+	if sfx_mar:
+		sfx_mar.play()
+	var tw := create_tween()
+	tw.tween_property(n, "position:y", destino.y, duracion_emerger).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	await tw.finished
+	if burbujas:
+		burbujas.emitting = false
+	camara.sacudir(golpe_emerger)
+	if sfx_impacto:
+		sfx_impacto.play()
+	if n.has_method("llegar"):
+		n.llegar()
+	aparicion_llegada.emit(a)
+	await get_tree().create_timer(1.8).timeout
 
 
 func _desde_cielo(n: Node3D, a: AparicionData) -> void:

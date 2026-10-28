@@ -24,6 +24,7 @@
 [ext_resource type="PackedScene" path="res://scenes/ui/dialogo.tscn" id="29_dialogo"]
 [ext_resource type="Script" path="res://scripts/economia/comercio.gd" id="30_comercio"]
 [ext_resource type="Texture2D" path="res://art/articulos/cubo.png" id="31_cubo"]
+[ext_resource type="Resource" path="res://data/apariciones/lonja.tres" id="32_lonja"]
 [ext_resource type="Script" path="res://scripts/pesca/pesca.gd" id="4_pesca"]
 [ext_resource type="Script" path="res://scripts/pesca/camara_pesca.gd" id="5_camara"]
 [ext_resource type="Script" path="res://scripts/pesca/sonido_pesca.gd" id="6_sonido"]
@@ -188,7 +189,7 @@ stream = ExtResource("sfx_latido")
 
 [node name="Mundo" type="Node3D" parent="." node_paths=PackedStringArray("pesca", "camara", "celebracion", "sombra", "sfx_mar", "sfx_caida", "sfx_impacto", "sfx_pieza")]
 script = ExtResource("16_mundo")
-apariciones = Array[ExtResource("17_aparicion")]([ExtResource("18_primera_isla"), ExtResource("19_isla_skilltree"), ExtResource("26_puerto"), ExtResource("27_camino")])
+apariciones = Array[ExtResource("17_aparicion")]([ExtResource("18_primera_isla"), ExtResource("19_isla_skilltree"), ExtResource("26_puerto"), ExtResource("27_camino"), ExtResource("32_lonja")])
 pesca = NodePath("../Pesca")
 camara = NodePath("../Camara")
 celebracion = NodePath("../Celebracion")

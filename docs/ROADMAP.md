@@ -39,7 +39,8 @@ Regla: no se pasa de fase hasta que la actual sea jugable y divertida. Cada tare
 
 ## Fase 5 — Villa e incremental
 - [x] Primer trabajador automático: pescadores del puerto + cubo + venta animada
-- [ ] Más edificios y trabajadores (lonja, mejoras del puerto...)
+- [x] Lonja: venta rápida de todo lo que llevas
+- [ ] Más edificios y trabajadores (mejoras del puerto...)
 - [ ] Ingresos pasivos, stats por segundo
 - [ ] Progreso offline (si se decide)
 - [ ] Balance de curvas

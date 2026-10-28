@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="AparicionData" format=3]
+
+[ext_resource type="Script" path="res://scripts/datos/aparicion_data.gd" id="1_script"]
+[ext_resource type="PackedScene" path="res://scenes/mundo/islas/lonja.tscn" id="2_escena"]
+[ext_resource type="PackedScene" path="res://scenes/mundo/piezas/tablon.tscn" id="3_pieza"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"lonja"
+nombre = "Lonja"
+escena = ExtResource("2_escena")
+ancla = Vector2i(0, 8)
+celdas = Array[Vector2i]([Vector2i(-1, 9), Vector2i(0, 9), Vector2i(1, 9), Vector2i(-1, 8), Vector2i(0, 8), Vector2i(1, 8), Vector2i(-1, 7), Vector2i(0, 7), Vector2i(1, 7)])
+pieza_por_celda = ExtResource("3_pieza")
+celdas_bloqueadas = Array[Vector2i]([Vector2i(-1, 9), Vector2i(0, 9), Vector2i(1, 9)])
+orden = 7
+condicion = 1
+valor = 1500.0
+requiere = Array[StringName]([&"camino"])
+llegada = 3
+texto_llegada = "¡La Lonja!"
