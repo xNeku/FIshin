@@ -5,8 +5,10 @@ signal rublos_cambiados(total: float)
 signal inventario_cambiado
 signal cana_cambiada(cana: CanaData)
 signal cebo_cambiado
+signal cubo_cambiado
+signal trabajadores_cambiados(cantidad: int)
 
-const VERSION_SAVE := 2
+const VERSION_SAVE := 3
 const RUTA_SAVE := "user://partida.json"
 const RUTA_CANAS := "res://data/canas/%s.tres"
 const RUTA_PECES := "res://data/peces/%s.tres"
@@ -31,6 +33,12 @@ var stats: Dictionary = {
 }
 ## id de pez -> mejor calidad conseguida
 var coleccion: Dictionary = {}
+## Pescadores del puerto contratados.
+var trabajadores: int = 0
+## Lo que han dejado los pescadores en el cubo del puerto.
+var cubo_capturas: Array[Dictionary] = []
+## true mientras el náufrago lleva el cubo en la mano.
+var cubo_en_mano: bool = false
 ## Hitos y cosas desbloqueadas (ej. "barco_comerciante": true)
 var flags: Dictionary = {}
 
@@ -165,6 +173,36 @@ func anadir_escapado() -> void:
 	stats.escapados += 1
 
 
+# --- Puerto ---
+
+func contratar_trabajador() -> void:
+	trabajadores += 1
+	trabajadores_cambiados.emit(trabajadores)
+
+
+func meter_en_cubo(capturas_nuevas: Array[Dictionary]) -> void:
+	cubo_capturas.append_array(capturas_nuevas)
+	cubo_cambiado.emit()
+
+
+func coger_cubo() -> void:
+	cubo_en_mano = true
+	cubo_cambiado.emit()
+
+
+## Vacía el cubo (para venderlo). Sigue en la mano hasta que vuelve a su sitio.
+func vaciar_cubo() -> Array[Dictionary]:
+	var r: Array[Dictionary] = cubo_capturas.duplicate()
+	cubo_capturas.clear()
+	cubo_cambiado.emit()
+	return r
+
+
+func soltar_cubo() -> void:
+	cubo_en_mano = false
+	cubo_cambiado.emit()
+
+
 func valor_inventario() -> float:
 	var total: float = 0.0
 	for c: Dictionary in capturas:
@@ -243,6 +281,7 @@ func guardar() -> void:
 		"version": VERSION_SAVE, "rublos": rublos, "rublos_totales": rublos_totales,
 		"capturas": capturas, "huecos": huecos, "cana": String(cana_id), "cebo": cebo, "compras": compras,
 		"stats": stats, "coleccion": coleccion, "flags": flags,
+		"trabajadores": trabajadores, "cubo": cubo_capturas, "cubo_en_mano": cubo_en_mano,
 		"fecha": Time.get_unix_time_from_system(),
 	}
 	var f := FileAccess.open(RUTA_SAVE, FileAccess.WRITE)
@@ -275,6 +314,12 @@ func cargar() -> void:
 		stats[k] = int(stats[k])
 	coleccion = datos.get("coleccion", {})
 	flags = datos.get("flags", {})
+	# v2 no tenía puerto.
+	trabajadores = int(datos.get("trabajadores", 0))
+	cubo_capturas.clear()
+	for c: Variant in datos.get("cubo", []):
+		cubo_capturas.append(c)
+	cubo_en_mano = datos.get("cubo_en_mano", false)
 
 
 func borrar_partida() -> void:
@@ -290,6 +335,9 @@ func borrar_partida() -> void:
 		stats[k] = 0.0 if k == "tiempo_jugado" else 0
 	coleccion.clear()
 	flags.clear()
+	trabajadores = 0
+	cubo_capturas.clear()
+	cubo_en_mano = false
 	rublos_cambiados.emit(rublos)
 	inventario_cambiado.emit()
 	cana_cambiada.emit(cana())

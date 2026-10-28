@@ -38,7 +38,8 @@ Regla: no se pasa de fase hasta que la actual sea jugable y divertida. Cada tare
 - [ ] Auto-pesca
 
 ## Fase 5 — Villa e incremental
-- [ ] Edificios y trabajadores automáticos (primero: pescador del puerto + cubo)
+- [x] Primer trabajador automático: pescadores del puerto + cubo + venta animada
+- [ ] Más edificios y trabajadores (lonja, mejoras del puerto...)
 - [ ] Ingresos pasivos, stats por segundo
 - [ ] Progreso offline (si se decide)
 - [ ] Balance de curvas

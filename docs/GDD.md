@@ -91,6 +91,10 @@ Marcas: [DECIDIDO] lo decidió el diseñador · [PROPUESTA] sugerencia de Claude
 ## 10. Progreso offline
 - [DECIDIDO] No hay progreso offline: solo avanza con el juego abierto.
 
+## 12. Dirección de arte (en discusión)
+- [DECIDIDO] Se mantiene el 2.5D pero con todo en sprites 2D muy simples (personajes con su caña en la mano, objetos, barcos...), estilo Octopath. Excepciones más trabajadas: paisaje (cielo, mar, clima), VFX, peces y menús.
+- [PROPUESTA] Suelos de islas y tablones como bloques con textura pixel art. Guía de medidas para el arte (píxeles por casilla, alto de personaje, paleta, frames por animación) antes de dibujar.
+
 ## 11. Progresión del mundo
 - [DECIDIDO] Todo lo que se pega al mundo llega con animación: por defecto viene navegando por el mar. Algunos especiales tienen mini cinemática épica; el diseñador lo indica en la descripción de la carta.
 - [DECIDIDO] Barco comerciante en la casilla (2,−1), tras 3 capturas.
@@ -102,7 +106,12 @@ Marcas: [DECIDIDO] lo decidió el diseñador · [PROPUESTA] sugerencia de Claude
 - [DECIDIDO] **Camino de madera** (concepto permanente): conector entre islotes, edificios y demás. Irá creciendo para unir cosas nuevas. Su forma es la estructura del juego y el diseñador la retoca en la carta siempre que quiera (tipo "Camino de madera"). Primer tramo: aparece a los 20 min de juego (T desde la barca hacia arriba, de (0,2) a (0,6) y de (−2,6) a (2,6)).
 - [DECIDIDO] **Puerto pesquero** (5 casillas en (2..4, 0) y (3..4, −1)): aparece al hacer un combo x10. Pantalán de madera roto con un pescador en la esquina inferior derecha (4,−1). Hablas con él: es primo del mercader, le gusta tu rollo y trabaja para ti.
 - [DECIDIDO] Mecánica del puerto: los trabajadores pescan solos y meten la pesca en un cubo en la primera casilla de la izquierda (2,0). Coges el cubo con E y lo llevas a cualquier mercader o establecimiento, que te paga por él. Más adelante, con el árbol, un trabajador lo hará solo. El pantalán crecerá en tamaño, calidad y trabajadores con mejoras de edificio o acciones en otros edificios.
-- [ABIERTO] Cuando el puerto quede rodeado de islotes, ¿por dónde pescan los trabajadores? Propuestas: A) el pantalán crece hacia el mar y los pescadores van a la punta (con agua reservada en la carta); B) botes de remos como mejora; C) cada pescador necesita una casilla de agua al lado.
+- [DECIDIDO] La base del puerto es donde está el cubo y el primer pescador. Los demás se colocan al azar en cualquier borde del mapa con agua enfrente, tienden a ponerse al lado de un compañero y **nunca obstruyen el paso** (no tienen colisión). Algunos se sientan al borde de los tablones.
+- [DECIDIDO] De primeras solo pescan el pez más barato que haya. Cada uno por su cuenta coge 10, va andando al cubo y lo deja (todos en el mismo cubo).
+- [DECIDIDO] El cubo se coge con E y se lleva en la mano. Con E en cualquier comerciante (o la lonja) se le vende, con la misma animación que vender desde la barca.
+- [PROPUESTA] Tras venderlo, el cubo vuelve volando solo a su sitio. Mientras lo llevas, los pescadores esperan junto a la base con sus peces. Con el cubo en la mano no puedes volver a pescar.
+- [DECIDIDO] **Dinero y peces visuales y gustosos**: siempre que cualquier personaje deposite dinero o peces, salen volando uno a uno en parábola hacia quien los recibe. Al vender, primero van tus peces y después vuelve el dinero. Puedes moverte mientras: las piezas te siguen.
+- [PROPUESTA] El dinero vuela en monedas de 10; si es mucho, en billetes (100), fajos (1.000) o sacos (10.000), como mucho 25 piezas. Si hay muchos peces, cada pieza representa varios. El contador de rublos sube con cada pieza que llega.
 - Nota: el combo x10 solo es posible con la Sabia caña (rota: hasta 5, decente: hasta 9). El puerto queda para después del viejo.
 - [PROPUESTA] Camino y pantalán llegan "construyéndose": las tablas salen del agua una a una, desde la barca hacia fuera.
 - [ABIERTO] Lista ordenada de islas y cosas que van llegando según avances. El diseñador la escribe en la **Carta de Fishin**: https://claude.ai/artifact/2oRoaePEyuUyDUYBJnK9oA (colección `elementos`).

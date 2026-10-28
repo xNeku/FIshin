@@ -1,5 +1,5 @@
 extends Node
-## Atajos para probar: F1 rublos, F2 peces pescados, F3 minutos de juego, F4 mejor combo. Solo en builds de depuración.
+## Atajos para probar: F1 rublos, F2 peces pescados, F3 minutos de juego, F4 mejor combo, F5 un pescador más. Solo en builds de depuración.
 
 @export var rublos_por_pulsacion: float = 100.0
 @export var peces_por_pulsacion: int = 50
@@ -26,6 +26,9 @@ func _unhandled_input(event: InputEvent) -> void:
 	elif event.is_action_pressed("debug_combo"):
 		Juego.stats.mejor_combo = int(Juego.stats.mejor_combo) + combo_por_pulsacion
 		_avisar("Truco: mejor combo x%d" % Juego.stats.mejor_combo)
+	elif event.is_action_pressed("debug_pescador"):
+		Juego.contratar_trabajador()
+		_avisar("Truco: +1 pescador (hay %d)" % Juego.trabajadores)
 
 
 func _avisar(texto: String) -> void:

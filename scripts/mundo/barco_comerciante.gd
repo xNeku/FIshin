@@ -22,6 +22,10 @@ var _y_base: float
 
 
 func _ready() -> void:
+	var i: Interactuable = get_node_or_null("Interaccion")
+	if i:
+		i.nombre = nombre
+		i.articulos = articulos
 	visible = false
 	_y_base = position.y
 	if Juego.flags.get("barco_comerciante", false):

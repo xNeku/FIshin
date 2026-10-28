@@ -23,6 +23,7 @@
 [ext_resource type="AudioStream" path="res://art/sfx/tablon.wav" id="28_sfx_tablon"]
 [ext_resource type="PackedScene" path="res://scenes/ui/dialogo.tscn" id="29_dialogo"]
 [ext_resource type="Script" path="res://scripts/economia/comercio.gd" id="30_comercio"]
+[ext_resource type="Texture2D" path="res://art/articulos/cubo.png" id="31_cubo"]
 [ext_resource type="Script" path="res://scripts/pesca/pesca.gd" id="4_pesca"]
 [ext_resource type="Script" path="res://scripts/pesca/camara_pesca.gd" id="5_camara"]
 [ext_resource type="Script" path="res://scripts/pesca/sonido_pesca.gd" id="6_sonido"]
@@ -214,7 +215,7 @@ stream = ExtResource("22_sfx_impacto")
 [node name="SfxPieza" type="AudioStreamPlayer" parent="Mundo"]
 stream = ExtResource("28_sfx_tablon")
 
-[node name="Jugador" parent="." node_paths=PackedStringArray("mundo", "pesca", "camara", "celebracion", "tienda", "bestiario", "dialogo", "ocultar_al_andar") instance=ExtResource("23_jugador")]
+[node name="Jugador" parent="." node_paths=PackedStringArray("mundo", "pesca", "camara", "celebracion", "tienda", "bestiario", "dialogo", "comercio", "ocultar_al_andar") instance=ExtResource("23_jugador")]
 mundo = NodePath("../Mundo")
 pesca = NodePath("../Pesca")
 camara = NodePath("../Camara")
@@ -222,6 +223,7 @@ celebracion = NodePath("../Celebracion")
 tienda = NodePath("../Tienda")
 bestiario = NodePath("../Bestiario")
 dialogo = NodePath("../Dialogo")
+comercio = NodePath("../Comercio")
 ocultar_al_andar = [NodePath("../Barca/Protagonista"), NodePath("../Barca/Cana"), NodePath("../Barca/Sedal"), NodePath("../Barca/Flotador")]
 
 [node name="HUD" parent="." node_paths=PackedStringArray("pesca", "barco", "celebracion", "mundo", "jugador", "comercio") instance=ExtResource("3_hud")]
@@ -249,3 +251,4 @@ hud = NodePath("../HUD")
 script = ExtResource("30_comercio")
 jugador = NodePath("../Jugador")
 barca_origen = NodePath("../Barca/Protagonista")
+textura_cubo = ExtResource("31_cubo")

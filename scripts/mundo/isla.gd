@@ -1,3 +1,4 @@
+class_name Isla
 extends Node3D
 ## Raíz de una isla o pieza del mundo. Al llegar dispara sus efectos (salpicadura, fuegos...).
 

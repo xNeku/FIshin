@@ -18,6 +18,8 @@ signal aparicion_terminada(datos: AparicionData)
 @export var sfx_impacto: AudioStreamPlayer
 @export var sfx_pieza: AudioStreamPlayer
 @export var tamano_celda: float = 2.0
+## Agua donde los pescadores no se ponen a pescar (la zona de la barca, el barco comerciante...).
+@export var celdas_no_pesca: Array[Vector2i] = [Vector2i(-1, -1), Vector2i(0, -1), Vector2i(1, -1), Vector2i(-1, 0), Vector2i(1, 0), Vector2i(-1, 1), Vector2i(0, 1), Vector2i(1, 1), Vector2i(2, -1)]
 
 @export_group("Llegada por mar")
 @export var distancia_mar: float = 35.0
@@ -77,6 +79,56 @@ func celdas_pisables() -> Array[Vector2i]:
 	for a: AparicionData in apariciones:
 		if ya_aparecio(a) and a != _llegando:
 			r.append_array(a.celdas)
+	return r
+
+
+## Casillas hechas de tablones (caminos, pantalanes): ahí los pescadores se sientan al borde.
+func es_tablon(c: Vector2i) -> bool:
+	for a: AparicionData in apariciones:
+		if a.pieza_por_celda and ya_aparecio(a) and c in a.celdas:
+			return true
+	return false
+
+
+## Bordes desde los que se puede pescar: {celda, dir} con agua libre enfrente. La barca no cuenta.
+func puestos_de_pesca() -> Array[Dictionary]:
+	var pisables: Array[Vector2i] = celdas_pisables()
+	var r: Array[Dictionary] = []
+	for c: Vector2i in pisables:
+		if c == Vector2i.ZERO:
+			continue
+		for d: Vector2i in [Vector2i.RIGHT, Vector2i.LEFT, Vector2i.UP, Vector2i.DOWN]:
+			var n: Vector2i = c + d
+			if not n in pisables and not n in celdas_no_pesca:
+				r.append({"celda": c, "dir": d})
+	return r
+
+
+## Camino por casillas pisables, saltando una casilla de agua como el náufrago. No incluye el origen.
+func ruta(desde: Vector2i, hasta: Vector2i) -> Array[Vector2i]:
+	var pisables: Array[Vector2i] = celdas_pisables()
+	var previo: Dictionary = {desde: desde}
+	var cola: Array[Vector2i] = [desde]
+	while not cola.is_empty():
+		var c: Vector2i = cola.pop_front()
+		if c == hasta:
+			break
+		for d: Vector2i in [Vector2i.RIGHT, Vector2i.LEFT, Vector2i.UP, Vector2i.DOWN]:
+			var vecinas: Array[Vector2i] = [c + d]
+			if not (c + d) in pisables:
+				var perp := Vector2i(d.y, d.x)
+				vecinas = [c + d * 2, c + d * 2 + perp, c + d * 2 - perp]
+			for n: Vector2i in vecinas:
+				if n in pisables and not previo.has(n):
+					previo[n] = c
+					cola.append(n)
+	var r: Array[Vector2i] = []
+	if not previo.has(hasta):
+		return r
+	var p: Vector2i = hasta
+	while p != desde:
+		r.push_front(p)
+		p = previo[p]
 	return r
 
 

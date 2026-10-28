@@ -2,12 +2,14 @@ class_name Interactuable
 extends Node3D
 ## Algo con lo que el náufrago puede interactuar (E) al estar cerca: un vendedor, el bestiario...
 
-enum Accion { TIENDA, BESTIARIO, DIALOGO }
+enum Accion { TIENDA, BESTIARIO, DIALOGO, CUBO }
 
 @export var accion: Accion = Accion.TIENDA
 ## Texto de la ayuda: "[E] <texto>".
 @export var texto_accion: String = "Hablar"
 @export var radio: float = 1.8
+## Si hay varios a mano, gana el de más prioridad (el cubo antes que una charla).
+@export var prioridad: int = 0
 
 @export_group("Tienda")
 @export var nombre: String = ""

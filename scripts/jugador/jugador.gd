@@ -11,6 +11,7 @@ signal modo_cambiado(andando: bool)
 @export var tienda: Tienda
 @export var bestiario: Node
 @export var dialogo: Node
+@export var comercio: Node
 ## Lo de la barca que se esconde mientras andas (el náufrago pescando, la caña...).
 @export var ocultar_al_andar: Array[Node3D] = []
 
@@ -35,6 +36,7 @@ signal modo_cambiado(andando: bool)
 
 @onready var sprite: Sprite3D = $Sprite
 @onready var sfx_salto: AudioStreamPlayer = $SfxSalto
+@onready var cubo_mano: Sprite3D = $CuboMano
 
 var andando: bool = false
 var saltando: bool = false
@@ -47,6 +49,8 @@ var _y_sprite: float
 func _ready() -> void:
 	visible = false
 	_y_sprite = sprite.position.y
+	Juego.cubo_cambiado.connect(_refrescar_cubo)
+	_refrescar_cubo()
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -87,7 +91,7 @@ func intentar_bajar() -> void:
 
 
 func intentar_volver() -> void:
-	if not andando or saltando or not en_barca():
+	if not andando or saltando or not en_barca() or Juego.cubo_en_mano:
 		return
 	andando = false
 	Juego.en_movimiento = false
@@ -101,6 +105,10 @@ func intentar_volver() -> void:
 
 
 func interactuar(i: Interactuable) -> void:
+	# Con el cubo en la mano, cualquiera que compre peces se lo queda.
+	if Juego.cubo_en_mano and i.compra_peces:
+		comercio.vender_cubo(i)
+		return
 	match i.accion:
 		Interactuable.Accion.TIENDA:
 			tienda.abrir(i)
@@ -108,13 +116,29 @@ func interactuar(i: Interactuable) -> void:
 			bestiario.abrir()
 		Interactuable.Accion.DIALOGO:
 			dialogo.abrir(i.nombre, i.lineas)
+		Interactuable.Accion.CUBO:
+			if not Juego.cubo_en_mano:
+				Juego.coger_cubo()
+
+
+## El cubo de la mano desaparece para salir volando hacia su sitio.
+func soltar_cubo_visual() -> void:
+	cubo_mano.visible = false
+
+
+func _refrescar_cubo() -> void:
+	cubo_mano.visible = Juego.cubo_en_mano
 
 
 ## Texto de ayuda para el HUD.
 func ayuda() -> String:
 	if andando:
 		if cercano:
+			if Juego.cubo_en_mano and cercano.compra_peces:
+				return "[E] Vender el cubo (%d peces)" % Juego.cubo_capturas.size()
 			return "[E] " + cercano.texto_accion
+		if Juego.cubo_en_mano:
+			return "Lleva el cubo a un comerciante"
 		return "[Q] Volver a pescar" if en_barca() else ""
 	return "[Q] Bajar a tierra" if puede_bajar() else ""
 
@@ -204,7 +228,13 @@ func _buscar_cercano() -> void:
 	var mejor: float = INF
 	for n: Node in get_tree().get_nodes_in_group("interactuables"):
 		var i := n as Interactuable
+		if not i.is_visible_in_tree():
+			continue
 		var d: float = Vector2(i.global_position.x - position.x, i.global_position.z - position.z).length()
-		if d <= i.radio and d < mejor:
-			mejor = d
+		if d > i.radio:
+			continue
+		# Gana la prioridad; a igual prioridad, el más cercano.
+		var nota: float = d - i.prioridad * 100.0
+		if nota < mejor:
+			mejor = nota
 			cercano = i

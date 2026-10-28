@@ -3,6 +3,7 @@
 [ext_resource type="Script" path="res://scripts/jugador/jugador.gd" id="1_script"]
 [ext_resource type="Texture2D" path="res://art/personajes/naufrago.png" id="2_naufrago"]
 [ext_resource type="AudioStream" path="res://art/sfx/salto.wav" id="3_salto"]
+[ext_resource type="Texture2D" path="res://art/articulos/cubo.png" id="4_cubo"]
 
 [sub_resource type="StandardMaterial3D" id="mat_sombra"]
 transparency = 1
@@ -33,6 +34,16 @@ texture = ExtResource("2_naufrago")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.02, 0)
 cast_shadow = 0
 mesh = SubResource("malla_sombra")
+
+[node name="CuboMano" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.45, 0.55, 0.15)
+visible = false
+billboard = 2
+alpha_cut = 1
+texture_filter = 0
+shaded = false
+pixel_size = 0.045
+texture = ExtResource("4_cubo")
 
 [node name="SfxSalto" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("3_salto")
