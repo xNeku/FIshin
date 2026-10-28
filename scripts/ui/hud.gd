@@ -81,6 +81,7 @@ func _ready() -> void:
 		pesca.pez_capturado.connect(_on_capturado)
 		pesca.pez_escapado.connect(_on_escapado)
 		pesca.barca_llena.connect(_on_barca_llena)
+		pesca.bloqueo_barca_llena.connect(_on_bloqueo_barca_llena)
 		pesca.intensidad_cambiada.connect(func(i: float) -> void: _intensidad_objetivo = i)
 		_on_estado(pesca.estado)
 	if mundo:
@@ -236,6 +237,19 @@ func _on_escapado(pez: PezData) -> void:
 func _on_barca_llena(pez: PezData) -> void:
 	estado.text = "¡Barca llena!"
 	_popup("Sin hueco: sueltas el %s" % pez.nombre, color_fallo, Vector2(0.5, 0.4), 1.1)
+
+
+func _on_bloqueo_barca_llena(llena: bool) -> void:
+	if llena:
+		estado.text = "¡Barca llena! Ve a vender"
+		_popup("¡Barca llena! Ve a vender", color_fallo, Vector2(0.5, 0.35), 1.2)
+	else:
+		estado.text = "Esperando que piquen..."
+
+
+## Texto rápido en pantalla (trucos, avisos).
+func aviso_rapido(texto: String) -> void:
+	_popup(texto, Color.WHITE, Vector2(0.5, 0.75), 0.8)
 
 
 func _on_vendido(total: float) -> void:

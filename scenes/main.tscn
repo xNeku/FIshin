@@ -17,6 +17,7 @@
 [ext_resource type="AudioStream" path="res://art/sfx/impacto.wav" id="22_sfx_impacto"]
 [ext_resource type="PackedScene" path="res://scenes/jugador/jugador.tscn" id="23_jugador"]
 [ext_resource type="PackedScene" path="res://scenes/ui/bestiario.tscn" id="24_bestiario"]
+[ext_resource type="Script" path="res://scripts/economia/trucos.gd" id="25_trucos"]
 [ext_resource type="Script" path="res://scripts/pesca/pesca.gd" id="4_pesca"]
 [ext_resource type="Script" path="res://scripts/pesca/camara_pesca.gd" id="5_camara"]
 [ext_resource type="Script" path="res://scripts/pesca/sonido_pesca.gd" id="6_sonido"]
@@ -225,3 +226,7 @@ jugador = NodePath("../Jugador")
 [node name="Tienda" parent="." instance=ExtResource("12_tienda")]
 
 [node name="Bestiario" parent="." instance=ExtResource("24_bestiario")]
+
+[node name="Trucos" type="Node" parent="." node_paths=PackedStringArray("hud")]
+script = ExtResource("25_trucos")
+hud = NodePath("../HUD")

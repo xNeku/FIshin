@@ -21,6 +21,7 @@ Fase 2 hecha: bucle pescar → vender → mejorar. Cañas por profundidad, cebo,
 - `scripts/jugador/jugador.gd` + `scenes/jugador/jugador.tscn` (nodo Jugador en main): modo andar, casillas pisables (Mundo.celdas_pisables), salto, interacción con el grupo "interactuables". Juego.en_movimiento = true mientras anda.
 - `scripts/mundo/interactuable.gd` (Interactuable): nodos en las islas con accion TIENDA (nombre, articulos, compra_peces, saludos) o BESTIARIO. La Tienda acepta cualquier vendedor con esos campos.
 - `scripts/ui/bestiario.gd` + `scenes/ui/bestiario.tscn` (fichas desde `ficha_bestiario.tscn`).
+- `scripts/economia/trucos.gd` (nodo Trucos en main): F1 +100 ₽, F2 +50 peces. Solo en builds de depuración.
 - `scenes/main.tscn`: lo monta todo.
 - Peces: `data/peces/*.tres` (PezData). Arte placeholder en `art/` (generado por script, sustituible).
 
@@ -38,11 +39,12 @@ Fase 2 hecha: bucle pescar → vender → mejorar. Cañas por profundidad, cebo,
 - 2.5D, Forward+, juego de PC. Moneda: rublos (₽). Fuente DejaVu Sans Bold (tiene ₽ y flechas).
 - La intensidad visual va por botones seguidos (no por % del pez); el máximo llega con combos de 50 (final de juego). Las dobles salen desde el 5º botón.
 - Largo de cadena aleatorio por picada (CanaData.tirar_largo_cadena), sesgado a corto.
+- Barca llena (todos los huecos): no pica nada hasta vender. Sin progreso offline.
 - Machacar fallido: los extraños y legendarios se escapan, los demás pierden valor.
 - Niebla desactivada (en Compatibility lo dejaba todo gris).
 
-## Pendiente de preguntar (en orden)
-1. Qué cebos hay y qué sube cada uno.
-2. Barca llena: ¿soltar, elegir qué tirar, o que no piquen especies nuevas?
-3. Progreso offline.
-4. Lista ordenada de islas y edificios (la escribirá el diseñador).
+## Pendiente del diseñador
+1. Excel de peces (enciclopedia, pesos, día/noche, estación).
+2. Imagen de referencia del flow del árbol + rellenar el Árbol de Fishin.
+3. Lista de cebos y efectos (duplicar pesca, más probabilidad de X...).
+4. Seguir rellenando la carta.

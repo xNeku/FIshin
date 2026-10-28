@@ -33,6 +33,9 @@ func _ready() -> void:
 
 
 func _process(delta: float) -> void:
+	if not presente:
+		_on_inventario()
+		return
 	_t += delta
 	rotation_degrees.z = sin(_t * 0.9 + 1.0) * balanceo_grados
 	position.y = _y_base + sin(_t * 1.2) * 0.05

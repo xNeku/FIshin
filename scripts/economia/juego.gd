@@ -121,6 +121,11 @@ func especies() -> Array[String]:
 	return lista
 
 
+## Todos los huecos ocupados: no se puede seguir pescando hasta vender.
+func barca_llena() -> bool:
+	return huecos_usados() >= huecos
+
+
 func huecos_usados() -> int:
 	return especies().size()
 

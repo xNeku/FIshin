@@ -16,6 +16,8 @@ signal pez_capturado(captura: Dictionary, pez: PezData)
 signal pez_escapado(pez: PezData)
 ## Pez capturado pero sin hueco en la barca: se suelta.
 signal barca_llena(pez: PezData)
+## La barca está llena y no se pesca hasta vender (true) o ya hay sitio otra vez (false).
+signal bloqueo_barca_llena(llena: bool)
 
 enum Estado { INACTIVO, ESPERANDO, PASO, ENTRE_PASOS, RESULTADO }
 enum Tipo { SIMPLE, DOBLE, MACHACAR }
@@ -50,6 +52,7 @@ var golpes: int = 0
 var _pulsadas: Array[StringName] = []
 var _contador: float = 0.0
 var _bloqueo: float = 0.0
+var _llena: bool = false
 
 
 func _ready() -> void:
@@ -64,6 +67,12 @@ func _process(delta: float) -> void:
 			return
 	match estado:
 		Estado.ESPERANDO:
+			var llena: bool = Juego.barca_llena()
+			if llena != _llena:
+				_llena = llena
+				bloqueo_barca_llena.emit(llena)
+			if llena:
+				return
 			_contador -= delta
 			if _contador <= 0.0:
 				_picar()

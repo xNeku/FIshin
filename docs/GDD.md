@@ -21,7 +21,7 @@ Marcas: [DECIDIDO] lo decidió el diseñador · [PROPUESTA] sugerencia de Claude
 - [DECIDIDO] El mapa es una cuadrícula/matriz. La barca está en (0,0).
 - [DECIDIDO] Las 8 casillas adyacentes a la barca son agua permanente: el área 3x3 es la zona de pesca.
 - [DECIDIDO] Islotes, barcos y edificios (mercados, casinos, tiendas de anzuelos...) se pegan solos al superar hitos (dinero, logros). El jugador no elige dónde ni paga por todos.
-- [DECIDIDO] Primer hito: al ganar los primeros 100 de dinero aparece un islote 1x1.
+- [DECIDIDO] Los hitos se cumplen en cuanto se supera el valor, no hace falta pasar justo por él.
 - [ABIERTO] Regla de colocación automática: dónde aparece cada cosa nueva.
 
 ## 5. Modos de juego
@@ -59,6 +59,9 @@ Marcas: [DECIDIDO] lo decidió el diseñador · [PROPUESTA] sugerencia de Claude
 - [PROPUESTA] Implementado: cada caña (`data/canas/`) tiene profundidad, límite de cadena, tiempo de reacción, espera, probabilidad de raros y auto del primer botón. Cada pez tiene profundidad mínima.
 - [ABIERTO] Input táctil para móvil.
 
+- [DECIDIDO] Habrá un catálogo grande de peces sacado de una enciclopedia, con sus rangos de peso. El diseñador lo pasará en un Excel.
+- [DECIDIDO] Los peces se agrupan por momento del día (día / noche) y por estación (invierno...). [ABIERTO] Cómo pasa el tiempo en el juego (ciclo día/noche, duración de las estaciones).
+
 ## 7. Economía
 - [DECIDIDO] Una sola moneda que lo es todo: dinero, experiencia y economía.
 - [DECIDIDO] Moneda: rublos. Símbolo ₽ (U+20BD); comprobar que la fuente lo tiene. El primer hito son 100 ₽.
@@ -67,12 +70,12 @@ Marcas: [DECIDIDO] lo decidió el diseñador · [PROPUESTA] sugerencia de Claude
 - [DECIDIDO] El primer comerciante vende: la siguiente caña, cebo (boost de tiempo) y +1 hueco.
 - [PROPUESTA] Precios: caña decente 150 ₽, cebo 15 ₽ (5 pescas, +30% de tiempo de reacción) y cajón 60 ₽ (×1.8 por compra, máximo 4). Con E se abre su tienda, que también compra todo lo de la barca.
 - [DECIDIDO] El cebo da X probabilidad de X cosas (p. ej. más probabilidad de cierto pez o rareza) y su efecto dura un tiempo.
-- [ABIERTO] Qué cebos hay, qué sube cada uno y cuánto dura (pendiente del diseñador).
+- [DECIDIDO] Ejemplos de efectos de cebo: pesca duplicada, más probabilidad de cierto pez...
+- [ABIERTO] Lista concreta de cebos, efectos y duración (pendiente del diseñador).
 - Nota: el código actual del cebo (5 pescas y +30% de tiempo de reacción) está mal y hay que rehacerlo con duración en segundos y efectos de probabilidad.
 - [DECIDIDO] La barca tiene inventario (los peces que llevas encima).
 - [DECIDIDO] Inventario por huecos: empiezas con 6. Cada especie ocupa un hueco y se apila ahí con todas sus variantes y pesos. Al pulsar el hueco se despliegan las variantes. Los huecos solo son para lo que pescas.
-- [PROPUESTA] Si pescas una especie nueva con la barca llena, el pez se suelta (aviso "Sin hueco").
-- [ABIERTO] Comportamiento con la barca llena: ¿soltar, elegir qué tirar, o que no piquen especies nuevas?
+- [DECIDIDO] Si la barca se llena (todos los huecos ocupados), el juego te avisa y no te deja pescar más hasta que vendas.
 
 ## 8. Menú (Tab / Esc / atrás de Android)
 - [DECIDIDO] Pestañas:
@@ -86,7 +89,7 @@ Marcas: [DECIDIDO] lo decidió el diseñador · [PROPUESTA] sugerencia de Claude
 - [ABIERTO] Lista de edificios, qué hace cada uno y sus hitos.
 
 ## 10. Progreso offline
-- [ABIERTO] ¿Se genera dinero con el juego cerrado?
+- [DECIDIDO] No hay progreso offline: solo avanza con el juego abierto.
 
 ## 11. Progresión del mundo
 - [DECIDIDO] Todo lo que se pega al mundo llega con animación: por defecto viene navegando por el mar. Algunos especiales tienen mini cinemática épica; el diseñador lo indica en la descripción de la carta.
