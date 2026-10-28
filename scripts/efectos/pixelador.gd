@@ -21,6 +21,8 @@ extends CanvasLayer
 
 var _atributos: CameraAttributesPractical
 var _tween: Tween
+var _enfocando: bool = false
+var _punto: Vector3 = Vector3.ZERO
 
 
 func _ready() -> void:
@@ -43,6 +45,15 @@ func _process(_delta: float) -> void:
 	camara.fov = camara_fuente.fov
 	camara.h_offset = camara_fuente.h_offset
 	camara.v_offset = camara_fuente.v_offset
+	# La cámara se acerca durante la cinemática: el foco se recalcula cada frame.
+	if _enfocando:
+		_enfocar()
+
+
+func _enfocar() -> void:
+	var d: float = camara.global_position.distance_to(_punto)
+	_atributos.dof_blur_far_distance = d + margen_nitido
+	_atributos.dof_blur_near_distance = maxf(0.1, d - margen_nitido)
 
 
 ## Activa o quita el desenfoque de maqueta, enfocando un punto del mundo.
@@ -51,11 +62,11 @@ func cine(activo: bool, punto: Vector3 = Vector3.ZERO) -> void:
 		return
 	if _tween:
 		_tween.kill()
+	_enfocando = activo
 	if activo:
-		var d: float = camara.global_position.distance_to(punto)
-		_atributos.dof_blur_far_distance = d + margen_nitido
+		_punto = punto
+		_enfocar()
 		_atributos.dof_blur_far_transition = transicion
-		_atributos.dof_blur_near_distance = maxf(0.5, d - margen_nitido)
 		_atributos.dof_blur_near_transition = transicion * 0.5
 		_atributos.dof_blur_far_enabled = true
 		_atributos.dof_blur_near_enabled = true

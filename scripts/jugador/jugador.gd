@@ -18,7 +18,7 @@ signal modo_cambiado(andando: bool)
 @export_group("Movimiento")
 @export var velocidad: float = 4.0
 ## Altura de los pies sobre cada suelo.
-@export var altura_barca: float = 0.23
+@export var altura_barca: float = 0.2
 @export var altura_tierra: float = 0.27
 ## Margen hasta el borde de la casilla.
 @export var margen_borde: float = 0.25
@@ -82,7 +82,8 @@ func intentar_bajar() -> void:
 	andando = true
 	Juego.en_movimiento = true
 	pesca.pausar()
-	position = Vector3(0.0, altura_barca, 0.3)
+	# Se pone de pie sobre el donut.
+	position = Vector3(0.0, altura_barca, 0.1)
 	visible = true
 	for n: Node3D in ocultar_al_andar:
 		n.visible = false

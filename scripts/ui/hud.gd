@@ -111,7 +111,8 @@ func _process(delta: float) -> void:
 	cebo.visible = not Juego.cebo.is_empty()
 	if cebo.visible:
 		cebo.text = "Cebo: %d pescas" % int(Juego.cebo.pescas)
-	aviso.visible = barco != null and barco.puede_hablar()
+	aviso.visible = barco != null and barco.puede_hablar() and not (celebracion and celebracion.celebrando) \
+		and not (pesca and pesca.en_curso())
 	if aviso.visible:
 		aviso.text = "[E] Hablar con el comerciante"
 	var texto_modo: String = jugador.ayuda() if jugador else ""

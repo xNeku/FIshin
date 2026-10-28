@@ -1,83 +1,21 @@
 [gd_scene format=3]
 
 [ext_resource type="Script" path="res://scripts/mundo/barca.gd" id="1_script"]
-[ext_resource type="Texture2D" path="res://art/personajes/naufrago.png" id="2_naufrago"]
-[ext_resource type="Texture2D" path="res://art/peces/kraken_bebe.png" id="3_pez"]
+[ext_resource type="Texture2D" path="res://art/personajes/naufrago_chill.png" id="2_chill"]
+[ext_resource type="Texture2D" path="res://art/personajes/naufrago_tira.png" id="3_tira"]
+[ext_resource type="Texture2D" path="res://art/personajes/donut.png" id="4_donut"]
+[ext_resource type="Texture2D" path="res://art/articulos/corcho.png" id="5_corcho"]
+[ext_resource type="Texture2D" path="res://art/mundo/onda.png" id="6_onda"]
+[ext_resource type="Texture2D" path="res://art/peces/kraken_bebe.png" id="7_pez"]
 
-[sub_resource type="StandardMaterial3D" id="m_madera"]
-albedo_color = Color(0.4196, 0.2588, 0.149, 1)
-roughness = 0.9
-
-[sub_resource type="StandardMaterial3D" id="m_madera_osc"]
-albedo_color = Color(0.2902, 0.1725, 0.09412, 1)
-roughness = 0.9
-
-[sub_resource type="StandardMaterial3D" id="m_parche"]
-albedo_color = Color(0.5412, 0.4784, 0.3216, 1)
-roughness = 0.9
-
-[sub_resource type="StandardMaterial3D" id="m_botella"]
-albedo_color = Color(0.1843, 0.4784, 0.2275, 1)
-roughness = 0.9
-metallic_specular = 0.8
-roughness = 0.2
-[sub_resource type="StandardMaterial3D" id="m_cana"]
-albedo_color = Color(0.7882, 0.6431, 0.4157, 1)
-roughness = 0.9
-
-[sub_resource type="StandardMaterial3D" id="m_flotador"]
-albedo_color = Color(0.9098, 0.2275, 0.2275, 1)
-roughness = 0.9
-roughness = 0.4
 [sub_resource type="StandardMaterial3D" id="m_sedal"]
-albedo_color = Color(0.9412, 0.9412, 0.9412, 1)
-roughness = 0.9
 shading_mode = 0
-[sub_resource type="BoxMesh" id="b_casco"]
-material = SubResource("m_madera")
-size = Vector3(1.3, 0.35, 2.4)
-
-[sub_resource type="BoxMesh" id="b_borda"]
-material = SubResource("m_madera_osc")
-size = Vector3(0.12, 0.28, 2.4)
-
-[sub_resource type="BoxMesh" id="b_popa"]
-material = SubResource("m_madera_osc")
-size = Vector3(1.42, 0.28, 0.12)
-
-[sub_resource type="BoxMesh" id="b_parche"]
-material = SubResource("m_parche")
-size = Vector3(0.42, 0.02, 0.5)
-
-[sub_resource type="BoxMesh" id="b_banco"]
-material = SubResource("m_madera_osc")
-size = Vector3(1.2, 0.08, 0.35)
-
-[sub_resource type="BoxMesh" id="b_remo"]
-material = SubResource("m_madera")
-size = Vector3(0.08, 0.04, 1.6)
-
-[sub_resource type="CylinderMesh" id="c_botella"]
-material = SubResource("m_botella")
-top_radius = 0.03
-bottom_radius = 0.06
-height = 0.25
-
-[sub_resource type="CylinderMesh" id="c_vara"]
-material = SubResource("m_cana")
-top_radius = 0.012
-bottom_radius = 0.028
-height = 1.8
-
-[sub_resource type="SphereMesh" id="s_flotador"]
-material = SubResource("m_flotador")
-radius = 0.1
-height = 0.2
+albedo_color = Color(0.95, 0.95, 0.92, 1)
 
 [sub_resource type="CylinderMesh" id="c_sedal"]
 material = SubResource("m_sedal")
-top_radius = 0.006
-bottom_radius = 0.006
+top_radius = 0.012
+bottom_radius = 0.012
 height = 1.0
 radial_segments = 4
 rings = 1
@@ -89,86 +27,92 @@ billboard_mode = 1
 
 [sub_resource type="QuadMesh" id="q_brillo"]
 material = SubResource("m_brillo")
-size = Vector2(0.04, 0.04)
+size = Vector2(0.05, 0.05)
+
+[sub_resource type="StandardMaterial3D" id="m_gota"]
+shading_mode = 0
+albedo_color = Color(0.85, 0.95, 1, 1)
+billboard_mode = 1
+
+[sub_resource type="QuadMesh" id="q_gota"]
+material = SubResource("m_gota")
+size = Vector2(0.07, 0.07)
 
 [node name="Barca" type="Node3D"]
 script = ExtResource("1_script")
+textura_chill = ExtResource("2_chill")
+textura_tira = ExtResource("3_tira")
 
-[node name="Casco" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0)
-mesh = SubResource("b_casco")
-
-[node name="BordaIzq" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.65, 0.3, 0)
-mesh = SubResource("b_borda")
-
-[node name="BordaDer" type="MeshInstance3D" parent="."]
-transform = Transform3D(0.994522, 0.104528, 0, -0.104528, 0.994522, 0, 0, 0, 1, 0.65, 0.3, 0)
-mesh = SubResource("b_borda")
-
-[node name="Popa" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 1.2)
-mesh = SubResource("b_popa")
-
-[node name="Proa" type="MeshInstance3D" parent="."]
-transform = Transform3D(0.997564, -0.0697565, 0, 0.0697565, 0.997564, 0, 0, 0, 1, 0, 0.3, -1.2)
-mesh = SubResource("b_popa")
-
-[node name="Parche" type="MeshInstance3D" parent="."]
-transform = Transform3D(0.965926, 0, 0.258819, 0, 1, 0, -0.258819, 0, 0.965926, 0.2, 0.235, -0.5)
-mesh = SubResource("b_parche")
-
-[node name="Banco" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.36, 0.35)
-mesh = SubResource("b_banco")
-
-[node name="Remo" type="MeshInstance3D" parent="."]
-transform = Transform3D(0.978148, 0, 0.207912, 0, 1, 0, -0.207912, 0, 0.978148, -0.35, 0.25, -0.3)
-mesh = SubResource("b_remo")
-
-[node name="Botella" type="MeshInstance3D" parent="."]
-transform = Transform3D(0.34202, -0.939693, 0, 0.939693, 0.34202, 0, 0, 0, 1, 0.35, 0.35, 0.75)
-mesh = SubResource("c_botella")
-
-[node name="Protagonista" type="Sprite3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.15, 0.35)
+[node name="Donut" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.12, 0)
 billboard = 2
 alpha_cut = 1
 texture_filter = 0
 shaded = false
 pixel_size = 0.04
-texture = ExtResource("2_naufrago")
+texture = ExtResource("4_donut")
+
+[node name="Protagonista" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.64, 0.05)
+billboard = 2
+alpha_cut = 1
+texture_filter = 0
+shaded = false
+pixel_size = 0.04
+texture = ExtResource("2_chill")
 
 [node name="Cana" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.573576, 0.819152, 0, -0.819152, 0.573576, 0.45, 0.95, 0.15)
-
-[node name="Vara" type="MeshInstance3D" parent="Cana"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
-mesh = SubResource("c_vara")
 
 [node name="Punta" type="Marker3D" parent="Cana"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.92, 1.4, 0.07)
 
 [node name="Sedal" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 1, -2)
-mesh = SubResource("c_sedal")
 top_level = true
 cast_shadow = 0
+mesh = SubResource("c_sedal")
 
-[node name="Flotador" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.6, 0.05, -2.8)
-mesh = SubResource("s_flotador")
+[node name="Flotador" type="Sprite3D" parent="."]
 top_level = true
+billboard = 2
+alpha_cut = 1
+texture_filter = 0
+shaded = false
+pixel_size = 0.06
+texture = ExtResource("5_corcho")
+
+[node name="Ondas" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0.03, 0)
+top_level = true
+visible = false
+transparent = true
+texture_filter = 0
+shaded = false
+pixel_size = 0.05
+texture = ExtResource("6_onda")
+
+[node name="Salpicadura" type="CPUParticles3D" parent="."]
+top_level = true
+emitting = false
+amount = 12
+lifetime = 0.7
+one_shot = true
+explosiveness = 0.95
+mesh = SubResource("q_gota")
+direction = Vector3(0, 1, 0)
+spread = 40.0
+gravity = Vector3(0, -9, 0)
+initial_velocity_min = 2.0
+initial_velocity_max = 3.5
 
 [node name="PezLevantado" type="Sprite3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.2, 0.35)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.75, 0.08)
 visible = false
 billboard = 1
 alpha_cut = 1
 texture_filter = 0
 shaded = false
 pixel_size = 0.05
-texture = ExtResource("3_pez")
+texture = ExtResource("7_pez")
 
 [node name="LuzTrofeo" type="SpotLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 5, 0.35)
@@ -179,7 +123,7 @@ spot_range = 8.0
 spot_angle = 16.0
 
 [node name="Brillos" type="CPUParticles3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.2, 0.35)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.75, 0.08)
 emitting = false
 amount = 30
 lifetime = 1.2
