@@ -9,6 +9,8 @@ uniform vec4 color_cresta : source_color = vec4(0.75, 0.92, 0.95, 1.0);
 uniform float altura_ola = 0.14;
 uniform float escala_ola = 0.42;
 uniform float velocidad = 1.0;
+// Tiempo de las olas: lo lleva agua.gd (así sabe a qué altura está el agua en cada punto).
+uniform float tiempo = 0.0;
 uniform float rugosidad : hint_range(0.0, 1.0) = 0.06;
 uniform float bandas = 5.0;
 uniform float umbral_cresta : hint_range(0.0, 1.0) = 0.86;
@@ -45,7 +47,7 @@ float azar(vec2 c) {
 
 void vertex() {
 	pos_mundo = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
-	vec3 o = olas(pos_mundo.xz, TIME * velocidad);
+	vec3 o = olas(pos_mundo.xz, tiempo);
 	altura = o.x;
 	VERTEX.y += o.x * altura_ola;
 	NORMAL = normalize(vec3(-o.y * altura_ola, 1.0, -o.z * altura_ola));
@@ -53,7 +55,7 @@ void vertex() {
 
 void fragment() {
 	vec2 p = pos_mundo.xz;
-	float t = TIME * velocidad;
+	float t = tiempo;
 	// Detalle: dos mapas de normales deslizándose en direcciones distintas.
 	vec3 na = texture(detalle_a, p * escala_detalle + vec2(t * 0.02, t * 0.013)).rgb;
 	vec3 nb = texture(detalle_b, p * escala_detalle * 1.7 - vec2(t * 0.017, -t * 0.021)).rgb;

@@ -7,6 +7,9 @@
 [ext_resource type="Texture2D" path="res://art/articulos/corcho.png" id="5_corcho"]
 [ext_resource type="Texture2D" path="res://art/mundo/onda.png" id="6_onda"]
 [ext_resource type="Texture2D" path="res://art/peces/kraken_bebe.png" id="7_pez"]
+[ext_resource type="Texture2D" path="res://art/personajes/donut_frente.png" id="8_frente"]
+[ext_resource type="Texture2D" path="res://art/personajes/naufrago_piernas.png" id="9_piernas"]
+[ext_resource type="Texture2D" path="res://art/mundo/sombra.png" id="10_sombra"]
 
 [sub_resource type="StandardMaterial3D" id="m_sedal"]
 shading_mode = 0
@@ -43,8 +46,27 @@ script = ExtResource("1_script")
 textura_chill = ExtResource("2_chill")
 textura_tira = ExtResource("3_tira")
 
-[node name="Donut" type="Sprite3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.12, 0)
+[node name="Sombra" type="Sprite3D" parent="."]
+top_level = true
+modulate = Color(0.02, 0.08, 0.16, 0.45)
+transparent = true
+texture_filter = 0
+shaded = false
+pixel_size = 0.055
+texture = ExtResource("10_sombra")
+
+[node name="Espuma" type="Sprite3D" parent="."]
+top_level = true
+modulate = Color(1, 1, 1, 0.55)
+transparent = true
+texture_filter = 0
+shaded = false
+pixel_size = 0.05
+texture = ExtResource("6_onda")
+
+[node name="DonutAtras" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+offset = Vector2(0, 29)
 billboard = 2
 alpha_cut = 1
 texture_filter = 0
@@ -52,12 +74,34 @@ pixel_size = 0.04
 texture = ExtResource("4_donut")
 
 [node name="Protagonista" type="Sprite3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.64, 0.05)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.02)
+offset = Vector2(0, 29)
 billboard = 2
 alpha_cut = 1
 texture_filter = 0
 pixel_size = 0.04
 texture = ExtResource("2_chill")
+
+[node name="DonutDelante" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.04)
+offset = Vector2(0, 29)
+billboard = 2
+alpha_cut = 1
+texture_filter = 0
+pixel_size = 0.04
+texture = ExtResource("8_frente")
+
+[node name="Piernas" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.06)
+offset = Vector2(0, 29)
+billboard = 2
+alpha_cut = 1
+texture_filter = 0
+pixel_size = 0.04
+texture = ExtResource("9_piernas")
+
+[node name="Foco" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
 
 [node name="Cana" type="Node3D" parent="."]
 
@@ -102,7 +146,7 @@ initial_velocity_min = 2.0
 initial_velocity_max = 3.5
 
 [node name="PezLevantado" type="Sprite3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.75, 0.08)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.4, 0.08)
 visible = false
 billboard = 1
 alpha_cut = 1
@@ -119,7 +163,7 @@ spot_range = 8.0
 spot_angle = 16.0
 
 [node name="Brillos" type="CPUParticles3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.75, 0.08)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.4, 0.08)
 emitting = false
 amount = 30
 lifetime = 1.2

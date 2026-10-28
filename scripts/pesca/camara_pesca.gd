@@ -30,9 +30,9 @@ extends Camera3D
 
 @export_group("Primer plano (celebración)")
 ## Zoom (0..1) al que llega la cámara cuando el náufrago levanta el pez.
-@export_range(0.0, 1.0) var zoom_primer_plano: float = 0.9
+@export_range(0.0, 1.0) var zoom_primer_plano: float = 0.6
 ## Cuánto sube el punto de mira (hacia el pez levantado).
-@export var altura_primer_plano: float = 0.9
+@export var altura_primer_plano: float = 0.5
 
 @export_group("Foco (cinemáticas del mundo)")
 @export var velocidad_foco: float = 2.0

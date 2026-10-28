@@ -1,15 +1,27 @@
 extends Node3D
 ## El náufrago de chill en su donut: pose según la pesca, caña con sedal hasta el corcho,
 ## lanzado y recogida del corcho, y ondas en el agua. Solo visual; reacciona a la Pesca.
+## El donut va encima de la ola (lo dice el Agua), con sombra y espuma pegadas al agua.
+## Capas, de atrás a delante: DonutAtras, Protagonista, DonutDelante, Piernas (mismo lienzo).
 
 @export var pesca: Pesca
+@export var agua: Agua
 
 @export_group("Poses")
 @export var textura_chill: Texture2D
 @export var textura_tira: Texture2D
 ## Píxel de la punta de la caña en cada sprite (para atar el sedal).
-@export var punta_chill: Vector2i = Vector2i(47, 1)
-@export var punta_tira: Vector2i = Vector2i(46, 4)
+@export var punta_chill: Vector2i = Vector2i(63, 19)
+@export var punta_tira: Vector2i = Vector2i(63, 17)
+
+@export_group("Flotar")
+## Cuánto asoma el donut por encima del agua (metros).
+@export var flotacion: float = 0.04
+## Cuánto se inclina con la pendiente de la ola (0 = nada, 1 = como el agua).
+@export var inclinacion_ola: float = 0.6
+## La sombra se adelanta un poco hacia la cámara para que se vea bajo el aro.
+@export var desfase_sombra: Vector3 = Vector3(0.1, 0.0, 0.25)
+@export var escala_espuma: float = 1.9
 
 @export_group("Balanceo")
 @export var balanceo_grados: float = 1.5
@@ -37,6 +49,8 @@ extends Node3D
 @onready var flotador: Node3D = $Flotador
 @onready var ondas: Sprite3D = $Ondas
 @onready var salpicadura: CPUParticles3D = $Salpicadura
+@onready var sombra: Sprite3D = $Sombra
+@onready var espuma: Sprite3D = $Espuma
 
 var _t: float = 0.0
 var _intensidad: float = 0.0
@@ -74,8 +88,14 @@ func _on_estado(e: Pesca.Estado) -> void:
 func _process(delta: float) -> void:
 	_t += delta
 	var tension: float = _intensidad * balanceo_tension
-	rotation_degrees.z = sin(_t * velocidad_balanceo) * (balanceo_grados + tension)
-	position.y = sin(_t * velocidad_balanceo * 1.3) * flote
+	var base := Vector3(global_position.x, 0.0, global_position.z)
+	var y_agua: float = agua.altura(global_position) if agua else 0.0
+	var pend: Vector2 = agua.pendiente(global_position) if agua else Vector2.ZERO
+	rotation_degrees.z = sin(_t * velocidad_balanceo) * (balanceo_grados + tension) - rad_to_deg(atan(pend.x)) * inclinacion_ola
+	position.y = y_agua + flotacion + sin(_t * velocidad_balanceo * 1.3) * flote
+	espuma.scale = Vector3.ONE * escala_espuma * (1.0 + sin(_t * 1.7) * 0.04)
+	_pegar_al_agua(sombra, base + desfase_sombra, 0.06)
+	_pegar_al_agua(espuma, base, 0.07)
 
 	if _corcho_en_agua and not _volando:
 		var activo: bool = pesca != null and pesca.en_curso()
@@ -90,7 +110,15 @@ func _process(delta: float) -> void:
 
 
 func _punto_agua() -> Vector3:
-	return global_position * Vector3(1, 0, 1) + punto_corcho + Vector3.UP * 0.05
+	var p: Vector3 = global_position * Vector3(1, 0, 1) + punto_corcho
+	return p + Vector3.UP * ((agua.altura(p) if agua else 0.0) + 0.05)
+
+
+func _pegar_al_agua(nodo: Sprite3D, p: Vector3, alto: float) -> void:
+	if agua:
+		agua.pegar(nodo, p, alto)
+	else:
+		nodo.global_position = Vector3(p.x, alto, p.z)
 
 
 ## Coloca la pose y mueve la punta de la caña al píxel que toca en ese sprite.
@@ -99,7 +127,8 @@ func _poner_pose(textura: Texture2D, pixel: Vector2i) -> void:
 		protagonista.texture = textura
 	var t: Texture2D = protagonista.texture
 	var ps: float = protagonista.pixel_size
-	punta.position = protagonista.position + Vector3((pixel.x - t.get_width() * 0.5) * ps, (t.get_height() * 0.5 - pixel.y) * ps, 0.02)
+	var o: Vector2 = protagonista.offset
+	punta.position = protagonista.position + Vector3((pixel.x - t.get_width() * 0.5 + o.x) * ps, (t.get_height() * 0.5 - pixel.y + o.y) * ps, 0.02)
 
 
 func _lanzar() -> void:
@@ -138,8 +167,8 @@ func _animar_ondas(delta: float, activo: bool) -> void:
 		_t_onda = 0.0
 	var k: float = _t_onda / periodo
 	ondas.visible = true
-	ondas.global_position = _punto_agua() + Vector3.UP * 0.03
 	ondas.scale = Vector3.ONE * lerpf(0.4, escala_onda, k)
+	_pegar_al_agua(ondas, _punto_agua(), 0.03)
 	ondas.modulate.a = 1.0 - k
 
 

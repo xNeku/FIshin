@@ -12,13 +12,17 @@ signal modo_cambiado(andando: bool)
 @export var bestiario: Node
 @export var dialogo: Node
 @export var comercio: Node
+## El donut: de pie en él, sube y baja con la ola.
+@export var barca: Node3D
 ## Lo de la barca que se esconde mientras andas (el náufrago pescando, la caña...).
 @export var ocultar_al_andar: Array[Node3D] = []
 
 @export_group("Movimiento")
 @export var velocidad: float = 4.0
-## Altura de los pies sobre cada suelo.
-@export var altura_barca: float = 0.2
+## Altura de los pies sobre cada suelo (en el donut, sobre la base del donut).
+@export var altura_barca: float = 0.54
+## Profundidad dentro del donut: entre el aro de atrás y el de delante.
+@export var fondo_barca: float = 0.02
 @export var altura_tierra: float = 0.27
 ## Margen hasta el borde de la casilla.
 @export var margen_borde: float = 0.25
@@ -37,6 +41,7 @@ signal modo_cambiado(andando: bool)
 @onready var sprite: Sprite3D = $Sprite
 @onready var sfx_salto: AudioStreamPlayer = $SfxSalto
 @onready var cubo_mano: Sprite3D = $CuboMano
+@onready var sombra: Node3D = $Sombra
 
 var andando: bool = false
 var saltando: bool = false
@@ -82,8 +87,8 @@ func intentar_bajar() -> void:
 	andando = true
 	Juego.en_movimiento = true
 	pesca.pausar()
-	# Se pone de pie sobre el donut.
-	position = Vector3(0.0, altura_barca, 0.1)
+	# Se pone de pie dentro del donut.
+	position = Vector3(0.0, _y_barca(), fondo_barca)
 	visible = true
 	for n: Node3D in ocultar_al_andar:
 		n.visible = false
@@ -164,8 +169,14 @@ func _process(delta: float) -> void:
 	else:
 		_empuje = 0.0
 		sprite.position.y = lerpf(sprite.position.y, _y_sprite, 1.0 - exp(-12.0 * delta))
-	position.y = altura_barca if en_barca() else altura_tierra
+	var sobre_donut: bool = en_barca()
+	position.y = _y_barca() if sobre_donut else altura_tierra
+	sombra.visible = not sobre_donut
 	_buscar_cercano()
+
+
+func _y_barca() -> float:
+	return (barca.global_position.y if barca else 0.0) + altura_barca
 
 
 func _mover(paso: Vector3, delta: float) -> void:
@@ -219,7 +230,9 @@ func _saltar(destino: Vector3, a_barca: bool) -> void:
 	cercano = null
 	sfx_salto.play()
 	var origen: Vector3 = position
-	destino.y = altura_barca if a_barca else altura_tierra
+	destino.y = _y_barca() if a_barca else altura_tierra
+	if a_barca:
+		destino.z = fondo_barca
 	var tw := create_tween()
 	tw.tween_method(func(k: float) -> void:
 		position = origen.lerp(destino, k) + Vector3.UP * sin(k * PI) * altura_salto, 0.0, 1.0, duracion_salto)

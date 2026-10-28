@@ -13,6 +13,12 @@ var compra_peces: bool = true
 @export var distancia_entrada: float = 25.0
 @export var duracion_entrada: float = 3.5
 @export var balanceo_grados: float = 3.0
+## Para ir encima de la ola. El casco se mete un poco en el agua (flotación negativa).
+@export var agua: Agua
+@export var flotacion: float = -0.12
+@export var inclinacion_ola: float = 0.5
+
+@onready var sombra: Node3D = get_node_or_null("Sombra")
 
 
 var presente: bool = false
@@ -39,8 +45,12 @@ func _process(delta: float) -> void:
 		_on_inventario()
 		return
 	_t += delta
-	rotation_degrees.z = sin(_t * 0.9 + 1.0) * balanceo_grados
-	position.y = _y_base + sin(_t * 1.2) * 0.05
+	var y_agua: float = agua.altura(global_position) if agua else 0.0
+	var pend: Vector2 = agua.pendiente(global_position) if agua else Vector2.ZERO
+	rotation_degrees.z = sin(_t * 0.9 + 1.0) * balanceo_grados - rad_to_deg(atan(pend.x)) * inclinacion_ola
+	position.y = _y_base + y_agua + flotacion + sin(_t * 1.2) * 0.05
+	if agua and sombra:
+		agua.pegar(sombra, global_position * Vector3(1, 0, 1) + Vector3(0.1, 0, 0.3), 0.06)
 
 
 func _unhandled_input(event: InputEvent) -> void:

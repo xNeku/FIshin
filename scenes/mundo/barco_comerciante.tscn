@@ -7,92 +7,48 @@
 [ext_resource type="Resource" path="res://data/articulos/cana_decente.tres" id="5_cana"]
 [ext_resource type="Resource" path="res://data/articulos/cebo_gusano.tres" id="6_cebo"]
 [ext_resource type="Resource" path="res://data/articulos/hueco_extra.tres" id="7_hueco"]
-
-[sub_resource type="StandardMaterial3D" id="m_casco"]
-albedo_color = Color(0.1843, 0.3647, 0.5412, 1)
-roughness = 0.9
-
-[sub_resource type="StandardMaterial3D" id="m_cubierta"]
-albedo_color = Color(0.6275, 0.4392, 0.251, 1)
-roughness = 0.9
-
-[sub_resource type="StandardMaterial3D" id="m_cabina"]
-albedo_color = Color(0.9098, 0.8627, 0.7529, 1)
-roughness = 0.9
-
-[sub_resource type="StandardMaterial3D" id="m_vela"]
-albedo_color = Color(0.949, 0.9176, 0.8235, 1)
-roughness = 0.9
-
-[sub_resource type="StandardMaterial3D" id="m_bandera"]
-albedo_color = Color(0.8471, 0.2275, 0.2275, 1)
-roughness = 0.9
-
-[sub_resource type="StandardMaterial3D" id="m_mastil"]
-albedo_color = Color(0.3529, 0.2275, 0.1255, 1)
-roughness = 0.9
-
-[sub_resource type="BoxMesh" id="b_casco"]
-material = SubResource("m_casco")
-size = Vector3(1.5, 0.5, 1.9)
-
-[sub_resource type="BoxMesh" id="b_cubierta"]
-material = SubResource("m_cubierta")
-size = Vector3(1.4, 0.05, 1.8)
-
-[sub_resource type="BoxMesh" id="b_cabina"]
-material = SubResource("m_cabina")
-size = Vector3(0.9, 0.7, 0.6)
-
-[sub_resource type="BoxMesh" id="b_vela"]
-material = SubResource("m_vela")
-size = Vector3(0.04, 1.5, 0.8)
-
-[sub_resource type="BoxMesh" id="b_bandera"]
-material = SubResource("m_bandera")
-size = Vector3(0.02, 0.25, 0.4)
-
-[sub_resource type="CylinderMesh" id="c_mastil"]
-material = SubResource("m_mastil")
-top_radius = 0.04
-bottom_radius = 0.06
-height = 3.0
+[ext_resource type="Texture2D" path="res://art/mundo/barco_fondo.png" id="9_fondo"]
+[ext_resource type="Texture2D" path="res://art/mundo/barco_delante.png" id="10_delante"]
+[ext_resource type="Texture2D" path="res://art/mundo/sombra.png" id="11_sombra"]
 
 [node name="BarcoComerciante" type="Node3D"]
 script = ExtResource("1_script")
 articulos = Array[ExtResource("4_articulo")]([ExtResource("5_cana"), ExtResource("6_cebo"), ExtResource("7_hueco")])
 
-[node name="Casco" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
-mesh = SubResource("b_casco")
+[node name="Sombra" type="Sprite3D" parent="."]
+top_level = true
+modulate = Color(0.02, 0.08, 0.16, 0.45)
+transparent = true
+texture_filter = 0
+shaded = false
+pixel_size = 0.065
+texture = ExtResource("11_sombra")
 
-[node name="Cubierta" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.37, 0)
-mesh = SubResource("b_cubierta")
-
-[node name="Cabina" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0.55)
-mesh = SubResource("b_cabina")
-
-[node name="Mastil" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.9, -0.15)
-mesh = SubResource("c_mastil")
-
-[node name="Vela" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.05, 1.9, -0.55)
-mesh = SubResource("b_vela")
-
-[node name="Bandera" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.45, -0.3)
-mesh = SubResource("b_bandera")
+[node name="Fondo" type="Sprite3D" parent="."]
+offset = Vector2(0, 36)
+billboard = 2
+alpha_cut = 1
+texture_filter = 0
+pixel_size = 0.04
+texture = ExtResource("9_fondo")
 
 [node name="Comerciante" type="Sprite3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.88, -0.2)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.08, 0.6, 0.03)
+offset = Vector2(0, 12)
 billboard = 2
 alpha_cut = 1
 texture_filter = 0
 pixel_size = 0.04
 texture = ExtResource("2_comerciante")
+
+[node name="Delante" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.06)
+offset = Vector2(0, 36)
+billboard = 2
+alpha_cut = 1
+texture_filter = 0
+pixel_size = 0.04
+texture = ExtResource("10_delante")
 
 [node name="Interaccion" type="Node3D" parent="."]
 script = ExtResource("8_interactuable")
