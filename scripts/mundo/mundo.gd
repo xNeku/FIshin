@@ -174,6 +174,7 @@ func traer(a: AparicionData) -> void:
 	Juego.guardar()
 	var n: Node3D = _instanciar(a)
 	aparicion_empezada.emit(a)
+	_cine(true, n.position)
 	match a.llegada:
 		AparicionData.Llegada.MAR:
 			await _por_mar(n, a)
@@ -183,9 +184,17 @@ func traer(a: AparicionData) -> void:
 			await _construir(n, a)
 		AparicionData.Llegada.EMERGER:
 			await _emerger(n, a)
+	_cine(false)
 	aparicion_terminada.emit(a)
 	_llegando = null
 	_ocupado = false
+
+
+## Desenfoque de maqueta (estilo HD-2D) mientras dura la cinemática.
+func _cine(activo: bool, punto: Vector3 = Vector3.ZERO) -> void:
+	var p: Node = get_tree().get_first_node_in_group("pixelador")
+	if p:
+		p.cine(activo, punto)
 
 
 func _instanciar(a: AparicionData) -> Node3D:

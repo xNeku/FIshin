@@ -25,6 +25,7 @@
 [ext_resource type="Script" path="res://scripts/economia/comercio.gd" id="30_comercio"]
 [ext_resource type="Texture2D" path="res://art/articulos/cubo.png" id="31_cubo"]
 [ext_resource type="Resource" path="res://data/apariciones/lonja.tres" id="32_lonja"]
+[ext_resource type="PackedScene" path="res://scenes/efectos/pixelador.tscn" id="33_pixelador"]
 [ext_resource type="Script" path="res://scripts/pesca/pesca.gd" id="4_pesca"]
 [ext_resource type="Script" path="res://scripts/pesca/camara_pesca.gd" id="5_camara"]
 [ext_resource type="Script" path="res://scripts/pesca/sonido_pesca.gd" id="6_sonido"]
@@ -253,3 +254,6 @@ script = ExtResource("30_comercio")
 jugador = NodePath("../Jugador")
 barca_origen = NodePath("../Barca/Protagonista")
 textura_cubo = ExtResource("31_cubo")
+
+[node name="Pixelador" parent="." node_paths=PackedStringArray("camara_fuente") instance=ExtResource("33_pixelador")]
+camara_fuente = NodePath("../Camara")
