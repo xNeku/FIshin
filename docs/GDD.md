@@ -106,6 +106,8 @@ Marcas: [DECIDIDO] lo decidió el diseñador · [PROPUESTA] sugerencia de Claude
 
 ## 11. Progresión del mundo
 - [DECIDIDO] Todo lo que se pega al mundo llega con animación: por defecto viene navegando por el mar. Algunos especiales tienen mini cinemática épica; el diseñador lo indica en la descripción de la carta.
+- [DECIDIDO] Lo que llega por mar viene del lado donde está respecto a la barca (lo del sur, del sur; lo del oeste, del oeste), en línea recta. Nunca desde un sitio cualquiera.
+- [DECIDIDO] Sin frases en pantalla: ni al llegar islas o el comerciante, ni al picar, ni la calidad al capturar (ya va en el banner del pez, con su color). Fallo o escape: una X roja.
 - [DECIDIDO] Barco comerciante en la casilla (2,−1), tras 3 capturas.
 - [DECIDIDO] **SkillTreeMan** (forma libre de 7 casillas, x −4..−2): aparece al pescar 100 peces y **cae del cielo**. En (−4,0) hay un viejo senil de barba blanca meditando, tapado solo por un libro, con una hoguera delante y bonsáis a los lados que crecerán con el árbol. Al interactuar con él se abre el árbol de habilidades (ya no está en el menú Tab). Vende la **Sabia caña** (caña nivel 3) por 2000 ₽.
 - [DECIDIDO] **Primera isla** (3×1 en y −2, delante de la zona de pesca): bestiario (libro con todos los peces) a la izquierda y antorcha a la derecha. Llega por mar.

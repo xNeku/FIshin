@@ -8,6 +8,9 @@ extends CanvasLayer
 @export var jugador: Node
 @export var comercio: Node
 @export var escena_popup: PackedScene
+## La X roja de fallo o escape (popup_icono.tscn).
+@export var escena_x: PackedScene
+@export var escala_x: float = 1.0
 @export var velocidad_contador: float = 6.0
 ## Cuánto salta de sitio el botón al tope de intensidad (píxeles).
 @export var salto_prompt_maximo: float = 220.0
@@ -62,6 +65,7 @@ var _intensidad: float = 0.0
 var _destello: float = 0.0
 var _pos_prompt: Vector2
 var _mat: ShaderMaterial
+var _ultima_x: int = -1000
 
 
 func _ready() -> void:
@@ -71,6 +75,7 @@ func _ready() -> void:
 	prompt.visible = false
 	resultado.visible = false
 	combo.visible = false
+	estado.visible = false
 	if pesca:
 		pesca.estado_cambiado.connect(_on_estado)
 		pesca.pez_pica.connect(_on_pica)
@@ -85,19 +90,10 @@ func _ready() -> void:
 		pesca.bloqueo_barca_llena.connect(_on_bloqueo_barca_llena)
 		pesca.intensidad_cambiada.connect(func(i: float) -> void: _intensidad_objetivo = i)
 		_on_estado(pesca.estado)
-	if mundo:
-		mundo.aparicion_llegada.connect(func(a: AparicionData) -> void:
-			var t: String = a.texto_llegada if a.texto_llegada != "" else "¡Ha llegado %s!" % a.nombre
-			_popup(t, color_perfecto, Vector2(0.5, 0.22), 2.0))
 	if comercio:
 		comercio.venta_terminada.connect(_on_vendido)
 	if celebracion:
-		celebracion.empezada.connect(func(pez: PezData) -> void:
-			estado.text = "¡%s!" % pez.nombre.to_upper()
-			combo.visible = false
-			_popup("¡%s!" % pez.nombre.to_upper(), colores_rareza[pez.rareza], Vector2(0.5, 0.18), 2.0))
-	if barco:
-		barco.llegado.connect(func() -> void: _popup("¡Ha llegado un comerciante!", colores_rareza[1], Vector2(0.5, 0.3), 0.8))
+		celebracion.empezada.connect(func(_pez: PezData) -> void: combo.visible = false)
 
 
 func _process(delta: float) -> void:
@@ -119,7 +115,6 @@ func _process(delta: float) -> void:
 	ayuda_modo.visible = texto_modo != ""
 	ayuda_modo.text = texto_modo
 	if Juego.en_movimiento:
-		estado.text = "Explorando"
 		resultado.visible = false
 
 	var p: Pesca.Paso = pesca.paso_actual() if pesca else null
@@ -136,7 +131,6 @@ func _process(delta: float) -> void:
 func _on_estado(e: Pesca.Estado) -> void:
 	match e:
 		Pesca.Estado.ESPERANDO:
-			estado.text = "Esperando que piquen..."
 			prompt.visible = false
 			combo.visible = false
 		Pesca.Estado.PASO:
@@ -146,10 +140,8 @@ func _on_estado(e: Pesca.Estado) -> void:
 
 
 func _on_pica(_pez: PezData) -> void:
-	estado.text = "¡¡HA PICADO!!"
 	resultado.visible = false
 	_destello = destello_picada
-	_popup("¡PICA!", Color.WHITE, Vector2(0.5, 0.35), 1.0)
 
 
 func _on_paso(p: Pesca.Paso, _i: int) -> void:
@@ -202,7 +194,7 @@ func _palabra(indice: int) -> String:
 	return texto
 
 func _on_fallo() -> void:
-	_popup_en("¡FALLO!", color_fallo, prompt.position + teclas.position + teclas.size * 0.5, 1.0)
+	_equis(prompt.position + teclas.position + teclas.size * 0.5)
 
 
 func _on_machacar_progreso(golpes: int, _necesarios: int) -> void:
@@ -211,44 +203,32 @@ func _on_machacar_progreso(golpes: int, _necesarios: int) -> void:
 
 
 func _on_machacar_fallido(escapa: bool) -> void:
-	_popup("¡Se suelta!" if escapa else "Pierde fuerza...", color_fallo, Vector2(0.5, 0.45), 1.0)
+	_equis(popups.size * Vector2(0.5, 0.45), 1.0 if escapa else 0.7)
 
 
 func _on_capturado(c: Dictionary, pez: PezData) -> void:
 	var col: Color = colores_rareza[pez.rareza]
-	if not (celebracion and celebracion.celebrando):
-		estado.text = "¡Capturado!"
 	resultado.visible = true
 	icono.texture = pez.icono
 	nombre.text = "%s  ·  %s" % [pez.nombre, NOMBRES_RAREZA[pez.rareza]]
 	nombre.modulate = col
 	detalle.text = "%s  ·  %s  ·  %s" % [Formato.calidad(c.calidad, c.perfecto), Formato.peso(c.peso), Formato.dinero(c.valor)]
 	_destello = destello_perfecto if c.perfecto else destello_captura
-	if c.perfecto:
-		_popup("¡¡PERFECTO!!", color_perfecto, Vector2(0.5, 0.4), 1.5)
-	else:
-		_popup(Formato.calidad(c.calidad, false), col, Vector2(0.5, 0.4), 1.0)
 
 
 func _on_escapado(pez: PezData) -> void:
-	estado.text = "Se ha escapado..."
-	if pez.rareza >= PezData.Rareza.RARO:
-		_popup("Era un %s..." % pez.nombre, colores_rareza[pez.rareza], Vector2(0.5, 0.4), 1.2)
-	else:
-		_popup("Se escapó", color_fallo, Vector2(0.5, 0.4), 1.0)
+	_equis(popups.size * Vector2(0.5, 0.4), 1.4 if pez.rareza >= PezData.Rareza.RARO else 1.0)
 
 
-func _on_barca_llena(pez: PezData) -> void:
-	estado.text = "¡Barca llena!"
-	_popup("Sin hueco: sueltas el %s" % pez.nombre, color_fallo, Vector2(0.5, 0.4), 1.1)
+func _on_barca_llena(_pez: PezData) -> void:
+	_equis(popups.size * Vector2(0.5, 0.4))
 
 
 func _on_bloqueo_barca_llena(llena: bool) -> void:
+	# Único texto arriba: avisa de que hay que vender para seguir pescando.
+	estado.visible = llena
 	if llena:
 		estado.text = "¡Barca llena! Ve a vender"
-		_popup("¡Barca llena! Ve a vender", color_fallo, Vector2(0.5, 0.35), 1.2)
-	else:
-		estado.text = "Esperando que piquen..."
 
 
 ## Texto rápido en pantalla (trucos, avisos).
@@ -258,6 +238,17 @@ func aviso_rapido(texto: String) -> void:
 
 func _on_vendido(total: float) -> void:
 	_popup_en("+" + Formato.dinero(total), color_perfecto, rublos.global_position + Vector2(rublos.size.x * 0.5, 80), 1.4)
+
+
+func _equis(centro: Vector2, escala: float = 1.0) -> void:
+	# Un fallo que hace escapar al pez lanza dos avisos seguidos: solo se ve una X.
+	var ahora: int = Time.get_ticks_msec()
+	if escena_x == null or ahora - _ultima_x < 300:
+		return
+	_ultima_x = ahora
+	var x: Node = escena_x.instantiate()
+	popups.add_child(x)
+	x.mostrar(centro, escala * escala_x)
 
 
 ## Popup en coordenadas relativas de pantalla (0..1).
