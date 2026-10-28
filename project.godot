@@ -18,6 +18,7 @@ config/features=PackedStringArray("4.7", "Forward Plus")
 [autoload]
 
 Juego="*res://scripts/economia/juego.gd"
+Vuelos="*res://scenes/efectos/vuelos.tscn"
 
 [display]
 

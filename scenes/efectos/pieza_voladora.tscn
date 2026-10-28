@@ -1,0 +1,10 @@
+[gd_scene format=3]
+
+[node name="PiezaVoladora" type="Sprite3D"]
+billboard = 1
+alpha_cut = 1
+texture_filter = 0
+shaded = false
+no_depth_test = true
+render_priority = 10
+pixel_size = 0.04

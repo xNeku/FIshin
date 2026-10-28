@@ -3,7 +3,6 @@ extends Node3D
 ## Barco que aparece tras las primeras capturas. Con "interactuar" abre su tienda.
 
 signal llegado
-signal vendido(total: float)
 
 @export var nombre: String = "Comerciante"
 @export var articulos: Array[ArticuloData] = []
@@ -15,7 +14,6 @@ var compra_peces: bool = true
 @export var duracion_entrada: float = 3.5
 @export var balanceo_grados: float = 3.0
 
-@onready var sfx_venta: AudioStreamPlayer = $SfxVenta
 
 var presente: bool = false
 var listo: bool = false
@@ -49,13 +47,6 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func puede_hablar() -> bool:
 	return listo and not Juego.en_movimiento
-
-
-func vender() -> float:
-	var total: float = Juego.vender_todo()
-	sfx_venta.play()
-	vendido.emit(total)
-	return total
 
 
 func _on_inventario() -> void:

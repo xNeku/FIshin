@@ -1,0 +1,25 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/efectos/vuelos.gd" id="1_script"]
+[ext_resource type="PackedScene" path="res://scenes/efectos/pieza_voladora.tscn" id="2_pieza"]
+[ext_resource type="Texture2D" path="res://art/dinero/moneda.png" id="3_moneda"]
+[ext_resource type="Texture2D" path="res://art/dinero/billete.png" id="4_billete"]
+[ext_resource type="Texture2D" path="res://art/dinero/fajo.png" id="5_fajo"]
+[ext_resource type="Texture2D" path="res://art/dinero/saco.png" id="6_saco"]
+[ext_resource type="AudioStream" path="res://art/sfx/moneda.wav" id="7_moneda"]
+[ext_resource type="AudioStream" path="res://art/sfx/pez_vuela.wav" id="8_pez"]
+
+[node name="Vuelos" type="Node"]
+script = ExtResource("1_script")
+escena_pieza = ExtResource("2_pieza")
+texturas_dinero = Array[Texture2D]([ExtResource("3_moneda"), ExtResource("4_billete"), ExtResource("5_fajo"), ExtResource("6_saco")])
+
+[node name="SfxMoneda" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("7_moneda")
+volume_db = -8.0
+max_polyphony = 6
+
+[node name="SfxPez" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("8_pez")
+volume_db = -8.0
+max_polyphony = 6

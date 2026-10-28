@@ -2,7 +2,6 @@
 
 [ext_resource type="Script" path="res://scripts/mundo/barco_comerciante.gd" id="1_script"]
 [ext_resource type="Texture2D" path="res://art/personajes/comerciante.png" id="2_comerciante"]
-[ext_resource type="AudioStream" path="res://art/sfx/venta.wav" id="3_venta"]
 [ext_resource type="Script" path="res://scripts/datos/articulo_data.gd" id="4_articulo"]
 [ext_resource type="Resource" path="res://data/articulos/cana_decente.tres" id="5_cana"]
 [ext_resource type="Resource" path="res://data/articulos/cebo_gusano.tres" id="6_cebo"]
@@ -94,7 +93,3 @@ texture_filter = 0
 shaded = false
 pixel_size = 0.04
 texture = ExtResource("2_comerciante")
-
-[node name="SfxVenta" type="AudioStreamPlayer" parent="."]
-process_mode = 3
-stream = ExtResource("3_venta")

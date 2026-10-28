@@ -4,6 +4,8 @@ extends CanvasLayer
 ## El vendedor es cualquier nodo con: nombre, articulos, compra_peces y, opcionalmente, saludos y vender().
 
 @export var escena_fila: PackedScene
+## Si está, la venta se hace con animación (peces al comprador y dinero de vuelta).
+@export var comercio: Node
 @export var saludos: Array[String] = [
 	"Ey, náufrago. ¿Otra vez oliendo a ron?",
 	"Pescado fresco, rublos frescos.",
@@ -88,6 +90,12 @@ func _vender() -> void:
 	if Juego.capturas.is_empty():
 		dialogo.text = frase_sin_peces
 		return
-	var total: float = _vendedor.vender() if _vendedor.has_method("vender") else Juego.vender_todo()
+	if comercio:
+		# Se cierra para ver volar los peces y el dinero.
+		var comprador: Node3D = _vendedor as Node3D
+		cerrar()
+		comercio.vender_barca(comprador)
+		return
+	var total: float = Juego.vender_todo()
 	dialogo.text = frase_venta % Formato.dinero(total)
 	_refrescar()

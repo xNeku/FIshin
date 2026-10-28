@@ -172,7 +172,15 @@ func valor_inventario() -> float:
 	return total
 
 
-## Vende todo el inventario de la barca. Devuelve lo ganado.
+## Saca todo el inventario de la barca (para venderlo con animación).
+func sacar_capturas() -> Array[Dictionary]:
+	var r: Array[Dictionary] = capturas.duplicate()
+	capturas.clear()
+	inventario_cambiado.emit()
+	return r
+
+
+## Vende todo el inventario de la barca de golpe, sin animación. Devuelve lo ganado.
 func vender_todo() -> float:
 	var total: float = valor_inventario()
 	capturas.clear()

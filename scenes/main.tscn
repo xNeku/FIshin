@@ -22,6 +22,7 @@
 [ext_resource type="Resource" path="res://data/apariciones/camino.tres" id="27_camino"]
 [ext_resource type="AudioStream" path="res://art/sfx/tablon.wav" id="28_sfx_tablon"]
 [ext_resource type="PackedScene" path="res://scenes/ui/dialogo.tscn" id="29_dialogo"]
+[ext_resource type="Script" path="res://scripts/economia/comercio.gd" id="30_comercio"]
 [ext_resource type="Script" path="res://scripts/pesca/pesca.gd" id="4_pesca"]
 [ext_resource type="Script" path="res://scripts/pesca/camara_pesca.gd" id="5_camara"]
 [ext_resource type="Script" path="res://scripts/pesca/sonido_pesca.gd" id="6_sonido"]
@@ -223,16 +224,18 @@ bestiario = NodePath("../Bestiario")
 dialogo = NodePath("../Dialogo")
 ocultar_al_andar = [NodePath("../Barca/Protagonista"), NodePath("../Barca/Cana"), NodePath("../Barca/Sedal"), NodePath("../Barca/Flotador")]
 
-[node name="HUD" parent="." node_paths=PackedStringArray("pesca", "barco", "celebracion", "mundo", "jugador") instance=ExtResource("3_hud")]
+[node name="HUD" parent="." node_paths=PackedStringArray("pesca", "barco", "celebracion", "mundo", "jugador", "comercio") instance=ExtResource("3_hud")]
 pesca = NodePath("../Pesca")
 barco = NodePath("../BarcoComerciante")
 celebracion = NodePath("../Celebracion")
 mundo = NodePath("../Mundo")
 jugador = NodePath("../Jugador")
+comercio = NodePath("../Comercio")
 
 [node name="Menu" parent="." instance=ExtResource("11_menu")]
 
-[node name="Tienda" parent="." instance=ExtResource("12_tienda")]
+[node name="Tienda" parent="." node_paths=PackedStringArray("comercio") instance=ExtResource("12_tienda")]
+comercio = NodePath("../Comercio")
 
 [node name="Bestiario" parent="." instance=ExtResource("24_bestiario")]
 
@@ -241,3 +244,8 @@ script = ExtResource("25_trucos")
 hud = NodePath("../HUD")
 
 [node name="Dialogo" parent="." instance=ExtResource("29_dialogo")]
+
+[node name="Comercio" type="Node" parent="." node_paths=PackedStringArray("jugador", "barca_origen")]
+script = ExtResource("30_comercio")
+jugador = NodePath("../Jugador")
+barca_origen = NodePath("../Barca/Protagonista")
