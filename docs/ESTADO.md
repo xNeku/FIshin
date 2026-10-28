@@ -1,7 +1,7 @@
 # ESTADO (traspaso entre sesiones)
 
 ## Dónde estamos
-Pasada de arte hecha (estilo B, la demo que le gustó al diseñador): mundo pixelado a 1/4 con HUD nítido, desenfoque de maqueta en cinemáticas, mar nuevo con olas, reflejos y climas, prota tumbado en un donut rosa con caña, corcho y ondas, suelos con textura pixel y props en sprite, y el viejo entre palmeras con la hoguera delante. Falta el barco comerciante en sprite.
+Pasada de arte hecha (estilo B, la demo que le gustó al diseñador): mundo pixelado a 1/4 con HUD nítido (sin desenfoque), mar nuevo con olas, reflejos y climas, prota tumbado en un donut rosa que flota sobre la ola con caña, corcho y ondas, suelos y tablones con textura pixel, barco del comerciante y props en sprite, y el viejo entre palmeras con la hoguera delante. Ya no quedan modelos 3D en objetos.
 Fase 3 casi completa: el mundo crece (apariciones por datos) y ya se puede andar (Q), saltar entre barca e islas e interactuar (E) con el viejo (tienda) y el bestiario. Falta el árbol de habilidades (espera al diseñador). Puerto pesquero funcionando: pescadores automáticos que llenan el cubo; el náufrago lo coge y lo vende. Ventas animadas (peces y dinero volando). Lonja: emerge del mar y vende de golpe barca + cubo.
 Fase 2 hecha: bucle pescar → vender → mejorar. Cañas por profundidad, cebo, huecos de barca apilados por especie, tienda del comerciante (E) y menú (Tab) (Barca, Stats, Opciones). Save v2. Falta que el diseñador lo pruebe a mano.
 
@@ -32,9 +32,10 @@ Fase 2 hecha: bucle pescar → vender → mejorar. Cañas por profundidad, cebo,
 - Interactuable accion VENTA: Comercio.vender_todo (barca + cubo en mano), sin menú (la lonja).
 - Interactuable tiene `prioridad` (cubo 2, comerciante 1, charla 0). El barco comerciante tiene su Interactuable para cuando vas andando.
 - `scenes/main.tscn`: lo monta todo.
-- Pixelado: `scripts/efectos/pixelador.gd` + `scenes/efectos/pixelador.tscn` (en main, grupo "pixelador"). Copia la cámara del juego a una SubViewport a 1/4 y la escala sin suavizar; `cine(true, punto)` mete el desenfoque (el foco sigue a la cámara).
-- Mar: `shaders/agua.gdshader` (4 olas, detalle con normal maps, anillos de lluvia). Clima: `scripts/mundo/clima.gd` (nodo Clima en main) con `data/climas/*.tres` (ClimaData): cielo, nubes, sol, niebla, colores del mar, olas, lluvia, relámpagos.
-- Donut: `scenes/mundo/barca.tscn` (barca.gd): poses chill/tira (la punta de la caña va por píxel del sprite), corcho con lanzado, sedal, ondas y salpicadura. Trofeo tumbado en Celebracion.textura_trofeo.
+- Pixelado: `scripts/efectos/pixelador.gd` + `scenes/efectos/pixelador.tscn` (en main, grupo "pixelador"). Copia la cámara del juego a una SubViewport a 1/4 y la escala sin suavizar.
+- Mar: `shaders/agua.gdshader` (4 olas, detalle con normal maps, anillos de lluvia) + `scripts/mundo/agua.gd` (Agua, en el nodo Agua de main): lleva el tiempo de las olas y da `altura(p)`, `pendiente(p)` y `pegar(sprite, p, alto)` para lo que flota. Si cambias las olas en el shader, cámbialas también en agua.gd. Clima: `scripts/mundo/clima.gd` (nodo Clima en main) con `data/climas/*.tres` (ClimaData): cielo, nubes, sol, niebla, colores del mar, olas, lluvia, relámpagos.
+- Donut: `scenes/mundo/barca.tscn` (barca.gd): capas DonutAtras, Protagonista, DonutDelante, Piernas (mismo lienzo 64x58, offset para que la base quede en el origen); flota con Agua; Sombra y Espuma pegadas al agua; poses chill/tira (la punta de la caña va por píxel del sprite), corcho con lanzado, sedal, ondas y salpicadura. Trofeo tumbado en Celebracion.textura_trofeo. Foco (Marker3D) es el punto al que mira la cámara en el primer plano y de donde salen los peces que vuelan.
+- Barco comerciante: capas Fondo, Comerciante, Delante (`art/mundo/barco_*.png`), flota con Agua.
 - Arte del mundo: suelos en `art/mundo/suelo/` con materiales en `art/materiales/` (triplanar, se cambian ahí para todas las islas), props en `art/mundo/props/`. Los PNG nuevos llevan `detect_3d/compress_to=0` para que el editor no los reimporte solo.
 - Peces: `data/peces/*.tres` (PezData). Arte placeholder en `art/` (generado por script, sustituible).
 
@@ -44,7 +45,7 @@ Fase 2 hecha: bucle pescar → vender → mejorar. Cañas por profundidad, cebo,
 - Se leen con ArtifactData (list). El código fuente está en `docs/herramientas/`.
 
 ## Siguiente paso
-1. Que el diseñador pruebe la pasada de arte (donut, mar, climas con F6, islas). Barco comerciante en sprite.
+1. Que el diseñador pruebe la pasada de arte (donut flotando, mar, climas con F6, islas, barco).
 2. Árbol de habilidades: pasar el artefacto a datos cuando el diseñador lo rellene.
 3. Rehacer el cebo: probabilidades + duración en segundos.
 
@@ -55,7 +56,7 @@ Fase 2 hecha: bucle pescar → vender → mejorar. Cañas por profundidad, cebo,
 - Barca llena (todos los huecos): no pica nada hasta vender. Sin progreso offline.
 - Machacar fallido: los extraños y legendarios se escapan, los demás pierden valor.
 - Niebla del clima activa (Forward+); en Compatibility lo dejaba todo gris.
-- Estilo B pixelado + desenfoque de maqueta en cinemáticas. Prota en donut rosa (no hay barca). Viejo entre palmeras con hoguera delante.
+- Estilo B pixelado, sin desenfoque. Nada de modelos 3D en objetos. Prota en donut rosa (no hay barca), piernas de frente, caña a la derecha. Viejo entre palmeras con hoguera delante.
 
 ## Pendiente del diseñador
 1. Excel de peces (enciclopedia, pesos, día/noche, estación).

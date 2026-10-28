@@ -16,8 +16,8 @@ Marcas: [DECIDIDO] lo decidió el diseñador · [PROPUESTA] sugerencia de Claude
 ## 3. Protagonista
 - [DECIDIDO] Náufrago dejado, consumido por tabaco, alcohol y malos vicios, pero carismático y buen rollero. Está de puto chill porque es un máquina.
 - [DECIDIDO] Inspirado en el personaje de Hotline Miami de la referencia: barba y melena de náufrago, sin gafas, pelo negro, más moreno de piel, sonrisa pícara.
-- [DECIDIDO] No va en barca: pesca tumbado de chill en un donut flotador rosa, con la caña en la mano. La celebración del pez gordo (brazos arriba con el pez) la hace tumbado. Con Q se pone de pie sobre el donut.
-- [PROPUESTA] Implementado: al esperar lanza el corcho en arco al agua (salpicadura y ondas lentas); al picar cambia a pose de tirar, el corcho se hunde y las ondas se aceleran; tiembla más con la intensidad.
+- [DECIDIDO] No va en barca: pesca tumbado de chill en un donut flotador rosa (alto, que flote, no hundido), con la caña en la mano apuntando a la derecha y las piernas de frente, como tumbado mirando a cámara. La celebración del pez gordo (brazos arriba con el pez) la hace tumbado. Con Q se pone de pie sobre el donut.
+- [PROPUESTA] Implementado: el donut sube y baja con la ola de verdad y se inclina con ella, con sombra y espuma en el agua. Capas de delante a atrás: piernas, aro delantero, prota, donut (mismo lienzo de 64x58). Al esperar lanza el corcho en arco al agua (salpicadura y ondas lentas); al picar cambia a pose de tirar, el corcho se hunde y las ondas se aceleran; tiembla más con la intensidad.
 
 ## 4. Mundo y cuadrícula
 - [DECIDIDO] El mapa es una cuadrícula/matriz. La barca está en (0,0).
@@ -95,7 +95,8 @@ Marcas: [DECIDIDO] lo decidió el diseñador · [PROPUESTA] sugerencia de Claude
 
 ## 12. Dirección de arte
 - [DECIDIDO] Se mantiene el 2.5D pero con todo en sprites 2D muy simples (personajes con su caña en la mano, objetos, barcos...), estilo Octopath. Excepciones más trabajadas: paisaje (cielo, mar, clima), VFX, peces y menús.
-- [DECIDIDO] Estilo B: todo el mundo se dibuja pixelado (a 1/4 de resolución, sin suavizar) y el HUD va nítido encima. Con un toque del A: desenfoque de maqueta (tilt-shift) en cinemáticas y celebraciones.
+- [DECIDIDO] Estilo B: todo el mundo se dibuja pixelado (a 1/4 de resolución, sin suavizar) y el HUD va nítido encima. Sin desenfoque (se probó en cinemáticas y se quitó).
+- [DECIDIDO] Nada de modelos 3D en objetos: barcos, tablones, props y personajes en sprite o bloque con textura pixel.
 - [DECIDIDO] La referencia es la demo B (suelos de hierba y arena con textura, tablones, palmeras, sprites), con el mar nuevo.
 - [DECIDIDO] Mar con reflejos y clima que se nota (cielo, nubes, mar, lluvia, tormenta).
 - [DECIDIDO] El viejo, entre palmeras con la hoguera delante (y los bonsáis a los lados).
