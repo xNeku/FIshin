@@ -3,24 +3,7 @@
 [ext_resource type="Script" path="res://scripts/mundo/isla.gd" id="1_script"]
 [ext_resource type="Texture2D" path="res://art/mundo/lonja.png" id="2_casa"]
 [ext_resource type="Script" path="res://scripts/mundo/interactuable.gd" id="3_interactuable"]
-
-[sub_resource type="StandardMaterial3D" id="m_rojo"]
-albedo_color = Color(0.86, 0.22, 0.2, 1)
-roughness = 0.6
-
-[sub_resource type="StandardMaterial3D" id="m_blanco"]
-albedo_color = Color(0.95, 0.95, 0.93, 1)
-roughness = 0.6
-
-[sub_resource type="TorusMesh" id="t_rojo"]
-material = SubResource("m_rojo")
-inner_radius = 0.22
-outer_radius = 0.42
-
-[sub_resource type="TorusMesh" id="t_blanco"]
-material = SubResource("m_blanco")
-inner_radius = 0.22
-outer_radius = 0.42
+[ext_resource type="Texture2D" path="res://art/mundo/props/flotador.png" id="5_flotador"]
 
 [sub_resource type="StandardMaterial3D" id="m_burbuja"]
 transparency = 1
@@ -52,43 +35,74 @@ salpicadura = NodePath("Salpicadura")
 
 [node name="Flotadores" type="Node3D" parent="."]
 
-[node name="Flotador1" type="MeshInstance3D" parent="Flotadores"]
+[node name="Flotador1" type="Sprite3D" parent="Flotadores"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.1, 0.05, -3.1)
-mesh = SubResource("t_rojo")
+billboard = 2
+alpha_cut = 1
+texture_filter = 0
+pixel_size = 0.06
+texture = ExtResource("5_flotador")
 
-[node name="Flotador2" type="MeshInstance3D" parent="Flotadores"]
+[node name="Flotador2" type="Sprite3D" parent="Flotadores"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, -3.2)
-mesh = SubResource("t_blanco")
+billboard = 2
+alpha_cut = 1
+texture_filter = 0
+pixel_size = 0.06
+texture = ExtResource("5_flotador")
 
-[node name="Flotador3" type="MeshInstance3D" parent="Flotadores"]
+[node name="Flotador3" type="Sprite3D" parent="Flotadores"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.1, 0.05, -3.1)
-mesh = SubResource("t_rojo")
+billboard = 2
+alpha_cut = 1
+texture_filter = 0
+pixel_size = 0.06
+texture = ExtResource("5_flotador")
 
-[node name="Flotador4" type="MeshInstance3D" parent="Flotadores"]
+[node name="Flotador4" type="Sprite3D" parent="Flotadores"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.2, 0.05, 0)
-mesh = SubResource("t_blanco")
+billboard = 2
+alpha_cut = 1
+texture_filter = 0
+pixel_size = 0.06
+texture = ExtResource("5_flotador")
 
-[node name="Flotador5" type="MeshInstance3D" parent="Flotadores"]
+[node name="Flotador5" type="Sprite3D" parent="Flotadores"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.1, 0.05, 3.1)
-mesh = SubResource("t_rojo")
+billboard = 2
+alpha_cut = 1
+texture_filter = 0
+pixel_size = 0.06
+texture = ExtResource("5_flotador")
 
-[node name="Flotador6" type="MeshInstance3D" parent="Flotadores"]
+[node name="Flotador6" type="Sprite3D" parent="Flotadores"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 3.2)
-mesh = SubResource("t_blanco")
+billboard = 2
+alpha_cut = 1
+texture_filter = 0
+pixel_size = 0.06
+texture = ExtResource("5_flotador")
 
-[node name="Flotador7" type="MeshInstance3D" parent="Flotadores"]
+[node name="Flotador7" type="Sprite3D" parent="Flotadores"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.1, 0.05, 3.1)
-mesh = SubResource("t_rojo")
+billboard = 2
+alpha_cut = 1
+texture_filter = 0
+pixel_size = 0.06
+texture = ExtResource("5_flotador")
 
-[node name="Flotador8" type="MeshInstance3D" parent="Flotadores"]
+[node name="Flotador8" type="Sprite3D" parent="Flotadores"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.2, 0.05, 0)
-mesh = SubResource("t_blanco")
+billboard = 2
+alpha_cut = 1
+texture_filter = 0
+pixel_size = 0.06
+texture = ExtResource("5_flotador")
 
 [node name="Casa" type="Sprite3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.25, -1.3)
 alpha_cut = 1
 texture_filter = 0
-shaded = false
 pixel_size = 0.05
 texture = ExtResource("2_casa")
 

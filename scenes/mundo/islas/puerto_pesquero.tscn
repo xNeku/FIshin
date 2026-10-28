@@ -5,6 +5,8 @@
 [ext_resource type="Script" path="res://scripts/mundo/interactuable.gd" id="3_interactuable"]
 [ext_resource type="Script" path="res://scripts/mundo/cubo.gd" id="4_cubo"]
 [ext_resource type="Texture2D" path="res://art/articulos/cubo.png" id="5_cubo"]
+[ext_resource type="Texture2D" path="res://art/mundo/props/barril.png" id="8_barril"]
+[ext_resource type="Texture2D" path="res://art/mundo/props/caja.png" id="9_caja"]
 
 [node name="PuertoPesquero" type="Node3D" node_paths=PackedStringArray("cubo", "contenedor")]
 script = ExtResource("1_script")
@@ -14,6 +16,36 @@ lineas_primero = Array[String](["Ey, ¿tú eres el náufrago? Mi primo, el merca
 contenedor = NodePath("Trabajadores")
 
 [node name="Piezas" type="Node3D" parent="."]
+
+[node name="Decorado" type="Node3D" parent="."]
+
+[node name="Barril1" type="Sprite3D" parent="Decorado"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, 0.24, -0.75)
+offset = Vector2(0, 4.5)
+billboard = 2
+alpha_cut = 1
+texture_filter = 0
+pixel_size = 0.045
+texture = ExtResource("8_barril")
+
+[node name="Barril2" type="Sprite3D" parent="Decorado"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.7, 0.24, -0.9)
+offset = Vector2(0, 4.5)
+flip_h = true
+billboard = 2
+alpha_cut = 1
+texture_filter = 0
+pixel_size = 0.045
+texture = ExtResource("8_barril")
+
+[node name="Caja" type="Sprite3D" parent="Decorado"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.25, 0.24, -0.8)
+offset = Vector2(0, 3.5)
+billboard = 2
+alpha_cut = 1
+texture_filter = 0
+pixel_size = 0.045
+texture = ExtResource("9_caja")
 
 [node name="Trabajadores" type="Node3D" parent="."]
 
@@ -26,7 +58,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.27, 0)
 billboard = 2
 alpha_cut = 1
 texture_filter = 0
-shaded = false
 pixel_size = 0.06
 texture = ExtResource("5_cubo")
 

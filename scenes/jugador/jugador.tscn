@@ -26,7 +26,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
 billboard = 2
 alpha_cut = 1
 texture_filter = 0
-shaded = false
 pixel_size = 0.04
 texture = ExtResource("2_naufrago")
 
@@ -41,7 +40,6 @@ visible = false
 billboard = 2
 alpha_cut = 1
 texture_filter = 0
-shaded = false
 pixel_size = 0.045
 texture = ExtResource("4_cubo")
 

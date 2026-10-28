@@ -1,22 +1,7 @@
 [gd_scene format=3]
 
 [ext_resource type="Script" path="res://scripts/mundo/fuego.gd" id="1_script"]
-
-[sub_resource type="StandardMaterial3D" id="m_llama"]
-shading_mode = 0
-albedo_color = Color(1, 0.55, 0.12, 1)
-
-[sub_resource type="StandardMaterial3D" id="m_nucleo"]
-shading_mode = 0
-albedo_color = Color(1, 0.92, 0.5, 1)
-
-[sub_resource type="PrismMesh" id="p_llama"]
-material = SubResource("m_llama")
-size = Vector3(0.35, 0.5, 0.35)
-
-[sub_resource type="PrismMesh" id="p_nucleo"]
-material = SubResource("m_nucleo")
-size = Vector3(0.18, 0.3, 0.18)
+[ext_resource type="Texture2D" path="res://art/mundo/props/llama.png" id="2_llama"]
 
 [sub_resource type="StandardMaterial3D" id="m_brasa"]
 shading_mode = 0
@@ -32,15 +17,14 @@ script = ExtResource("1_script")
 
 [node name="Llama" type="Node3D" parent="."]
 
-[node name="Exterior" type="MeshInstance3D" parent="Llama"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
-cast_shadow = 0
-mesh = SubResource("p_llama")
-
-[node name="Nucleo" type="MeshInstance3D" parent="Llama"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.17, 0.02)
-cast_shadow = 0
-mesh = SubResource("p_nucleo")
+[node name="Sprite" type="Sprite3D" parent="Llama"]
+offset = Vector2(0, 4.5)
+billboard = 2
+alpha_cut = 1
+texture_filter = 0
+shaded = false
+pixel_size = 0.05
+texture = ExtResource("2_llama")
 
 [node name="Luz" type="OmniLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)

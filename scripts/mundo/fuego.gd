@@ -9,8 +9,12 @@ extends Node3D
 @onready var luz: OmniLight3D = $Luz
 @onready var llama: Node3D = $Llama
 
+## Cada cuánto se voltea el sprite de la llama (segundos). 0 = nunca.
+@export var volteo: float = 0.18
+
 var encendido: bool = false
 var _t: float = 0.0
+var _t_volteo: float = 0.0
 
 
 func _ready() -> void:
@@ -38,3 +42,9 @@ func _process(delta: float) -> void:
 	var r: float = sin(_t * velocidad) * 0.5 + sin(_t * velocidad * 2.3) * 0.3 + randf_range(-0.2, 0.2)
 	luz.light_energy = energia * (1.0 + parpadeo * r)
 	llama.scale = Vector3.ONE * (1.0 + 0.12 * r)
+	var sprite := llama.get_node_or_null("Sprite") as Sprite3D
+	if sprite and volteo > 0.0:
+		_t_volteo += delta
+		if _t_volteo >= volteo:
+			_t_volteo = 0.0
+			sprite.flip_h = not sprite.flip_h

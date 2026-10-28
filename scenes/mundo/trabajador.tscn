@@ -28,7 +28,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.62, 0)
 billboard = 2
 alpha_cut = 1
 texture_filter = 0
-shaded = false
 pixel_size = 0.05
 texture = ExtResource("2_pie")
 
@@ -50,7 +49,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
 billboard = 1
 alpha_cut = 1
 texture_filter = 0
-shaded = false
 pixel_size = 0.035
 
 [node name="Charla" type="Node3D" parent="."]

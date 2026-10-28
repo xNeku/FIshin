@@ -3,52 +3,19 @@
 [ext_resource type="Script" path="res://scripts/mundo/isla.gd" id="1_script"]
 [ext_resource type="PackedScene" path="res://scenes/mundo/fuego.tscn" id="2_fuego"]
 [ext_resource type="Script" path="res://scripts/mundo/interactuable.gd" id="3_interactuable"]
-
-[sub_resource type="StandardMaterial3D" id="m_arena"]
-albedo_color = Color(0.780, 0.640, 0.420, 1)
-roughness = 0.9
-
-[sub_resource type="StandardMaterial3D" id="m_roca"]
-albedo_color = Color(0.541, 0.498, 0.447, 1)
-roughness = 0.9
-
-[sub_resource type="StandardMaterial3D" id="m_madera"]
-albedo_color = Color(0.420, 0.259, 0.149, 1)
-roughness = 0.9
-
-[sub_resource type="StandardMaterial3D" id="m_libro"]
-albedo_color = Color(0.604, 0.169, 0.169, 1)
-roughness = 0.9
-
-[sub_resource type="StandardMaterial3D" id="m_papel"]
-albedo_color = Color(0.937, 0.902, 0.812, 1)
-roughness = 0.9
+[ext_resource type="Material" path="res://art/materiales/arena.tres" id="4_arena"]
+[ext_resource type="Material" path="res://art/materiales/tierra.tres" id="5_tierra"]
+[ext_resource type="Texture2D" path="res://art/mundo/props/atril.png" id="6_atril"]
+[ext_resource type="Texture2D" path="res://art/mundo/props/antorcha.png" id="7_antorcha"]
+[ext_resource type="Texture2D" path="res://art/mundo/props/roca.png" id="8_roca"]
 
 [sub_resource type="BoxMesh" id="b_arena"]
-material = SubResource("m_arena")
+material = ExtResource("4_arena")
 size = Vector3(2, 0.35, 2)
 
 [sub_resource type="BoxMesh" id="b_roca"]
-material = SubResource("m_roca")
+material = ExtResource("5_tierra")
 size = Vector3(2.1, 0.6, 2.1)
-
-[sub_resource type="BoxMesh" id="b_atril"]
-material = SubResource("m_madera")
-size = Vector3(0.5, 0.9, 0.4)
-
-[sub_resource type="BoxMesh" id="b_libro"]
-material = SubResource("m_libro")
-size = Vector3(0.6, 0.1, 0.45)
-
-[sub_resource type="BoxMesh" id="b_hojas"]
-material = SubResource("m_papel")
-size = Vector3(0.5, 0.06, 0.4)
-
-[sub_resource type="CylinderMesh" id="c_palo"]
-material = SubResource("m_madera")
-top_radius = 0.05
-bottom_radius = 0.07
-height = 1.6
 
 [sub_resource type="StandardMaterial3D" id="m_gota"]
 shading_mode = 0
@@ -102,20 +69,17 @@ mesh = SubResource("b_arena")
 [node name="Bestiario" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0.28, 0)
 
-[node name="Atril" type="MeshInstance3D" parent="Bestiario"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45, 0)
-mesh = SubResource("b_atril")
-
-[node name="Libro" type="MeshInstance3D" parent="Bestiario"]
-transform = Transform3D(1, 0, 0, 0, 0.939693, 0.34202, 0, -0.34202, 0.939693, 0, 0.95, 0)
-mesh = SubResource("b_libro")
-
-[node name="Hojas" type="MeshInstance3D" parent="Bestiario"]
-transform = Transform3D(1, 0, 0, 0, 0.939693, 0.34202, 0, -0.34202, 0.939693, 0, 1, 0)
-mesh = SubResource("b_hojas")
+[node name="Atril" type="Sprite3D" parent="Bestiario"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+offset = Vector2(0, 5)
+billboard = 2
+alpha_cut = 1
+texture_filter = 0
+pixel_size = 0.08
+texture = ExtResource("6_atril")
 
 [node name="Etiqueta" type="Label3D" parent="Bestiario"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.3, 0)
 billboard = 1
 pixel_size = 0.006
 outline_size = 8
@@ -131,13 +95,37 @@ radio = 1.6
 [node name="Antorcha" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0.28, 0)
 
-[node name="Palo" type="MeshInstance3D" parent="Antorcha"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
-mesh = SubResource("c_palo")
+[node name="Palo" type="Sprite3D" parent="Antorcha"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+offset = Vector2(0, 7)
+billboard = 2
+alpha_cut = 1
+texture_filter = 0
+pixel_size = 0.1
+texture = ExtResource("7_antorcha")
 
 [node name="Fuego" parent="Antorcha" instance=ExtResource("2_fuego")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
 energia = 1.6
+
+[node name="Roca" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.6, 0.27, 0.7)
+offset = Vector2(0, 3)
+billboard = 2
+alpha_cut = 1
+texture_filter = 0
+pixel_size = 0.06
+texture = ExtResource("8_roca")
+
+[node name="Roca2" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.6, 0.27, 0.6)
+offset = Vector2(0, 3)
+flip_h = true
+billboard = 2
+alpha_cut = 1
+texture_filter = 0
+pixel_size = 0.045
+texture = ExtResource("8_roca")
 
 [node name="Salpicadura" type="CPUParticles3D" parent="."]
 emitting = false

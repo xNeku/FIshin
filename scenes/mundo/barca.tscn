@@ -48,7 +48,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.12, 0)
 billboard = 2
 alpha_cut = 1
 texture_filter = 0
-shaded = false
 pixel_size = 0.04
 texture = ExtResource("4_donut")
 
@@ -57,7 +56,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.64, 0.05)
 billboard = 2
 alpha_cut = 1
 texture_filter = 0
-shaded = false
 pixel_size = 0.04
 texture = ExtResource("2_chill")
 
@@ -76,7 +74,6 @@ top_level = true
 billboard = 2
 alpha_cut = 1
 texture_filter = 0
-shaded = false
 pixel_size = 0.06
 texture = ExtResource("5_corcho")
 
@@ -110,7 +107,6 @@ visible = false
 billboard = 1
 alpha_cut = 1
 texture_filter = 0
-shaded = false
 pixel_size = 0.05
 texture = ExtResource("7_pez")
 

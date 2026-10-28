@@ -6,61 +6,20 @@
 [ext_resource type="Script" path="res://scripts/mundo/interactuable.gd" id="4_interactuable"]
 [ext_resource type="Script" path="res://scripts/datos/articulo_data.gd" id="5_articulo"]
 [ext_resource type="Resource" path="res://data/articulos/cana_sabia.tres" id="6_cana_sabia"]
-
-[sub_resource type="StandardMaterial3D" id="m_hierba"]
-albedo_color = Color(0.310, 0.520, 0.240, 1)
-roughness = 0.9
-
-[sub_resource type="StandardMaterial3D" id="m_tierra"]
-albedo_color = Color(0.478, 0.353, 0.227, 1)
-roughness = 0.9
-
-[sub_resource type="StandardMaterial3D" id="m_roca"]
-albedo_color = Color(0.435, 0.416, 0.388, 1)
-roughness = 0.9
-
-[sub_resource type="StandardMaterial3D" id="m_tronco"]
-albedo_color = Color(0.353, 0.227, 0.133, 1)
-roughness = 0.9
-
-[sub_resource type="StandardMaterial3D" id="m_hoja"]
-albedo_color = Color(0.247, 0.490, 0.227, 1)
-roughness = 0.9
-
-[sub_resource type="StandardMaterial3D" id="m_maceta"]
-albedo_color = Color(0.690, 0.392, 0.235, 1)
-roughness = 0.9
-
-[sub_resource type="StandardMaterial3D" id="m_leno"]
-albedo_color = Color(0.290, 0.173, 0.094, 1)
-roughness = 0.9
+[ext_resource type="Material" path="res://art/materiales/hierba.tres" id="7_hierba"]
+[ext_resource type="Material" path="res://art/materiales/tierra.tres" id="8_tierra"]
+[ext_resource type="Texture2D" path="res://art/mundo/props/palmera.png" id="9_palmera"]
+[ext_resource type="Texture2D" path="res://art/mundo/props/troncos.png" id="10_troncos"]
+[ext_resource type="Texture2D" path="res://art/mundo/props/bonsai.png" id="11_bonsai"]
+[ext_resource type="Texture2D" path="res://art/mundo/props/roca.png" id="12_roca"]
 
 [sub_resource type="BoxMesh" id="b_hierba"]
-material = SubResource("m_hierba")
+material = ExtResource("7_hierba")
 size = Vector3(2, 0.3, 2)
 
 [sub_resource type="BoxMesh" id="b_tierra"]
-material = SubResource("m_tierra")
+material = ExtResource("8_tierra")
 size = Vector3(2.05, 0.7, 2.05)
-
-[sub_resource type="BoxMesh" id="b_leno"]
-material = SubResource("m_leno")
-size = Vector3(0.7, 0.12, 0.12)
-
-[sub_resource type="BoxMesh" id="b_maceta"]
-material = SubResource("m_maceta")
-size = Vector3(0.35, 0.2, 0.35)
-
-[sub_resource type="CylinderMesh" id="c_tronco"]
-material = SubResource("m_tronco")
-top_radius = 0.03
-bottom_radius = 0.05
-height = 0.35
-
-[sub_resource type="SphereMesh" id="s_copa"]
-material = SubResource("m_hoja")
-radius = 0.22
-height = 0.44
 
 [sub_resource type="StandardMaterial3D" id="m_gota"]
 shading_mode = 0
@@ -160,7 +119,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0.71, 0)
 billboard = 2
 alpha_cut = 1
 texture_filter = 0
-shaded = false
 pixel_size = 0.04
 texture = ExtResource("3_viejo")
 
@@ -174,48 +132,75 @@ articulos = Array[ExtResource("5_articulo")]([ExtResource("6_cana_sabia")])
 saludos = Array[String](["Mmmh... el árbol aún está brotando, chaval. Vuelve cuando tenga ramas.", "Ommm... ¿Una caña? Esta la tallé yo con paciencia. Y con un cuchillo.", "La paz no se pesca. Bueno, a veces sí."])
 
 [node name="Hoguera" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0.25, 1.1)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0.25, 1.0)
 
-[node name="Leno1" type="MeshInstance3D" parent="Hoguera"]
-transform = Transform3D(0.819152, 0, 0.573576, 0, 1, 0, -0.573576, 0, 0.819152, 0, 0.06, 0)
-mesh = SubResource("b_leno")
-
-[node name="Leno2" type="MeshInstance3D" parent="Hoguera"]
-transform = Transform3D(0.819152, 0, -0.573576, 0, 1, 0, 0.573576, 0, 0.819152, 0, 0.06, 0)
-mesh = SubResource("b_leno")
+[node name="Troncos" type="Sprite3D" parent="Hoguera"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+offset = Vector2(0, 2.5)
+billboard = 2
+alpha_cut = 1
+texture_filter = 0
+pixel_size = 0.05
+texture = ExtResource("10_troncos")
 
 [node name="Fuego" parent="Hoguera" instance=ExtResource("2_fuego")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.12, 0.02)
 
-[node name="BonsaiIzq" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.75, 0.25, 0.2)
+[node name="PalmeraIzq" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.05, 0.25, -0.55)
+offset = Vector2(0, 11.5)
+billboard = 2
+alpha_cut = 1
+texture_filter = 0
+pixel_size = 0.09
+texture = ExtResource("9_palmera")
 
-[node name="Maceta" type="MeshInstance3D" parent="BonsaiIzq"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
-mesh = SubResource("b_maceta")
+[node name="PalmeraDer" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.95, 0.25, -0.65)
+offset = Vector2(0, 11.5)
+flip_h = true
+billboard = 2
+alpha_cut = 1
+texture_filter = 0
+pixel_size = 0.08
+texture = ExtResource("9_palmera")
 
-[node name="Tronco" type="MeshInstance3D" parent="BonsaiIzq"]
-transform = Transform3D(0.990268, -0.139173, 0, 0.139173, 0.990268, 0, 0, 0, 1, 0, 0.35, 0)
-mesh = SubResource("c_tronco")
+[node name="BonsaiIzq" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.85, 0.25, 0.45)
+offset = Vector2(0, 5.5)
+billboard = 2
+alpha_cut = 1
+texture_filter = 0
+pixel_size = 0.045
+texture = ExtResource("11_bonsai")
 
-[node name="Copa" type="MeshInstance3D" parent="BonsaiIzq"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.03, 0.55, 0)
-mesh = SubResource("s_copa")
+[node name="BonsaiDer" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.15, 0.25, 0.45)
+offset = Vector2(0, 5.5)
+flip_h = true
+billboard = 2
+alpha_cut = 1
+texture_filter = 0
+pixel_size = 0.045
+texture = ExtResource("11_bonsai")
 
-[node name="BonsaiDer" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.25, 0.25, 0.2)
+[node name="Roca" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.6, 0.25, 2.4)
+offset = Vector2(0, 3)
+billboard = 2
+alpha_cut = 1
+texture_filter = 0
+pixel_size = 0.06
+texture = ExtResource("12_roca")
 
-[node name="Maceta" type="MeshInstance3D" parent="BonsaiDer"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
-mesh = SubResource("b_maceta")
-
-[node name="Tronco" type="MeshInstance3D" parent="BonsaiDer"]
-transform = Transform3D(0.990268, -0.139173, 0, 0.139173, 0.990268, 0, 0, 0, 1, 0, 0.35, 0)
-mesh = SubResource("c_tronco")
-
-[node name="Copa" type="MeshInstance3D" parent="BonsaiDer"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.03, 0.55, 0)
-mesh = SubResource("s_copa")
+[node name="Palmera3" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.4, 0.25, -2.6)
+offset = Vector2(0, 11.5)
+billboard = 2
+alpha_cut = 1
+texture_filter = 0
+pixel_size = 0.07
+texture = ExtResource("9_palmera")
 
 [node name="Salpicadura" type="CPUParticles3D" parent="."]
 emitting = false
