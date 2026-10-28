@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="ClimaData" format=3]
+
+[ext_resource type="Script" path="res://scripts/datos/clima_data.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"tormenta"
+nombre = "Tormenta"
+probabilidad = 0.7
+duracion_min = 45.0
+duracion_max = 100.0
+cielo_arriba = Color(0.12, 0.13, 0.18, 1)
+cielo_horizonte = Color(0.24, 0.26, 0.32, 1)
+nubes = 1.0
+color_nubes = Color(0.3, 0.32, 0.36, 1)
+color_sol = Color(0.6, 0.65, 0.78, 1)
+energia_sol = 0.25
+energia_ambiente = 0.4
+niebla = 0.018
+color_niebla = Color(0.2, 0.22, 0.27, 1)
+agua_profundo = Color(0.02, 0.06, 0.1, 1)
+agua_claro = Color(0.08, 0.14, 0.2, 1)
+altura_ola = 0.55
+velocidad_ola = 2.2
+rugosidad = 0.15
+lluvia = 1.0
+relampagos = true

@@ -26,6 +26,15 @@
 [ext_resource type="Texture2D" path="res://art/articulos/cubo.png" id="31_cubo"]
 [ext_resource type="Resource" path="res://data/apariciones/lonja.tres" id="32_lonja"]
 [ext_resource type="PackedScene" path="res://scenes/efectos/pixelador.tscn" id="33_pixelador"]
+[ext_resource type="Script" path="res://scripts/mundo/clima.gd" id="34_clima"]
+[ext_resource type="Script" path="res://scripts/datos/clima_data.gd" id="35_clima_data"]
+[ext_resource type="Resource" path="res://data/climas/soleado.tres" id="36_soleado"]
+[ext_resource type="Resource" path="res://data/climas/nublado.tres" id="37_nublado"]
+[ext_resource type="Resource" path="res://data/climas/lluvia.tres" id="38_lluvia"]
+[ext_resource type="Resource" path="res://data/climas/tormenta.tres" id="39_tormenta"]
+[ext_resource type="PackedScene" path="res://scenes/efectos/lluvia.tscn" id="40_lluvia"]
+[ext_resource type="AudioStream" path="res://art/sfx/lluvia.wav" id="41_sfx_lluvia"]
+[ext_resource type="AudioStream" path="res://art/sfx/trueno.wav" id="42_sfx_trueno"]
 [ext_resource type="Script" path="res://scripts/pesca/pesca.gd" id="4_pesca"]
 [ext_resource type="Script" path="res://scripts/pesca/camara_pesca.gd" id="5_camara"]
 [ext_resource type="Script" path="res://scripts/pesca/sonido_pesca.gd" id="6_sonido"]
@@ -48,7 +57,39 @@
 [ext_resource type="AudioStream" path="res://art/sfx/escapa.wav" id="sfx_escapa"]
 [ext_resource type="AudioStream" path="res://art/sfx/latido.wav" id="sfx_latido"]
 
+[sub_resource type="FastNoiseLite" id="ruido_nubes"]
+noise_type = 3
+frequency = 0.006
+fractal_octaves = 4
+
+[sub_resource type="NoiseTexture2D" id="tex_nubes"]
+width = 1024
+height = 512
+seamless = true
+noise = SubResource("ruido_nubes")
+
+[sub_resource type="FastNoiseLite" id="ruido_olas_a"]
+frequency = 0.02
+
+[sub_resource type="NoiseTexture2D" id="tex_olas_a"]
+seamless = true
+as_normal_map = true
+bump_strength = 6.0
+noise = SubResource("ruido_olas_a")
+
+[sub_resource type="FastNoiseLite" id="ruido_olas_b"]
+seed = 7
+frequency = 0.035
+
+[sub_resource type="NoiseTexture2D" id="tex_olas_b"]
+seamless = true
+as_normal_map = true
+bump_strength = 4.0
+noise = SubResource("ruido_olas_b")
+
 [sub_resource type="ProceduralSkyMaterial" id="cielo_mat"]
+sky_cover = SubResource("tex_nubes")
+sky_cover_modulate = Color(1, 1, 1, 0.2)
 sky_top_color = Color(0.32, 0.5, 0.78, 1)
 sky_horizon_color = Color(0.95, 0.72, 0.55, 1)
 ground_horizon_color = Color(0.95, 0.72, 0.55, 1)
@@ -65,6 +106,10 @@ tonemap_mode = 2
 glow_enabled = true
 glow_intensity = 0.6
 glow_bloom = 0.05
+ssr_enabled = true
+ssr_max_steps = 48
+ssr_fade_in = 0.1
+ssr_depth_tolerance = 0.4
 fog_enabled = false
 fog_light_color = Color(0.85, 0.7, 0.6, 1)
 fog_density = 0.012
@@ -72,6 +117,8 @@ fog_density = 0.012
 [sub_resource type="ShaderMaterial" id="mat_agua"]
 render_priority = 0
 shader = ExtResource("9_agua")
+shader_parameter/detalle_a = SubResource("tex_olas_a")
+shader_parameter/detalle_b = SubResource("tex_olas_b")
 
 [sub_resource type="PlaneMesh" id="malla_agua"]
 material = SubResource("mat_agua")
@@ -243,9 +290,10 @@ comercio = NodePath("../Comercio")
 
 [node name="Bestiario" parent="." instance=ExtResource("24_bestiario")]
 
-[node name="Trucos" type="Node" parent="." node_paths=PackedStringArray("hud")]
+[node name="Trucos" type="Node" parent="." node_paths=PackedStringArray("hud", "clima")]
 script = ExtResource("25_trucos")
 hud = NodePath("../HUD")
+clima = NodePath("../Clima")
 
 [node name="Dialogo" parent="." instance=ExtResource("29_dialogo")]
 
@@ -257,3 +305,23 @@ textura_cubo = ExtResource("31_cubo")
 
 [node name="Pixelador" parent="." node_paths=PackedStringArray("camara_fuente") instance=ExtResource("33_pixelador")]
 camara_fuente = NodePath("../Camara")
+
+[node name="Lluvia" parent="." instance=ExtResource("40_lluvia")]
+
+[node name="Clima" type="Node" parent="." node_paths=PackedStringArray("entorno", "sol", "agua", "lluvia", "camara", "sfx_lluvia", "sfx_trueno")]
+script = ExtResource("34_clima")
+climas = Array[ExtResource("35_clima_data")]([ExtResource("36_soleado"), ExtResource("37_nublado"), ExtResource("38_lluvia"), ExtResource("39_tormenta")])
+clima_inicial = ExtResource("36_soleado")
+entorno = NodePath("../WorldEnvironment")
+sol = NodePath("../Sol")
+agua = NodePath("../Agua")
+lluvia = NodePath("../Lluvia")
+camara = NodePath("../Camara")
+sfx_lluvia = NodePath("SfxLluvia")
+sfx_trueno = NodePath("SfxTrueno")
+
+[node name="SfxLluvia" type="AudioStreamPlayer" parent="Clima"]
+stream = ExtResource("41_sfx_lluvia")
+
+[node name="SfxTrueno" type="AudioStreamPlayer" parent="Clima"]
+stream = ExtResource("42_sfx_trueno")

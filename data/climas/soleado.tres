@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="ClimaData" format=3]
+
+[ext_resource type="Script" path="res://scripts/datos/clima_data.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"soleado"
+nombre = "Soleado"
+probabilidad = 3.0
+duracion_min = 120.0
+duracion_max = 240.0
+cielo_arriba = Color(0.3, 0.52, 0.84, 1)
+cielo_horizonte = Color(0.96, 0.78, 0.6, 1)
+nubes = 0.18
+color_nubes = Color(1, 1, 1, 1)
+color_sol = Color(1, 0.93, 0.82, 1)
+energia_sol = 1.15
+energia_ambiente = 1.0
+niebla = 0.0
+color_niebla = Color(0.7, 0.75, 0.8, 1)
+agua_profundo = Color(0.03, 0.2, 0.37, 1)
+agua_claro = Color(0.12, 0.5, 0.64, 1)
+altura_ola = 0.12
+velocidad_ola = 1.0
+rugosidad = 0.035
+lluvia = 0.0
+relampagos = false

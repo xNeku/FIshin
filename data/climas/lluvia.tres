@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="ClimaData" format=3]
+
+[ext_resource type="Script" path="res://scripts/datos/clima_data.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"lluvia"
+nombre = "Lluvia"
+probabilidad = 1.5
+duracion_min = 60.0
+duracion_max = 150.0
+cielo_arriba = Color(0.3, 0.34, 0.4, 1)
+cielo_horizonte = Color(0.48, 0.52, 0.56, 1)
+nubes = 0.95
+color_nubes = Color(0.55, 0.58, 0.62, 1)
+color_sol = Color(0.72, 0.76, 0.82, 1)
+energia_sol = 0.4
+energia_ambiente = 0.6
+niebla = 0.012
+color_niebla = Color(0.42, 0.46, 0.5, 1)
+agua_profundo = Color(0.04, 0.12, 0.18, 1)
+agua_claro = Color(0.12, 0.24, 0.3, 1)
+altura_ola = 0.28
+velocidad_ola = 1.5
+rugosidad = 0.1
+lluvia = 0.7
+relampagos = false

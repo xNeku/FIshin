@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="ClimaData" format=3]
+
+[ext_resource type="Script" path="res://scripts/datos/clima_data.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"nublado"
+nombre = "Nublado"
+probabilidad = 2.0
+duracion_min = 90.0
+duracion_max = 180.0
+cielo_arriba = Color(0.48, 0.55, 0.62, 1)
+cielo_horizonte = Color(0.72, 0.74, 0.76, 1)
+nubes = 0.75
+color_nubes = Color(0.85, 0.87, 0.9, 1)
+color_sol = Color(0.86, 0.88, 0.92, 1)
+energia_sol = 0.6
+energia_ambiente = 0.8
+niebla = 0.004
+color_niebla = Color(0.7, 0.73, 0.76, 1)
+agua_profundo = Color(0.06, 0.18, 0.26, 1)
+agua_claro = Color(0.2, 0.36, 0.42, 1)
+altura_ola = 0.2
+velocidad_ola = 1.2
+rugosidad = 0.12
+lluvia = 0.0
+relampagos = false
