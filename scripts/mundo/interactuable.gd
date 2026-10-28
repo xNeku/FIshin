@@ -2,7 +2,7 @@ class_name Interactuable
 extends Node3D
 ## Algo con lo que el náufrago puede interactuar (E) al estar cerca: un vendedor, el bestiario...
 
-enum Accion { TIENDA, BESTIARIO }
+enum Accion { TIENDA, BESTIARIO, DIALOGO }
 
 @export var accion: Accion = Accion.TIENDA
 ## Texto de la ayuda: "[E] <texto>".
@@ -14,6 +14,10 @@ enum Accion { TIENDA, BESTIARIO }
 @export var articulos: Array[ArticuloData] = []
 @export var compra_peces: bool = false
 @export var saludos: Array[String] = []
+
+@export_group("Diálogo")
+## Frases que dice, una tras otra (E para avanzar). El nombre se toma de "nombre".
+@export_multiline var lineas: Array[String] = []
 
 
 func _ready() -> void:

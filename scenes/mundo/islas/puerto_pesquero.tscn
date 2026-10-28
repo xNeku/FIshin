@@ -1,0 +1,81 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/mundo/isla.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://art/personajes/pescador.png" id="2_pescador"]
+[ext_resource type="Script" path="res://scripts/mundo/interactuable.gd" id="3_interactuable"]
+
+[sub_resource type="StandardMaterial3D" id="m_cubo"]
+albedo_color = Color(0.490, 0.549, 0.588, 1)
+roughness = 0.95
+
+[sub_resource type="StandardMaterial3D" id="m_asa"]
+albedo_color = Color(0.227, 0.227, 0.227, 1)
+roughness = 0.95
+
+[sub_resource type="StandardMaterial3D" id="m_cana"]
+albedo_color = Color(0.788, 0.643, 0.416, 1)
+roughness = 0.95
+
+[sub_resource type="CylinderMesh" id="c_cubo"]
+material = SubResource("m_cubo")
+top_radius = 0.28
+bottom_radius = 0.22
+height = 0.45
+
+[sub_resource type="TorusMesh" id="t_asa"]
+material = SubResource("m_asa")
+inner_radius = 0.24
+outer_radius = 0.27
+
+[sub_resource type="CylinderMesh" id="c_cana"]
+material = SubResource("m_cana")
+top_radius = 0.01
+bottom_radius = 0.025
+height = 1.8
+
+[node name="PuertoPesquero" type="Node3D" node_paths=PackedStringArray("salpicadura")]
+script = ExtResource("1_script")
+
+[node name="Piezas" type="Node3D" parent="."]
+
+[node name="Pescador" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0.68, 2)
+billboard = 2
+alpha_cut = 1
+texture_filter = 0
+shaded = false
+pixel_size = 0.055
+texture = ExtResource("2_pescador")
+
+[node name="CanaPescador" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.939693, 0.34202, 0, -0.196175, 0.538986, -0.819152, -0.280166, 0.769751, 0.573576, 2.35, 0.9, 2.3)
+mesh = SubResource("c_cana")
+
+[node name="InteraccionPescador" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 2)
+script = ExtResource("3_interactuable")
+accion = 2
+texto_accion = "Hablar con el pescador"
+radio = 1.8
+nombre = "Pescador"
+lineas = Array[String](["Ey, ¿tú eres el náufrago? Mi primo, el mercader, no para de hablar de ti.", "Dice que tienes un rollo que flipas. Y mira... me ha convencido.", "A partir de hoy pesco para ti. Lo que saque lo dejo en el cubo de la otra punta.", "Tú vienes, coges el cubo y se lo llevas a quien te lo compre. Trato hecho, jefe."])
+
+[node name="Cubo" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0.24, 0)
+
+[node name="Balde" type="MeshInstance3D" parent="Cubo"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.22, 0)
+mesh = SubResource("c_cubo")
+
+[node name="Asa" type="MeshInstance3D" parent="Cubo"]
+transform = Transform3D(1, 0, 0, 0, 6.12323e-17, -1, 0, 1, 6.12323e-17, 0, 0.48, 0)
+mesh = SubResource("t_asa")
+
+[node name="Etiqueta" type="Label3D" parent="Cubo"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+billboard = 1
+pixel_size = 0.006
+outline_size = 8
+text = "Cubo"
+font_size = 40
+

@@ -27,7 +27,7 @@ var cebo: Dictionary = {}
 ## id de artículo -> veces comprado
 var compras: Dictionary = {}
 var stats: Dictionary = {
-	"peces_pescados": 0, "perfectos": 0, "escapados": 0, "legendarios": 0, "tiempo_jugado": 0.0,
+	"peces_pescados": 0, "perfectos": 0, "escapados": 0, "legendarios": 0, "mejor_combo": 0, "tiempo_jugado": 0.0,
 }
 ## id de pez -> mejor calidad conseguida
 var coleccion: Dictionary = {}
@@ -157,6 +157,10 @@ func anadir_captura(captura: Dictionary, pez: PezData) -> bool:
 	return true
 
 
+func registrar_combo(botones: int) -> void:
+	stats.mejor_combo = maxi(int(stats.mejor_combo), botones)
+
+
 func anadir_escapado() -> void:
 	stats.escapados += 1
 
@@ -259,7 +263,7 @@ func cargar() -> void:
 	compras = datos.get("compras", {})
 	for k: String in datos.get("stats", {}):
 		stats[k] = datos.stats[k]
-	for k: String in ["peces_pescados", "perfectos", "escapados", "legendarios"]:
+	for k: String in ["peces_pescados", "perfectos", "escapados", "legendarios", "mejor_combo"]:
 		stats[k] = int(stats[k])
 	coleccion = datos.get("coleccion", {})
 	flags = datos.get("flags", {})

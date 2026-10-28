@@ -27,7 +27,8 @@ Regla: no se pasa de fase hasta que la actual sea jugable y divertida. Cada tare
 - [x] Cuadrícula y colocación (apariciones por datos desde la carta)
 - [x] Hitos que hacen aparecer cosas, con llegada por mar o caída del cielo
 - [x] Modo movimiento (Q), salto barca ↔ isla
-- [x] Interacción (E): tienda del viejo y bestiario. Falta el diálogo tipo Pokémon y el árbol
+- [x] Interacción (E): tienda del viejo, bestiario y diálogo tipo Pokémon (pescador)
+- [x] Camino de madera y puerto pesquero (aparecen construyéndose)
 - **Hito:** se nota que el mundo crece.
 
 ## Fase 4 — Menú y progresión
@@ -37,7 +38,7 @@ Regla: no se pasa de fase hasta que la actual sea jugable y divertida. Cada tare
 - [ ] Auto-pesca
 
 ## Fase 5 — Villa e incremental
-- [ ] Edificios y trabajadores automáticos
+- [ ] Edificios y trabajadores automáticos (primero: pescador del puerto + cubo)
 - [ ] Ingresos pasivos, stats por segundo
 - [ ] Progreso offline (si se decide)
 - [ ] Balance de curvas

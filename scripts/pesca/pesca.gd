@@ -245,6 +245,7 @@ func _iniciar_paso() -> void:
 
 func _acertar() -> void:
 	aciertos += 1
+	Juego.registrar_combo(indice + 1)
 	acierto.emit(indice + 1, pez.pasos_perfect)
 	_avanzar()
 

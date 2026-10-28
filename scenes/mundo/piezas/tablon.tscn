@@ -1,0 +1,50 @@
+[gd_scene format=3]
+
+[sub_resource type="StandardMaterial3D" id="m_tabla"]
+albedo_color = Color(0.541, 0.416, 0.271, 1)
+roughness = 0.95
+
+[sub_resource type="StandardMaterial3D" id="m_poste"]
+albedo_color = Color(0.353, 0.243, 0.149, 1)
+roughness = 0.95
+
+[sub_resource type="BoxMesh" id="b_tabla"]
+material = SubResource("m_tabla")
+size = Vector3(2, 0.08, 0.42)
+
+[sub_resource type="BoxMesh" id="b_corta"]
+material = SubResource("m_tabla")
+size = Vector3(1.2, 0.08, 0.42)
+
+[sub_resource type="CylinderMesh" id="c_poste"]
+material = SubResource("m_poste")
+top_radius = 0.08
+bottom_radius = 0.1
+height = 1.4
+
+[node name="Tablon" type="Node3D"]
+
+[node name="Tabla1" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, -0.72)
+mesh = SubResource("b_tabla")
+
+[node name="Tabla2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, -0.24)
+mesh = SubResource("b_tabla")
+
+[node name="Tabla3" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0.24)
+mesh = SubResource("b_tabla")
+
+[node name="Tabla4" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0.72)
+mesh = SubResource("b_tabla")
+
+[node name="Poste1" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.85, -0.45, -0.85)
+mesh = SubResource("c_poste")
+
+[node name="Poste2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.85, -0.45, 0.85)
+mesh = SubResource("c_poste")
+

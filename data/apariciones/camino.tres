@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="AparicionData" format=3]
+
+[ext_resource type="Script" path="res://scripts/datos/aparicion_data.gd" id="1_script"]
+[ext_resource type="PackedScene" path="res://scenes/mundo/islas/camino.tscn" id="2_escena"]
+[ext_resource type="PackedScene" path="res://scenes/mundo/piezas/tablon.tscn" id="3_pieza"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"camino"
+nombre = "Camino de madera"
+escena = ExtResource("2_escena")
+ancla = Vector2i(0, 2)
+celdas = Array[Vector2i]([Vector2i(-2, 6), Vector2i(-1, 6), Vector2i(0, 6), Vector2i(1, 6), Vector2i(2, 6), Vector2i(0, 5), Vector2i(0, 4), Vector2i(0, 3), Vector2i(0, 2)])
+pieza_por_celda = ExtResource("3_pieza")
+orden = 6
+condicion = 3
+valor = 20.0
+llegada = 2
+texto_llegada = "Un camino se abre paso..."

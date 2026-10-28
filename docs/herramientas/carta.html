@@ -21,6 +21,7 @@
   --t-agua: #2aa7b8;
   --t-decorado: #8a8f98;
   --t-otro: #8a5cc4;
+  --t-camino: #a0763f;
   --ok: #2e8b57;
   --warn: #c0392b;
   --f-display: "Pixelify Sans", "Courier New", monospace;
@@ -30,12 +31,12 @@
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
   --bg: #0c1820; --paper: #12222d; --ink: #e3eef3; --ink-soft: #93abba; --line: #1f3544; --line-strong: #36556a;
   --sea: #0f2633; --sea-zone: #164556; --accent: #ff7a5c; --accent-ink: #1a0d08;
-  --t-isla: #7cc160; --t-edificio: #f0a04b; --t-barco: #5c9ee8; --t-agua: #3cc3d4; --t-decorado: #a3a9b3; --t-otro: #a67ee0;
+  --t-isla: #7cc160; --t-edificio: #f0a04b; --t-barco: #5c9ee8; --t-agua: #3cc3d4; --t-decorado: #a3a9b3; --t-otro: #a67ee0; --t-camino: #c99a5b;
   --ok: #5bc98b; --warn: #ff6b5c; color-scheme: dark; } }
 :root[data-theme="dark"] {
   --bg: #0c1820; --paper: #12222d; --ink: #e3eef3; --ink-soft: #93abba; --line: #1f3544; --line-strong: #36556a;
   --sea: #0f2633; --sea-zone: #164556; --accent: #ff7a5c; --accent-ink: #1a0d08;
-  --t-isla: #7cc160; --t-edificio: #f0a04b; --t-barco: #5c9ee8; --t-agua: #3cc3d4; --t-decorado: #a3a9b3; --t-otro: #a67ee0;
+  --t-isla: #7cc160; --t-edificio: #f0a04b; --t-barco: #5c9ee8; --t-agua: #3cc3d4; --t-decorado: #a3a9b3; --t-otro: #a67ee0; --t-camino: #c99a5b;
   --ok: #5bc98b; --warn: #ff6b5c; color-scheme: dark; }
 * { box-sizing: border-box; }
 body { background: var(--bg); color: var(--ink); font-family: var(--f-body); font-size: 15px; line-height: 1.45;
@@ -156,7 +157,7 @@ aside { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
 <script>
 const TIPOS = [
   ["isla", "Isla / islote"], ["edificio", "Edificio"], ["barco", "Barco"],
-  ["agua", "Agua / zona"], ["decorado", "Decorado"], ["otro", "Otro"],
+  ["agua", "Agua / zona"], ["camino", "Camino de madera"], ["decorado", "Decorado"], ["otro", "Otro"],
 ];
 const ESTADOS = { decidido: "Decidido", propuesta: "Propuesta", abierto: "Abierto" };
 const $ = (id) => document.getElementById(id);

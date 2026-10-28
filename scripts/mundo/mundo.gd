@@ -16,6 +16,7 @@ signal aparicion_terminada(datos: AparicionData)
 @export var sfx_mar: AudioStreamPlayer
 @export var sfx_caida: AudioStreamPlayer
 @export var sfx_impacto: AudioStreamPlayer
+@export var sfx_pieza: AudioStreamPlayer
 @export var tamano_celda: float = 2.0
 
 @export_group("Llegada por mar")
@@ -23,6 +24,11 @@ signal aparicion_terminada(datos: AparicionData)
 @export var duracion_mar: float = 4.5
 @export var hundida_mar: float = 0.6
 @export var balanceo_mar_grados: float = 5.0
+
+@export_group("Construcción")
+## Segundos entre pieza y pieza.
+@export var ritmo_construccion: float = 0.12
+@export var subida_pieza: float = 1.2
 
 @export_group("Caída del cielo")
 @export var altura_cielo: float = 45.0
@@ -88,6 +94,10 @@ func cumple(a: AparicionData) -> bool:
 			return Juego.stats.peces_pescados >= a.valor
 		AparicionData.Condicion.RUBLOS_TOTALES:
 			return Juego.rublos_totales >= a.valor
+		AparicionData.Condicion.COMBO_MAXIMO:
+			return Juego.stats.mejor_combo >= a.valor
+		AparicionData.Condicion.MINUTOS_JUGADOS:
+			return Juego.stats.tiempo_jugado >= a.valor * 60.0
 	return false
 
 
@@ -107,6 +117,8 @@ func traer(a: AparicionData) -> void:
 			await _por_mar(n, a)
 		AparicionData.Llegada.CIELO:
 			await _desde_cielo(n, a)
+		AparicionData.Llegada.CONSTRUIR:
+			await _construir(n, a)
 	aparicion_terminada.emit(a)
 	_llegando = null
 	_ocupado = false
@@ -117,7 +129,26 @@ func _instanciar(a: AparicionData) -> Node3D:
 	n.name = String(a.id)
 	add_child(n)
 	n.position = celda_a_mundo(a.ancla)
+	if a.pieza_por_celda:
+		_poner_piezas(n, a)
 	return n
+
+
+## Una pieza por casilla, girada según hacia dónde sigue el camino.
+func _poner_piezas(n: Node3D, a: AparicionData) -> void:
+	var destino: Node3D = n.get_node_or_null("Piezas")
+	if destino == null:
+		destino = n
+	for c: Vector2i in a.celdas:
+		var p: Node3D = a.pieza_por_celda.instantiate()
+		p.name = "Pieza_%d_%d" % [c.x, c.y]
+		destino.add_child(p)
+		p.position = celda_a_mundo(c) - n.position
+		var horizontal: bool = (c + Vector2i.LEFT) in a.celdas or (c + Vector2i.RIGHT) in a.celdas
+		var vertical: bool = (c + Vector2i.UP) in a.celdas or (c + Vector2i.DOWN) in a.celdas
+		if vertical and not horizontal:
+			p.rotation_degrees.y = 90.0
+		p.add_to_group("piezas_" + String(a.id))
 
 
 func _por_mar(n: Node3D, a: AparicionData) -> void:
@@ -142,6 +173,46 @@ func _por_mar(n: Node3D, a: AparicionData) -> void:
 	if n.has_method("llegar"):
 		n.llegar()
 	aparicion_llegada.emit(a)
+
+
+func _construir(n: Node3D, a: AparicionData) -> void:
+	var piezas: Array[Node] = get_tree().get_nodes_in_group("piezas_" + String(a.id))
+	# Crece desde el lado de la barca hacia fuera.
+	piezas.sort_custom(func(p: Node3D, q: Node3D) -> bool: return p.global_position.length() < q.global_position.length())
+	var extras: Array[Node3D] = []
+	for h: Node in n.get_children():
+		if h is Node3D and h.name != "Piezas" and not h.is_in_group("piezas_" + String(a.id)):
+			extras.append(h)
+			(h as Node3D).visible = false
+	var total: float = piezas.size() * ritmo_construccion + 1.5
+	pesca.bloquear(total + 1.0)
+	var c: Vector3 = Vector3.ZERO
+	for p: Node in piezas:
+		c += (p as Node3D).global_position
+	camara.enfocar(c / maxf(1.0, piezas.size()), total, 3.0)
+	for p: Node in piezas:
+		(p as Node3D).visible = false
+	for p: Node in piezas:
+		var pieza := p as Node3D
+		var y: float = pieza.position.y
+		pieza.position.y = y - subida_pieza
+		pieza.visible = true
+		create_tween().tween_property(pieza, "position:y", y, 0.35).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+		if sfx_pieza:
+			sfx_pieza.pitch_scale = randf_range(0.9, 1.15)
+			sfx_pieza.play()
+		await get_tree().create_timer(ritmo_construccion).timeout
+	for e: Node3D in extras:
+		e.visible = true
+		var esc: Vector3 = e.scale
+		e.scale = Vector3.ZERO
+		create_tween().tween_property(e, "scale", esc, 0.35).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	await get_tree().create_timer(0.4).timeout
+	camara.sacudir(0.1)
+	if n.has_method("llegar"):
+		n.llegar()
+	aparicion_llegada.emit(a)
+	await get_tree().create_timer(1.0).timeout
 
 
 func _desde_cielo(n: Node3D, a: AparicionData) -> void:

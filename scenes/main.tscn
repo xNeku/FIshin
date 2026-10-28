@@ -18,6 +18,10 @@
 [ext_resource type="PackedScene" path="res://scenes/jugador/jugador.tscn" id="23_jugador"]
 [ext_resource type="PackedScene" path="res://scenes/ui/bestiario.tscn" id="24_bestiario"]
 [ext_resource type="Script" path="res://scripts/economia/trucos.gd" id="25_trucos"]
+[ext_resource type="Resource" path="res://data/apariciones/puerto_pesquero.tres" id="26_puerto"]
+[ext_resource type="Resource" path="res://data/apariciones/camino.tres" id="27_camino"]
+[ext_resource type="AudioStream" path="res://art/sfx/tablon.wav" id="28_sfx_tablon"]
+[ext_resource type="PackedScene" path="res://scenes/ui/dialogo.tscn" id="29_dialogo"]
 [ext_resource type="Script" path="res://scripts/pesca/pesca.gd" id="4_pesca"]
 [ext_resource type="Script" path="res://scripts/pesca/camara_pesca.gd" id="5_camara"]
 [ext_resource type="Script" path="res://scripts/pesca/sonido_pesca.gd" id="6_sonido"]
@@ -180,9 +184,9 @@ volume_db = -6.0
 [node name="Latido" type="AudioStreamPlayer" parent="Sonido"]
 stream = ExtResource("sfx_latido")
 
-[node name="Mundo" type="Node3D" parent="." node_paths=PackedStringArray("pesca", "camara", "celebracion", "sombra", "sfx_mar", "sfx_caida", "sfx_impacto")]
+[node name="Mundo" type="Node3D" parent="." node_paths=PackedStringArray("pesca", "camara", "celebracion", "sombra", "sfx_mar", "sfx_caida", "sfx_impacto", "sfx_pieza")]
 script = ExtResource("16_mundo")
-apariciones = Array[ExtResource("17_aparicion")]([ExtResource("18_primera_isla"), ExtResource("19_isla_skilltree")])
+apariciones = Array[ExtResource("17_aparicion")]([ExtResource("18_primera_isla"), ExtResource("19_isla_skilltree"), ExtResource("26_puerto"), ExtResource("27_camino")])
 pesca = NodePath("../Pesca")
 camara = NodePath("../Camara")
 celebracion = NodePath("../Celebracion")
@@ -190,6 +194,7 @@ sombra = NodePath("SombraCaida")
 sfx_mar = NodePath("SfxMar")
 sfx_caida = NodePath("SfxCaida")
 sfx_impacto = NodePath("SfxImpacto")
+sfx_pieza = NodePath("SfxPieza")
 
 [node name="SombraCaida" type="MeshInstance3D" parent="Mundo"]
 visible = false
@@ -205,13 +210,17 @@ stream = ExtResource("21_sfx_caida")
 [node name="SfxImpacto" type="AudioStreamPlayer" parent="Mundo"]
 stream = ExtResource("22_sfx_impacto")
 
-[node name="Jugador" parent="." node_paths=PackedStringArray("mundo", "pesca", "camara", "celebracion", "tienda", "bestiario", "ocultar_al_andar") instance=ExtResource("23_jugador")]
+[node name="SfxPieza" type="AudioStreamPlayer" parent="Mundo"]
+stream = ExtResource("28_sfx_tablon")
+
+[node name="Jugador" parent="." node_paths=PackedStringArray("mundo", "pesca", "camara", "celebracion", "tienda", "bestiario", "dialogo", "ocultar_al_andar") instance=ExtResource("23_jugador")]
 mundo = NodePath("../Mundo")
 pesca = NodePath("../Pesca")
 camara = NodePath("../Camara")
 celebracion = NodePath("../Celebracion")
 tienda = NodePath("../Tienda")
 bestiario = NodePath("../Bestiario")
+dialogo = NodePath("../Dialogo")
 ocultar_al_andar = [NodePath("../Barca/Protagonista"), NodePath("../Barca/Cana"), NodePath("../Barca/Sedal"), NodePath("../Barca/Flotador")]
 
 [node name="HUD" parent="." node_paths=PackedStringArray("pesca", "barco", "celebracion", "mundo", "jugador") instance=ExtResource("3_hud")]
@@ -230,3 +239,5 @@ jugador = NodePath("../Jugador")
 [node name="Trucos" type="Node" parent="." node_paths=PackedStringArray("hud")]
 script = ExtResource("25_trucos")
 hud = NodePath("../HUD")
+
+[node name="Dialogo" parent="." instance=ExtResource("29_dialogo")]

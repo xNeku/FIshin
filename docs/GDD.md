@@ -99,5 +99,11 @@ Marcas: [DECIDIDO] lo decidió el diseñador · [PROPUESTA] sugerencia de Claude
 - [DECIDIDO] La primera isla aparece al ganar 200 ₽ en total.
 - [DECIDIDO] Lo que manda es la condición: cada cosa llega cuando se cumple la suya. El "orden" de la carta solo desempata si dos se cumplen a la vez.
 - Nota: el antiguo "primer islote a 100 ₽" se ha sustituido por la primera isla.
+- [DECIDIDO] **Camino de madera** (concepto permanente): conector entre islotes, edificios y demás. Irá creciendo para unir cosas nuevas. Su forma es la estructura del juego y el diseñador la retoca en la carta siempre que quiera (tipo "Camino de madera"). Primer tramo: aparece a los 20 min de juego (T desde la barca hacia arriba, de (0,2) a (0,6) y de (−2,6) a (2,6)).
+- [DECIDIDO] **Puerto pesquero** (5 casillas en (2..4, 0) y (3..4, −1)): aparece al hacer un combo x10. Pantalán de madera roto con un pescador en la esquina inferior derecha (4,−1). Hablas con él: es primo del mercader, le gusta tu rollo y trabaja para ti.
+- [DECIDIDO] Mecánica del puerto: los trabajadores pescan solos y meten la pesca en un cubo en la primera casilla de la izquierda (2,0). Coges el cubo con E y lo llevas a cualquier mercader o establecimiento, que te paga por él. Más adelante, con el árbol, un trabajador lo hará solo. El pantalán crecerá en tamaño, calidad y trabajadores con mejoras de edificio o acciones en otros edificios.
+- [ABIERTO] Cuando el puerto quede rodeado de islotes, ¿por dónde pescan los trabajadores? Propuestas: A) el pantalán crece hacia el mar y los pescadores van a la punta (con agua reservada en la carta); B) botes de remos como mejora; C) cada pescador necesita una casilla de agua al lado.
+- Nota: el combo x10 solo es posible con la Sabia caña (rota: hasta 5, decente: hasta 9). El puerto queda para después del viejo.
+- [PROPUESTA] Camino y pantalán llegan "construyéndose": las tablas salen del agua una a una, desde la barca hacia fuera.
 - [ABIERTO] Lista ordenada de islas y cosas que van llegando según avances. El diseñador la escribe en la **Carta de Fishin**: https://claude.ai/artifact/2oRoaePEyuUyDUYBJnK9oA (colección `elementos`).
 - Árbol de habilidades: el diseñador lo escribe en el **Árbol de Fishin**: https://claude.ai/artifact/UtP4gNUbFFwpX9SPeTcTnu (colecciones `ramas` y `nodos`).

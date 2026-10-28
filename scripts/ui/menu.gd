@@ -122,6 +122,7 @@ func _refrescar_stats() -> void:
 		"Perfectos: %d" % s.perfectos,
 		"Escapados: %d" % s.escapados,
 		"Legendarios: %d" % s.legendarios,
+		"Mejor combo: x%d" % s.mejor_combo,
 		"Colección: %d / %d especies" % [Juego.coleccion.size(), Juego.total_especies()],
 		"Caña: %s" % Juego.cana().nombre,
 	])

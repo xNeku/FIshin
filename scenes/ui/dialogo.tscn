@@ -1,0 +1,77 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/dialogo.gd" id="1_script"]
+
+[sub_resource type="StyleBoxFlat" id="estilo_caja"]
+bg_color = Color(0.97, 0.95, 0.88, 1)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 8
+border_color = Color(0.1, 0.07, 0.12, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[node name="Dialogo" type="CanvasLayer"]
+process_mode = 3
+layer = 12
+script = ExtResource("1_script")
+
+[node name="Raiz" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Caja" type="PanelContainer" parent="Raiz"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 160.0
+offset_top = -300.0
+offset_right = -160.0
+offset_bottom = -40.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/panel = SubResource("estilo_caja")
+
+[node name="Margen" type="MarginContainer" parent="Raiz/Caja"]
+layout_mode = 2
+theme_override_constants/margin_left = 32
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 32
+theme_override_constants/margin_bottom = 20
+
+[node name="Contenido" type="VBoxContainer" parent="Raiz/Caja/Margen"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Nombre" type="Label" parent="Raiz/Caja/Margen/Contenido"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.75, 0.25, 0.15, 1)
+theme_override_constants/outline_size = 0
+theme_override_font_sizes/font_size = 34
+text = "Pescador"
+
+[node name="Texto" type="Label" parent="Raiz/Caja/Margen/Contenido"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(0.1, 0.07, 0.12, 1)
+theme_override_constants/outline_size = 0
+theme_override_font_sizes/font_size = 32
+text = "Ey, tú debes de ser el náufrago."
+autowrap_mode = 3
+
+[node name="Seguir" type="Label" parent="Raiz/Caja/Margen/Contenido"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.4, 0.35, 0.4, 1)
+theme_override_constants/outline_size = 0
+theme_override_font_sizes/font_size = 24
+text = "▼ [E]"
+horizontal_alignment = 2

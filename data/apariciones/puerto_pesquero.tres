@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="AparicionData" format=3]
+
+[ext_resource type="Script" path="res://scripts/datos/aparicion_data.gd" id="1_script"]
+[ext_resource type="PackedScene" path="res://scenes/mundo/islas/puerto_pesquero.tscn" id="2_escena"]
+[ext_resource type="PackedScene" path="res://scenes/mundo/piezas/tablon_roto.tscn" id="3_pieza"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"puerto_pesquero"
+nombre = "Puerto pesquero"
+escena = ExtResource("2_escena")
+ancla = Vector2i(3, 0)
+celdas = Array[Vector2i]([Vector2i(2, 0), Vector2i(3, 0), Vector2i(4, 0), Vector2i(3, -1), Vector2i(4, -1)])
+pieza_por_celda = ExtResource("3_pieza")
+orden = 5
+condicion = 2
+valor = 10.0
+llegada = 2
+texto_llegada = "¡Puerto pesquero!"
