@@ -217,9 +217,7 @@ func _poner_piezas(n: Node3D, a: AparicionData) -> void:
 
 func _por_mar(n: Node3D, a: AparicionData) -> void:
 	var destino: Vector3 = n.position
-	# Entra por su lado y desde el horizonte, nunca desde detrás de la cámara.
-	var lado: float = signf(destino.x) if absf(destino.x) > 0.1 else 1.0
-	var dir: Vector3 = Vector3(lado, 0.0, -0.8).normalized()
+	var dir: Vector3 = _lado_de_llegada(a, destino)
 	n.position = destino + dir * distancia_mar + Vector3.DOWN * hundida_mar
 	pesca.bloquear(duracion_mar + 1.0)
 	camara.enfocar(destino, duracion_mar + 0.8, 3.0)
@@ -237,6 +235,20 @@ func _por_mar(n: Node3D, a: AparicionData) -> void:
 	if n.has_method("llegar"):
 		n.llegar()
 	aparicion_llegada.emit(a)
+
+
+## Por qué lado del mar llega: el punto cardinal donde está la isla vista desde la barca
+## (la del sur viene del sur, la del oeste del oeste...). Llega en línea recta por ese eje.
+func _lado_de_llegada(a: AparicionData, destino: Vector3) -> Vector3:
+	var centro: Vector3 = destino
+	if not a.celdas.is_empty():
+		centro = Vector3.ZERO
+		for c: Vector2i in a.celdas:
+			centro += celda_a_mundo(c)
+		centro /= a.celdas.size()
+	if absf(centro.x) >= absf(centro.z):
+		return Vector3(signf(centro.x) if centro.x != 0.0 else 1.0, 0.0, 0.0)
+	return Vector3(0.0, 0.0, signf(centro.z))
 
 
 func _construir(n: Node3D, a: AparicionData) -> void:
