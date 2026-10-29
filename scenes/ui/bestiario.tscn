@@ -3,18 +3,6 @@
 [ext_resource type="Script" path="res://scripts/ui/bestiario.gd" id="1_script"]
 [ext_resource type="PackedScene" path="res://scenes/ui/ficha_bestiario.tscn" id="2_ficha"]
 
-[sub_resource type="StyleBoxFlat" id="estilo_libro"]
-bg_color = Color(0.45, 0.13, 0.12, 0.98)
-border_width_left = 6
-border_width_top = 6
-border_width_right = 6
-border_width_bottom = 6
-border_color = Color(0.25, 0.07, 0.06, 1)
-corner_radius_top_left = 14
-corner_radius_top_right = 14
-corner_radius_bottom_right = 14
-corner_radius_bottom_left = 14
-
 [node name="Bestiario" type="CanvasLayer"]
 process_mode = 3
 layer = 11
@@ -42,7 +30,6 @@ offset_right = 660.0
 offset_bottom = 420.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_styles/panel = SubResource("estilo_libro")
 
 [node name="Margen" type="MarginContainer" parent="Raiz/Panel"]
 layout_mode = 2
@@ -63,15 +50,13 @@ mouse_filter = 2
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 2
-theme_override_colors/font_color = Color(1, 0.88, 0.6, 1)
-theme_override_font_sizes/font_size = 48
+theme_override_font_sizes/font_size = 40
 text = "Bestiario"
 
 [node name="Progreso" type="Label" parent="Raiz/Panel/Margen/Contenido/Cabecera"]
 layout_mode = 2
 mouse_filter = 2
-theme_override_colors/font_color = Color(1, 0.88, 0.6, 1)
-theme_override_font_sizes/font_size = 32
+theme_override_font_sizes/font_size = 30
 text = "0 / 6 especies"
 
 [node name="Lista" type="ScrollContainer" parent="Raiz/Panel/Margen/Contenido"]
@@ -84,7 +69,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/h_separation = 14
 theme_override_constants/v_separation = 14
-columns = 5
+columns = 4
 
 [node name="Cerrar" type="Button" parent="Raiz/Panel/Margen/Contenido"]
 custom_minimum_size = Vector2(240, 70)

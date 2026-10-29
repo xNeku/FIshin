@@ -2,18 +2,6 @@
 
 [ext_resource type="Script" path="res://scripts/ui/dialogo.gd" id="1_script"]
 
-[sub_resource type="StyleBoxFlat" id="estilo_caja"]
-bg_color = Color(0.97, 0.95, 0.88, 1)
-border_width_left = 6
-border_width_top = 6
-border_width_right = 6
-border_width_bottom = 8
-border_color = Color(0.1, 0.07, 0.12, 1)
-corner_radius_top_left = 10
-corner_radius_top_right = 10
-corner_radius_bottom_right = 10
-corner_radius_bottom_left = 10
-
 [node name="Dialogo" type="CanvasLayer"]
 process_mode = 3
 layer = 12
@@ -39,7 +27,6 @@ offset_right = -160.0
 offset_bottom = -40.0
 grow_horizontal = 2
 grow_vertical = 0
-theme_override_styles/panel = SubResource("estilo_caja")
 
 [node name="Margen" type="MarginContainer" parent="Raiz/Caja"]
 layout_mode = 2
@@ -54,24 +41,16 @@ theme_override_constants/separation = 10
 
 [node name="Nombre" type="Label" parent="Raiz/Caja/Margen/Contenido"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.75, 0.25, 0.15, 1)
-theme_override_constants/outline_size = 0
-theme_override_font_sizes/font_size = 34
+theme_type_variation = &"Titulo"
 text = "Pescador"
 
 [node name="Texto" type="Label" parent="Raiz/Caja/Margen/Contenido"]
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_colors/font_color = Color(0.1, 0.07, 0.12, 1)
-theme_override_constants/outline_size = 0
-theme_override_font_sizes/font_size = 32
 text = "Ey, tú debes de ser el náufrago."
 autowrap_mode = 3
 
 [node name="Seguir" type="Label" parent="Raiz/Caja/Margen/Contenido"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.4, 0.35, 0.4, 1)
-theme_override_constants/outline_size = 0
-theme_override_font_sizes/font_size = 24
-text = "▼ [E]"
+text = "▼"
 horizontal_alignment = 2

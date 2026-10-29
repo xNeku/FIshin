@@ -20,6 +20,12 @@ func _ready() -> void:
 	raiz.visible = false
 
 
+func _process(_delta: float) -> void:
+	# La flecha de seguir parpadea.
+	if seguir.visible:
+		seguir.modulate.a = 1.0 if fmod(Time.get_ticks_msec() / 1000.0, 0.8) < 0.5 else 0.0
+
+
 func _unhandled_input(event: InputEvent) -> void:
 	if not abierto:
 		return

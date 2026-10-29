@@ -12,10 +12,10 @@ const NOMBRES_RAREZA: Array[String] = ["Común", "Raro", "Extraño", "Legendario
 func mostrar(pez: PezData, mejor_calidad: float) -> void:
 	icono.texture = pez.icono
 	if mejor_calidad < 0.0:
-		icono.modulate = Color(0, 0, 0, 0.85)
+		icono.modulate = Color(0.2, 0.22, 0.32, 1)
 		nombre.text = "???"
 		detalle.text = "Sin descubrir"
 	else:
 		icono.modulate = Color.WHITE
 		nombre.text = pez.nombre
-		detalle.text = "%s · mejor: %s" % [NOMBRES_RAREZA[pez.rareza], Formato.calidad(mejor_calidad, mejor_calidad >= 1.0)]
+		detalle.text = "%s\n%s" % [NOMBRES_RAREZA[pez.rareza], Formato.calidad(mejor_calidad, mejor_calidad >= 1.0)]

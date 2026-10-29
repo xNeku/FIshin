@@ -1,9 +1,222 @@
 [gd_resource type="Theme" format=3]
 
-[ext_resource type="FontFile" path="res://art/fuentes/DejaVuSans-Bold.ttf" id="1_fuente"]
+[ext_resource type="FontFile" path="res://art/fuentes/FishinPixel.ttf" id="1_fuente"]
+[ext_resource type="Texture2D" path="res://art/ui/panel.png" id="t_panel"]
+[ext_resource type="Texture2D" path="res://art/ui/panel_sel.png" id="t_panel_sel"]
+[ext_resource type="Texture2D" path="res://art/ui/foco.png" id="t_foco"]
+[ext_resource type="Texture2D" path="res://art/ui/boton.png" id="t_boton"]
+[ext_resource type="Texture2D" path="res://art/ui/boton_sel.png" id="t_boton_sel"]
+[ext_resource type="Texture2D" path="res://art/ui/boton_pulsado.png" id="t_boton_pulsado"]
+[ext_resource type="Texture2D" path="res://art/ui/boton_off.png" id="t_boton_off"]
+[ext_resource type="Texture2D" path="res://art/ui/pestana.png" id="t_pestana"]
+[ext_resource type="Texture2D" path="res://art/ui/pestana_sel.png" id="t_pestana_sel"]
+[ext_resource type="Texture2D" path="res://art/ui/barra_fondo.png" id="t_barra_fondo"]
+[ext_resource type="Texture2D" path="res://art/ui/barra_relleno.png" id="t_barra_relleno"]
+[ext_resource type="Texture2D" path="res://art/ui/barra_relleno_naranja.png" id="t_barra_relleno_naranja"]
+[ext_resource type="Texture2D" path="res://art/ui/scroll_fondo.png" id="t_scroll_fondo"]
+[ext_resource type="Texture2D" path="res://art/ui/scroll_agarre.png" id="t_scroll_agarre"]
+
+[sub_resource type="StyleBoxTexture" id="panel"]
+content_margin_left = 28.0
+content_margin_top = 24.0
+content_margin_right = 28.0
+content_margin_bottom = 24.0
+texture = ExtResource("t_panel")
+texture_margin_left = 16.0
+texture_margin_top = 16.0
+texture_margin_right = 16.0
+texture_margin_bottom = 16.0
+
+[sub_resource type="StyleBoxTexture" id="panel_sel"]
+content_margin_left = 28.0
+content_margin_top = 24.0
+content_margin_right = 28.0
+content_margin_bottom = 24.0
+texture = ExtResource("t_panel_sel")
+texture_margin_left = 16.0
+texture_margin_top = 16.0
+texture_margin_right = 16.0
+texture_margin_bottom = 16.0
+
+[sub_resource type="StyleBoxTexture" id="boton"]
+content_margin_left = 24.0
+content_margin_top = 12.0
+content_margin_right = 24.0
+content_margin_bottom = 12.0
+texture = ExtResource("t_boton")
+texture_margin_left = 16.0
+texture_margin_top = 16.0
+texture_margin_right = 16.0
+texture_margin_bottom = 16.0
+
+[sub_resource type="StyleBoxTexture" id="boton_sel"]
+content_margin_left = 24.0
+content_margin_top = 12.0
+content_margin_right = 24.0
+content_margin_bottom = 12.0
+texture = ExtResource("t_boton_sel")
+texture_margin_left = 16.0
+texture_margin_top = 16.0
+texture_margin_right = 16.0
+texture_margin_bottom = 16.0
+
+[sub_resource type="StyleBoxTexture" id="boton_pulsado"]
+content_margin_left = 24.0
+content_margin_top = 12.0
+content_margin_right = 24.0
+content_margin_bottom = 12.0
+texture = ExtResource("t_boton_pulsado")
+texture_margin_left = 16.0
+texture_margin_top = 16.0
+texture_margin_right = 16.0
+texture_margin_bottom = 16.0
+
+[sub_resource type="StyleBoxTexture" id="boton_off"]
+content_margin_left = 24.0
+content_margin_top = 12.0
+content_margin_right = 24.0
+content_margin_bottom = 12.0
+texture = ExtResource("t_boton_off")
+texture_margin_left = 16.0
+texture_margin_top = 16.0
+texture_margin_right = 16.0
+texture_margin_bottom = 16.0
+
+[sub_resource type="StyleBoxTexture" id="foco"]
+content_margin_left = 24.0
+content_margin_top = 12.0
+content_margin_right = 24.0
+content_margin_bottom = 12.0
+texture = ExtResource("t_foco")
+texture_margin_left = 16.0
+texture_margin_top = 16.0
+texture_margin_right = 16.0
+texture_margin_bottom = 16.0
+
+[sub_resource type="StyleBoxTexture" id="pestana"]
+content_margin_left = 20.0
+content_margin_top = 8.0
+content_margin_right = 20.0
+content_margin_bottom = 8.0
+texture = ExtResource("t_pestana")
+texture_margin_left = 16.0
+texture_margin_top = 16.0
+texture_margin_right = 16.0
+texture_margin_bottom = 16.0
+
+[sub_resource type="StyleBoxTexture" id="pestana_sel"]
+content_margin_left = 20.0
+content_margin_top = 8.0
+content_margin_right = 20.0
+content_margin_bottom = 8.0
+texture = ExtResource("t_pestana_sel")
+texture_margin_left = 16.0
+texture_margin_top = 16.0
+texture_margin_right = 16.0
+texture_margin_bottom = 16.0
+
+[sub_resource type="StyleBoxTexture" id="barra_fondo"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+texture = ExtResource("t_barra_fondo")
+texture_margin_left = 8.0
+texture_margin_top = 8.0
+texture_margin_right = 8.0
+texture_margin_bottom = 8.0
+
+[sub_resource type="StyleBoxTexture" id="barra_relleno"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+texture = ExtResource("t_barra_relleno")
+texture_margin_left = 8.0
+texture_margin_top = 8.0
+texture_margin_right = 8.0
+texture_margin_bottom = 8.0
+
+[sub_resource type="StyleBoxTexture" id="barra_naranja"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+texture = ExtResource("t_barra_relleno_naranja")
+texture_margin_left = 8.0
+texture_margin_top = 8.0
+texture_margin_right = 8.0
+texture_margin_bottom = 8.0
+
+[sub_resource type="StyleBoxTexture" id="scroll"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+texture = ExtResource("t_scroll_fondo")
+texture_margin_left = 4.0
+texture_margin_top = 4.0
+texture_margin_right = 4.0
+texture_margin_bottom = 4.0
+
+[sub_resource type="StyleBoxTexture" id="agarre"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+texture = ExtResource("t_scroll_agarre")
+texture_margin_left = 4.0
+texture_margin_top = 4.0
+texture_margin_right = 4.0
+texture_margin_bottom = 4.0
+
+[sub_resource type="StyleBoxEmpty" id="vacio"]
 
 [resource]
 default_font = ExtResource("1_fuente")
-default_font_size = 28
-Label/colors/font_outline_color = Color(0.05, 0.03, 0.08, 1)
-Label/constants/outline_size = 8
+default_font_size = 40
+Button/colors/font_color = Color(0.94, 0.94, 0.91, 1)
+Button/colors/font_disabled_color = Color(0.62, 0.62, 0.66, 1)
+Button/colors/font_focus_color = Color(1, 0.89, 0.16, 1)
+Button/colors/font_hover_color = Color(1, 0.89, 0.16, 1)
+Button/colors/font_hover_pressed_color = Color(0, 0, 0, 1)
+Button/colors/font_pressed_color = Color(0, 0, 0, 1)
+Button/styles/disabled = SubResource("boton_off")
+Button/styles/focus = SubResource("foco")
+Button/styles/hover = SubResource("boton_sel")
+Button/styles/hover_pressed = SubResource("boton_pulsado")
+Button/styles/normal = SubResource("boton")
+Button/styles/pressed = SubResource("boton_pulsado")
+Dinero/base_type = &"Label"
+Dinero/colors/font_color = Color(1, 0.89, 0.16, 1)
+Grande/base_type = &"Label"
+Grande/font_sizes/font_size = 60
+Label/colors/font_color = Color(0.94, 0.94, 0.91, 1)
+Label/colors/font_outline_color = Color(0, 0, 0, 1)
+Label/constants/outline_size = 0
+Panel/styles/panel = SubResource("panel")
+PanelContainer/styles/panel = SubResource("panel")
+PanelSeleccion/base_type = &"PanelContainer"
+PanelSeleccion/styles/panel = SubResource("panel_sel")
+Pequeno/base_type = &"Label"
+Pequeno/font_sizes/font_size = 30
+ProgressBar/styles/background = SubResource("barra_fondo")
+ProgressBar/styles/fill = SubResource("barra_relleno")
+BarraNaranja/base_type = &"ProgressBar"
+BarraNaranja/styles/fill = SubResource("barra_naranja")
+TabContainer/colors/font_hovered_color = Color(1, 0.89, 0.16, 1)
+TabContainer/colors/font_selected_color = Color(0.94, 0.94, 0.91, 1)
+TabContainer/colors/font_unselected_color = Color(0.62, 0.62, 0.66, 1)
+TabContainer/constants/side_margin = 0
+TabContainer/styles/panel = SubResource("vacio")
+TabContainer/styles/tab_focus = SubResource("foco")
+TabContainer/styles/tab_hovered = SubResource("pestana_sel")
+TabContainer/styles/tab_selected = SubResource("pestana_sel")
+TabContainer/styles/tab_unselected = SubResource("pestana")
+Titulo/base_type = &"Label"
+Titulo/colors/font_color = Color(0.62, 0.62, 0.66, 1)
+Titulo/font_sizes/font_size = 30
+VScrollBar/styles/grabber = SubResource("agarre")
+VScrollBar/styles/grabber_highlight = SubResource("agarre")
+VScrollBar/styles/grabber_pressed = SubResource("agarre")
+VScrollBar/styles/scroll = SubResource("scroll")

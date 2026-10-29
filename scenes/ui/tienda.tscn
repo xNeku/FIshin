@@ -4,34 +4,6 @@
 [ext_resource type="PackedScene" path="res://scenes/ui/fila_tienda.tscn" id="2_fila"]
 [ext_resource type="AudioStream" path="res://art/sfx/captura.wav" id="3_compra"]
 
-[sub_resource type="StyleBoxFlat" id="estilo_panel"]
-bg_color = Color(0.07, 0.06, 0.11, 0.96)
-border_width_left = 4
-border_width_top = 4
-border_width_right = 4
-border_width_bottom = 4
-border_color = Color(0.31, 0.64, 1, 0.5)
-corner_radius_top_left = 16
-corner_radius_top_right = 16
-corner_radius_bottom_right = 16
-corner_radius_bottom_left = 16
-
-[sub_resource type="StyleBoxFlat" id="estilo_dialogo"]
-bg_color = Color(0.95, 0.92, 0.82, 1)
-border_width_left = 4
-border_width_top = 4
-border_width_right = 4
-border_width_bottom = 6
-border_color = Color(0.08, 0.05, 0.1, 1)
-corner_radius_top_left = 8
-corner_radius_top_right = 8
-corner_radius_bottom_right = 8
-corner_radius_bottom_left = 8
-content_margin_left = 20.0
-content_margin_top = 14.0
-content_margin_right = 20.0
-content_margin_bottom = 14.0
-
 [node name="Tienda" type="CanvasLayer"]
 process_mode = 3
 layer = 11
@@ -59,7 +31,6 @@ offset_right = 620.0
 offset_bottom = 400.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_styles/panel = SubResource("estilo_panel")
 
 [node name="Margen" type="MarginContainer" parent="Raiz/Panel"]
 layout_mode = 2
@@ -80,24 +51,20 @@ mouse_filter = 2
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 2
-theme_override_colors/font_color = Color(0.5, 0.85, 1, 1)
-theme_override_font_sizes/font_size = 44
+theme_override_font_sizes/font_size = 40
 text = "Comerciante"
 
 [node name="Rublos" type="Label" parent="Raiz/Panel/Margen/Contenido/Cabecera"]
 layout_mode = 2
 mouse_filter = 2
-theme_override_colors/font_color = Color(1, 0.85, 0.3, 1)
-theme_override_font_sizes/font_size = 44
+theme_override_colors/font_color = Color(1, 0.89, 0.16, 1)
+theme_override_font_sizes/font_size = 40
 text = "0 ₽"
 
 [node name="Dialogo" type="Label" parent="Raiz/Panel/Margen/Contenido"]
 layout_mode = 2
 mouse_filter = 2
-theme_override_colors/font_color = Color(0.1, 0.07, 0.12, 1)
-theme_override_constants/outline_size = 0
-theme_override_font_sizes/font_size = 28
-theme_override_styles/normal = SubResource("estilo_dialogo")
+theme_override_font_sizes/font_size = 30
 text = "Ey, náufrago."
 autowrap_mode = 3
 
@@ -114,7 +81,7 @@ alignment = 2
 [node name="Vender" type="Button" parent="Raiz/Panel/Margen/Contenido/Botones"]
 custom_minimum_size = Vector2(420, 80)
 layout_mode = 2
-theme_override_colors/font_color = Color(1, 0.85, 0.3, 1)
+theme_override_colors/font_color = Color(1, 0.89, 0.16, 1)
 text = "Vender todo"
 
 [node name="Cerrar" type="Button" parent="Raiz/Panel/Margen/Contenido/Botones"]
