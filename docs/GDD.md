@@ -7,7 +7,7 @@ Marcas: [DECIDIDO] lo decidió el diseñador · [PROPUESTA] sugerencia de Claude
 - [DECIDIDO] Meta del protagonista: pescar todos los peces que existen y estar en paz. Una colección completa como objetivo final.
 - [DECIDIDO] Fantasía: empiezas de náufrago flotando en un donut y acabas con una villa pesquera centrada en ti. Todo el mundo pesca, vende y compra para ti.
 - [DECIDIDO] Referencias: Coal LLC (estilo y tono), Forager (expansión), Octopath Traveler (2.5D), Animal Well (interfaz).
-- [DECIDIDO] Plataformas: Windows y Mac; lo que importa es PC (Steam, con logros). Móvil más adelante (la interfaz y el input se piensan táctiles desde el principio).
+- [DECIDIDO] Plataformas: Windows, Mac y Linux; lo que importa es PC (Steam, con logros). Android, quizá en el futuro si va bien en Steam. Que el diseñador trabaje en la tablet es por comodidad; no condiciona la salida. Móvil más adelante (la interfaz y el input se piensan táctiles desde el principio).
 - [DECIDIDO] Tiene que dar para sus horas y poder dejarse abierto: primero se trabaja a mano y luego se disfruta viendo la ciudad automatizada, con combos de vez en cuando para pillar peces guapos en su época y hora.
 
 ## 2. Protagonista
@@ -66,7 +66,8 @@ Marcas: [DECIDIDO] lo decidió el diseñador · [PROPUESTA] sugerencia de Claude
 - [PROPUESTA] Si la caña tiene menos límite que los pasos del pez, no llegas al perfect (gancho para mejorar la caña).
 - [DECIDIDO] Habrá un catálogo grande de peces sacado de una enciclopedia, con sus rangos de peso. El diseñador lo pasará en un Excel.
 - [DECIDIDO] Los peces se agrupan por momento del día (día / noche) y por estación.
-- [ABIERTO] Cómo pasa el tiempo en el juego (ciclo día/noche, duración de las estaciones).
+- [DECIDIDO] El tiempo es un reloj propio del juego (día/noche y estaciones), con algún guiño a la hora real en logros secretos.
+- [ABIERTO] Duración del día y de cada estación.
 - [ABIERTO] Input táctil para móvil.
 
 ## 6. Economía
@@ -95,7 +96,9 @@ Marcas: [DECIDIDO] lo decidió el diseñador · [PROPUESTA] sugerencia de Claude
 - [DECIDIDO] Árbol pagado con dinero. Ramas de ejemplo: Carisma (mejores acuerdos y posibilidades), Suerte, Fuerza (peces más pesados), Destreza (más progresión de botones y más valor por acierto).
 - [DECIDIDO] Se abre hablando con el viejo (SkillTreeMan), no desde el menú.
 - [DECIDIDO] Ramas: Carisma, Suerte, Pesca y Chill. Más adelante, una rama de endgame acorde a tener una ciudad.
-- [ABIERTO] Nodos, costes y efectos. El diseñador lo escribe en el **Árbol de Fishin**: https://claude.ai/artifact/UtP4gNUbFFwpX9SPeTcTnu (colecciones `ramas` y `nodos`), con una imagen de referencia del flujo.
+- [DECIDIDO] Extenso: el juego apunta a unas 20 h hasta acabarlo y entrar en el endgame.
+- [DECIDIDO] Visual y con buen feel: estilo de árboles de los juegos de referencia, con nuestros colores; cada rama con su color e icono; una línea de agua recorre los caminos que vas desbloqueando.
+- [PROPUESTA] Implementado: 60 nodos (ver `docs/PROGRESION.md`). Nodos, costes y efectos pendientes de revisión del diseñador. El diseñador lo escribe en el **Árbol de Fishin**: https://claude.ai/artifact/UtP4gNUbFFwpX9SPeTcTnu (colecciones `ramas` y `nodos`), con una imagen de referencia del flujo.
 
 ## 9. Menú (Tab / Options / atrás de Android)
 - [DECIDIDO] Pestañas: **Barca** (inventario), **Stats** (pesca y dinero por segundo, tiempo jugado, peces pescados, legendarios...) y **Opciones**.

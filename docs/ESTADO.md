@@ -46,6 +46,8 @@ Parada para valorar rumbo (29 oct). Hay un tramo jugable de principio a fin de l
 - Caja de acciones (abajo a la derecha, nodo Accion del HUD): junta `Jugador.acciones()` y hablar con el comerciante; si hay varias, alterna cada `HUD.cambio_acciones` (2 s). En el donut siempre está la Q en cuanto hay tierra.
 - Filtro CRT: `scenes/efectos/crt.tscn` (capa 100, valores en el material de Filtro). Se guarda en `Juego.flags.filtro_crt`; botón en Opciones.
 - Llegada por mar: `Mundo._lado_de_llegada` (punto cardinal del centro de la isla vista desde la barca).
+- Árbol de habilidades: datos en `data/arbol/` (`arbol.tres` con ramas y nodos; RamaArbolData, NodoArbolData). Juego guarda `habilidades` (id → nivel, save v4) y da `Juego.efecto(nombre)`, `mejorar_habilidad`, `motivo_no_mejorar`, `mult_venta`, `mult_trabajadores`, `de_chill` (segundos sin tocar nada). Pantalla: `scenes/ui/arbol.tscn` (arbol.gd), con cada nodo como instancia de `nodo_arbol.tscn` colocada a mano en Lienzo/Nodos; los caminos (`conexion_arbol.tscn`, shader `agua_camino`) se trazan solos por los requisitos. Se abre con el viejo (Interactuable accion ARBOL), que tiene botón a su tienda. Iconos 12×12 en `art/ui/arbol/iconos/` (blancos, se tiñen con el color de la rama).
+- `scripts/ui/iconos_input.gd` (IconosInput): dibujos de teclas según el dispositivo; lo usan HUD y árbol.
 - Peces: `data/peces/*.tres` (PezData). Arte placeholder en `art/` (generado por script, sustituible).
 
 ## Herramientas de diseño (artefactos)
@@ -54,7 +56,7 @@ Parada para valorar rumbo (29 oct). Hay un tramo jugable de principio a fin de l
 - Se leen con ArtifactData (list). El código fuente está en `docs/herramientas/`.
 
 ## Siguiente paso
-Ahora: revisar con el diseñador `docs/PROGRESION.md` (las 7 líneas del incremental, tramos T0–T4, equilibrio). No se toca código hasta cerrarlo.
+Ahora: el diseñador prueba el árbol de habilidades (60 nodos de propuesta) y revisa nodos, costes y efectos. Siguiente gran bloque: T2 (huerto de algas, sushi con suministro, taladro de coral) según `docs/PROGRESION.md`.
 
 Por decidir con el diseñador en la charla de rumbo. Candidatos:
 1. Probar en la tablet (rendimiento de pixelado + SSR + lluvia + CRT) y una partida larga de principio a fin para ajustar el ritmo de los primeros 30 min.

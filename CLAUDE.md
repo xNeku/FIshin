@@ -12,10 +12,10 @@ Incremental de pesca con expansión de terreno tipo Forager. Náufrago carismát
 
 ## Stack
 - Godot **4.7.2**. No uses APIs más nuevas.
-- Solo GDScript **tipado**. Sin addons compilados.
+- Solo GDScript **tipado**. Sin addons compilados (excepción futura: GodotSteam solo en la build de PC).
 - Escenas y Resources en texto (`.tscn` / `.tres`).
 - Renderer: Forward+. El juego se hace para PC; la tablet (Lenovo Legion Y300) lo mueve sin problema.
-- Objetivo: Windows y Mac. Móvil después: la UI y el input se piensan táctiles desde el principio.
+- Objetivo: Windows, Mac y Linux (Steam). Android quizá en el futuro. La tablet es solo comodidad del diseñador, no condiciona la salida.
 - Nombres de propiedades y señales de Godot 4 exactos. Si dudas, compruébalo en headless.
 - Los `Control` dentro de escenas de juego llevan `mouse_filter = 2` (Ignore) salvo los que tengan que recibir clics.
 - En `.tscn` a mano, las propiedades que apuntan a nodos llevan `node_paths=PackedStringArray(...)` en la cabecera.

@@ -33,10 +33,11 @@ Regla: no se pasa de fase hasta que la actual sea jugable y divertida. Cada tare
 
 ## Fase 4 — Menú y progresión
 - [x] Menú (Tab) con pestañas (barca con huecos apilados, stats, opciones)
-- [ ] Árbol de habilidades (datos + UI en el viejo) — espera al diseñador
+- [x] Árbol de habilidades (datos + UI en el viejo): 60 nodos de propuesta, a revisar por el diseñador
+- [x] Auto-pesca (nodo Pesca de memoria) y piloto automático de chill
 - [ ] Rehacer el cebo (probabilidades + duración)
 - [x] Mecánicas avanzadas de pesca: machacar y pulsación doble (adelantado)
-- [ ] Auto-pesca
+
 
 ## Fase 5 — Villa e incremental
 - [x] Primer trabajador automático: pescadores del puerto + cubo + venta animada

@@ -116,7 +116,10 @@ Lo que ya está hecho cubre **T0 y T1** (comerciante, primera isla, viejo, camin
 - Contando niveles salen **150–200 compras** en toda la partida. Si sale una cada 5–10 minutos, cuadra con las horas.
 - Cada rama tiene nodos de **todos los tramos**: el árbol nunca se acaba antes de tiempo y siempre hay algo en él que perseguir.
 
-[PROPUESTA] Ejemplos de nodos para empezar a discutir (5 a 8 por rama, con costes que se multiplican):
+- [DECIDIDO] Árbol bien extenso; el juego apunta a unas 20 h para acabarlo y entrar en el endgame.
+- [PROPUESTA] **Implementado**: 60 nodos en 4 ramas (16 Pesca, 15 Carisma, 15 Suerte, 14 Chill), 10 nodos clave, costes de 300 ₽ a 300M ₽. Los que dependen de cosas que aún no existen (sushi, turistas, taladro, buceo, huerto, plantación, casino) salen con candado y "Llega con...". Datos en `data/arbol/`, pantalla en `scenes/ui/arbol.tscn` (cada nodo se puede mover a mano). Lista de efectos al final de este documento.
+
+[PROPUESTA] Ejemplos originales de nodos (ya pasados al árbol):
 
 **Carisma** (dinero y gente)
 - +10 % por venta (varios niveles)
@@ -280,6 +283,46 @@ Nota: en tiendas de móvil la marihuana sube la clasificación por edad. Se acep
 
 ---
 
+## Negocios y suministro
+- [DECIDIDO] Los materiales impulsan los negocios.
+- [DECIDIDO] Los negocios dependen de lo que les llevas: si no pescas lo suficiente, el sushi genera menos porque atiende a menos clientes. Lo mismo con las algas y con la tienda de marihuana.
+- [PROPUESTA] Cada negocio tiene un **almacén** de lo que consume (pescado, algas...). Cada cliente gasta una ración: sin almacén no hay venta. Así la pesca (a mano o de los trabajadores) nunca deja de importar.
+
+## Cañas (decidido)
+- [DECIDIDO] Cañas diferentes; algunas tendrán funciones propias más adelante.
+
+---
+
+## Efectos del árbol (lo que lee el juego)
+| Efecto | Qué hace | Dónde |
+|--------|----------|-------|
+| tiempo_reaccion | + tiempo por botón | Pesca |
+| espera | − espera hasta que pica | Pesca |
+| cadena_extra | + largo máximo de cadena | Pesca / caña |
+| sesgo_cadena | menos cadenas de 1–2 | Pesca / caña |
+| machacar | menos golpes para llenar la barra | Pesca |
+| peso | + peso (y valor) | Pesca |
+| calidad | + calidad | Pesca |
+| dobles_tarde | las dobles salen más tarde | Pesca |
+| auto_primer_boton | fallar el primero no lo espanta | Pesca |
+| auto_pesca | si se acaba el tiempo, te lo quedas | Pesca |
+| profundidad | la caña llega más hondo | Pesca |
+| raros / legendarios / raros_tormenta | más no comunes / legendarios / en tormenta | Pesca |
+| segunda_oportunidad | a veces no se escapa al fallar el primero | Pesca |
+| pesca_doble | a veces sale otro igual | Pesca |
+| precio_venta / precio_lonja | se vende más caro (todo / en la lonja) | Comercio |
+| venta_doble | un pez se cobra doble | Comercio |
+| descuento | tiendas más baratas | Juego.precio |
+| trabajador_velocidad / trabajador_capacidad | trabajadores más rápidos / más peces por viaje | Trabajador |
+| porteador | el cubo se vende solo al llenarse | Puerto |
+| espera_chill / trabajadores_chill | sin tocar nada: pican antes / trabajadores más rápidos | Pesca / Trabajador |
+| umbral_chill | antes cuentas como de chill | Juego |
+| trabajadores_lluvia | con lluvia, trabajadores más rápidos | Trabajador |
+| piloto / piloto_calidad | sin tocar nada, el náufrago pesca solo / con más calidad | Pesca |
+| sushi_velocidad, sushi_clientes, turistas, propinas, perla_peces, coral_doble, cultivos, hierba, casino, mirador | futuros (nodos con candado) | — |
+
+---
+
 ## 9. Cómo lo llevamos
 
 1. El diseñador revisa este documento y marca lo que es [DECIDIDO], lo que cambia y lo que sobra.
@@ -288,10 +331,10 @@ Nota: en tiendas de móvil la marihuana sube la clasificación por edad. Se acep
 4. Se implementa **por tramos**: primero T2 completo (algas, sushi, taladro) jugable y equilibrado; luego T3. No se pasa al siguiente hasta que el actual divierta (regla del proyecto).
 
 ## Preguntas abiertas (de una en una)
-1. Cómo pasa el tiempo en el juego (día/noche y estaciones): decide cuándo salen los peces de época y hora.
+1. Duración del día y de las estaciones del reloj propio.
 2. ¿Qué pez desbloquea el sushi y con qué condición llegan el huerto de algas y el taladro?
 3. Número final de cañas (propuesta: 12 + 3 especiales).
 4. Uso de la marihuana.
 5. Rama de endgame (más adelante).
 
-Resueltas: los recursos son materiales que se gastan (decidido); cuarta rama Chill (decidido); cultivos algas, bambú y marihuana (decidido).
+Resueltas: el tiempo es un reloj propio del juego, con guiños a la hora real en logros secretos (decidido); los recursos son materiales que se gastan (decidido); cuarta rama Chill (decidido); cultivos algas, bambú y marihuana (decidido).
