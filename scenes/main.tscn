@@ -57,6 +57,7 @@
 [ext_resource type="AudioStream" path="res://art/sfx/escapa.wav" id="sfx_escapa"]
 [ext_resource type="AudioStream" path="res://art/sfx/latido.wav" id="sfx_latido"]
 [ext_resource type="Script" path="res://scripts/mundo/agua.gd" id="agua_script"]
+[ext_resource type="PackedScene" path="res://scenes/efectos/crt.tscn" id="crt"]
 
 [sub_resource type="FastNoiseLite" id="ruido_nubes"]
 noise_type = 3
@@ -312,6 +313,8 @@ textura_cubo = ExtResource("31_cubo")
 
 [node name="Pixelador" parent="." node_paths=PackedStringArray("camara_fuente") instance=ExtResource("33_pixelador")]
 camara_fuente = NodePath("../Camara")
+
+[node name="CRT" parent="." instance=ExtResource("crt")]
 
 [node name="Lluvia" parent="." instance=ExtResource("40_lluvia")]
 

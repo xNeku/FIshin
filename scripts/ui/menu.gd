@@ -14,6 +14,7 @@ extends CanvasLayer
 @onready var boton_volver: Button = $Raiz/Panel/Margen/Pestanas/Opciones/Volver
 @onready var boton_borrar: Button = $Raiz/Panel/Margen/Pestanas/Opciones/Borrar
 @onready var boton_salir: Button = $Raiz/Panel/Margen/Pestanas/Opciones/Salir
+@onready var boton_filtro: Button = $Raiz/Panel/Margen/Pestanas/Opciones/Filtro
 
 var abierto: bool = false
 var _seleccion: String = ""
@@ -25,6 +26,12 @@ func _ready() -> void:
 	_texto_borrar = boton_borrar.text
 	boton_volver.pressed.connect(cerrar)
 	boton_borrar.pressed.connect(_on_borrar)
+	boton_filtro.pressed.connect(func() -> void:
+		var crt: Node = get_tree().get_first_node_in_group("crt")
+		if crt:
+			crt.activar(not crt.activo())
+		_refrescar_filtro())
+	_refrescar_filtro.call_deferred()
 	boton_salir.pressed.connect(func() -> void:
 		Juego.guardar()
 		get_tree().quit())
@@ -136,3 +143,10 @@ func _on_borrar() -> void:
 	Juego.borrar_partida()
 	cerrar()
 	get_tree().reload_current_scene()
+
+
+func _refrescar_filtro() -> void:
+	var crt: Node = get_tree().get_first_node_in_group("crt")
+	boton_filtro.visible = crt != null
+	if crt:
+		boton_filtro.text = "Filtro retro: %s" % ("sí" if crt.activo() else "no")
