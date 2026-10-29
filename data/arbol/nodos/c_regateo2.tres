@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="NodoArbolData" format=3]
+
+[ext_resource type="Script" path="res://scripts/datos/nodo_arbol_data.gd" id="1_script"]
+[ext_resource type="Resource" path="res://data/arbol/ramas/carisma.tres" id="2_rama"]
+[ext_resource type="Texture2D" path="res://art/ui/arbol/iconos/bolsa.png" id="3_icono"]
+[ext_resource type="Resource" path="res://data/arbol/nodos/c_regateo.tres" id="r0"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"c_regateo2"
+nombre = "Regateo profesional"
+descripcion = "Otro {v} menos en las tiendas por nivel."
+rama = ExtResource("2_rama")
+icono = ExtResource("3_icono")
+clave = false
+niveles = 4
+coste_base = 30000.0
+crecimiento = 2.0
+efecto = &"descuento"
+valor_por_nivel = 0.05
+formato = 0
+requisitos = Array[Resource]([ExtResource("r0")])
+requiere_flag = ""
+texto_bloqueo = ""

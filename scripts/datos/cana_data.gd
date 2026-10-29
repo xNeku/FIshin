@@ -27,6 +27,8 @@ extends Resource
 
 
 ## Largo de la cadena para una picada, sesgado hacia lo corto.
-func tirar_largo_cadena() -> int:
-	var opciones: int = maxi(1, cadena_max - cadena_min + 1)
-	return cadena_min + mini(opciones - 1, floori(opciones * pow(randf(), sesgo_cadena)))
+## extra alarga el máximo; quitar_sesgo (0..1) reparte más los largos (árbol, rama Pesca).
+func tirar_largo_cadena(extra: int = 0, quitar_sesgo: float = 0.0) -> int:
+	var opciones: int = maxi(1, cadena_max + extra - cadena_min + 1)
+	var sesgo: float = maxf(1.0, sesgo_cadena * (1.0 - clampf(quitar_sesgo, 0.0, 0.8)))
+	return cadena_min + mini(opciones - 1, floori(opciones * pow(randf(), sesgo)))

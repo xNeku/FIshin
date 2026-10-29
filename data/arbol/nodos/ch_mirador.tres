@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="NodoArbolData" format=3]
+
+[ext_resource type="Script" path="res://scripts/datos/nodo_arbol_data.gd" id="1_script"]
+[ext_resource type="Resource" path="res://data/arbol/ramas/chill.tres" id="2_rama"]
+[ext_resource type="Texture2D" path="res://art/ui/arbol/iconos/mirador.png" id="3_icono"]
+[ext_resource type="Resource" path="res://data/arbol/nodos/ch_piloto.tres" id="r0"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"ch_mirador"
+nombre = "Mirador"
+descripcion = "Una vista para mirar tu ciudad funcionando sola."
+rama = ExtResource("2_rama")
+icono = ExtResource("3_icono")
+clave = false
+niveles = 1
+coste_base = 10000000.0
+crecimiento = 1.0
+efecto = &"mirador"
+valor_por_nivel = 1.0
+formato = 3
+requisitos = Array[Resource]([ExtResource("r0")])
+requiere_flag = "aparecido_muelle_turistas"
+texto_bloqueo = "Llega cuando tengas ciudad"

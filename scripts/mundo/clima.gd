@@ -109,6 +109,8 @@ func _mezclar(a: Variant, b: Variant, s: float) -> Variant:
 
 
 func _aplicar(v: Dictionary) -> void:
+	# Para la rama Chill del árbol (trabajadores con lluvia) y la Suerte (raros en tormenta).
+	Juego.lloviendo = v.lluvia > 0.3
 	var env: Environment = entorno.environment
 	var cielo := env.sky.sky_material as ProceduralSkyMaterial
 	if cielo:

@@ -7,15 +7,19 @@ signal cana_cambiada(cana: CanaData)
 signal cebo_cambiado
 signal cubo_cambiado
 signal trabajadores_cambiados(cantidad: int)
+signal habilidades_cambiadas
 
-const VERSION_SAVE := 3
+const VERSION_SAVE := 4
 const RUTA_SAVE := "user://partida.json"
 const RUTA_CANAS := "res://data/canas/%s.tres"
 const RUTA_PECES := "res://data/peces/%s.tres"
+const RUTA_ARBOL := "res://data/arbol/arbol.tres"
 
 @export var segundos_autoguardado: float = 20.0
 @export var huecos_iniciales: int = 6
 @export var cana_inicial: StringName = &"cana_rota"
+## Segundos sin tocar nada para que cuente como "de chill" (rama Chill).
+@export var segundos_para_chill: float = 20.0
 
 var rublos: float = 0.0
 var rublos_totales: float = 0.0
@@ -41,22 +45,34 @@ var cubo_capturas: Array[Dictionary] = []
 var cubo_en_mano: bool = false
 ## Hitos y cosas desbloqueadas (ej. "barco_comerciante": true)
 var flags: Dictionary = {}
+## Árbol de habilidades: id de nodo -> nivel comprado.
+var habilidades: Dictionary = {}
+var arbol: ArbolData
+
+## true mientras llueve o hay tormenta (lo pone el Clima, no se guarda).
+var lloviendo: bool = false
 
 ## true mientras el náufrago anda fuera de la barca (no se guarda).
 var en_movimiento: bool = false
 
 var _t_guardado: float = 0.0
 var _cana: CanaData
+var _efectos: Dictionary = {}
+var _t_sin_tocar: float = 0.0
 
 
 func _ready() -> void:
 	huecos = huecos_iniciales
 	cana_id = cana_inicial
+	if ResourceLoader.exists(RUTA_ARBOL):
+		arbol = load(RUTA_ARBOL)
 	cargar()
+	_recalcular_efectos()
 
 
 func _process(delta: float) -> void:
 	stats.tiempo_jugado += delta
+	_t_sin_tocar += delta
 	_t_guardado += delta
 	if _t_guardado >= segundos_autoguardado:
 		_t_guardado = 0.0
@@ -173,6 +189,94 @@ func anadir_escapado() -> void:
 	stats.escapados += 1
 
 
+# --- Chill ---
+
+func _input(event: InputEvent) -> void:
+	if event is InputEventKey or event is InputEventMouseButton or event is InputEventJoypadButton \
+			or (event is InputEventJoypadMotion and absf((event as InputEventJoypadMotion).axis_value) > 0.5):
+		_t_sin_tocar = 0.0
+
+
+## true si el jugador lleva un rato sin tocar nada (la rama Chill acorta ese rato).
+func de_chill() -> bool:
+	return _t_sin_tocar >= maxf(3.0, segundos_para_chill - efecto(&"umbral_chill"))
+
+
+# --- Árbol de habilidades ---
+
+## Suma de lo que dan todos los nodos comprados con ese efecto (0 si ninguno).
+func efecto(nombre: StringName) -> float:
+	return _efectos.get(nombre, 0.0)
+
+
+func nivel_habilidad(nodo: NodoArbolData) -> int:
+	return int(habilidades.get(String(nodo.id), 0))
+
+
+## true si se cumplen los requisitos para empezar a comprarlo (no mira el dinero).
+func habilidad_disponible(nodo: NodoArbolData) -> bool:
+	if nodo.requiere_flag != "" and not flags.get(nodo.requiere_flag, false):
+		return false
+	for r: Resource in nodo.requisitos:
+		if nivel_habilidad(r as NodoArbolData) <= 0:
+			return false
+	return true
+
+
+func coste_habilidad(nodo: NodoArbolData) -> float:
+	return nodo.coste(nivel_habilidad(nodo))
+
+
+## "" si se puede mejorar ya; si no, el motivo.
+func motivo_no_mejorar(nodo: NodoArbolData) -> String:
+	if nivel_habilidad(nodo) >= nodo.niveles:
+		return "MAX"
+	if nodo.requiere_flag != "" and not flags.get(nodo.requiere_flag, false):
+		return nodo.texto_bloqueo if nodo.texto_bloqueo != "" else "Bloqueado"
+	for r: Resource in nodo.requisitos:
+		if nivel_habilidad(r as NodoArbolData) <= 0:
+			return "Necesita: " + (r as NodoArbolData).nombre
+	if rublos < coste_habilidad(nodo):
+		return "Faltan rublos"
+	return ""
+
+
+func mejorar_habilidad(nodo: NodoArbolData) -> bool:
+	if motivo_no_mejorar(nodo) != "":
+		return false
+	sumar_rublos(-coste_habilidad(nodo))
+	habilidades[String(nodo.id)] = nivel_habilidad(nodo) + 1
+	_recalcular_efectos()
+	habilidades_cambiadas.emit()
+	guardar()
+	return true
+
+
+func _recalcular_efectos() -> void:
+	_efectos.clear()
+	if arbol == null:
+		return
+	for n: NodoArbolData in arbol.nodos:
+		var nv: int = nivel_habilidad(n)
+		if nv > 0 and n.efecto != &"":
+			_efectos[n.efecto] = _efectos.get(n.efecto, 0.0) + n.valor_por_nivel * nv
+
+
+## Multiplicador de venta: Carisma (y la lonja si vende allí).
+func mult_venta(en_lonja: bool) -> float:
+	return 1.0 + efecto(&"precio_venta") + (efecto(&"precio_lonja") if en_lonja else 0.0)
+
+
+## Multiplicador de velocidad de los trabajadores (Carisma, y Chill si no tocas nada o llueve).
+func mult_trabajadores() -> float:
+	var m: float = 1.0 + efecto(&"trabajador_velocidad")
+	if de_chill():
+		m += efecto(&"trabajadores_chill")
+	if lloviendo:
+		m += efecto(&"trabajadores_lluvia")
+	return m
+
+
 # --- Puerto ---
 
 func contratar_trabajador() -> void:
@@ -220,7 +324,7 @@ func sacar_capturas() -> Array[Dictionary]:
 
 ## Vende todo el inventario de la barca de golpe, sin animación. Devuelve lo ganado.
 func vender_todo() -> float:
-	var total: float = valor_inventario()
+	var total: float = valor_inventario() * mult_venta(false)
 	capturas.clear()
 	sumar_rublos(total)
 	inventario_cambiado.emit()
@@ -241,7 +345,7 @@ func veces_comprado(art: ArticuloData) -> int:
 
 
 func precio(art: ArticuloData) -> float:
-	return art.precio_actual(veces_comprado(art))
+	return art.precio_actual(veces_comprado(art)) * maxf(0.3, 1.0 - efecto(&"descuento"))
 
 
 ## "" si se puede comprar; si no, el motivo.
@@ -282,6 +386,7 @@ func guardar() -> void:
 		"capturas": capturas, "huecos": huecos, "cana": String(cana_id), "cebo": cebo, "compras": compras,
 		"stats": stats, "coleccion": coleccion, "flags": flags,
 		"trabajadores": trabajadores, "cubo": cubo_capturas, "cubo_en_mano": cubo_en_mano,
+		"habilidades": habilidades,
 		"fecha": Time.get_unix_time_from_system(),
 	}
 	var f := FileAccess.open(RUTA_SAVE, FileAccess.WRITE)
@@ -320,6 +425,12 @@ func cargar() -> void:
 	for c: Variant in datos.get("cubo", []):
 		cubo_capturas.append(c)
 	cubo_en_mano = datos.get("cubo_en_mano", false)
+	# v3 no tenía árbol.
+	habilidades.clear()
+	var h: Variant = datos.get("habilidades", {})
+	if h is Dictionary:
+		for k: String in h:
+			habilidades[k] = int(h[k])
 
 
 func borrar_partida() -> void:
@@ -338,6 +449,9 @@ func borrar_partida() -> void:
 	trabajadores = 0
 	cubo_capturas.clear()
 	cubo_en_mano = false
+	habilidades.clear()
+	_recalcular_efectos()
+	habilidades_cambiadas.emit()
 	rublos_cambiados.emit(rublos)
 	inventario_cambiado.emit()
 	cana_cambiada.emit(cana())

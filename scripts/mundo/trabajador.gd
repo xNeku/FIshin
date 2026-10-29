@@ -94,7 +94,7 @@ func _andar(delta: float) -> void:
 		objetivo = _mundo.celda_a_mundo(siguiente) + Vector3.UP * altura_suelo
 	var hacia: Vector3 = objetivo - global_position
 	hacia.y = 0.0
-	var paso: float = velocidad * delta
+	var paso: float = velocidad * Juego.mult_trabajadores() * delta
 	if hacia.length() <= paso:
 		global_position = Vector3(objetivo.x, altura_suelo, objetivo.z)
 		if not _ruta.is_empty():
@@ -139,7 +139,7 @@ func _pescar(delta: float) -> void:
 	bolsa.append(_crear_captura())
 	_actualizar_cuenta()
 	_mostrar_pez()
-	if bolsa.size() >= capacidad:
+	if bolsa.size() >= _capacidad():
 		estado = Estado.YENDO_AL_CUBO
 		_ir_a(_puerto.celda_cubo, _puerto.punto_entrega())
 	else:
@@ -159,8 +159,13 @@ func _dejar() -> void:
 	_ir_a(puesto.celda, _pos_puesto())
 
 
+## Peces por viaje (Carisma suma).
+func _capacidad() -> int:
+	return capacidad + int(Juego.efecto(&"trabajador_capacidad"))
+
+
 func _siguiente_pez() -> float:
-	return tiempo_por_pez * randf_range(1.0 - variacion, 1.0 + variacion)
+	return tiempo_por_pez * randf_range(1.0 - variacion, 1.0 + variacion) / Juego.mult_trabajadores()
 
 
 func _crear_captura() -> Dictionary:
@@ -189,5 +194,5 @@ func _mostrar_pez() -> void:
 func _actualizar_cuenta() -> void:
 	if cuenta == null:
 		return
-	cuenta.text = "%d/%d" % [bolsa.size(), capacidad]
+	cuenta.text = "%d/%d" % [bolsa.size(), _capacidad()]
 	cuenta.visible = bolsa.size() > 0
