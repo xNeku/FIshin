@@ -3,6 +3,7 @@
 [ext_resource type="Script" path="res://scripts/ui/tienda.gd" id="1_script"]
 [ext_resource type="PackedScene" path="res://scenes/ui/fila_tienda.tscn" id="2_fila"]
 [ext_resource type="AudioStream" path="res://art/sfx/captura.wav" id="3_compra"]
+[ext_resource type="PackedScene" path="res://scenes/ui/animacion_entrada.tscn" id="anim_entrada"]
 
 [node name="Tienda" type="CanvasLayer"]
 process_mode = 3
@@ -91,3 +92,11 @@ text = "Cerrar [E]"
 
 [node name="SfxCompra" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("3_compra")
+
+[node name="EntradaFondo" parent="Raiz" instance=ExtResource("anim_entrada")]
+estilo = 3
+duracion = 0.15
+pasos = 4
+sonar = false
+
+[node name="Entrada" parent="Raiz/Panel" instance=ExtResource("anim_entrada")]

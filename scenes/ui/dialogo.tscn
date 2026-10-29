@@ -1,6 +1,7 @@
 [gd_scene format=3]
 
 [ext_resource type="Script" path="res://scripts/ui/dialogo.gd" id="1_script"]
+[ext_resource type="PackedScene" path="res://scenes/ui/animacion_entrada.tscn" id="anim_entrada"]
 
 [node name="Dialogo" type="CanvasLayer"]
 process_mode = 3
@@ -54,3 +55,6 @@ autowrap_mode = 3
 layout_mode = 2
 text = "▼"
 horizontal_alignment = 2
+
+[node name="Entrada" parent="Raiz/Caja" instance=ExtResource("anim_entrada")]
+duracion = 0.18

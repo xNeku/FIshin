@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" path="res://scenes/ui/popup_icono.tscn" id="3_popup_x"]
 [ext_resource type="Texture2D" path="res://art/ui/teclas/teclado_pesca_1.png" id="4_tecla"]
 [ext_resource type="Texture2D" path="res://art/ui/teclas/teclado_cambiar_modo.png" id="6_tecla_q"]
+[ext_resource type="PackedScene" path="res://scenes/ui/animacion_entrada.tscn" id="anim_entrada"]
 
 [sub_resource type="ShaderMaterial" id="mat_efecto"]
 shader = ExtResource("2_efecto")
@@ -243,3 +244,21 @@ text = "Sardina · Común"
 layout_mode = 2
 theme_type_variation = &"Pequeno"
 text = "Buena · 0.20 kg · 4 ₽"
+
+[node name="Entrada" parent="Resultado" instance=ExtResource("anim_entrada")]
+estilo = 1
+duracion = 0.2
+pasos = 5
+sonar = false
+
+[node name="Entrada" parent="Accion" instance=ExtResource("anim_entrada")]
+estilo = 2
+duracion = 0.24
+pasos = 6
+sonar = false
+
+[node name="Entrada" parent="Estado" instance=ExtResource("anim_entrada")]
+estilo = 2
+duracion = 0.4
+pasos = 8
+sonar = false

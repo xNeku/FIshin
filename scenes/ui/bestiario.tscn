@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" path="res://scripts/ui/bestiario.gd" id="1_script"]
 [ext_resource type="PackedScene" path="res://scenes/ui/ficha_bestiario.tscn" id="2_ficha"]
+[ext_resource type="PackedScene" path="res://scenes/ui/animacion_entrada.tscn" id="anim_entrada"]
 
 [node name="Bestiario" type="CanvasLayer"]
 process_mode = 3
@@ -76,3 +77,11 @@ custom_minimum_size = Vector2(240, 70)
 layout_mode = 2
 size_flags_horizontal = 8
 text = "Cerrar [E]"
+
+[node name="EntradaFondo" parent="Raiz" instance=ExtResource("anim_entrada")]
+estilo = 3
+duracion = 0.15
+pasos = 4
+sonar = false
+
+[node name="Entrada" parent="Raiz/Panel" instance=ExtResource("anim_entrada")]

@@ -81,6 +81,7 @@ var _accion_machacar: StringName = &""
 var _t_machacar: float = 0.0
 var _acciones: Array[String] = []
 var _t_accion: float = 0.0
+var _i_accion: int = 0
 
 
 func _ready() -> void:
@@ -221,6 +222,12 @@ func _mostrar_acciones(dt: float) -> void:
 		_t_accion = 0.0
 	_t_accion += dt
 	var i: int = int(_t_accion / maxf(0.1, cambio_acciones)) % lista.size()
+	if i != _i_accion and lista.size() > 1:
+		# Al pasar a la siguiente acción, la caja parpadea como al aparecer.
+		var entrada: Node = caja_accion.get_node_or_null("Entrada")
+		if entrada:
+			entrada.entrar()
+	_i_accion = i
 	_pista(caja_accion, lista[i])
 
 

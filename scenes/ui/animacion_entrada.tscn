@@ -1,0 +1,11 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/animacion_entrada.gd" id="1_script"]
+[ext_resource type="AudioStream" path="res://art/sfx/abrir.wav" id="2_sfx"]
+
+[node name="AnimacionEntrada" type="Node"]
+script = ExtResource("1_script")
+
+[node name="Sonido" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_sfx")
+volume_db = -6.0
