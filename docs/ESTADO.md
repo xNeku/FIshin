@@ -44,7 +44,8 @@ Parada para valorar rumbo (29 oct). Hay un tramo jugable de principio a fin de l
 - Iconos de teclas: pack CC0 de Xelu (vía addon Controller Icons), pixelados a 24 px con contorno blanco y versión _pulsada, en `art/ui/teclas/<teclado|xbox|ps>_<accion>[_pulsada].png` (créditos en CREDITOS.txt). El HUD elige según el último dispositivo tocado; el tipo de mando sale de su nombre (Input.get_joy_name) y, si no se reconoce, `HUD.mando_por_defecto` (ps).
 - Animación de entrada: `scenes/ui/animacion_entrada.tscn` como hija de una ventana o popup; se lanza sola al aparecer. Estilos LINEA (raya que se abre a saltos), CAIDA, PARPADEO, FUNDIDO; duración, pasos y sonido (`art/sfx/abrir.wav`) por instancia. Puesta en menú, tienda, bestiario, diálogo, banner del pez, caja de acciones y aviso de barca llena.
 - Caja de acciones (abajo a la derecha, nodo Accion del HUD): junta `Jugador.acciones()` y hablar con el comerciante; si hay varias, alterna cada `HUD.cambio_acciones` (2 s). En el donut siempre está la Q en cuanto hay tierra.
-- Filtro CRT: `scenes/efectos/crt.tscn` (capa 100, valores en el material de Filtro). Se guarda en `Juego.flags.filtro_crt`; botón en Opciones.
+- Filtro CRT: `scenes/efectos/crt.tscn` (capa 100, valores en el material de Filtro). Se guarda en las opciones (`Juego.opcion` / `poner_opcion`, `user://opciones.cfg`, aparte del save para que borrar partida no lo toque); botón en Opciones.
+- Guardado: se escribe a `partida.json.tmp` y se cambia por el bueno; el anterior queda en `partida.anterior.json` y se carga si el principal está roto. El dinero que va volando en una venta (`Juego.dinero_en_camino`) se guarda como si hubiera llegado.
 - Llegada por mar: `Mundo._lado_de_llegada` (punto cardinal del centro de la isla vista desde la barca).
 - Árbol de habilidades: datos en `data/arbol/` (`arbol.tres` con ramas y nodos; RamaArbolData, NodoArbolData). Juego guarda `habilidades` (id → nivel, save v4) y da `Juego.efecto(nombre)`, `mejorar_habilidad`, `motivo_no_mejorar`, `mult_venta`, `mult_trabajadores`, `de_chill` (segundos sin tocar nada). Pantalla: `scenes/ui/arbol.tscn` (arbol.gd), con cada nodo como instancia de `nodo_arbol.tscn` colocada a mano en Lienzo/Nodos; los caminos (`conexion_arbol.tscn`, shader `agua_camino`) se trazan solos por los requisitos. Se abre con el viejo (Interactuable accion ARBOL), que tiene botón a su tienda. Iconos 12×12 en `art/ui/arbol/iconos/` (blancos, se tiñen con el color de la rama).
 - `scripts/ui/iconos_input.gd` (IconosInput): dibujos de teclas según el dispositivo; lo usan HUD y árbol.
@@ -55,7 +56,15 @@ Parada para valorar rumbo (29 oct). Hay un tramo jugable de principio a fin de l
 - Árbol de Fishin: https://claude.ai/artifact/UtP4gNUbFFwpX9SPeTcTnu. Colecciones `ramas` {nombre, descripcion, orden, color} y `nodos` {nombre, rama (id), nivel, coste, estado, efecto, descripcion, requisitos[]}.
 - Se leen con ArtifactData (list). El código fuente está en `docs/herramientas/`.
 
+## Última sesión (29 oct, tarde)
+- Limpieza: fuera assets y exports sin uso; bugs arreglados (bucle infinito del puerto sin bordes libres, dinero perdido al cerrar a mitad de venta, filtro CRT que se reseteaba al borrar partida; guardado atómico con copia).
+- Rendimiento: caché de casillas pisables, nodos del árbol parados con el árbol cerrado, efecto de pantalla del HUD apagado si no hace nada. El coste de los scripts por fotograma es bajo (~1,5 ms en headless con todo el mundo); lo que pesa es la GPU (Forward+, pixelado, CRT).
+- Gráficos: atril del bestiario redibujado, iconos hamaca y brazo, rejilla de pesca más suave (`zona_pesca.gdshader`: `linea_tenue`, `largo_cruce`).
+- Estudio: `docs/INCREMENTAL.md` con fórmulas de incremental aplicadas a Fishin. Hallazgo: la curva de combo lineal no premia los combos largos, y la cadena no pasa del perfect.
+
 ## Siguiente paso
+Sesión de progresión con el diseñador hasta el midgame (economía y orden de desbloqueos), partiendo de `docs/PROGRESION.md` (borrador v1) y `docs/INCREMENTAL.md`.
+
 Ahora: el diseñador prueba el árbol de habilidades (60 nodos de propuesta) y revisa nodos, costes y efectos. Siguiente gran bloque: T2 (huerto de algas, sushi con suministro, taladro de coral) según `docs/PROGRESION.md`.
 
 Por decidir con el diseñador en la charla de rumbo. Candidatos:
