@@ -24,6 +24,7 @@ Incremental de pesca con expansión de terreno tipo Forager. Náufrago carismát
 - `docs/ESTADO.md`: traspaso entre sesiones (dónde estamos, siguiente paso, decisiones recientes). Se actualiza al cerrar cada tarea o sesión.
 - `docs/GDD.md`: diseño con marcas [DECIDIDO] / [PROPUESTA] / [ABIERTO]. Lo [ABIERTO] se pregunta, no se decide.
 - `docs/ROADMAP.md`: fases con checklist.
+- `docs/PROGRESION.md`: líneas de progresión del incremental (edificios, trabajadores, árbol, cañas, peces, recursos, pecera, turismo), tramos y equilibrio.
 - `docs/IDEAS.md`: ideas nuevas que no son del tramo actual. No van al código todavía.
 - `scripts/` por áreas (`pesca/`, `economia/`, `mundo/`, `jugador/`, `ui/`, `datos/`).
 - `scenes/`, `data/` (contenido como `.tres` con ID: peces, mejoras, edificios, hitos), `art/`.

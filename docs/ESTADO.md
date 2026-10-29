@@ -54,6 +54,8 @@ Parada para valorar rumbo (29 oct). Hay un tramo jugable de principio a fin de l
 - Se leen con ArtifactData (list). El código fuente está en `docs/herramientas/`.
 
 ## Siguiente paso
+Ahora: revisar con el diseñador `docs/PROGRESION.md` (las 7 líneas del incremental, tramos T0–T4, equilibrio). No se toca código hasta cerrarlo.
+
 Por decidir con el diseñador en la charla de rumbo. Candidatos:
 1. Probar en la tablet (rendimiento de pixelado + SSR + lluvia + CRT) y una partida larga de principio a fin para ajustar el ritmo de los primeros 30 min.
 2. Árbol de habilidades (datos + interfaz del viejo) cuando el diseñador lo rellene.
