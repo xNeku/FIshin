@@ -107,6 +107,8 @@ Marcas: [DECIDIDO] lo decidió el diseñador · [PROPUESTA] sugerencia de Claude
 ## 11. Progresión del mundo
 - [DECIDIDO] Todo lo que se pega al mundo llega con animación: por defecto viene navegando por el mar. Algunos especiales tienen mini cinemática épica; el diseñador lo indica en la descripción de la carta.
 - [DECIDIDO] Lo que llega por mar viene del lado donde está respecto a la barca (lo del sur, del sur; lo del oeste, del oeste), en línea recta. Nunca desde un sitio cualquiera.
+- [DECIDIDO] Interfaz (menús, diálogos, tienda, árbol, minijuego) al estilo Animal Well: paneles negros con borde blanco de píxel, fuente pixel, lo seleccionado en amarillo, texto de cabecera en gris. Filtro retro de tele de tubo encima (se puede quitar en Opciones).
+- [DECIDIDO] El minijuego enseña el dibujo de la tecla (o del botón del mando), no texto.
 - [DECIDIDO] Sin frases en pantalla: ni al llegar islas o el comerciante, ni al picar, ni la calidad al capturar (ya va en el banner del pez, con su color). Fallo o escape: una X roja.
 - [DECIDIDO] Barco comerciante en la casilla (2,−1), tras 3 capturas.
 - [DECIDIDO] **SkillTreeMan** (forma libre de 7 casillas, x −4..−2): aparece al pescar 100 peces y **cae del cielo**. En (−4,0) hay un viejo senil de barba blanca meditando, tapado solo por un libro, con una hoguera delante y bonsáis a los lados que crecerán con el árbol. Al interactuar con él se abre el árbol de habilidades (ya no está en el menú Tab). Vende la **Sabia caña** (caña nivel 3) por 2000 ₽.
