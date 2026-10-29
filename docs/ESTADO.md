@@ -65,6 +65,11 @@ Parada para valorar rumbo (29 oct). Hay un tramo jugable de principio a fin de l
 ## Sesión 29 oct (noche)
 - Balance de combo, ritmo, chill y pescadores por fórmula, con el simulador v2 (`docs/herramientas/simular_economia.py`) y lo aprendido de osu!, Guitar Hero, AdVenture Capitalist, Cookie Clicker y Cast n Chill (`docs/INCREMENTAL.md`).
 
+## Sesión 30 oct
+- Juego de 15-20 h: tramos nuevos (midgame a las 5-6 h), tabla del ciclo (caña, peces, combos, racha y pasivo suben juntos) y orientación v3 en `PROGRESION.md`.
+- Datos: espera 8-20 s; cañas sin bonus de tiempo; árbol de tiempo recortado (como mucho +15 %); cebo de gusano +20 % durante 10 pescas; caña decente 300, Sabia 4.500; isla a 400 ₽ totales, camino a 40 min, lonja a 6.500, viejo a 75 peces.
+- Maestría por especie (`Juego.capturados`, save v5) en el bestiario.
+
 ## Siguiente paso
 Sesión de progresión con el diseñador hasta el midgame (economía y orden de desbloqueos), partiendo de `docs/PROGRESION.md` (borrador v1) y `docs/INCREMENTAL.md`.
 
@@ -89,7 +94,7 @@ Por decidir con el diseñador en la charla de rumbo. Candidatos:
 - Interfaz estilo Animal Well (paneles negros, borde blanco, selección amarilla) con filtro retro de tubo y animaciones de entrada. Teclas dibujadas del pack CC0 de Xelu; mando PlayStation por defecto, también Xbox. Acción posible abajo a la derecha, alternando cada 2 s si hay varias.
 - El náufrago no pesca solo (fuera el piloto). Lo pasivo nunca sustituye a pescar a mano.
 - Racha: cada botón acertado paga una parte del pez, y en racha paga más (×1,25 desde el 5.º ... ×6 desde el 200.º; `StatsPesca.racha_desde` / `racha_mult`). Al subir de tramo suenan un arpegio y un destello y el contador cambia de color. Ver `docs/INCREMENTAL.md` §6.
-- Pesca tranquila: esperas de 6-14 s con picoteos del corcho y aviso antes de picar. De chill (8 s sin tocar nada), el pez que no tocas se va sin castigo (`Pesca.pez_se_va`). Peces ×2,5 de valor para mantener el ₽/min. Pescadores rebajados a ~8,3 ₽/min. La rejilla de la zona de pesca está oculta (ZonaPesca, visible = false en main.tscn).
+- Pesca tranquila: esperas de 8-20 s con picoteos del corcho y aviso antes de picar. De chill (8 s sin tocar nada), el pez que no tocas se va sin castigo (`Pesca.pez_se_va`). Peces ×2,5 de valor para mantener el ₽/min. Pescadores rebajados a ~8,3 ₽/min. La rejilla de la zona de pesca está oculta (ZonaPesca, visible = false en main.tscn).
 - Estilo B pixelado, sin desenfoque. Nada de modelos 3D en objetos. Prota en donut rosa (no hay barca), piernas de frente, caña a la derecha. Viejo entre palmeras con hoguera delante.
 
 ## Pendiente del diseñador

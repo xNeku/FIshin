@@ -9,7 +9,7 @@ signal cubo_cambiado
 signal trabajadores_cambiados(cantidad: int)
 signal habilidades_cambiadas
 
-const VERSION_SAVE := 4
+const VERSION_SAVE := 5
 const RUTA_SAVE := "user://partida.json"
 const RUTA_COPIA := "user://partida.anterior.json"
 ## Opciones del jugador (filtro, etc.): van aparte para que borrar la partida no las toque.
@@ -17,6 +17,7 @@ const RUTA_OPCIONES := "user://opciones.cfg"
 const RUTA_CANAS := "res://data/canas/%s.tres"
 const RUTA_PECES := "res://data/peces/%s.tres"
 const RUTA_ARBOL := "res://data/arbol/arbol.tres"
+const RUTA_STATS := "res://data/stats_pesca.tres"
 
 @export var segundos_autoguardado: float = 20.0
 @export var huecos_iniciales: int = 6
@@ -40,6 +41,10 @@ var stats: Dictionary = {
 }
 ## id de pez -> mejor calidad conseguida
 var coleccion: Dictionary = {}
+## id de pez -> cuántos has pescado tú (maestría del bestiario).
+var capturados: Dictionary = {}
+## El mismo recurso que usa la Pesca (los valores se tocan en data/stats_pesca.tres).
+var stats_pesca: StatsPesca
 ## Pescadores del puerto contratados.
 var trabajadores: int = 0
 ## Lo que han dejado los pescadores en el cubo del puerto.
@@ -72,6 +77,7 @@ func _ready() -> void:
 	cana_id = cana_inicial
 	if ResourceLoader.exists(RUTA_ARBOL):
 		arbol = load(RUTA_ARBOL)
+	stats_pesca = load(RUTA_STATS)
 	cargar()
 	_recalcular_efectos()
 
@@ -183,8 +189,18 @@ func anadir_captura(captura: Dictionary, pez: PezData) -> bool:
 	if pez.rareza == PezData.Rareza.LEGENDARIO:
 		stats.legendarios += 1
 	coleccion[String(pez.id)] = maxf(coleccion.get(String(pez.id), 0.0), captura.calidad)
+	capturados[String(pez.id)] = int(capturados.get(String(pez.id), 0)) + 1
 	inventario_cambiado.emit()
 	return true
+
+
+## Cuántas has pescado de esa especie y su multiplicador de maestría.
+func capturas_especie(id_pez: StringName) -> int:
+	return int(capturados.get(String(id_pez), 0))
+
+
+func mult_maestria(id_pez: StringName) -> float:
+	return stats_pesca.mult_maestria(capturas_especie(id_pez)) if stats_pesca else 1.0
 
 
 func registrar_combo(botones: int) -> void:
@@ -407,7 +423,7 @@ func guardar() -> void:
 	var datos: Dictionary = {
 		"version": VERSION_SAVE, "rublos": rublos + dinero_en_camino, "rublos_totales": rublos_totales + dinero_en_camino,
 		"capturas": capturas, "huecos": huecos, "cana": String(cana_id), "cebo": cebo, "compras": compras,
-		"stats": stats, "coleccion": coleccion, "flags": flags,
+		"stats": stats, "coleccion": coleccion, "capturados": capturados, "flags": flags,
 		"trabajadores": trabajadores, "cubo": cubo_capturas, "cubo_en_mano": cubo_en_mano,
 		"habilidades": habilidades,
 		"fecha": Time.get_unix_time_from_system(),
@@ -456,6 +472,12 @@ func cargar() -> void:
 	for k: String in ["peces_pescados", "perfectos", "escapados", "legendarios", "mejor_combo"]:
 		stats[k] = int(stats[k])
 	coleccion = datos.get("coleccion", {})
+	# v4 no tenía maestría: se cuenta desde ahora.
+	capturados.clear()
+	var cap: Variant = datos.get("capturados", {})
+	if cap is Dictionary:
+		for k: String in cap:
+			capturados[k] = int(cap[k])
 	flags = datos.get("flags", {})
 	# v2 no tenía puerto.
 	trabajadores = int(datos.get("trabajadores", 0))
@@ -486,6 +508,7 @@ func borrar_partida() -> void:
 	for k: String in stats:
 		stats[k] = 0.0 if k == "tiempo_jugado" else 0
 	coleccion.clear()
+	capturados.clear()
 	flags.clear()
 	trabajadores = 0
 	cubo_capturas.clear()

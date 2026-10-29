@@ -42,10 +42,49 @@ Hay **siete líneas** que crecen a la vez y se enganchan entre sí:
 
 ## Tramos del juego (la columna vertebral)
 
-[PROPUESTA] Dividimos la partida en tramos. Cada tramo multiplica el ingreso por 10 o más y trae su propia mecánica. Los tiempos son de jugar sin prisa.
+- [DECIDIDO] Unas 15-20 h hasta acabar y entrar en el endgame. Sin prisas: el jugador anda por el mapa vendiendo y mejorando (en ese rato no pesca, pero lo pasivo sigue).
+- [PROPUESTA] v2 de tiempos: el midgame cae hacia las **5-6 h**, no a las 2.
+  - Cada tramo trae su mecánica y multiplica el ingreso por unas 10.
+  - El ingreso crece cada vez más despacio por hora (×3 por hora en el T1, ×1,5 en el T4). Así los intervalos entre novedades se alargan solos.
 
-| Tramo | Nombre | Duración aprox. | Ingreso objetivo | Mecánica nueva |
-|-------|--------|-----------------|------------------|----------------|
+| Tramo | Nombre | Cuándo | Ingreso | Novedad cada | Mecánica nueva |
+|-------|--------|--------|---------|--------------|----------------|
+| T0 | Náufrago | 0 – 45 min | 40 → 150 ₽/min | 5-10 min | Pescar a mano, vender, primeras cañas, árbol |
+| T1 | Puerto | 45 min – 2,5 h | 200 → 1,5K | 10-15 min | Andar, lonja, pescadores, contratar, pantalán |
+| T2 | Aldea (midgame hacia las 5-6 h) | 2,5 – 6 h | 1,5K → 20K | 15-25 min | Algas, sushi con suministro, taladro, modo flow |
+| T3 | Pueblo turístico | 6 – 12 h | 20K → 400K | 25-40 min | Turistas, pecera, buceo y perlas, bambú |
+| T4 | Ciudad loca | 12 – 18 h | 400K → 5M | 30-50 min | Casino, legendarios, cañas especiales |
+| — | Endgame | 18 h + | rompe | — | Modo infinito, récords, lo pasivo por fin pesa más que tú |
+
+## El ciclo: todo va de la mano
+
+Regla: cada tramo sube a la vez la caña (cadena más larga), los peces (perfect más largo y más valor), lo que puedes encadenar (tramos de racha) y lo que cuestan las cosas. Si una de estas cosas se adelanta a las otras, el ciclo se rompe:
+- Si la caña da cadenas de 30 pero no hay peces de perfect 30, no sirve de nada.
+- Si los precios suben más rápido que los peces, el juego se para.
+
+| Tramo | Cañas | Cadena de la caña | Perfect de los peces | Combo típico / récord | Racha que se alcanza | Lo pasivo (% de lo tuyo) | Rato sin pescar |
+|-------|-------|-------------------|----------------------|------------------------|----------------------|--------------------------|-----------------|
+| T0 | Rota, Decente | 1-5 → 2-9 | 5-8 | 3-5 / 9 | ×1,25 (desde 5) | 0 % | 5-10 % |
+| T1 | Sabia, 4, 5 | 3-15 → 4-18 | 8-14 | 6-10 / 15 | ×1,5 (desde 10) | 5-15 % | 15-20 % |
+| T2 | 6, 7, 8 + flow | 5-25 | 12-25 | 10-18 / 30 | ×2 (desde 20) | 15-25 % | 20-25 % |
+| T3 | 9, 10, 11 | 8-40 | 20-45 | 18-30 / 60 | ×2,5-3 (35-50) | 25-33 % | 25 % |
+| T4 | 12 + 3 especiales | 10-60 (trofeo 100+) | 40-80 (legendarios 100-200) | 30-50 / 200 | ×3,5-6 (75-200) | 33 % → endgame | 25-30 % |
+
+- **El reto del minijuego no se regala.**
+  - El tiempo mínimo por botón se queda en 0,4 s en todo el juego (límite humano).
+  - Cada tramo pide más: cadenas largas, más dobles y machaques, peces con `mult_tiempo` de 0,85-0,9.
+- **Lo que hace los combos más lentos (más fáciles) es muy poco**:
+  - Árbol: como mucho +15 % (Muñeca suelta 3 × 3 %, Pulso de cirujano 2 × 3 %).
+  - Ron de coco: +15 %, solo el primer pez tras un rato de chill.
+  - Cañas: ya no dan tiempo (`mult_tiempo` 1,0); dan profundidad, cadena y suerte.
+  - Lo demás son **cebos opcionales**, que se usan o no según quieras.
+- **Cebos para ir con calma** (se compran, se gastan; como el Star Power de Guitar Hero, pero al revés):
+  - T0 **Cebo de gusano** [hecho]: +20 % de tiempo durante 10 pescas, 25 ₽.
+  - T2 **Cebo de mejillón**: +30 % durante 15 pescas, caro. Pensado para atacar un pez de perfect alto.
+  - T3-T4 **Cebo de calma chicha**: +40 % durante 5 pescas, muy caro. Para el pez de tus récords.
+- **Maestría** [hecho]: cada especie vale ×1,1 / ×1,25 / ×1,5 / ×2 al pescar 10 / 50 / 200 / 1.000 ejemplares. Se ve en el bestiario. Da objetivos largos y premia volver a pescar lo de siempre; es la idea de los hitos de AdVenture Capitalist.
+
+-------|--------|-----------------|------------------|----------------|
 | T0 | Náufrago | 0 – 15 min | 10 – 50 ₽/min | Pescar a mano, vender, primera caña |
 | T1 | Puerto | 15 – 45 min | 100 – 500 ₽/min | Árbol, andar, pescadores automáticos, lonja |
 | T2 | Aldea | 45 min – 2 h | 1K – 10K ₽/min | Cultivo (algas), sushi, taladro de coral |
@@ -362,9 +401,9 @@ Nota: en tiendas de móvil la marihuana sube la clasificación por edad. Se acep
 
 ---
 
-## Línea hasta el midgame (borrador v1, a trabajar juntos)
+## Línea de tiempo (a trabajar juntos)
 
-### Cómo está ahora (simulado con los datos reales)
+### Cómo estaba antes del balance (histórico, simulador v1)
 Simulador: `docs/herramientas/simular_economia.py`. Juega con los peces, cañas y tiempos de verdad y con un jugador normal (acierta casi siempre con 1 s por botón y 3 de cada 4 a 0,4 s).
 
 | Caña | ₽/min | Peces/min | Combos ≥10 |
@@ -389,76 +428,47 @@ Simulador: `docs/herramientas/simular_economia.py`. Juega con los peces, cañas 
 4. No se pueden contratar pescadores (solo el primero, gratis): el puerto no crece.
 5. Lo pasivo es pequeño (~27 ₽/min por pescador, un 10 % de lo que ganas a mano). Bien según la regla, pero no hay forma de subirlo.
 
-### Orientación v2 (simulador v2: esperas de 6-14 s, racha, pescadores rebajados)
-[PROPUESTA] Guía de ritmo, no ley: lo de la carta del diseñador manda. Reglas usadas:
-- Algo nuevo cada 5-8 min al principio y cada 10-15 en el T2 (los intervalos crecen poco a poco).
-- Cada llegada grande sube el ingreso entre ×1,3 y ×2. Al cerrar un tramo el ingreso se ha multiplicado por unas 10.
-- Coste ≈ 60 % de lo que el jugador gana desde la llegada anterior (el resto se va en árbol y cajones).
-- Lo pasivo, por debajo de un tercio de lo manual.
+### Orientación v3 (espera de 8-20 s, andar para vender, maestría)
+[PROPUESTA] Guía de ritmo: manda la carta. Simulado con un jugador normal (media de 20 partidas, `docs/herramientas/simular_economia.py`). Cuenta el rato que se pierde andando para vender: 8 s por venta en el donut y 35 s cuando ya hay camino.
 
-Simulado hoy (media de 20 partidas, jugador normal): comerciante 0,7 min · caña decente 4 · primera isla 5 · viejo 18 (75 peces) · Sabia 20 · camino y lonja 20 (se pisan) · puerto 33.
+**T0 Náufrago y principio del T1 (lo que ya está hecho, con los datos nuevos)**
+| Min | Llega | Condición (nueva) | Qué aporta | ₽/min |
+|-----|-------|-------------------|------------|-------|
+| 1 | Comerciante | 3 peces | Vender, tienda | ~44 |
+| 9 | Caña decente | **300 ₽** (antes 150) | ×2,5 | ~110 |
+| 11 | Primera isla (bestiario) | **400 ₽ totales** (antes 200) | Suelo, colección, maestría a la vista | ~110 |
+| 10-30 | Cajones extra | 60 ₽ ×1,8 | Más huecos | |
+| 23 | Viejo y árbol | 75 peces | Nodos baratos (+10-30 %) | ~130 |
+| 40 | Camino | **40 min** (antes 20) | Andar; empieza a costar tiempo vender | |
+| 52 | Sabia caña | **4.500 ₽** (antes 2.000) | ×2 | ~220 |
+| 62 | Lonja | Camino + **6.500 ₽ totales** (antes 1.500) | ×1,2 vendiendo allí | ~260 |
+| 73 | Puerto | Combo x10 | 1 pescador (~8 ₽/min) | ~270 |
 
-| Min | Llega | Condición | Qué aporta | ₽/min después |
-|-----|-------|-----------|------------|---------------|
-| 0,5 | Comerciante | 3 peces [hecho] | Vender, tienda | ~57 |
-| 4 | Caña decente | 150 ₽ [hecho] | ×2,4 (más hondo, cadenas más largas) | ~138 |
-| 5 | Primera isla (bestiario) | 200 ₽ totales [hecho] | Suelo para andar, colección | ~138 |
-| 18 | Viejo y árbol | 75 peces [hecho] | Nodos baratos: +10-30 % | ~150 |
-| 20 | Sabia caña | 2.000 ₽ [hecho] | ×2 | ~275 |
-| 23 | Camino | **23 min** (para separarlo de la Sabia) | Acceso a lo siguiente | ~275 |
-| 28 | Lonja | Camino + **3.000 ₽ totales** | ×1,2 al vender allí; porteador | ~330 |
-| 33 | Puerto pesquero | Combo x10 [hecho] | 1 pescador (~8 ₽/min) | ~340 |
-| 35-45 | Contratar 2-3 pescadores | 150 ₽ × 1,6ⁿ | +8 ₽/min cada uno | ~360 |
-| 40 | Caña 4 (peces nuevos) | **~1.500-2.500 ₽** (los 12K de v1 tardarían ~35 min) | ×2 | ~700 |
-| 48 | Pantalán nivel 2 | ~3.000 ₽ | +3 plazas; pescan el 2.º pez más barato (×1,8 lo pasivo) | ~750 |
-| 55 | Huerto de algas | ~3.000 ₽ (o 8K ₽ totales) | Material (algas), a mano al principio | ~750 |
-| 65 | Restaurante de sushi | Salmón + ~4.000 ₽ + 30 algas | ×1,4 (canal nuevo, limitado por suministro) | ~1.000 |
-| 80 | Caña 5 (arrecife) | ~8.000 ₽ (+ coral si llega antes el taladro) | ×2 | ~1.900 |
-| 90 | Leer el agua (modo flow) | ~11.000 ₽, árbol | ×1,4 (combos más largos, más racha) | ~2.600 |
-| 105 | Sushi nivel 2 | ~23.000 ₽ + algas | ×1,3 | ~3.400 |
-| 120 | Fin del T2 (midgame) | — | Con el árbol: ×1,5-3 más | **~5.000-10.000** |
+Ojo: en 1 de cada 20 partidas el combo x10 no salía en 2 h. Hace falta un atún o un kraken perfecto con la Sabia. Si molesta, se baja a x8 o se pone protección contra la mala racha.
 
-Choques con la v1: la caña 4 a 12K, el pantalán a 15K y el sushi a 25K salían caros para el ingreso que hay en ese momento. Se notaría un parón de media hora en el minuto 30-40.
+**T1 Puerto (lo siguiente por hacer)**
+| Min | Llega | Condición orientativa | Qué aporta | ₽/min |
+|-----|-------|-----------------------|------------|-------|
+| 75-100 | Contratar 2-3 pescadores | 150 ₽ × 1,6ⁿ | +8 ₽/min cada uno | ~300 |
+| 90 | Caña 4 (peces nuevos, perfect 10-12) | ~6.000 ₽ | ×1,8 | ~550 |
+| 110 | Pantalán nivel 2 | ~10.000 ₽ | +3 plazas; pescan el 2.º más barato | ~600 |
+| 125 | Caña 5 | ~18.000 ₽ | ×1,6 | ~950 |
+| 140 | Isla nueva (pista del T2) | ~30.000 ₽ totales desde el puerto | Objetivo a la vista | ~1.000 |
+| 150 | Fin del T1 | — | Árbol de Pesca/Carisma a medias: ×1,5 | ~1.500 |
 
-### Propuesta de orden hasta el midgame (~2 h)
-[PROPUESTA] Objetivo: algo nuevo cada 3–8 minutos. Lo de la carta del diseñador manda; esto es un orden de partida para discutir.
+**T2 Aldea, hasta el midgame (5-6 h), a grandes rasgos**
+| Hora | Llega | Qué aporta |
+|------|-------|------------|
+| 2,5-3 | Huerto de algas | Material, a mano al principio |
+| 3-3,5 | Sushi (salmón + algas) | ×1,4, limitado por lo que pescas |
+| 3,5 | Caña 6 + **Leer el agua** (flow, desde el botón 15) | Combos de 20+: entra la racha ×2 |
+| 4-4,5 | Taladro marino (coral) | Material para cañas 7-8 |
+| 4,5-5 | Caña 7, sushi nivel 2, cocineros | ×1,5 |
+| 5-6 | **Midgame**: caña 8, pantalán 3 | ~20.000 ₽/min |
 
-**T0 Náufrago (0–15 min): 60 → 150 ₽/min**
-| Min | Qué | Condición / coste |
-|-----|-----|-------------------|
-| 0,5 | Comerciante | 3 peces [hecho] |
-| 3 | Caña decente | 150 ₽ [hecho] |
-| 5 | Primera isla (bestiario) | 200 ₽ totales [hecho] |
-| 6–14 | Cajones extra | 60 ₽ ×1,8 [hecho] |
-| 12 | Viejo y árbol | 100 peces [hecho] |
+(La propuesta v1 "midgame a las 2 h" queda descartada: era demasiado rápida.)
 
-**T1 Puerto (15–45 min): 250 → 1.000 ₽/min**
-| Min | Qué | Condición / coste |
-|-----|-----|-------------------|
-| 18 | Sabia caña | 2.000 ₽ [hecho] |
-| 20 | Camino | 20 min [hecho] |
-| 25 | Puerto pesquero | Combo x10 [hecho] |
-| 27 | **Contratar pescadores** (hablando con el primero) | 400 ₽, ×1,5 cada uno; máximo 3 con el pantalán de nivel 1 |
-| 30 | Lonja | Camino + **3.000 ₽ totales** (para que no se pise con el camino) |
-| 35 | **Caña 4** (más hondo: peces nuevos, ×2,5 de valor) | 12K ₽ |
-| 40 | **Pantalán nivel 2** (+3 plazas de pescador; pescan el 2º pez más barato) | 15K ₽ |
-| 15–45 | Primeros nodos del árbol | 300 – 20K ₽ |
-
-**T2 Aldea (45 min – 2 h): 1K → 10K ₽/min**
-| Min | Qué | Condición / coste |
-|-----|-----|-------------------|
-| 45 | **Huerto de algas** (recolectar a mano, gracioso) | 10K ₽ totales [ABIERTO] |
-| 55 | **Restaurante de sushi** (pescado de la lonja + algas → platos) | Pescar un salmón (pez nuevo de la caña 4) + 25K ₽ + 30 algas |
-| 65 | Contratar cocineros y camareros | Como los pescadores |
-| 70 | **Taladro marino** (coral automático) | Pescar un pez de arrecife (caña 5) + 60K ₽ |
-| 75 | **Caña 5** | 50K ₽ + 20 coral |
-| 80 | **Leer el agua** (modo flow) | 40K ₽, árbol [hecho] |
-| 90 | Mejoras del sushi (nivel 2–3: más platos, mejor precio) | ₽ + algas + coral |
-| 100 | **Caña de volumen** (especial) | Sushi nivel 2 + 100 algas + 40 coral + 150K ₽ |
-| 110 | Pantalán nivel 3 | ₽ + coral |
-| 120 | Fin del midgame: llega el primer aviso de turistas (T3) | — |
-
-**Suministro (decidido):** el sushi compra parte de lo que vendes en la lonja. Sin pescado o sin algas atiende a menos clientes. Más cantidad y calidad = más platos y mejores.
+---
 
 ## 9. Cómo lo llevamos
 

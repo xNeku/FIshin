@@ -129,7 +129,7 @@ El `perfect^0,3` es la prima por dificultad. Comparado con un pez de x5, uno de 
 
 Referencia: **Cast n Chill** (Steam, 2025, "muy positivas"). Las reseñas destacan que el sedal en el agua sin que pique nada "a veces es lo mejor", y su modo idle.
 
-- **Espera realista:** de 6 a 14 s (antes 1,5-3,5 s). Caña Decente ×0,85, Sabia ×0,7. Salen unos 4,4 peces/min, uno cada ~14 s.
+- **Espera realista:** de 8 a 20 s (antes 1,5-3,5 s). Caña Decente ×0,85, Sabia ×0,7. Salen unos 3,5 peces/min, uno cada ~17 s.
 - **Picoteos:** mientras esperas, el corcho tiembla de vez en cuando (picoteos falsos cada 2,5-6 s). Justo antes de picar (0,9 s) hay un aviso. Así el que está tranquilo ve venir el pez y no se asusta. Valores en `StatsPesca` (`picoteo_min`, `picoteo_max`, `aviso_picada`) y la fuerza en la Barca (`hundimiento_picoteo`, `hundimiento_aviso`).
 - **Chill:**
   - Estás de chill tras **8 s sin tocar nada**. La Hamaca lo baja 1 s por nivel, hasta 4 s.
@@ -138,7 +138,31 @@ Referencia: **Cast n Chill** (Steam, 2025, "muy positivas"). Las reseñas destac
   - Si estás de chill y pica un pez que no tocas, se va solo: sin X, sin sonido de escape y sin contar como escapado.
   - Puedes quedarte tumbado en el donut todo lo que quieras mientras los pescadores (y la rama Chill: Siesta, Atardecer, Nirvana) generan por detrás, y volver a pescar cuando te apetezca.
   - De paso cierra un agujero: la caña Sabia y la Pesca de memoria pescaban solas si no tocabas nada.
-- **Mismo ritmo de dinero:** los peces valen unas 2,5 veces más (sardina 14, caballa 25, lubina 60, bota 85, atún 130, kraken 1.100). Así el ₽/min se queda como estaba (Rota ~57, Decente ~138, Sabia ~275) y los precios, el árbol y las llegadas por dinero no se descuadran. El viejo pasa de 100 a 50 peces para seguir llegando hacia el minuto 12.
+- **Valor de los peces:** valen unas 2,5 veces más que antes (sardina 14, caballa 25, lubina 60, bota 85, atún 130, kraken 1.100). Con la espera de 8-20 s quedan en Rota ~44 ₽/min, Decente ~110 y Sabia ~220.
+- **Juego más largo (15-20 h):** precios y llegadas espaciados (ver `PROGRESION.md`, tramos y orientación v3). El viejo llega a los 75 peces (~min 23) y el puerto hacia el minuto 73.
+- **Andar cuesta tiempo:** el simulador quita 8 s por venta desde el donut y 35 s cuando ya hay camino. En ese rato lo pasivo sigue sumando. Es la versión de Fishin del "idle bonus" del devlog "Active or idle?".
+
+## 6.6 Maestría por especie (hecho)
+
+Tomado de los hitos de AdVenture Capitalist: al tener 25, 50, 100... de un negocio, ese negocio rinde más.
+
+- En Fishin, al pescar **10 / 50 / 200 / 1.000** ejemplares de una especie, esa especie vale **×1,1 / ×1,25 / ×1,5 / ×2** para siempre.
+- Se ve en el bestiario ("Maestría 2 · 63/200"). Valores en `data/stats_pesca.tres` (`maestria_desde`, `maestria_mult`).
+- Da metas largas que encajan con 20 h de juego, y hace que pescar lo de siempre siga valiendo la pena cuando ya tienes peces mejores.
+- La maestría solo cuenta lo que pescas tú, no los pescadores.
+
+## 6.7 Lo aprendido, aplicado
+
+| De | Idea | En Fishin |
+|----|------|-----------|
+| osu! | Cada golpe vale más según el combo | Pago por botón con racha [hecho] |
+| Guitar Hero | Multiplicador por tramos con tope; Star Power como empujón | Tramos de racha hasta ×6 [hecho]; cebos opcionales [gusano hecho] |
+| AdVenture Capitalist | Hitos de cantidad | Maestría por especie [hecho] |
+| Cookie Clicker | Costes ×1,15 y compra en bloque | Costes geométricos [hecho]; comprar ×10 en la tienda [por hacer] |
+| Cast n Chill | La calma del sedal en el agua; modo idle | Espera de 8-20 s, picoteos, chill que deja pasar [hecho] |
+| Devlog "Active or idle?" | Premiar el no tocar sin que gane al jugar activo | Rama Chill sobre lo pasivo; pasivo ≤ ⅓ [hecho] |
+| Kittens Game | Almacenes con tope | Raciones del sushi que caducan o tienen tope [por hacer, T2] |
+| Antimatter Dimensions | Capas que multiplican a las anteriores | Cada tramo, una mecánica que multiplica lo anterior (diseño de tramos) |
 
 ## 7. Activo frente a pasivo
 

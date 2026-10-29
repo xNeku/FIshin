@@ -371,6 +371,8 @@ func _capturar() -> void:
 	mult *= maxf(0.1, 1.0 - stats.penalizacion_machacar * machacar_fallados)
 	if perfecto:
 		mult *= stats.mult_perfecto
+	# Maestría: cuantas más llevas de esta especie, más vale (se cuenta la que entra ahora).
+	mult *= stats.mult_maestria(Juego.capturas_especie(pez.id) + 1)
 	var valor: float = pez.valor_base * (peso / ((pez.peso_min + pez.peso_max) * 0.5)) * mult
 	var captura: Dictionary = {
 		"id": String(pez.id), "peso": peso, "calidad": ratio, "perfecto": perfecto, "valor": valor,

@@ -10,8 +10,8 @@ extends Resource
 ## Las dobles solo pueden salir a partir de este botón de la cadena (1 = desde el primero).
 @export var dobles_desde_boton: int = 5
 ## Segundos hasta que pica (al azar entre los dos). Pesca tranquila: entre picada y picada hay calma.
-@export var espera_min: float = 6.0
-@export var espera_max: float = 14.0
+@export var espera_min: float = 8.0
+@export var espera_max: float = 20.0
 ## Picoteos de mentira mientras esperas (el corcho tiembla un poco): cada cuánto, al azar entre los dos.
 @export var picoteo_min: float = 2.5
 @export var picoteo_max: float = 6.0
@@ -42,6 +42,25 @@ extends Resource
 ## Pez perfecto de x5 = ×1,05 de media; x20 = ×1,36; x50 = ×1,9; x100 = ×2,6; x200 = ×3,6.
 @export var racha_desde: Array[int] = [5, 10, 20, 35, 50, 75, 100, 150, 200]
 @export var racha_mult: Array[float] = [1.25, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 5.0, 6.0]
+
+@export_group("Maestría (bestiario)")
+## Al pescar X ejemplares de una especie, esa especie vale más para siempre (hitos tipo AdVenture Capitalist).
+@export var maestria_desde: Array[int] = [10, 50, 200, 1000]
+@export var maestria_mult: Array[float] = [1.1, 1.25, 1.5, 2.0]
+
+
+## Nivel de maestría con estas capturas (0 = ninguno).
+func nivel_maestria(capturas: int) -> int:
+	var n: int = 0
+	for i in maestria_desde.size():
+		if capturas >= maestria_desde[i]:
+			n = i + 1
+	return n
+
+
+func mult_maestria(capturas: int) -> float:
+	var n: int = nivel_maestria(capturas)
+	return maestria_mult[n - 1] if n > 0 and n <= maestria_mult.size() else 1.0
 
 
 ## Multiplicador del botón i de la cadena (1 = el primero).
