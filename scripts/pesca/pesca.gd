@@ -172,6 +172,17 @@ func retener(segundos: float) -> void:
 		_contador = maxf(_contador, segundos)
 
 
+## Cuántos botones siguientes se ven en el paso i (0 = ninguno). Nodo Leer el agua del árbol.
+func cola(i: int = -1) -> int:
+	if i < 0:
+		i = indice
+	return int(Juego.efecto(&"vista_siguiente")) if i + 1 >= stats.cola_desde_boton else 0
+
+
+func hay_cola(i: int) -> bool:
+	return cola(i) > 0
+
+
 func paso_actual() -> Paso:
 	return pasos[indice] if estado == Estado.PASO else null
 
@@ -231,6 +242,9 @@ func _generar_pasos() -> void:
 	for i in n:
 		var p := Paso.new()
 		p.tiempo = maxf(stats.tiempo_minimo, stats.tiempo_inicial * pow(stats.factor_tiempo, i)) * mult
+		# Modo flow: viendo lo que viene, se va más rápido.
+		if hay_cola(i):
+			p.tiempo *= stats.mult_tiempo_cola
 		if pez.machacar_cada > 0 and i > 0 and (i + 1) % pez.machacar_cada == 0:
 			p.tipo = Tipo.MACHACAR
 			p.acciones = [todas.pick_random()]

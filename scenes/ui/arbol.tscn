@@ -20,6 +20,7 @@
 [ext_resource type="Resource" path="res://data/arbol/ramas/suerte.tres" id="rama_suerte"]
 [ext_resource type="Resource" path="res://data/arbol/ramas/chill.tres" id="rama_chill"]
 [ext_resource type="Resource" path="res://data/arbol/nodos/p_munieca.tres" id="d_p_munieca"]
+[ext_resource type="Resource" path="res://data/arbol/nodos/p_leer.tres" id="d_p_leer"]
 [ext_resource type="Resource" path="res://data/arbol/nodos/p_paciencia.tres" id="d_p_paciencia"]
 [ext_resource type="Resource" path="res://data/arbol/nodos/p_sedal.tres" id="d_p_sedal"]
 [ext_resource type="Resource" path="res://data/arbol/nodos/p_brazos.tres" id="d_p_brazos"]
@@ -658,6 +659,14 @@ offset_top = 744.0
 offset_right = 48.0
 offset_bottom = 840.0
 datos = ExtResource("d_ch_nirvana")
+
+[node name="p_leer" parent="Raiz/Vista/Lienzo/Nodos" instance=ExtResource("nodo")]
+custom_minimum_size = Vector2(96.0, 96.0)
+offset_left = -180.0
+offset_top = -708.0
+offset_right = -84.0
+offset_bottom = -612.0
+datos = ExtResource("d_p_leer")
 
 [node name="Chispas" type="CPUParticles2D" parent="Raiz/Vista/Lienzo"]
 texture_filter = 1

@@ -17,6 +17,12 @@ extends Resource
 ## Pensado para los combos de final de juego (~50): al principio todo es muy ligero.
 @export var botones_intensidad_maxima: int = 50
 
+@export_group("Flow (nodo Leer el agua)")
+## Desde este botón de la cadena se ven los siguientes (si tienes el nodo del árbol).
+@export var cola_desde_boton: int = 15
+## Con la cola a la vista los botones van más rápidos (0.85 = un 15 % menos de tiempo).
+@export var mult_tiempo_cola: float = 0.85
+
 @export_group("Calidad")
 ## Multiplicador de valor con 0 aciertos (1.0 con todos).
 @export var mult_calidad_min: float = 0.3

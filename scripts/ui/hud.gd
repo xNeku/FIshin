@@ -21,6 +21,8 @@ extends CanvasLayer
 @export_enum("ps", "xbox") var mando_por_defecto: String = "ps"
 ## Con varias acciones posibles a la vez, cada cuánto cambia la caja de abajo a la derecha (segundos).
 @export var cambio_acciones: float = 2.0
+## Cuánto se desplaza la cola al entrar cada botón nuevo (efecto de que vienen hacia ti).
+@export var desliz_cola: float = 90.0
 ## Al machacar, cada cuánto se aprieta sola la tecla dibujada (segundos).
 @export var ritmo_machacar: float = 0.12
 ## Cuánto salta de sitio el botón al tope de intensidad (píxeles).
@@ -55,6 +57,8 @@ const NOMBRES_RAREZA: Array[String] = ["Común", "Raro", "Extraño", "Legendario
 @onready var teclas: Control = $Prompt/Teclas
 @onready var tecla1: TextureRect = $Prompt/Teclas/Tecla1
 @onready var tecla2: TextureRect = $Prompt/Teclas/Tecla2
+## Modo flow: los siguientes botones (nodo Leer el agua del árbol).
+@onready var cola_box: HBoxContainer = $Prompt/Cola
 @onready var mas: Label = $Prompt/Teclas/Mas
 @onready var barra_tiempo: ProgressBar = $Prompt/BarraTiempo
 @onready var barra_machacar: ProgressBar = $Prompt/BarraMachacar
@@ -151,6 +155,8 @@ func _on_estado(e: Pesca.Estado) -> void:
 			prompt.visible = true
 		_:
 			prompt.visible = false
+			if e != Pesca.Estado.ENTRE_PASOS:
+				cola_box.visible = false
 
 
 func _on_pica(_pez: PezData) -> void:
@@ -172,8 +178,9 @@ func _on_paso(p: Pesca.Paso, _i: int) -> void:
 	if mash:
 		barra_machacar.max_value = p.pulsaciones
 		barra_machacar.value = 0
-	# Cuanto más dentro, más loco salta el botón por la pantalla.
-	var salto: float = salto_prompt_maximo * _intensidad_objetivo * _intensidad_objetivo
+	_pintar_cola()
+	# Cuanto más dentro, más loco salta el botón por la pantalla (en modo flow, quieto para leer el ritmo).
+	var salto: float = 0.0 if pesca.cola() > 0 else salto_prompt_maximo * _intensidad_objetivo * _intensidad_objetivo
 	prompt.position = _pos_prompt + Vector2(randf_range(-salto, salto), randf_range(-salto, salto) * 0.5)
 	teclas.pivot_offset = teclas.size * 0.5
 	teclas.scale = Vector2.ONE * 1.5
@@ -183,6 +190,32 @@ func _on_paso(p: Pesca.Paso, _i: int) -> void:
 func _pintar_tecla(tecla: TextureRect, accion: StringName) -> void:
 	tecla.texture = _icono(accion)
 	tecla.set_meta("accion", accion)
+
+
+## Modo flow: enseña los botones que vienen y los hace entrar desde la derecha.
+func _pintar_cola() -> void:
+	var n: int = pesca.cola() if pesca else 0
+	cola_box.visible = n > 0
+	if n == 0:
+		return
+	for k in cola_box.get_child_count():
+		var hueco: Control = cola_box.get_child(k)
+		var j: int = pesca.indice + 1 + k
+		hueco.visible = k < n and j < pesca.pasos.size()
+		if not hueco.visible:
+			continue
+		var p: Pesca.Paso = pesca.pasos[j]
+		var a: TextureRect = hueco.get_node("A")
+		var b: TextureRect = hueco.get_node("B")
+		a.texture = _icono(p.acciones[0])
+		b.visible = p.tipo == Pesca.Tipo.DOBLE
+		if b.visible:
+			b.texture = _icono(p.acciones[1])
+	# Pegada a la tecla de ahora (más lejos si es doble).
+	var ancho: float = (tecla1.size.x if not tecla2.visible else teclas.get_combined_minimum_size().x) * 0.5
+	var x0: float = ancho + 32.0
+	cola_box.position.x = x0 + desliz_cola
+	create_tween().tween_property(cola_box, "position:x", x0, 0.12).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 
 
 ## Icono dibujado de una acción para el último dispositivo usado (teclado o mando).
@@ -234,6 +267,8 @@ func _input(event: InputEvent) -> void:
 		for t: TextureRect in [tecla1, tecla2]:
 			if t.has_meta("accion"):
 				_pintar_tecla(t, t.get_meta("accion"))
+		if cola_box.visible:
+			_pintar_cola()
 
 
 func _on_acierto(indice: int, _total: int) -> void:

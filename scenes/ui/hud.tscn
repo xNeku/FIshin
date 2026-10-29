@@ -118,6 +118,98 @@ texture = ExtResource("4_tecla")
 expand_mode = 1
 stretch_mode = 5
 
+[node name="Cola" type="HBoxContainer" parent="Prompt"]
+visible = false
+layout_mode = 0
+offset_left = 236.0
+offset_top = -48.0
+offset_right = 700.0
+offset_bottom = 48.0
+mouse_filter = 2
+theme_override_constants/separation = 20
+alignment = 0
+
+[node name="Siguiente1" type="HBoxContainer" parent="Prompt/Cola"]
+modulate = Color(1, 1, 1, 0.9)
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 4
+
+[node name="A" type="TextureRect" parent="Prompt/Cola/Siguiente1"]
+texture_filter = 1
+custom_minimum_size = Vector2(72, 72)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+texture = ExtResource("4_tecla")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="B" type="TextureRect" parent="Prompt/Cola/Siguiente1"]
+visible = false
+texture_filter = 1
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+texture = ExtResource("4_tecla")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Siguiente2" type="HBoxContainer" parent="Prompt/Cola"]
+modulate = Color(1, 1, 1, 0.6)
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 4
+
+[node name="A" type="TextureRect" parent="Prompt/Cola/Siguiente2"]
+texture_filter = 1
+custom_minimum_size = Vector2(72, 72)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+texture = ExtResource("4_tecla")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="B" type="TextureRect" parent="Prompt/Cola/Siguiente2"]
+visible = false
+texture_filter = 1
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+texture = ExtResource("4_tecla")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Siguiente3" type="HBoxContainer" parent="Prompt/Cola"]
+modulate = Color(1, 1, 1, 0.35)
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 4
+
+[node name="A" type="TextureRect" parent="Prompt/Cola/Siguiente3"]
+texture_filter = 1
+custom_minimum_size = Vector2(72, 72)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+texture = ExtResource("4_tecla")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="B" type="TextureRect" parent="Prompt/Cola/Siguiente3"]
+visible = false
+texture_filter = 1
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+texture = ExtResource("4_tecla")
+expand_mode = 1
+stretch_mode = 5
+
 [node name="BarraTiempo" type="ProgressBar" parent="Prompt"]
 layout_mode = 0
 offset_left = -160.0
