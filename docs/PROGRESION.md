@@ -300,7 +300,12 @@ Nota: en tiendas de móvil la marihuana sube la clasificación por edad. Se acep
   - **Caña de volumen**: cada tecla acertada es un pez, en cadena; cuando hay que pulsar más rápido, cada pulsación es un pez. Peores de calidad, pero no mucho. Sirve para nutrir los negocios.
   - **Caña de trofeo**: pesca muy poco y solo está atenta a peces de más de X valor (o de X peso). Tarda en picar, no siempre sale algo gordo (para eso está la Suerte) y pide un combo larguísimo.
 - [DECIDIDO] Todo encadenado: lo que vendes en la lonja (cuánto y de qué calidad) alimenta a los negocios. Cuanto más y mejor vendas, mejores platos y más producción sacan.
+- [DECIDIDO] Las cañas especiales son más difíciles de conseguir y van bien metidas en el flujo del juego (no se compran sin más).
 - [PROPUESTA] Las cañas con modo propio son las especiales del 12 + 3. La de volumen encaja con el bambú (material barato) y la de trofeo, con la perla o el coral.
+
+## Modo flow
+- [DECIDIDO] Un poco antes del midgame, a partir de 15 aciertos, los combos se ven como en Guitar Hero: ves cuál es el siguiente botón, todo más rápido. Así es más fácil para el jugador, y va ligado al árbol en el momento justo en que se abren los combos largos (+20, casi inhumanos sin esa habilidad).
+- [PROPUESTA] Implementado: nodo clave **Leer el agua** (rama Pesca, 40K ₽, 3 niveles = ves 1, 2 o 3 botones por delante). Desde el botón 15 (`StatsPesca.cola_desde_boton`), los siguientes entran deslizándose por la derecha y cada botón da un 15 % menos de tiempo (`mult_tiempo_cola`). En modo flow el botón deja de saltar por la pantalla.
 
 ## Tamaño de los combos
 - [DECIDIDO] En algún momento habrá un modo infinito para ver hasta dónde llegan los jugadores. El número se va regulando.
@@ -311,6 +316,8 @@ Nota: en tiendas de móvil la marihuana sube la clasificación por edad. Se acep
   - Modo infinito (endgame): sin límite, con tabla de récords de Steam y fuera de la economía (o con el bonus de dinero topado).
 - [PROPUESTA] Para que no sea solo reflejos: un respiro corto cada 10 botones y un tiempo mínimo por botón que nunca baje de ~0,4 s.
 - [ABIERTO] Hasta dónde quiere el diseñador que llegue un combo "normal" de final de juego.
+- [DECIDIDO] El modo infinito, equilibrado: los números grandes son por orgullo y estadísticas, no por dinero.
+- [DECIDIDO] Logros de combos enormes (por ejemplo, x200) y peces que solo salen con combos larguísimos.
 
 ---
 
@@ -343,6 +350,73 @@ Nota: en tiendas de móvil la marihuana sube la clasificación por edad. Se acep
 | sushi_velocidad, sushi_clientes, turistas, propinas, perla_peces, coral_doble, cultivos, hierba, casino, mirador | futuros (nodos con candado) | — |
 
 ---
+
+## Línea hasta el midgame (borrador v1, a trabajar juntos)
+
+### Cómo está ahora (simulado con los datos reales)
+Simulador: `docs/herramientas/simular_economia.py`. Juega con los peces, cañas y tiempos de verdad y con un jugador normal (acierta casi siempre con 1 s por botón y 3 de cada 4 a 0,4 s).
+
+| Caña | ₽/min | Peces/min | Combos ≥10 |
+|------|-------|-----------|------------|
+| Rota | ~60 | ~10 | 0 % |
+| Decente | ~135 | ~8 | 0 % |
+| Sabia | ~250 | ~7 | 2 % |
+
+| Minuto | Qué llega |
+|--------|-----------|
+| 0,3 | Comerciante (3 peces) |
+| 4,6 | Primera isla (200 ₽ totales) y compra de la caña decente |
+| 12 | El viejo y su árbol (100 peces) |
+| 20 | Camino (20 min) y lonja (1.500 ₽ totales), **a la vez** |
+| 20,5 | Sabia caña (2.000 ₽) |
+| 26,5 | Puerto (combo x10) |
+
+**Problemas que se ven:**
+1. Todo lo que hay se acaba en ~27 min. Después solo queda el árbol, que a 250 ₽/min se hace eterno (un nodo de 25K = 100 min).
+2. El camino y la lonja llegan a la vez y se pisan.
+3. Solo hay 6 peces y 3 cañas: la pesca no cambia en todo el tramo.
+4. No se pueden contratar pescadores (solo el primero, gratis): el puerto no crece.
+5. Lo pasivo es pequeño (~27 ₽/min por pescador, un 10 % de lo que ganas a mano). Bien según la regla, pero no hay forma de subirlo.
+
+### Propuesta de orden hasta el midgame (~2 h)
+[PROPUESTA] Objetivo: algo nuevo cada 3–8 minutos. Lo de la carta del diseñador manda; esto es un orden de partida para discutir.
+
+**T0 Náufrago (0–15 min): 60 → 150 ₽/min**
+| Min | Qué | Condición / coste |
+|-----|-----|-------------------|
+| 0,5 | Comerciante | 3 peces [hecho] |
+| 3 | Caña decente | 150 ₽ [hecho] |
+| 5 | Primera isla (bestiario) | 200 ₽ totales [hecho] |
+| 6–14 | Cajones extra | 60 ₽ ×1,8 [hecho] |
+| 12 | Viejo y árbol | 100 peces [hecho] |
+
+**T1 Puerto (15–45 min): 250 → 1.000 ₽/min**
+| Min | Qué | Condición / coste |
+|-----|-----|-------------------|
+| 18 | Sabia caña | 2.000 ₽ [hecho] |
+| 20 | Camino | 20 min [hecho] |
+| 25 | Puerto pesquero | Combo x10 [hecho] |
+| 27 | **Contratar pescadores** (hablando con el primero) | 400 ₽, ×1,5 cada uno; máximo 3 con el pantalán de nivel 1 |
+| 30 | Lonja | Camino + **3.000 ₽ totales** (para que no se pise con el camino) |
+| 35 | **Caña 4** (más hondo: peces nuevos, ×2,5 de valor) | 12K ₽ |
+| 40 | **Pantalán nivel 2** (+3 plazas de pescador; pescan el 2º pez más barato) | 15K ₽ |
+| 15–45 | Primeros nodos del árbol | 300 – 20K ₽ |
+
+**T2 Aldea (45 min – 2 h): 1K → 10K ₽/min**
+| Min | Qué | Condición / coste |
+|-----|-----|-------------------|
+| 45 | **Huerto de algas** (recolectar a mano, gracioso) | 10K ₽ totales [ABIERTO] |
+| 55 | **Restaurante de sushi** (pescado de la lonja + algas → platos) | Pescar un salmón (pez nuevo de la caña 4) + 25K ₽ + 30 algas |
+| 65 | Contratar cocineros y camareros | Como los pescadores |
+| 70 | **Taladro marino** (coral automático) | Pescar un pez de arrecife (caña 5) + 60K ₽ |
+| 75 | **Caña 5** | 50K ₽ + 20 coral |
+| 80 | **Leer el agua** (modo flow) | 40K ₽, árbol [hecho] |
+| 90 | Mejoras del sushi (nivel 2–3: más platos, mejor precio) | ₽ + algas + coral |
+| 100 | **Caña de volumen** (especial) | Sushi nivel 2 + 100 algas + 40 coral + 150K ₽ |
+| 110 | Pantalán nivel 3 | ₽ + coral |
+| 120 | Fin del midgame: llega el primer aviso de turistas (T3) | — |
+
+**Suministro (decidido):** el sushi compra parte de lo que vendes en la lonja. Sin pescado o sin algas atiende a menos clientes. Más cantidad y calidad = más platos y mejores.
 
 ## 9. Cómo lo llevamos
 
