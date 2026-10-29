@@ -1,15 +1,18 @@
 # ESTADO (traspaso entre sesiones)
 
 ## Dónde estamos
-Pasada de arte hecha (estilo B, la demo que le gustó al diseñador): mundo pixelado a 1/4 con HUD nítido (sin desenfoque), mar nuevo con olas, reflejos y climas, prota tumbado en un donut rosa que flota sobre la ola con caña, corcho y ondas, suelos y tablones con textura pixel, barco del comerciante y props en sprite, y el viejo entre palmeras con la hoguera delante. Ya no quedan modelos 3D en objetos.
-Fase 3 casi completa: el mundo crece (apariciones por datos) y ya se puede andar (Q), saltar entre barca e islas e interactuar (E) con el viejo (tienda) y el bestiario. Falta el árbol de habilidades (espera al diseñador). Puerto pesquero funcionando: pescadores automáticos que llenan el cubo; el náufrago lo coge y lo vende. Ventas animadas (peces y dinero volando). Lonja: emerge del mar y vende de golpe barca + cubo.
-Fase 2 hecha: bucle pescar → vender → mejorar. Cañas por profundidad, cebo, huecos de barca apilados por especie, tienda del comerciante (E) y menú (Tab) (Barca, Stats, Opciones). Save v2. Falta que el diseñador lo pruebe a mano.
+Parada para valorar rumbo (29 oct). Hay un tramo jugable de principio a fin de lo diseñado:
+- **Pesca**: minijuego completo (cadena de largo variable, dobles desde el 5º botón, machacar, intensidad que crece hasta 50 botones, celebración del pez gordo) con teclas y botones dibujados (teclado, PlayStation, Xbox).
+- **Economía**: barca con 6 huecos apilados, comerciante (caña, cebo, huecos, vender todo), dinero y peces que vuelan, bestiario.
+- **Mundo**: llegan por datos de la carta el comerciante, la primera isla, el viejo, el camino, el puerto con pescadores automáticos y cubo, y la lonja. Se anda, se salta y se interactúa.
+- **Arte**: estilo B pixelado, mar con olas, reflejos y 4 climas; prota en donut que flota sobre la ola; todo en sprite; interfaz estilo Animal Well con filtro retro y animaciones de entrada.
+- **Falta**: el árbol de habilidades (espera al diseñador), contenido (solo 6 peces y 3 cañas), rehacer el cebo, balance, música y probar en la tablet el rendimiento de la pasada de arte.
 
 ## Mapa rápido del código
 - `scripts/pesca/pesca.gd` (Pesca): lógica del minijuego, solo señales. Las stats van en `data/stats_pesca.tres`.
 - `scripts/pesca/camara_pesca.gd`: zoom, shake y congelado. `sonido_pesca.gd`: sfx y latido.
 - `scripts/economia/juego.gd` (autoload Juego): rublos, capturas, stats, colección, flags, save `user://partida.json`.
-- `scripts/ui/hud.gd` + `scenes/ui/hud.tscn`. Popups desde `scenes/ui/popup_texto.tscn`.
+- `scripts/ui/hud.gd` + `scenes/ui/hud.tscn`: panel de dinero (Info), teclas del minijuego (Prompt), banner del pez (Resultado), caja de acciones (Accion), aviso de barca llena (Estado). Popups desde `popup_texto.tscn` (solo "+X ₽" y trucos) y la X roja desde `popup_icono.tscn`.
 - `scenes/mundo/barca.tscn` (barca.gd), `scenes/mundo/barco_comerciante.tscn`.
 - `scripts/ui/menu.gd` + `scenes/ui/menu.tscn` (huecos desde `hueco_barca.tscn`, variantes desde `fila_variante.tscn`).
 - `scripts/ui/tienda.gd` + `scenes/ui/tienda.tscn` (filas desde `fila_tienda.tscn`). Los artículos del comerciante se asignan en `barco_comerciante.tscn`.
@@ -37,6 +40,12 @@ Fase 2 hecha: bucle pescar → vender → mejorar. Cañas por profundidad, cebo,
 - Donut: `scenes/mundo/barca.tscn` (barca.gd): capas DonutAtras, Protagonista, DonutDelante, Piernas (mismo lienzo 64x58, offset para que la base quede en el origen); flota con Agua; Sombra y Espuma pegadas al agua; poses chill/tira (la punta de la caña va por píxel del sprite), corcho con lanzado, sedal, ondas y salpicadura. Trofeo tumbado en Celebracion.textura_trofeo. Foco (Marker3D) es el punto al que mira la cámara en el primer plano y de donde salen los peces que vuelan.
 - Barco comerciante: capas Fondo, Comerciante, Delante (`art/mundo/barco_*.png`), flota con Agua.
 - Arte del mundo: suelos en `art/mundo/suelo/` con materiales en `art/materiales/` (triplanar, se cambian ahí para todas las islas), props en `art/mundo/props/`. Los PNG nuevos llevan `detect_3d/compress_to=0` para que el editor no los reimporte solo.
+- Interfaz pixel: todo sale del tema `art/tema.tres` (fuente `art/fuentes/FishinPixel.ttf`, piezas 9-slice en `art/ui/`). Variaciones: Titulo (gris), Pequeno, Grande, Dinero (amarillo), PanelSeleccion, BarraNaranja. Tamaños de letra en múltiplos de 10 (1 píxel de fuente = tamaño/10). La fuente sale de Pixelify Sans (OFL, licencia en `art/fuentes/FishinPixel-OFL.txt`) ajustada a rejilla; el 2 y el 5 están redibujados.
+- Iconos de teclas: pack CC0 de Xelu (vía addon Controller Icons), pixelados a 24 px con contorno blanco y versión _pulsada, en `art/ui/teclas/<teclado|xbox|ps>_<accion>[_pulsada].png` (créditos en CREDITOS.txt). El HUD elige según el último dispositivo tocado; el tipo de mando sale de su nombre (Input.get_joy_name) y, si no se reconoce, `HUD.mando_por_defecto` (ps).
+- Animación de entrada: `scenes/ui/animacion_entrada.tscn` como hija de una ventana o popup; se lanza sola al aparecer. Estilos LINEA (raya que se abre a saltos), CAIDA, PARPADEO, FUNDIDO; duración, pasos y sonido (`art/sfx/abrir.wav`) por instancia. Puesta en menú, tienda, bestiario, diálogo, banner del pez, caja de acciones y aviso de barca llena.
+- Caja de acciones (abajo a la derecha, nodo Accion del HUD): junta `Jugador.acciones()` y hablar con el comerciante; si hay varias, alterna cada `HUD.cambio_acciones` (2 s). En el donut siempre está la Q en cuanto hay tierra.
+- Filtro CRT: `scenes/efectos/crt.tscn` (capa 100, valores en el material de Filtro). Se guarda en `Juego.flags.filtro_crt`; botón en Opciones.
+- Llegada por mar: `Mundo._lado_de_llegada` (punto cardinal del centro de la isla vista desde la barca).
 - Peces: `data/peces/*.tres` (PezData). Arte placeholder en `art/` (generado por script, sustituible).
 
 ## Herramientas de diseño (artefactos)
@@ -45,29 +54,29 @@ Fase 2 hecha: bucle pescar → vender → mejorar. Cañas por profundidad, cebo,
 - Se leen con ArtifactData (list). El código fuente está en `docs/herramientas/`.
 
 ## Siguiente paso
-1. Que el diseñador pruebe la pasada de arte (donut flotando, mar, climas con F6, islas, barco).
-2. Árbol de habilidades: pasar el artefacto a datos cuando el diseñador lo rellene.
-3. Rehacer el cebo: probabilidades + duración en segundos.
+Por decidir con el diseñador en la charla de rumbo. Candidatos:
+1. Probar en la tablet (rendimiento de pixelado + SSR + lluvia + CRT) y una partida larga de principio a fin para ajustar el ritmo de los primeros 30 min.
+2. Árbol de habilidades (datos + interfaz del viejo) cuando el diseñador lo rellene.
+3. Contenido: Excel de peces (día/noche, estación) y decidir cómo pasa el tiempo.
+4. Rehacer el cebo (probabilidades + duración en segundos).
+5. Música y sonido de verdad.
 
 ## Decisiones recientes
-- 2.5D, Forward+, juego de PC. Moneda: rublos (₽). Fuente DejaVu Sans Bold (tiene ₽ y flechas).
+- 2.5D, Forward+, juego de PC. Moneda: rublos (₽). Fuente pixel propia Fishin Pixel (tiene ₽ y flechas).
 - La intensidad visual va por botones seguidos (no por % del pez); el máximo llega con combos de 50 (final de juego). Las dobles salen desde el 5º botón.
 - Largo de cadena aleatorio por picada (CanaData.tirar_largo_cadena), sesgado a corto.
 - Barca llena (todos los huecos): no pica nada hasta vender. Sin progreso offline.
 - Machacar fallido: los extraños y legendarios se escapan, los demás pierden valor.
 - Niebla del clima activa (Forward+); en Compatibility lo dejaba todo gris.
-- Interfaz pixel: todo sale del tema `art/tema.tres` (fuente `art/fuentes/FishinPixel.ttf`, piezas 9-slice en `art/ui/`). Variaciones: Titulo (gris), Pequeno, Grande, Dinero (amarillo), PanelSeleccion, BarraNaranja. Tamaños de letra en múltiplos de 10 (1 píxel de fuente = tamaño/10). La fuente sale de Pixelify Sans (OFL, licencia en `art/fuentes/FishinPixel-OFL.txt`) ajustada a rejilla; el 2 y el 5 están redibujados.
-- Iconos de teclas: pack CC0 de Xelu (vía addon Controller Icons), pixelados a 24 px con contorno blanco y versión _pulsada, en `art/ui/teclas/<teclado|xbox|ps>_<accion>[_pulsada].png` (créditos en CREDITOS.txt). El HUD elige según el último dispositivo tocado; el tipo de mando sale de su nombre (Input.get_joy_name) y, si no se reconoce, `HUD.mando_por_defecto` (ps).
-- Animación de entrada: `scenes/ui/animacion_entrada.tscn` como hija de una ventana o popup; se lanza sola al aparecer. Estilos LINEA (raya que se abre a saltos), CAIDA, PARPADEO, FUNDIDO; duración, pasos y sonido (`art/sfx/abrir.wav`) por instancia. Puesta en menú, tienda, bestiario, diálogo, banner del pez, caja de acciones y aviso de barca llena.
-- Caja de acciones (abajo a la derecha, nodo Accion del HUD): junta `Jugador.acciones()` y hablar con el comerciante; si hay varias, alterna cada `HUD.cambio_acciones` (2 s). En el donut siempre está la Q en cuanto hay tierra.
-- Filtro CRT: `scenes/efectos/crt.tscn` (capa 100, valores en el material de Filtro). Se guarda en `Juego.flags.filtro_crt`; botón en Opciones.
 - Sin frases en el HUD: fuera llegadas, ¡PICA!, calidad y estado de arriba (solo queda "¡Barca llena! Ve a vender"). Fallo/escape = X roja (`scenes/ui/popup_icono.tscn`, `art/ui/x_roja.png`). `AparicionData.texto_llegada` ya no se usa.
-- Llegada por mar: `Mundo._lado_de_llegada` (punto cardinal del centro de la isla vista desde la barca).
 - Nada de textos flotantes en el mundo (ni carteles, ni contadores encima de pescadores o cubo). Las frases de acierto del minijuego están comentadas en hud.gd (_on_acierto) para retomarlas más adelante.
+- Interfaz estilo Animal Well (paneles negros, borde blanco, selección amarilla) con filtro retro de tubo y animaciones de entrada. Teclas dibujadas del pack CC0 de Xelu; mando PlayStation por defecto, también Xbox. Acción posible abajo a la derecha, alternando cada 2 s si hay varias.
 - Estilo B pixelado, sin desenfoque. Nada de modelos 3D en objetos. Prota en donut rosa (no hay barca), piernas de frente, caña a la derecha. Viejo entre palmeras con hoguera delante.
 
 ## Pendiente del diseñador
 1. Excel de peces (enciclopedia, pesos, día/noche, estación).
 2. Imagen de referencia del flow del árbol + rellenar el Árbol de Fishin.
 3. Lista de cebos y efectos (duplicar pesca, más probabilidad de X...).
-4. Seguir rellenando la carta.
+4. Seguir rellenando la carta (siguientes islas y edificios).
+5. Decidir cómo pasa el tiempo (día/noche, estaciones) para los peces del Excel.
+6. Probar en la tablet y decir si va fluido.

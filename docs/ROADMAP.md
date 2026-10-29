@@ -14,7 +14,7 @@ Regla: no se pasa de fase hasta que la actual sea jugable y divertida. Cada tare
 - [x] Calidad del pez según la cadena
 - [x] Datos de peces (`.tres`) y tirada de pez
 - [x] Juice básico (sonido placeholder, screenshake, popups)
-- **Hito:** pescar 5 minutos seguidos engancha.
+- **Hito:** pescar 5 minutos seguidos engancha. (Sin confirmar por el diseñador en partida larga.)
 
 ## Fase 2 — Economía mínima
 - [x] Inventario de la barca
@@ -32,8 +32,9 @@ Regla: no se pasa de fase hasta que la actual sea jugable y divertida. Cada tare
 - **Hito:** se nota que el mundo crece.
 
 ## Fase 4 — Menú y progresión
-- [x] Menú (Tab) con pestañas (barca con huecos apilados, stats, opciones; árbol vacío)
-- [ ] Árbol de habilidades (datos + UI)
+- [x] Menú (Tab) con pestañas (barca con huecos apilados, stats, opciones)
+- [ ] Árbol de habilidades (datos + UI en el viejo) — espera al diseñador
+- [ ] Rehacer el cebo (probabilidades + duración)
 - [x] Mecánicas avanzadas de pesca: machacar y pulsación doble (adelantado)
 - [ ] Auto-pesca
 
@@ -46,18 +47,23 @@ Regla: no se pasa de fase hasta que la actual sea jugable y divertida. Cada tare
 - [ ] Balance de curvas
 
 ## Fase 6 — Contenido
-- [ ] Catálogo de peces, legendarios, colección (la meta)
+- [ ] Catálogo de peces (Excel del diseñador), legendarios, colección (la meta)
+- [ ] Tiempo del juego: día/noche y estaciones
 - [ ] Más edificios, ramas e hitos
 
 ## Fase 7 — Pulido
 - [x] Estilo pixelado (B), mar con olas y reflejos, clima
 - [x] Prota en donut con caña, corcho y ondas; suelos con textura y props en sprite
 - [x] Barco comerciante en sprite, donut que flota sobre la ola
+- [x] Interfaz estilo Animal Well (fuente pixel, paneles, selección amarilla), filtro retro, animaciones de entrada
+- [x] Teclas y botones dibujados (teclado, PlayStation, Xbox), sin frases en pantalla, X roja de fallo
+- [ ] Probar rendimiento en la tablet
 - [ ] Guía de medidas del arte
 - [ ] Partículas, música y SFX
 - [ ] Arte final del diseñador
 
 ## Fase 8 — Export y release
 - [ ] GitHub Actions: builds de Windows, Mac (y Android)
+- [x] Mando (PlayStation y Xbox) con iconos según el mando
 - [ ] Input táctil y UI móvil
 - [ ] Release
