@@ -268,10 +268,11 @@ func _generar_pasos() -> void:
 	var anterior: StringName = &""
 	for i in n:
 		var p := Paso.new()
-		p.tiempo = maxf(stats.tiempo_minimo, stats.tiempo_inicial * pow(stats.factor_tiempo, i)) * mult
-		# Modo flow: viendo lo que viene, se va más rápido.
+		var t_base: float = stats.tiempo_inicial * pow(stats.factor_tiempo, i)
+		p.tiempo = maxf(stats.tiempo_minimo, t_base) * mult
+		# Modo flow: viendo lo que viene, se va bastante más rápido (y puede bajar del mínimo normal).
 		if hay_cola(i):
-			p.tiempo *= stats.mult_tiempo_cola
+			p.tiempo = maxf(stats.tiempo_minimo_cola, maxf(stats.tiempo_minimo, t_base) * stats.mult_tiempo_cola) * mult
 		if pez.machacar_cada > 0 and i > 0 and (i + 1) % pez.machacar_cada == 0:
 			p.tipo = Tipo.MACHACAR
 			p.acciones = [todas.pick_random()]

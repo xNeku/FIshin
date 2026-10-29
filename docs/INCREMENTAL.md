@@ -161,7 +161,7 @@ Tomado de los hitos de AdVenture Capitalist: al tener 25, 50, 100... de un negoc
 | Cookie Clicker | Costes ×1,15 y compra en bloque | Costes geométricos [hecho]; comprar ×10 en la tienda [por hacer] |
 | Cast n Chill | La calma del sedal en el agua; modo idle | Espera de 8-20 s, picoteos, chill que deja pasar [hecho] |
 | Devlog "Active or idle?" | Premiar el no tocar sin que gane al jugar activo | Rama Chill sobre lo pasivo; pasivo ≤ ⅓ [hecho] |
-| Kittens Game | Almacenes con tope | Raciones del sushi que caducan o tienen tope [por hacer, T2] |
+| Kittens Game | Almacenes con tope | Tope de cámara del sushi, mejorable; sin caducar (decidido) [por hacer, T2] |
 | Antimatter Dimensions | Capas que multiplican a las anteriores | Cada tramo, una mecánica que multiplica lo anterior (diseño de tramos) |
 
 ## 7. Activo frente a pasivo
@@ -215,7 +215,8 @@ ingreso del sushi   = platos servidos · precio del plato · mult_calidad_media
 - **Raciones** salen de los peces que vendes en la lonja: cada especie da X raciones, y la calidad media sube el precio del plato (decidido: "cuantos más vendas y de mejor calidad, mejores platos").
 - **Clientes** salen de la villa y el turismo (atracción, ver abajo).
 - Que el jugador vea el cuello de botella: "clientes 30/min, raciones 12/min" en el panel del negocio. Ese es el feel de "si no pescas, el restaurante no rinde".
-- Para que no se acapare, el almacén tiene tope o las raciones caducan (se pierde un % por minuto). Sin eso, pescas una hora y el sushi va solo el resto del juego, que rompe lo decidido.
+- [DECIDIDO] Las raciones **no caducan**.
+- [PROPUESTA] Para que no se acapare, el sushi tiene un tope de lo que puede guardar (cámara frigorífica, que se mejora). El ritmo lo marcan los cocineros y los clientes por minuto. Si no hay más que un tope, una hora de pesca no da para que el sushi vaya solo el resto del juego.
 
 **Turismo** (más adelante): `atracción = Σ (edificios × su atractivo) × (1 + decoración)` y `clientes/min = atracción^0,8`. El exponente menor que 1 hace que cada punto extra de atracción cuente un poco menos.
 

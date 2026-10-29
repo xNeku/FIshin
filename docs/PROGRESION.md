@@ -347,7 +347,7 @@ Nota: en tiendas de móvil la marihuana sube la clasificación por edad. Se acep
 
 ## Modo flow
 - [DECIDIDO] Un poco antes del midgame, a partir de 15 aciertos, los combos se ven como en Guitar Hero: ves cuál es el siguiente botón, todo más rápido. Así es más fácil para el jugador, y va ligado al árbol en el momento justo en que se abren los combos largos (+20, casi inhumanos sin esa habilidad).
-- [PROPUESTA] Implementado: nodo clave **Leer el agua** (rama Pesca, 40K ₽, 3 niveles = ves 1, 2 o 3 botones por delante). Desde el botón 15 (`StatsPesca.cola_desde_boton`), los siguientes entran deslizándose por la derecha y cada botón da un 15 % menos de tiempo (`mult_tiempo_cola`). En modo flow el botón deja de saltar por la pantalla.
+- [PROPUESTA] Implementado: nodo clave **Leer el agua** (rama Pesca, 40K ₽, 3 niveles = ves 1, 2 o 3 botones por delante). Desde el botón 15 (`StatsPesca.cola_desde_boton`), los siguientes entran deslizándose por la derecha y cada botón da un **30 % menos de tiempo** (`mult_tiempo_cola` 0,7), pudiendo bajar hasta 0,3 s (`tiempo_minimo_cola`; fuera del flow el mínimo es 0,4 s). [DECIDIDO] En modo flow la velocidad de reacción tiene que ser superior: como ves lo que viene, el reto pasa a ser la velocidad. En modo flow el botón deja de saltar por la pantalla.
 
 ## Tamaño de los combos
 - [DECIDIDO] En algún momento habrá un modo infinito para ver hasta dónde llegan los jugadores. El número se va regulando.

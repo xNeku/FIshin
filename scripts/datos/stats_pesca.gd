@@ -26,8 +26,11 @@ extends Resource
 @export_group("Flow (nodo Leer el agua)")
 ## Desde este botón de la cadena se ven los siguientes (si tienes el nodo del árbol).
 @export var cola_desde_boton: int = 15
-## Con la cola a la vista los botones van más rápidos (0.85 = un 15 % menos de tiempo).
-@export var mult_tiempo_cola: float = 0.85
+## Con la cola a la vista los botones van bastante más rápidos (0.7 = un 30 % menos de tiempo):
+## como ves lo que viene, el reto pasa a ser la velocidad.
+@export var mult_tiempo_cola: float = 0.7
+## En modo flow el tiempo por botón puede bajar hasta aquí (fuera del flow el tope es tiempo_minimo).
+@export var tiempo_minimo_cola: float = 0.3
 
 @export_group("Calidad")
 ## Multiplicador de valor con 0 aciertos (1.0 con todos).
