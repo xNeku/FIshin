@@ -389,6 +389,37 @@ Simulador: `docs/herramientas/simular_economia.py`. Juega con los peces, cañas 
 4. No se pueden contratar pescadores (solo el primero, gratis): el puerto no crece.
 5. Lo pasivo es pequeño (~27 ₽/min por pescador, un 10 % de lo que ganas a mano). Bien según la regla, pero no hay forma de subirlo.
 
+### Orientación v2 (simulador v2: esperas de 6-14 s, racha, pescadores rebajados)
+[PROPUESTA] Guía de ritmo, no ley: lo de la carta del diseñador manda. Reglas usadas:
+- Algo nuevo cada 5-8 min al principio y cada 10-15 en el T2 (los intervalos crecen poco a poco).
+- Cada llegada grande sube el ingreso entre ×1,3 y ×2. Al cerrar un tramo el ingreso se ha multiplicado por unas 10.
+- Coste ≈ 60 % de lo que el jugador gana desde la llegada anterior (el resto se va en árbol y cajones).
+- Lo pasivo, por debajo de un tercio de lo manual.
+
+Simulado hoy (media de 20 partidas, jugador normal): comerciante 0,7 min · caña decente 4 · primera isla 5 · viejo 18 (75 peces) · Sabia 20 · camino y lonja 20 (se pisan) · puerto 33.
+
+| Min | Llega | Condición | Qué aporta | ₽/min después |
+|-----|-------|-----------|------------|---------------|
+| 0,5 | Comerciante | 3 peces [hecho] | Vender, tienda | ~57 |
+| 4 | Caña decente | 150 ₽ [hecho] | ×2,4 (más hondo, cadenas más largas) | ~138 |
+| 5 | Primera isla (bestiario) | 200 ₽ totales [hecho] | Suelo para andar, colección | ~138 |
+| 18 | Viejo y árbol | 75 peces [hecho] | Nodos baratos: +10-30 % | ~150 |
+| 20 | Sabia caña | 2.000 ₽ [hecho] | ×2 | ~275 |
+| 23 | Camino | **23 min** (para separarlo de la Sabia) | Acceso a lo siguiente | ~275 |
+| 28 | Lonja | Camino + **3.000 ₽ totales** | ×1,2 al vender allí; porteador | ~330 |
+| 33 | Puerto pesquero | Combo x10 [hecho] | 1 pescador (~8 ₽/min) | ~340 |
+| 35-45 | Contratar 2-3 pescadores | 150 ₽ × 1,6ⁿ | +8 ₽/min cada uno | ~360 |
+| 40 | Caña 4 (peces nuevos) | **~1.500-2.500 ₽** (los 12K de v1 tardarían ~35 min) | ×2 | ~700 |
+| 48 | Pantalán nivel 2 | ~3.000 ₽ | +3 plazas; pescan el 2.º pez más barato (×1,8 lo pasivo) | ~750 |
+| 55 | Huerto de algas | ~3.000 ₽ (o 8K ₽ totales) | Material (algas), a mano al principio | ~750 |
+| 65 | Restaurante de sushi | Salmón + ~4.000 ₽ + 30 algas | ×1,4 (canal nuevo, limitado por suministro) | ~1.000 |
+| 80 | Caña 5 (arrecife) | ~8.000 ₽ (+ coral si llega antes el taladro) | ×2 | ~1.900 |
+| 90 | Leer el agua (modo flow) | ~11.000 ₽, árbol | ×1,4 (combos más largos, más racha) | ~2.600 |
+| 105 | Sushi nivel 2 | ~23.000 ₽ + algas | ×1,3 | ~3.400 |
+| 120 | Fin del T2 (midgame) | — | Con el árbol: ×1,5-3 más | **~5.000-10.000** |
+
+Choques con la v1: la caña 4 a 12K, el pantalán a 15K y el sushi a 25K salían caros para el ingreso que hay en ese momento. Se notaría un parón de media hora en el minuto 30-40.
+
 ### Propuesta de orden hasta el midgame (~2 h)
 [PROPUESTA] Objetivo: algo nuevo cada 3–8 minutos. Lo de la carta del diseñador manda; esto es un orden de partida para discutir.
 

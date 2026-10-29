@@ -143,3 +143,42 @@ if __name__ == "__main__":
     for a in [5, 20, 50, 100, 200]:
         t = espera + RESULTADO + sum(max(TMIN, T0 * FACT ** i) * .6 + PAUSA for i in range(a))
         print(f"cadena x{a:<4d}: {suma_racha(a) * PERFECTO / t:5.2f} por segundo")
+
+
+def linea_de_tiempo(jugador=1.0, semilla=1):
+    """Arranque con un jugador normal que vende cada 2 min o al llenar. Devuelve {hito: minuto}."""
+    random.seed(semilla)
+    t = rublos = totales = pend = 0.0
+    peces = mejor = 0
+    cana = "rota"
+    hitos = {}
+    ultima_venta = 0.0
+
+    def hito(n):
+        if n not in hitos:
+            hitos[n] = t / 60
+
+    while t < 3600:
+        v, dt, cb, ok = picada(CANAS[cana], jugador)
+        t += dt; pend += v; peces += ok; mejor = max(mejor, cb)
+        if peces >= 3: hito("comerciante (3 peces)")
+        if t - ultima_venta > 120:
+            rublos += pend; totales += pend; pend = 0; ultima_venta = t; t += 6
+        if totales >= 200: hito("primera isla (200 ₽ totales)")
+        if cana == "rota" and rublos >= 150:
+            rublos -= 150; cana = "decente"; hito("caña decente (150 ₽)")
+        if peces >= 75: hito("viejo y árbol (75 peces)")
+        if t >= 1200: hito("camino (20 min)")
+        if cana == "decente" and rublos >= 2000:
+            rublos -= 2000; cana = "sabia"; hito("Sabia caña (2.000 ₽)")
+        if mejor >= 10: hito("puerto (combo x10)")
+        if totales >= 1500 and "camino (20 min)" in hitos: hito("lonja (1.500 ₽ totales + camino)")
+    return hitos
+
+
+if __name__ == "__main__":
+    print("\n--- Línea de tiempo (media de 20 partidas, jugador normal) ---")
+    todas = [linea_de_tiempo(semilla=s) for s in range(20)]
+    for h in sorted(todas[0], key=lambda k: todas[0][k]):
+        mins = [p[h] for p in todas if h in p]
+        print(f"{sum(mins) / len(mins):6.1f} min  {h}   (en {len(mins)}/20 partidas)")
