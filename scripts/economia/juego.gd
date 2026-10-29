@@ -38,6 +38,8 @@ var cebo: Dictionary = {}
 var compras: Dictionary = {}
 var stats: Dictionary = {
 	"peces_pescados": 0, "perfectos": 0, "escapados": 0, "legendarios": 0, "mejor_combo": 0, "tiempo_jugado": 0.0,
+	# Suma de la racha de cada pez (×2 si perfecto): mide lo bien que pescas. Lo usan algunas llegadas.
+	"puntos_pesca": 0.0,
 }
 ## id de pez -> mejor calidad conseguida
 var coleccion: Dictionary = {}
@@ -205,6 +207,10 @@ func mult_maestria(id_pez: StringName) -> float:
 
 func registrar_combo(botones: int) -> void:
 	stats.mejor_combo = maxi(int(stats.mejor_combo), botones)
+
+
+func sumar_puntos_pesca(puntos: float) -> void:
+	stats.puntos_pesca = float(stats.get("puntos_pesca", 0.0)) + puntos
 
 
 func anadir_escapado() -> void:
@@ -506,7 +512,7 @@ func borrar_partida() -> void:
 	cebo.clear()
 	compras.clear()
 	for k: String in stats:
-		stats[k] = 0.0 if k == "tiempo_jugado" else 0
+		stats[k] = 0.0 if k in ["tiempo_jugado", "puntos_pesca"] else 0
 	coleccion.clear()
 	capturados.clear()
 	flags.clear()

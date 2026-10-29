@@ -1,10 +1,11 @@
 extends Node
-## Atajos para probar: F1 rublos, F2 peces pescados, F3 minutos de juego, F4 mejor combo, F5 un pescador más, F6 siguiente clima. Solo en builds de depuración.
+## Atajos para probar: F1 rublos, F2 peces pescados, F3 minutos de juego, F4 mejor combo y puntos de pesca, F5 un pescador más, F6 siguiente clima. Solo en builds de depuración.
 
 @export var rublos_por_pulsacion: float = 100.0
 @export var peces_por_pulsacion: int = 50
 @export var minutos_por_pulsacion: float = 5.0
 @export var combo_por_pulsacion: int = 5
+@export var puntos_por_pulsacion: float = 200.0
 @export var hud: Node
 @export var clima: Node
 
@@ -26,7 +27,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		_avisar("Truco: +%d min (llevas %s)" % [minutos_por_pulsacion, Formato.tiempo(Juego.stats.tiempo_jugado)])
 	elif event.is_action_pressed("debug_combo"):
 		Juego.stats.mejor_combo = int(Juego.stats.mejor_combo) + combo_por_pulsacion
-		_avisar("Truco: mejor combo x%d" % Juego.stats.mejor_combo)
+		Juego.sumar_puntos_pesca(puntos_por_pulsacion)
+		_avisar("Truco: mejor combo x%d, %d puntos de pesca" % [Juego.stats.mejor_combo, Juego.stats.puntos_pesca])
 	elif event.is_action_pressed("debug_clima") and clima:
 		clima.siguiente()
 		_avisar("Truco: clima → " + clima.actual.nombre)

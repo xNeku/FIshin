@@ -439,12 +439,23 @@ Simulador: `docs/herramientas/simular_economia.py`. Juega con los peces, cañas 
 | 11 | Primera isla (bestiario) | **400 ₽ totales** (antes 200) | Suelo, colección, maestría a la vista | ~110 |
 | 10-30 | Cajones extra | 60 ₽ ×1,8 | Más huecos | |
 | 23 | Viejo y árbol | 75 peces | Nodos baratos (+10-30 %) | ~130 |
-| 40 | Camino | **40 min** (antes 20) | Andar; empieza a costar tiempo vender | |
+| 42 | Camino | **700 puntos de pesca** (antes 20 min) | Andar; empieza a costar tiempo vender | |
 | 52 | Sabia caña | **4.500 ₽** (antes 2.000) | ×2 | ~220 |
-| 62 | Lonja | Camino + **6.500 ₽ totales** (antes 1.500) | ×1,2 vendiendo allí | ~260 |
-| 73 | Puerto | Combo x10 | 1 pescador (~8 ₽/min) | ~270 |
+| 56 | Puerto | Camino + **1.000 puntos de pesca** (antes combo x10, min ~73) | 1 pescador (~8 ₽/min) | ~230 |
+| 68 | Lonja | Camino + **8.000 ₽ totales** (antes 1.500) | ×1,2 vendiendo allí | ~270 |
 
-Ojo: en 1 de cada 20 partidas el combo x10 no salía en 2 h. Hace falta un atún o un kraken perfecto con la Sabia. Si molesta, se baja a x8 o se pone protección contra la mala racha.
+**Premiar al que pesca bien** [DECIDIDO: hay que premiarlo, que acabe antes]:
+- **Puntos de pesca** (`Juego.stats.puntos_pesca`): cada pez suma la racha de su cadena, ×2 si es perfecto. El camino y el puerto llegan por puntos, no por minutos ni por un solo combo.
+- Con eso (simulado):
+  - Bueno: camino 40, puerto 54.
+  - Normal: camino 42, puerto 56.
+  - Flojo: camino 46, puerto 61.
+- **Hoy la diferencia es pequeña en el T0-T1.** La caña decide al azar lo larga que es la cadena, y casi todas son cortas y lentas (más de 0,9 s por botón), así que todos las aciertan.
+  - La habilidad empieza a notarse con cadenas de 10 o más (botones de 0,4 s) y en el flow (0,3 s).
+  - Para que se note antes hay dos palancas.
+    - **A.** Racha entre peces: si no fallas, el contador de racha sigue de un pez al siguiente, como en Guitar Hero, donde la racha no se corta entre notas. El que nunca falla llega a ×1,25, ×1,5... con peces cortos.
+    - **B.** Que el largo de la cadena dependa menos del azar: el `sesgo_cadena` de la caña, más suave.
+  - [ABIERTO] Lo decide el diseñador.
 
 **T1 Puerto (lo siguiente por hacer)**
 | Min | Llega | Condición orientativa | Qué aporta | ₽/min |

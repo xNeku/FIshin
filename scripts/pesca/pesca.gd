@@ -379,6 +379,7 @@ func _capturar() -> void:
 		"id": String(pez.id), "peso": peso, "calidad": ratio, "perfecto": perfecto, "valor": valor,
 	}
 	if Juego.anadir_captura(captura, pez):
+		Juego.sumar_puntos_pesca(stats.suma_racha(aciertos) * (stats.mult_perfecto if perfecto else 1.0))
 		pez_capturado.emit(captura, pez)
 		# Pesca doble (rama Suerte): sale otro igual.
 		if randf() < Juego.efecto(&"pesca_doble") and Juego.anadir_captura(captura.duplicate(), pez):

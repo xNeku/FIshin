@@ -168,6 +168,8 @@ func cumple(a: AparicionData) -> bool:
 			return Juego.stats.mejor_combo >= a.valor
 		AparicionData.Condicion.MINUTOS_JUGADOS:
 			return Juego.stats.tiempo_jugado >= a.valor * 60.0
+		AparicionData.Condicion.PUNTOS_PESCA:
+			return Juego.stats.puntos_pesca >= a.valor
 	return false
 
 

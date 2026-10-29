@@ -61,9 +61,11 @@ def suma_racha(a):
 
 
 def p_acierto(t, doble=False, jugador=1.0):
+    # jugador = rapidez de reflejos: 1 normal, 1,3 bueno, 0,8 flojo (como si tuviera ese múltiplo de tiempo).
     # 1 s o más: casi seguro; 0,4 s: 3 de cada 4; por debajo cae rápido.
+    t *= jugador
     p = 0.99 if t >= 1.0 else 0.75 + (t - 0.4) / 0.6 * 0.24 if t >= 0.4 else max(0.3, 0.75 - (0.4 - t) * 2)
-    p = min(0.995, p * jugador)
+    p = min(0.995, p)
     return p * (0.9 if doble else 1.0)
 
 
@@ -91,6 +93,7 @@ def mult_valor(aciertos, perfect, mach_fall):
 
 
 CAPTURADOS = {}
+PUNTOS = [0.0]  # puntos de pesca: suma de racha de cada pez (×2 si perfecto). Premian pescar bien.
 
 
 def picada(c, jugador=1.0, forzar=None):
@@ -122,6 +125,7 @@ def picada(c, jugador=1.0, forzar=None):
     t += RESULTADO
     peso = random.uniform(p[4], p[5]) / ((p[4] + p[5]) / 2)
     CAPTURADOS[p[0]] = CAPTURADOS.get(p[0], 0) + 1
+    PUNTOS[0] += suma_racha(aciertos) * (PERFECTO if aciertos >= p[7] else 1.0)
     return p[3] * peso * mult_valor(aciertos, p[7], mach_fall) * maestria(CAPTURADOS[p[0]]), t, aciertos, True
 
 
@@ -162,8 +166,8 @@ if __name__ == "__main__":
 
 
 # Condiciones de llegada (las de data/apariciones y data/articulos). Cámbialas aquí para probar.
-COND = dict(comerciante_peces=3, isla_totales=400, cana_decente=300, viejo_peces=75, camino_min=40,
-            sabia=4500, lonja_totales=6500, puerto_combo=10)
+COND = dict(comerciante_peces=3, isla_totales=400, cana_decente=300, viejo_peces=75, camino_puntos=700,
+            sabia=4500, lonja_totales=8000, puerto_puntos=1000)
 # Segundos sin pescar por cada viaje a vender (andar, menús): con el camino y la lonja hay que moverse.
 ANDAR_ANTES_CAMINO, ANDAR_DESPUES_CAMINO = 8.0, 35.0
 
@@ -172,6 +176,7 @@ def linea_de_tiempo(jugador=1.0, semilla=1, cond=COND, horas=2.0):
     """Jugador normal que vende cada ~3 min (o con la barca llena). Devuelve {hito: minuto}."""
     random.seed(semilla)
     CAPTURADOS.clear()
+    PUNTOS[0] = 0.0
     t = rublos = totales = pend = 0.0
     peces = mejor = 0
     cana = "rota"
@@ -197,10 +202,10 @@ def linea_de_tiempo(jugador=1.0, semilla=1, cond=COND, horas=2.0):
         if cana == "rota" and rublos >= cond["cana_decente"]:
             rublos -= cond["cana_decente"]; cana = "decente"; hito("caña decente")
         if peces >= cond["viejo_peces"]: hito("viejo y árbol")
-        if t >= cond["camino_min"] * 60: hito("camino")
+        if PUNTOS[0] >= cond["camino_puntos"]: hito("camino")
         if cana == "decente" and rublos >= cond["sabia"] and "viejo y árbol" in hitos:
             rublos -= cond["sabia"]; cana = "sabia"; hito("Sabia caña")
-        if mejor >= cond["puerto_combo"] and "camino" in hitos:
+        if PUNTOS[0] >= cond["puerto_puntos"] and "camino" in hitos:
             hito("puerto"); trabajadores = max(trabajadores, 1)
         if totales >= cond["lonja_totales"] and "camino" in hitos: hito("lonja")
     hitos["_rpm_final"] = (totales / (t / 60))
@@ -208,10 +213,11 @@ def linea_de_tiempo(jugador=1.0, semilla=1, cond=COND, horas=2.0):
 
 
 if __name__ == "__main__":
-    print("\n--- Línea de tiempo (media de 20 partidas, jugador normal) ---")
-    todas = [linea_de_tiempo(semilla=s) for s in range(20)]
-    rpm = sum(p.pop("_rpm_final") for p in todas) / len(todas)
-    for h in sorted(todas[0], key=lambda k: todas[0][k]):
-        mins = [p[h] for p in todas if h in p]
-        print(f"{sum(mins) / len(mins):6.1f} min  {h}   (en {len(mins)}/20 partidas)")
-    print(f"Media de ₽/min en las 2 primeras horas (con andar y pasivo): {rpm:.0f}")
+    for jug, nom in [(1.0, "normal"), (1.3, "bueno"), (0.8, "flojo")]:
+        print(f"\n--- Línea de tiempo, jugador {nom} (media de 20 partidas) ---")
+        todas = [linea_de_tiempo(jugador=jug, semilla=s) for s in range(20)]
+        rpm = sum(p.pop("_rpm_final") for p in todas) / len(todas)
+        for h in sorted(todas[0], key=lambda k: todas[0][k]):
+            mins = [p[h] for p in todas if h in p]
+            print(f"{sum(mins) / len(mins):6.1f} min  {h}   (en {len(mins)}/20 partidas)")
+        print(f"Media de ₽/min en las 2 primeras horas (con andar y pasivo): {rpm:.0f}")

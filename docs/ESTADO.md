@@ -21,13 +21,13 @@ Parada para valorar rumbo (29 oct). Hay un tramo jugable de principio a fin de l
 - `scripts/pesca/celebracion.gd` (nodo Celebracion en main): levantar pez, luz, brillos, fanfarria y primer plano de la cámara. Los nodos visuales están en barca.tscn (PezLevantado, LuzTrofeo, Brillos).
 - `scripts/mundo/mundo.gd` (nodo Mundo en main): lista de AparicionData (`data/apariciones/*.tres`), vigila condiciones, instancia la escena en su casilla ancla y la trae por MAR o desde el CIELO (sombra, caída, impacto). Guarda `aparecido_<id>` en Juego.flags. Bloquea la pesca (Pesca.bloquear) y mueve la cámara (CamaraPesca.enfocar / sacudir).
 - Islas: `scenes/mundo/islas/*.tscn` con raíz `isla.gd` (salpicadura + al_llegar_activar). Fuego reutilizable: `scenes/mundo/fuego.tscn` (fuego.gd, activar()).
-- AparicionData admite `pieza_por_celda` (tablón por casilla, girado según la forma) y llegada CONSTRUIR. Condiciones: PECES_PESCADOS, RUBLOS_TOTALES, COMBO_MAXIMO (Juego.stats.mejor_combo), MINUTOS_JUGADOS. `requiere` (ids que deben haber llegado antes), `celdas_bloqueadas` (ocupadas pero no pisables). Llegadas: MAR, CIELO, CONSTRUIR, EMERGER.
+- AparicionData admite `pieza_por_celda` (tablón por casilla, girado según la forma) y llegada CONSTRUIR. Condiciones: PECES_PESCADOS, RUBLOS_TOTALES, COMBO_MAXIMO (Juego.stats.mejor_combo), MINUTOS_JUGADOS, PUNTOS_PESCA (Juego.stats.puntos_pesca: suma de la racha de cada pez, ×2 si perfecto; premia pescar bien). `requiere` (ids que deben haber llegado antes), `celdas_bloqueadas` (ocupadas pero no pisables). Llegadas: MAR, CIELO, CONSTRUIR, EMERGER.
 - Sincronizar la carta: leer `elementos` y copiar las celdas a `data/apariciones/<id>.tres` (camino, puerto...).
 - Casilla de la carta → mundo: (x, y) → Vector3(x*2, 0, -y*2).
 - `scripts/jugador/jugador.gd` + `scenes/jugador/jugador.tscn` (nodo Jugador en main): modo andar, casillas pisables (Mundo.celdas_pisables), salto, interacción con el grupo "interactuables". Juego.en_movimiento = true mientras anda.
 - `scripts/mundo/interactuable.gd` (Interactuable): nodos en las islas con accion TIENDA (nombre, articulos, compra_peces, saludos) o BESTIARIO. La Tienda acepta cualquier vendedor con esos campos.
 - `scripts/ui/bestiario.gd` + `scenes/ui/bestiario.tscn` (fichas desde `ficha_bestiario.tscn`).
-- `scripts/economia/trucos.gd` (nodo Trucos en main): F1 +100 ₽, F2 +50 peces, F3 +5 min, F4 +5 de mejor combo, F5 +1 pescador. Solo en builds de depuración.
+- `scripts/economia/trucos.gd` (nodo Trucos en main): F1 +100 ₽, F2 +50 peces, F3 +5 min, F4 +5 de mejor combo y +200 puntos de pesca, F5 +1 pescador. Solo en builds de depuración.
 - `scripts/ui/dialogo.gd` + `scenes/ui/dialogo.tscn`: diálogo tipo Pokémon (Interactuable accion DIALOGO, lineas).
 - `scenes/efectos/vuelos.tscn` (autoload Vuelos): piezas que vuelan en parábola persiguiendo a quien recibe. `enviar`, `enviar_peces`, `enviar_dinero` (suma rublos al llegar cada pieza), `repartir` (monedas/billetes/fajos/sacos).
 - `scripts/economia/comercio.gd` (nodo Comercio en main): `vender_barca(comprador)` y `vender_cubo(comprador)` con animación. La Tienda lo usa al pulsar "Vender todo".
