@@ -1,0 +1,888 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/arbol.gd" id="script"]
+[ext_resource type="PackedScene" path="res://scenes/ui/nodo_arbol.tscn" id="nodo"]
+[ext_resource type="PackedScene" path="res://scenes/ui/conexion_arbol.tscn" id="conexion"]
+[ext_resource type="PackedScene" path="res://scenes/ui/chip_rama.tscn" id="chip"]
+[ext_resource type="PackedScene" path="res://scenes/ui/animacion_entrada.tscn" id="anim"]
+[ext_resource type="Shader" path="res://shaders/fondo_arbol.gdshader" id="fondo"]
+[ext_resource type="Texture2D" path="res://art/ui/arbol/iconos/origen_bonsai.png" id="bonsai"]
+[ext_resource type="Texture2D" path="res://art/ui/arbol/nodo_clave.png" id="marco_clave"]
+[ext_resource type="Texture2D" path="res://art/ui/arbol/chispa.png" id="chispa"]
+[ext_resource type="Texture2D" path="res://art/ui/teclas/teclado_interactuar.png" id="tecla_e"]
+[ext_resource type="Texture2D" path="res://art/ui/teclas/teclado_cambiar_modo.png" id="tecla_q"]
+[ext_resource type="AudioStream" path="res://art/sfx/arbol_mejorar.wav" id="sfx_mejorar"]
+[ext_resource type="AudioStream" path="res://art/sfx/arbol_no.wav" id="sfx_no"]
+[ext_resource type="AudioStream" path="res://art/sfx/arbol_agua.wav" id="sfx_agua"]
+[ext_resource type="AudioStream" path="res://art/sfx/arbol_max.wav" id="sfx_max"]
+[ext_resource type="Resource" path="res://data/arbol/ramas/pesca.tres" id="rama_pesca"]
+[ext_resource type="Resource" path="res://data/arbol/ramas/carisma.tres" id="rama_carisma"]
+[ext_resource type="Resource" path="res://data/arbol/ramas/suerte.tres" id="rama_suerte"]
+[ext_resource type="Resource" path="res://data/arbol/ramas/chill.tres" id="rama_chill"]
+[ext_resource type="Resource" path="res://data/arbol/nodos/p_munieca.tres" id="d_p_munieca"]
+[ext_resource type="Resource" path="res://data/arbol/nodos/p_paciencia.tres" id="d_p_paciencia"]
+[ext_resource type="Resource" path="res://data/arbol/nodos/p_sedal.tres" id="d_p_sedal"]
+[ext_resource type="Resource" path="res://data/arbol/nodos/p_brazos.tres" id="d_p_brazos"]
+[ext_resource type="Resource" path="res://data/arbol/nodos/p_ojo.tres" id="d_p_ojo"]
+[ext_resource type="Resource" path="res://data/arbol/nodos/p_tiron.tres" id="d_p_tiron"]
+[ext_resource type="Resource" path="res://data/arbol/nodos/p_mano.tres" id="d_p_mano"]
+[ext_resource type="Resource" path="res://data/arbol/nodos/p_pulso.tres" id="d_p_pulso"]
+[ext_resource type="Resource" path="res://data/arbol/nodos/p_ambi.tres" id="d_p_ambi"]
+[ext_resource type="Resource" path="res://data/arbol/nodos/p_tasador.tres" id="d_p_tasador"]
+[ext_resource type="Resource" path="res://data/arbol/nodos/p_acero.tres" id="d_p_acero"]
+[ext_resource type="Resource" path="res://data/arbol/nodos/p_memoria.tres" id="d_p_memoria"]
+[ext_resource type="Resource" path="res://data/arbol/nodos/p_hondo.tres" id="d_p_hondo"]
+[ext_resource type="Resource" path="res://data/arbol/nodos/p_lujo.tres" id="d_p_lujo"]
+[ext_resource type="Resource" path="res://data/arbol/nodos/p_pulpo.tres" id="d_p_pulpo"]
+[ext_resource type="Resource" path="res://data/arbol/nodos/p_leyenda.tres" id="d_p_leyenda"]
+[ext_resource type="Resource" path="res://data/arbol/nodos/c_labia.tres" id="d_c_labia"]
+[ext_resource type="Resource" path="res://data/arbol/nodos/c_regateo.tres" id="d_c_regateo"]
+[ext_resource type="Resource" path="res://data/arbol/nodos/c_jefe.tres" id="d_c_jefe"]
+[ext_resource type="Resource" path="res://data/arbol/nodos/c_diente.tres" id="d_c_diente"]
+[ext_resource type="Resource" path="res://data/arbol/nodos/c_bolsas.tres" id="d_c_bolsas"]
+[ext_resource type="Resource" path="res://data/arbol/nodos/c_regateo2.tres" id="d_c_regateo2"]
+[ext_resource type="Resource" path="res://data/arbol/nodos/c_lonja.tres" id="d_c_lonja"]
+[ext_resource type="Resource" path="res://data/arbol/nodos/c_porteador.tres" id="d_c_porteador"]
+[ext_resource type="Resource" path="res://data/arbol/nodos/c_jefe2.tres" id="d_c_jefe2"]
+[ext_resource type="Resource" path="res://data/arbol/nodos/c_fama.tres" id="d_c_fama"]
+[ext_resource type="Resource" path="res://data/arbol/nodos/c_cocineros.tres" id="d_c_cocineros"]
+[ext_resource type="Resource" path="res://data/arbol/nodos/c_rrpp.tres" id="d_c_rrpp"]
+[ext_resource type="Resource" path="res://data/arbol/nodos/c_camarero.tres" id="d_c_camarero"]
+[ext_resource type="Resource" path="res://data/arbol/nodos/c_casino.tres" id="d_c_casino"]
+[ext_resource type="Resource" path="res://data/arbol/nodos/c_leyenda.tres" id="d_c_leyenda"]
+[ext_resource type="Resource" path="res://data/arbol/nodos/s_trebol.tres" id="d_s_trebol"]
+[ext_resource type="Resource" path="res://data/arbol/nodos/s_segunda.tres" id="d_s_segunda"]
+[ext_resource type="Resource" path="res://data/arbol/nodos/s_racha.tres" id="d_s_racha"]
+[ext_resource type="Resource" path="res://data/arbol/nodos/s_santo.tres" id="d_s_santo"]
+[ext_resource type="Resource" path="res://data/arbol/nodos/s_gato.tres" id="d_s_gato"]
+[ext_resource type="Resource" path="res://data/arbol/nodos/s_dado.tres" id="d_s_dado"]
+[ext_resource type="Resource" path="res://data/arbol/nodos/s_herradura.tres" id="d_s_herradura"]
+[ext_resource type="Resource" path="res://data/arbol/nodos/s_huracan.tres" id="d_s_huracan"]
+[ext_resource type="Resource" path="res://data/arbol/nodos/s_iman.tres" id="d_s_iman"]
+[ext_resource type="Resource" path="res://data/arbol/nodos/s_monedas.tres" id="d_s_monedas"]
+[ext_resource type="Resource" path="res://data/arbol/nodos/s_turista.tres" id="d_s_turista"]
+[ext_resource type="Resource" path="res://data/arbol/nodos/s_doble.tres" id="d_s_doble"]
+[ext_resource type="Resource" path="res://data/arbol/nodos/s_perla.tres" id="d_s_perla"]
+[ext_resource type="Resource" path="res://data/arbol/nodos/s_coral.tres" id="d_s_coral"]
+[ext_resource type="Resource" path="res://data/arbol/nodos/s_jackpot.tres" id="d_s_jackpot"]
+[ext_resource type="Resource" path="res://data/arbol/nodos/ch_brisa.tres" id="d_ch_brisa"]
+[ext_resource type="Resource" path="res://data/arbol/nodos/ch_siesta.tres" id="d_ch_siesta"]
+[ext_resource type="Resource" path="res://data/arbol/nodos/ch_hamaca.tres" id="d_ch_hamaca"]
+[ext_resource type="Resource" path="res://data/arbol/nodos/ch_cigarro.tres" id="d_ch_cigarro"]
+[ext_resource type="Resource" path="res://data/arbol/nodos/ch_nubes.tres" id="d_ch_nubes"]
+[ext_resource type="Resource" path="res://data/arbol/nodos/ch_piloto.tres" id="d_ch_piloto"]
+[ext_resource type="Resource" path="res://data/arbol/nodos/ch_ronquido.tres" id="d_ch_ronquido"]
+[ext_resource type="Resource" path="res://data/arbol/nodos/ch_atardecer.tres" id="d_ch_atardecer"]
+[ext_resource type="Resource" path="res://data/arbol/nodos/ch_ron.tres" id="d_ch_ron"]
+[ext_resource type="Resource" path="res://data/arbol/nodos/ch_tormenta.tres" id="d_ch_tormenta"]
+[ext_resource type="Resource" path="res://data/arbol/nodos/ch_mirador.tres" id="d_ch_mirador"]
+[ext_resource type="Resource" path="res://data/arbol/nodos/ch_huerto.tres" id="d_ch_huerto"]
+[ext_resource type="Resource" path="res://data/arbol/nodos/ch_hierba.tres" id="d_ch_hierba"]
+[ext_resource type="Resource" path="res://data/arbol/nodos/ch_nirvana.tres" id="d_ch_nirvana"]
+
+[sub_resource type="ShaderMaterial" id="mat_fondo"]
+shader = ExtResource("fondo")
+
+[node name="Arbol" type="CanvasLayer"]
+process_mode = 3
+layer = 11
+script = ExtResource("script")
+escena_conexion = ExtResource("conexion")
+
+[node name="Raiz" type="Control" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="EntradaFondo" parent="Raiz" instance=ExtResource("anim")]
+estilo = 3
+duracion = 0.15
+pasos = 4
+sonar = false
+
+[node name="Fondo" type="ColorRect" parent="Raiz"]
+material = SubResource("mat_fondo")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Vista" type="Control" parent="Raiz"]
+clip_contents = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 236.0
+offset_bottom = -100.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Lienzo" type="Control" parent="Raiz/Vista"]
+layout_mode = 3
+anchors_preset = 0
+mouse_filter = 2
+
+[node name="Conexiones" type="Control" parent="Raiz/Vista/Lienzo"]
+layout_mode = 3
+anchors_preset = 0
+mouse_filter = 2
+
+[node name="Origen" type="Control" parent="Raiz/Vista/Lienzo"]
+layout_mode = 3
+anchors_preset = 0
+offset_left = -48.0
+offset_top = -48.0
+offset_right = 48.0
+offset_bottom = 48.0
+mouse_filter = 2
+
+[node name="Marco" type="NinePatchRect" parent="Raiz/Vista/Lienzo/Origen"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("marco_clave")
+patch_margin_left = 24
+patch_margin_top = 24
+patch_margin_right = 24
+patch_margin_bottom = 24
+
+[node name="Bonsai" type="TextureRect" parent="Raiz/Vista/Lienzo/Origen"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -32.0
+offset_top = -32.0
+offset_right = 32.0
+offset_bottom = 32.0
+mouse_filter = 2
+texture = ExtResource("bonsai")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Nodos" type="Control" parent="Raiz/Vista/Lienzo"]
+layout_mode = 3
+anchors_preset = 0
+mouse_filter = 2
+
+[node name="p_munieca" parent="Raiz/Vista/Lienzo/Nodos" instance=ExtResource("nodo")]
+custom_minimum_size = Vector2(72.0, 72.0)
+offset_left = -36.0
+offset_top = -168.0
+offset_right = 36.0
+offset_bottom = -96.0
+datos = ExtResource("d_p_munieca")
+
+[node name="p_paciencia" parent="Raiz/Vista/Lienzo/Nodos" instance=ExtResource("nodo")]
+custom_minimum_size = Vector2(72.0, 72.0)
+offset_left = -168.0
+offset_top = -300.0
+offset_right = -96.0
+offset_bottom = -228.0
+datos = ExtResource("d_p_paciencia")
+
+[node name="p_sedal" parent="Raiz/Vista/Lienzo/Nodos" instance=ExtResource("nodo")]
+custom_minimum_size = Vector2(72.0, 72.0)
+offset_left = -36.0
+offset_top = -300.0
+offset_right = 36.0
+offset_bottom = -228.0
+datos = ExtResource("d_p_sedal")
+
+[node name="p_brazos" parent="Raiz/Vista/Lienzo/Nodos" instance=ExtResource("nodo")]
+custom_minimum_size = Vector2(72.0, 72.0)
+offset_left = 96.0
+offset_top = -300.0
+offset_right = 168.0
+offset_bottom = -228.0
+datos = ExtResource("d_p_brazos")
+
+[node name="p_ojo" parent="Raiz/Vista/Lienzo/Nodos" instance=ExtResource("nodo")]
+custom_minimum_size = Vector2(72.0, 72.0)
+offset_left = -36.0
+offset_top = -432.0
+offset_right = 36.0
+offset_bottom = -360.0
+datos = ExtResource("d_p_ojo")
+
+[node name="p_tiron" parent="Raiz/Vista/Lienzo/Nodos" instance=ExtResource("nodo")]
+custom_minimum_size = Vector2(96.0, 96.0)
+offset_left = -180.0
+offset_top = -444.0
+offset_right = -84.0
+offset_bottom = -348.0
+datos = ExtResource("d_p_tiron")
+
+[node name="p_mano" parent="Raiz/Vista/Lienzo/Nodos" instance=ExtResource("nodo")]
+custom_minimum_size = Vector2(72.0, 72.0)
+offset_left = 96.0
+offset_top = -432.0
+offset_right = 168.0
+offset_bottom = -360.0
+datos = ExtResource("d_p_mano")
+
+[node name="p_pulso" parent="Raiz/Vista/Lienzo/Nodos" instance=ExtResource("nodo")]
+custom_minimum_size = Vector2(72.0, 72.0)
+offset_left = -36.0
+offset_top = -564.0
+offset_right = 36.0
+offset_bottom = -492.0
+datos = ExtResource("d_p_pulso")
+
+[node name="p_ambi" parent="Raiz/Vista/Lienzo/Nodos" instance=ExtResource("nodo")]
+custom_minimum_size = Vector2(72.0, 72.0)
+offset_left = -168.0
+offset_top = -564.0
+offset_right = -96.0
+offset_bottom = -492.0
+datos = ExtResource("d_p_ambi")
+
+[node name="p_tasador" parent="Raiz/Vista/Lienzo/Nodos" instance=ExtResource("nodo")]
+custom_minimum_size = Vector2(72.0, 72.0)
+offset_left = 96.0
+offset_top = -564.0
+offset_right = 168.0
+offset_bottom = -492.0
+datos = ExtResource("d_p_tasador")
+
+[node name="p_acero" parent="Raiz/Vista/Lienzo/Nodos" instance=ExtResource("nodo")]
+custom_minimum_size = Vector2(72.0, 72.0)
+offset_left = 228.0
+offset_top = -564.0
+offset_right = 300.0
+offset_bottom = -492.0
+datos = ExtResource("d_p_acero")
+
+[node name="p_memoria" parent="Raiz/Vista/Lienzo/Nodos" instance=ExtResource("nodo")]
+custom_minimum_size = Vector2(96.0, 96.0)
+offset_left = -48.0
+offset_top = -708.0
+offset_right = 48.0
+offset_bottom = -612.0
+datos = ExtResource("d_p_memoria")
+
+[node name="p_hondo" parent="Raiz/Vista/Lienzo/Nodos" instance=ExtResource("nodo")]
+custom_minimum_size = Vector2(72.0, 72.0)
+offset_left = -36.0
+offset_top = -828.0
+offset_right = 36.0
+offset_bottom = -756.0
+datos = ExtResource("d_p_hondo")
+
+[node name="p_lujo" parent="Raiz/Vista/Lienzo/Nodos" instance=ExtResource("nodo")]
+custom_minimum_size = Vector2(72.0, 72.0)
+offset_left = -168.0
+offset_top = -828.0
+offset_right = -96.0
+offset_bottom = -756.0
+datos = ExtResource("d_p_lujo")
+
+[node name="p_pulpo" parent="Raiz/Vista/Lienzo/Nodos" instance=ExtResource("nodo")]
+custom_minimum_size = Vector2(72.0, 72.0)
+offset_left = 96.0
+offset_top = -828.0
+offset_right = 168.0
+offset_bottom = -756.0
+datos = ExtResource("d_p_pulpo")
+
+[node name="p_leyenda" parent="Raiz/Vista/Lienzo/Nodos" instance=ExtResource("nodo")]
+custom_minimum_size = Vector2(96.0, 96.0)
+offset_left = -48.0
+offset_top = -972.0
+offset_right = 48.0
+offset_bottom = -876.0
+datos = ExtResource("d_p_leyenda")
+
+[node name="c_labia" parent="Raiz/Vista/Lienzo/Nodos" instance=ExtResource("nodo")]
+custom_minimum_size = Vector2(72.0, 72.0)
+offset_left = 96.0
+offset_top = -36.0
+offset_right = 168.0
+offset_bottom = 36.0
+datos = ExtResource("d_c_labia")
+
+[node name="c_regateo" parent="Raiz/Vista/Lienzo/Nodos" instance=ExtResource("nodo")]
+custom_minimum_size = Vector2(72.0, 72.0)
+offset_left = 228.0
+offset_top = -168.0
+offset_right = 300.0
+offset_bottom = -96.0
+datos = ExtResource("d_c_regateo")
+
+[node name="c_jefe" parent="Raiz/Vista/Lienzo/Nodos" instance=ExtResource("nodo")]
+custom_minimum_size = Vector2(72.0, 72.0)
+offset_left = 228.0
+offset_top = -36.0
+offset_right = 300.0
+offset_bottom = 36.0
+datos = ExtResource("d_c_jefe")
+
+[node name="c_diente" parent="Raiz/Vista/Lienzo/Nodos" instance=ExtResource("nodo")]
+custom_minimum_size = Vector2(72.0, 72.0)
+offset_left = 228.0
+offset_top = 96.0
+offset_right = 300.0
+offset_bottom = 168.0
+datos = ExtResource("d_c_diente")
+
+[node name="c_bolsas" parent="Raiz/Vista/Lienzo/Nodos" instance=ExtResource("nodo")]
+custom_minimum_size = Vector2(72.0, 72.0)
+offset_left = 360.0
+offset_top = -36.0
+offset_right = 432.0
+offset_bottom = 36.0
+datos = ExtResource("d_c_bolsas")
+
+[node name="c_regateo2" parent="Raiz/Vista/Lienzo/Nodos" instance=ExtResource("nodo")]
+custom_minimum_size = Vector2(72.0, 72.0)
+offset_left = 360.0
+offset_top = -168.0
+offset_right = 432.0
+offset_bottom = -96.0
+datos = ExtResource("d_c_regateo2")
+
+[node name="c_lonja" parent="Raiz/Vista/Lienzo/Nodos" instance=ExtResource("nodo")]
+custom_minimum_size = Vector2(72.0, 72.0)
+offset_left = 360.0
+offset_top = 96.0
+offset_right = 432.0
+offset_bottom = 168.0
+datos = ExtResource("d_c_lonja")
+
+[node name="c_porteador" parent="Raiz/Vista/Lienzo/Nodos" instance=ExtResource("nodo")]
+custom_minimum_size = Vector2(96.0, 96.0)
+offset_left = 480.0
+offset_top = -48.0
+offset_right = 576.0
+offset_bottom = 48.0
+datos = ExtResource("d_c_porteador")
+
+[node name="c_jefe2" parent="Raiz/Vista/Lienzo/Nodos" instance=ExtResource("nodo")]
+custom_minimum_size = Vector2(72.0, 72.0)
+offset_left = 492.0
+offset_top = -168.0
+offset_right = 564.0
+offset_bottom = -96.0
+datos = ExtResource("d_c_jefe2")
+
+[node name="c_fama" parent="Raiz/Vista/Lienzo/Nodos" instance=ExtResource("nodo")]
+custom_minimum_size = Vector2(72.0, 72.0)
+offset_left = 492.0
+offset_top = 96.0
+offset_right = 564.0
+offset_bottom = 168.0
+datos = ExtResource("d_c_fama")
+
+[node name="c_cocineros" parent="Raiz/Vista/Lienzo/Nodos" instance=ExtResource("nodo")]
+custom_minimum_size = Vector2(72.0, 72.0)
+offset_left = 624.0
+offset_top = -168.0
+offset_right = 696.0
+offset_bottom = -96.0
+datos = ExtResource("d_c_cocineros")
+
+[node name="c_rrpp" parent="Raiz/Vista/Lienzo/Nodos" instance=ExtResource("nodo")]
+custom_minimum_size = Vector2(72.0, 72.0)
+offset_left = 624.0
+offset_top = -36.0
+offset_right = 696.0
+offset_bottom = 36.0
+datos = ExtResource("d_c_rrpp")
+
+[node name="c_camarero" parent="Raiz/Vista/Lienzo/Nodos" instance=ExtResource("nodo")]
+custom_minimum_size = Vector2(72.0, 72.0)
+offset_left = 624.0
+offset_top = 96.0
+offset_right = 696.0
+offset_bottom = 168.0
+datos = ExtResource("d_c_camarero")
+
+[node name="c_casino" parent="Raiz/Vista/Lienzo/Nodos" instance=ExtResource("nodo")]
+custom_minimum_size = Vector2(72.0, 72.0)
+offset_left = 756.0
+offset_top = 96.0
+offset_right = 828.0
+offset_bottom = 168.0
+datos = ExtResource("d_c_casino")
+
+[node name="c_leyenda" parent="Raiz/Vista/Lienzo/Nodos" instance=ExtResource("nodo")]
+custom_minimum_size = Vector2(96.0, 96.0)
+offset_left = 744.0
+offset_top = -48.0
+offset_right = 840.0
+offset_bottom = 48.0
+datos = ExtResource("d_c_leyenda")
+
+[node name="s_trebol" parent="Raiz/Vista/Lienzo/Nodos" instance=ExtResource("nodo")]
+custom_minimum_size = Vector2(72.0, 72.0)
+offset_left = -168.0
+offset_top = -36.0
+offset_right = -96.0
+offset_bottom = 36.0
+datos = ExtResource("d_s_trebol")
+
+[node name="s_segunda" parent="Raiz/Vista/Lienzo/Nodos" instance=ExtResource("nodo")]
+custom_minimum_size = Vector2(72.0, 72.0)
+offset_left = -300.0
+offset_top = -168.0
+offset_right = -228.0
+offset_bottom = -96.0
+datos = ExtResource("d_s_segunda")
+
+[node name="s_racha" parent="Raiz/Vista/Lienzo/Nodos" instance=ExtResource("nodo")]
+custom_minimum_size = Vector2(72.0, 72.0)
+offset_left = -300.0
+offset_top = -36.0
+offset_right = -228.0
+offset_bottom = 36.0
+datos = ExtResource("d_s_racha")
+
+[node name="s_santo" parent="Raiz/Vista/Lienzo/Nodos" instance=ExtResource("nodo")]
+custom_minimum_size = Vector2(72.0, 72.0)
+offset_left = -300.0
+offset_top = 96.0
+offset_right = -228.0
+offset_bottom = 168.0
+datos = ExtResource("d_s_santo")
+
+[node name="s_gato" parent="Raiz/Vista/Lienzo/Nodos" instance=ExtResource("nodo")]
+custom_minimum_size = Vector2(72.0, 72.0)
+offset_left = -432.0
+offset_top = -168.0
+offset_right = -360.0
+offset_bottom = -96.0
+datos = ExtResource("d_s_gato")
+
+[node name="s_dado" parent="Raiz/Vista/Lienzo/Nodos" instance=ExtResource("nodo")]
+custom_minimum_size = Vector2(72.0, 72.0)
+offset_left = -432.0
+offset_top = -36.0
+offset_right = -360.0
+offset_bottom = 36.0
+datos = ExtResource("d_s_dado")
+
+[node name="s_herradura" parent="Raiz/Vista/Lienzo/Nodos" instance=ExtResource("nodo")]
+custom_minimum_size = Vector2(72.0, 72.0)
+offset_left = -432.0
+offset_top = 96.0
+offset_right = -360.0
+offset_bottom = 168.0
+datos = ExtResource("d_s_herradura")
+
+[node name="s_huracan" parent="Raiz/Vista/Lienzo/Nodos" instance=ExtResource("nodo")]
+custom_minimum_size = Vector2(72.0, 72.0)
+offset_left = -564.0
+offset_top = -168.0
+offset_right = -492.0
+offset_bottom = -96.0
+datos = ExtResource("d_s_huracan")
+
+[node name="s_iman" parent="Raiz/Vista/Lienzo/Nodos" instance=ExtResource("nodo")]
+custom_minimum_size = Vector2(96.0, 96.0)
+offset_left = -576.0
+offset_top = -48.0
+offset_right = -480.0
+offset_bottom = 48.0
+datos = ExtResource("d_s_iman")
+
+[node name="s_monedas" parent="Raiz/Vista/Lienzo/Nodos" instance=ExtResource("nodo")]
+custom_minimum_size = Vector2(72.0, 72.0)
+offset_left = -564.0
+offset_top = 96.0
+offset_right = -492.0
+offset_bottom = 168.0
+datos = ExtResource("d_s_monedas")
+
+[node name="s_turista" parent="Raiz/Vista/Lienzo/Nodos" instance=ExtResource("nodo")]
+custom_minimum_size = Vector2(72.0, 72.0)
+offset_left = -696.0
+offset_top = -168.0
+offset_right = -624.0
+offset_bottom = -96.0
+datos = ExtResource("d_s_turista")
+
+[node name="s_doble" parent="Raiz/Vista/Lienzo/Nodos" instance=ExtResource("nodo")]
+custom_minimum_size = Vector2(72.0, 72.0)
+offset_left = -696.0
+offset_top = -36.0
+offset_right = -624.0
+offset_bottom = 36.0
+datos = ExtResource("d_s_doble")
+
+[node name="s_perla" parent="Raiz/Vista/Lienzo/Nodos" instance=ExtResource("nodo")]
+custom_minimum_size = Vector2(72.0, 72.0)
+offset_left = -696.0
+offset_top = 96.0
+offset_right = -624.0
+offset_bottom = 168.0
+datos = ExtResource("d_s_perla")
+
+[node name="s_coral" parent="Raiz/Vista/Lienzo/Nodos" instance=ExtResource("nodo")]
+custom_minimum_size = Vector2(72.0, 72.0)
+offset_left = -828.0
+offset_top = -168.0
+offset_right = -756.0
+offset_bottom = -96.0
+datos = ExtResource("d_s_coral")
+
+[node name="s_jackpot" parent="Raiz/Vista/Lienzo/Nodos" instance=ExtResource("nodo")]
+custom_minimum_size = Vector2(96.0, 96.0)
+offset_left = -840.0
+offset_top = -48.0
+offset_right = -744.0
+offset_bottom = 48.0
+datos = ExtResource("d_s_jackpot")
+
+[node name="ch_brisa" parent="Raiz/Vista/Lienzo/Nodos" instance=ExtResource("nodo")]
+custom_minimum_size = Vector2(72.0, 72.0)
+offset_left = -36.0
+offset_top = 96.0
+offset_right = 36.0
+offset_bottom = 168.0
+datos = ExtResource("d_ch_brisa")
+
+[node name="ch_siesta" parent="Raiz/Vista/Lienzo/Nodos" instance=ExtResource("nodo")]
+custom_minimum_size = Vector2(72.0, 72.0)
+offset_left = -168.0
+offset_top = 228.0
+offset_right = -96.0
+offset_bottom = 300.0
+datos = ExtResource("d_ch_siesta")
+
+[node name="ch_hamaca" parent="Raiz/Vista/Lienzo/Nodos" instance=ExtResource("nodo")]
+custom_minimum_size = Vector2(72.0, 72.0)
+offset_left = -36.0
+offset_top = 228.0
+offset_right = 36.0
+offset_bottom = 300.0
+datos = ExtResource("d_ch_hamaca")
+
+[node name="ch_cigarro" parent="Raiz/Vista/Lienzo/Nodos" instance=ExtResource("nodo")]
+custom_minimum_size = Vector2(72.0, 72.0)
+offset_left = 96.0
+offset_top = 228.0
+offset_right = 168.0
+offset_bottom = 300.0
+datos = ExtResource("d_ch_cigarro")
+
+[node name="ch_nubes" parent="Raiz/Vista/Lienzo/Nodos" instance=ExtResource("nodo")]
+custom_minimum_size = Vector2(72.0, 72.0)
+offset_left = -168.0
+offset_top = 360.0
+offset_right = -96.0
+offset_bottom = 432.0
+datos = ExtResource("d_ch_nubes")
+
+[node name="ch_piloto" parent="Raiz/Vista/Lienzo/Nodos" instance=ExtResource("nodo")]
+custom_minimum_size = Vector2(96.0, 96.0)
+offset_left = -48.0
+offset_top = 348.0
+offset_right = 48.0
+offset_bottom = 444.0
+datos = ExtResource("d_ch_piloto")
+
+[node name="ch_ronquido" parent="Raiz/Vista/Lienzo/Nodos" instance=ExtResource("nodo")]
+custom_minimum_size = Vector2(72.0, 72.0)
+offset_left = 96.0
+offset_top = 360.0
+offset_right = 168.0
+offset_bottom = 432.0
+datos = ExtResource("d_ch_ronquido")
+
+[node name="ch_atardecer" parent="Raiz/Vista/Lienzo/Nodos" instance=ExtResource("nodo")]
+custom_minimum_size = Vector2(72.0, 72.0)
+offset_left = -168.0
+offset_top = 492.0
+offset_right = -96.0
+offset_bottom = 564.0
+datos = ExtResource("d_ch_atardecer")
+
+[node name="ch_ron" parent="Raiz/Vista/Lienzo/Nodos" instance=ExtResource("nodo")]
+custom_minimum_size = Vector2(72.0, 72.0)
+offset_left = 96.0
+offset_top = 492.0
+offset_right = 168.0
+offset_bottom = 564.0
+datos = ExtResource("d_ch_ron")
+
+[node name="ch_tormenta" parent="Raiz/Vista/Lienzo/Nodos" instance=ExtResource("nodo")]
+custom_minimum_size = Vector2(72.0, 72.0)
+offset_left = -300.0
+offset_top = 492.0
+offset_right = -228.0
+offset_bottom = 564.0
+datos = ExtResource("d_ch_tormenta")
+
+[node name="ch_mirador" parent="Raiz/Vista/Lienzo/Nodos" instance=ExtResource("nodo")]
+custom_minimum_size = Vector2(72.0, 72.0)
+offset_left = -36.0
+offset_top = 624.0
+offset_right = 36.0
+offset_bottom = 696.0
+datos = ExtResource("d_ch_mirador")
+
+[node name="ch_huerto" parent="Raiz/Vista/Lienzo/Nodos" instance=ExtResource("nodo")]
+custom_minimum_size = Vector2(72.0, 72.0)
+offset_left = -168.0
+offset_top = 624.0
+offset_right = -96.0
+offset_bottom = 696.0
+datos = ExtResource("d_ch_huerto")
+
+[node name="ch_hierba" parent="Raiz/Vista/Lienzo/Nodos" instance=ExtResource("nodo")]
+custom_minimum_size = Vector2(72.0, 72.0)
+offset_left = 96.0
+offset_top = 624.0
+offset_right = 168.0
+offset_bottom = 696.0
+datos = ExtResource("d_ch_hierba")
+
+[node name="ch_nirvana" parent="Raiz/Vista/Lienzo/Nodos" instance=ExtResource("nodo")]
+custom_minimum_size = Vector2(96.0, 96.0)
+offset_left = -48.0
+offset_top = 744.0
+offset_right = 48.0
+offset_bottom = 840.0
+datos = ExtResource("d_ch_nirvana")
+
+[node name="Chispas" type="CPUParticles2D" parent="Raiz/Vista/Lienzo"]
+texture_filter = 1
+emitting = false
+amount = 28
+lifetime = 0.7
+one_shot = true
+explosiveness = 0.95
+texture = ExtResource("chispa")
+direction = Vector2(0, -1)
+spread = 180.0
+gravity = Vector2(0, 520)
+initial_velocity_min = 150.0
+initial_velocity_max = 330.0
+scale_amount_min = 4.0
+scale_amount_max = 7.0
+
+[node name="Cabecera" type="PanelContainer" parent="Raiz"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 24.0
+offset_top = 24.0
+offset_right = -24.0
+offset_bottom = 24.0
+grow_horizontal = 2
+mouse_filter = 2
+
+[node name="Filas" type="VBoxContainer" parent="Raiz/Cabecera"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 16
+
+[node name="Arriba" type="HBoxContainer" parent="Raiz/Cabecera/Filas"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Titulo" type="Label" parent="Raiz/Cabecera/Filas/Arriba"]
+layout_mode = 2
+text = "Árbol del viejo"
+
+[node name="Espacio" type="Control" parent="Raiz/Cabecera/Filas/Arriba"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="Rublos" type="Label" parent="Raiz/Cabecera/Filas/Arriba"]
+layout_mode = 2
+theme_type_variation = &"Dinero"
+text = "0 ₽"
+
+[node name="Ramas" type="HBoxContainer" parent="Raiz/Cabecera/Filas"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 16
+
+[node name="Chip_pesca" parent="Raiz/Cabecera/Filas/Ramas" instance=ExtResource("chip")]
+layout_mode = 2
+rama = ExtResource("rama_pesca")
+
+[node name="Chip_carisma" parent="Raiz/Cabecera/Filas/Ramas" instance=ExtResource("chip")]
+layout_mode = 2
+rama = ExtResource("rama_carisma")
+
+[node name="Chip_suerte" parent="Raiz/Cabecera/Filas/Ramas" instance=ExtResource("chip")]
+layout_mode = 2
+rama = ExtResource("rama_suerte")
+
+[node name="Chip_chill" parent="Raiz/Cabecera/Filas/Ramas" instance=ExtResource("chip")]
+layout_mode = 2
+rama = ExtResource("rama_chill")
+
+[node name="Ficha" type="PanelContainer" parent="Raiz"]
+visible = false
+custom_minimum_size = Vector2(560, 0)
+layout_mode = 0
+offset_right = 560.0
+offset_bottom = 200.0
+mouse_filter = 2
+
+[node name="Contenido" type="VBoxContainer" parent="Raiz/Ficha"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 12
+
+[node name="Arriba" type="HBoxContainer" parent="Raiz/Ficha/Contenido"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 16
+
+[node name="Icono" type="TextureRect" parent="Raiz/Ficha/Contenido/Arriba"]
+texture_filter = 1
+custom_minimum_size = Vector2(72, 72)
+layout_mode = 2
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Textos" type="VBoxContainer" parent="Raiz/Ficha/Contenido/Arriba"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+alignment = 1
+
+[node name="Nombre" type="Label" parent="Raiz/Ficha/Contenido/Arriba/Textos"]
+layout_mode = 2
+text = "Habilidad"
+
+[node name="Rama" type="Label" parent="Raiz/Ficha/Contenido/Arriba/Textos"]
+layout_mode = 2
+theme_type_variation = &"Titulo"
+text = "Rama"
+
+[node name="Descripcion" type="Label" parent="Raiz/Ficha/Contenido"]
+custom_minimum_size = Vector2(500, 0)
+layout_mode = 2
+theme_type_variation = &"Pequeno"
+text = "Lo que hace."
+autowrap_mode = 3
+
+[node name="Abajo" type="HBoxContainer" parent="Raiz/Ficha/Contenido"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Nivel" type="Label" parent="Raiz/Ficha/Contenido/Abajo"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"Pequeno"
+text = "Nv. 0 / 5"
+
+[node name="Coste" type="Label" parent="Raiz/Ficha/Contenido/Abajo"]
+layout_mode = 2
+theme_type_variation = &"Dinero"
+text = "100 ₽"
+
+[node name="Motivo" type="Label" parent="Raiz/Ficha/Contenido"]
+layout_mode = 2
+theme_type_variation = &"Pequeno"
+text = "Faltan rublos"
+
+[node name="Entrada" parent="Raiz/Ficha" instance=ExtResource("anim")]
+estilo = 0
+duracion = 0.18
+sonar = false
+
+[node name="Pie" type="HBoxContainer" parent="Raiz"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 32.0
+offset_top = -84.0
+offset_right = 600.0
+offset_bottom = -28.0
+grow_vertical = 0
+mouse_filter = 2
+theme_override_constants/separation = 40
+
+[node name="Mejorar" type="HBoxContainer" parent="Raiz/Pie"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 12
+
+[node name="Icono" type="TextureRect" parent="Raiz/Pie/Mejorar"]
+texture_filter = 1
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+texture = ExtResource("tecla_e")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Texto" type="Label" parent="Raiz/Pie/Mejorar"]
+layout_mode = 2
+theme_type_variation = &"Pequeno"
+text = "Mejorar"
+
+[node name="Salir" type="HBoxContainer" parent="Raiz/Pie"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 12
+
+[node name="Icono" type="TextureRect" parent="Raiz/Pie/Salir"]
+texture_filter = 1
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+texture = ExtResource("tecla_q")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Texto" type="Label" parent="Raiz/Pie/Salir"]
+layout_mode = 2
+theme_type_variation = &"Pequeno"
+text = "Salir"
+
+[node name="BotonTienda" type="Button" parent="Raiz"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -420.0
+offset_top = -104.0
+offset_right = -32.0
+offset_bottom = -28.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "Tienda del viejo"
+
+[node name="SfxMejorar" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("sfx_mejorar")
+volume_db = -4.0
+
+[node name="SfxNo" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("sfx_no")
+volume_db = -4.0
+
+[node name="SfxAgua" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("sfx_agua")
+volume_db = -4.0
+
+[node name="SfxMax" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("sfx_max")
+volume_db = -4.0

@@ -12,6 +12,8 @@ signal modo_cambiado(andando: bool)
 @export var bestiario: Node
 @export var dialogo: Node
 @export var comercio: Node
+## Árbol de habilidades (lo abre el viejo).
+@export var arbol: Node
 ## El donut: de pie en él, sube y baja con la ola.
 @export var barca: Node3D
 ## Lo de la barca que se esconde mientras andas (el náufrago pescando, la caña...).
@@ -123,6 +125,9 @@ func interactuar(i: Interactuable) -> void:
 			tienda.abrir(i)
 		Interactuable.Accion.BESTIARIO:
 			bestiario.abrir()
+		Interactuable.Accion.ARBOL:
+			if arbol:
+				arbol.abrir(i)
 		Interactuable.Accion.DIALOGO:
 			dialogo.abrir(i.nombre, i.lineas)
 		Interactuable.Accion.CUBO:

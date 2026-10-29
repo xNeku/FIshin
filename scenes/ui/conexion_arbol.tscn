@@ -1,0 +1,24 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/conexion_arbol.gd" id="1_script"]
+[ext_resource type="Shader" path="res://shaders/agua_camino.gdshader" id="2_shader"]
+[ext_resource type="Texture2D" path="res://art/ui/arbol/linea.png" id="3_linea"]
+
+[sub_resource type="ShaderMaterial" id="mat_agua"]
+shader = ExtResource("2_shader")
+shader_parameter/color_agua = Color(0.35, 0.82, 1, 1)
+shader_parameter/color_vacio = Color(0.22, 0.24, 0.32, 1)
+shader_parameter/lleno = 0.0
+shader_parameter/goteo = 0.0
+shader_parameter/largo = 200.0
+shader_parameter/tam_pixel = 4.0
+shader_parameter/velocidad = 1.0
+
+[node name="ConexionArbol" type="Line2D"]
+texture_filter = 1
+material = SubResource("mat_agua")
+width = 12.0
+texture = ExtResource("3_linea")
+texture_mode = 2
+joint_mode = 0
+script = ExtResource("1_script")

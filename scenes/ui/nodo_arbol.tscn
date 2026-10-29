@@ -1,0 +1,91 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/nodo_arbol.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://art/ui/arbol/nodo_marco.png" id="2_marco"]
+[ext_resource type="Texture2D" path="res://art/ui/arbol/nodo_clave.png" id="3_clave"]
+[ext_resource type="Texture2D" path="res://art/ui/arbol/nodo_seleccion.png" id="4_sel"]
+[ext_resource type="Texture2D" path="res://art/ui/arbol/iconos/candado.png" id="5_candado"]
+
+[sub_resource type="StyleBoxEmpty" id="vacio"]
+
+[node name="NodoArbol" type="Button"]
+custom_minimum_size = Vector2(72, 72)
+offset_right = 72.0
+offset_bottom = 72.0
+theme_override_styles/focus = SubResource("vacio")
+theme_override_styles/disabled = SubResource("vacio")
+theme_override_styles/hover_pressed = SubResource("vacio")
+theme_override_styles/hover = SubResource("vacio")
+theme_override_styles/pressed = SubResource("vacio")
+theme_override_styles/normal = SubResource("vacio")
+script = ExtResource("1_script")
+textura_clave = ExtResource("3_clave")
+icono_candado = ExtResource("5_candado")
+
+[node name="Marco" type="NinePatchRect" parent="."]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("2_marco")
+patch_margin_left = 16
+patch_margin_top = 16
+patch_margin_right = 16
+patch_margin_bottom = 16
+
+[node name="Icono" type="TextureRect" parent="."]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -24.0
+offset_top = -24.0
+offset_right = 24.0
+offset_bottom = 24.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Nivel" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -40.0
+offset_top = -16.0
+offset_right = 6.0
+offset_bottom = 8.0
+grow_horizontal = 0
+grow_vertical = 0
+mouse_filter = 2
+theme_override_constants/outline_size = 8
+theme_override_font_sizes/font_size = 20
+text = "0/5"
+horizontal_alignment = 2
+
+[node name="Seleccion" type="NinePatchRect" parent="."]
+visible = false
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("4_sel")
+patch_margin_left = 16
+patch_margin_top = 16
+patch_margin_right = 16
+patch_margin_bottom = 16

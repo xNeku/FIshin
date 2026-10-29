@@ -1,0 +1,31 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/chip_rama.gd" id="1_script"]
+
+[node name="ChipRama" type="PanelContainer"]
+mouse_filter = 2
+script = ExtResource("1_script")
+
+[node name="Fila" type="HBoxContainer" parent="."]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 12
+
+[node name="Icono" type="TextureRect" parent="Fila"]
+texture_filter = 1
+custom_minimum_size = Vector2(36, 36)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Nombre" type="Label" parent="Fila"]
+layout_mode = 2
+theme_type_variation = &"Pequeno"
+text = "Rama"
+
+[node name="Progreso" type="Label" parent="Fila"]
+layout_mode = 2
+theme_type_variation = &"Titulo"
+text = "0/0"

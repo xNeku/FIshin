@@ -1,5 +1,7 @@
 class_name Tienda
 extends CanvasLayer
+
+signal cerrada
 ## Tienda de un vendedor (barco comerciante, viejo...). Pausa el juego.
 ## El vendedor es cualquier nodo con: nombre, articulos, compra_peces y, opcionalmente, saludos y vender().
 
@@ -63,6 +65,7 @@ func cerrar() -> void:
 	abierta = false
 	raiz.visible = false
 	get_tree().paused = false
+	cerrada.emit()
 
 
 func _refrescar() -> void:

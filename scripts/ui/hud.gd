@@ -17,9 +17,7 @@ extends CanvasLayer
 ## Altura de la X sobre los pies del náufrago cuando va andando.
 @export var altura_cabeza_andando: float = 2.0
 @export var velocidad_contador: float = 6.0
-## Iconos de teclas: <carpeta>/<teclado|xbox|ps>_<accion>[_pulsada].png. Redibuja los PNG para cambiarlos.
-@export_dir var carpeta_teclas: String = "res://art/ui/teclas"
-## Dibujos para un mando que no se reconoce por su nombre.
+## Dibujos para un mando que no se reconoce por su nombre (los iconos están en art/ui/teclas).
 @export_enum("ps", "xbox") var mando_por_defecto: String = "ps"
 ## Con varias acciones posibles a la vez, cada cuánto cambia la caja de abajo a la derecha (segundos).
 @export var cambio_acciones: float = 2.0
@@ -75,8 +73,6 @@ var _destello: float = 0.0
 var _pos_prompt: Vector2
 var _mat: ShaderMaterial
 var _ultima_x: int = -1000
-var _dispositivo: String = "teclado"
-var _iconos: Dictionary = {}
 var _accion_machacar: StringName = &""
 var _t_machacar: float = 0.0
 var _acciones: Array[String] = []
@@ -85,6 +81,7 @@ var _i_accion: int = 0
 
 
 func _ready() -> void:
+	IconosInput.mando_por_defecto = mando_por_defecto
 	_mat = efecto.material as ShaderMaterial
 	_rublos_mostrados = Juego.rublos
 	_pos_prompt = prompt.position
@@ -190,22 +187,7 @@ func _pintar_tecla(tecla: TextureRect, accion: StringName) -> void:
 
 ## Icono dibujado de una acción para el último dispositivo usado (teclado o mando).
 func _icono(accion: StringName, pulsada: bool = false) -> Texture2D:
-	var ruta: String = "%s/%s_%s%s.png" % [carpeta_teclas, _dispositivo, accion, "_pulsada" if pulsada else ""]
-	if not _iconos.has(ruta):
-		_iconos[ruta] = load(ruta) if ResourceLoader.exists(ruta) else null
-	return _iconos[ruta]
-
-
-## Xbox o PlayStation según el nombre que da el mando; si no se sabe, mando_por_defecto.
-func _tipo_mando(dispositivo: int) -> String:
-	var nombre: String = Input.get_joy_name(dispositivo).to_lower()
-	for clave: String in ["xbox", "xinput", "microsoft"]:
-		if nombre.contains(clave):
-			return "xbox"
-	for clave: String in ["playstation", "dualsense", "dualshock", "sony", "ps3", "ps4", "ps5", "wireless controller"]:
-		if nombre.contains(clave):
-			return "ps"
-	return mando_por_defecto
+	return IconosInput.icono(accion, pulsada)
 
 
 ## Caja de abajo a la derecha: lo que se puede hacer ahora. Si hay varias cosas, van alternando.
@@ -248,13 +230,7 @@ func _pista(caja: PanelContainer, texto: String) -> void:
 
 func _input(event: InputEvent) -> void:
 	# El último dispositivo usado decide qué dibujos salen.
-	var dispositivo: String = _dispositivo
-	if event is InputEventJoypadButton or (event is InputEventJoypadMotion and absf((event as InputEventJoypadMotion).axis_value) > 0.5):
-		dispositivo = _tipo_mando(event.device)
-	elif event is InputEventKey or event is InputEventMouseButton:
-		dispositivo = "teclado"
-	if dispositivo != _dispositivo:
-		_dispositivo = dispositivo
+	if IconosInput.detectar(event):
 		for t: TextureRect in [tecla1, tecla2]:
 			if t.has_meta("accion"):
 				_pintar_tecla(t, t.get_meta("accion"))
