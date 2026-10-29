@@ -9,8 +9,14 @@ extends Resource
 @export var mult_tiempo_doble: float = 1.4
 ## Las dobles solo pueden salir a partir de este botón de la cadena (1 = desde el primero).
 @export var dobles_desde_boton: int = 5
-@export var espera_min: float = 1.5
-@export var espera_max: float = 3.5
+## Segundos hasta que pica (al azar entre los dos). Pesca tranquila: entre picada y picada hay calma.
+@export var espera_min: float = 6.0
+@export var espera_max: float = 14.0
+## Picoteos de mentira mientras esperas (el corcho tiembla un poco): cada cuánto, al azar entre los dos.
+@export var picoteo_min: float = 2.5
+@export var picoteo_max: float = 6.0
+## El último picoteo avisa de que va a picar: este tiempo antes de la picada de verdad.
+@export var aviso_picada: float = 0.9
 
 @export_group("Sensación")
 ## Botones seguidos que hacen falta para el máximo de zoom, shake y efectos.
@@ -29,6 +35,36 @@ extends Resource
 @export var mult_perfecto: float = 2.0
 ## Penalización al valor por cada barra de machacar no llenada.
 @export var penalizacion_machacar: float = 0.25
-## El dinero gordo sale de los combos a mano: cada botón acertado suma esto al valor del pez
-## (0.12 = un combo de 10 vale ×2,2; uno de 50, ×7).
-@export var bonus_por_boton: float = 0.12
+
+@export_group("Racha (combo)")
+## Cada botón acertado paga una parte del pez; desde el botón racha_desde[i], cada botón paga racha_mult[i] veces.
+## Así una cadena larga rinde más por segundo que muchas cortas (ver docs/INCREMENTAL.md).
+## Pez perfecto de x5 = ×1,05 de media; x20 = ×1,36; x50 = ×1,9; x100 = ×2,6; x200 = ×3,6.
+@export var racha_desde: Array[int] = [5, 10, 20, 35, 50, 75, 100, 150, 200]
+@export var racha_mult: Array[float] = [1.25, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 5.0, 6.0]
+
+
+## Multiplicador del botón i de la cadena (1 = el primero).
+func racha(i: int) -> float:
+	var m: float = 1.0
+	for n in mini(racha_desde.size(), racha_mult.size()):
+		if i >= racha_desde[n]:
+			m = racha_mult[n]
+	return m
+
+
+## Tramo de racha en el que está el botón i (0 = sin tramo). Para lo visual.
+func tramo_racha(i: int) -> int:
+	var t: int = 0
+	for n in racha_desde.size():
+		if i >= racha_desde[n]:
+			t = n + 1
+	return t
+
+
+## Lo que suman los primeros 'aciertos' botones.
+func suma_racha(aciertos: int) -> float:
+	var s: float = 0.0
+	for i in range(1, aciertos + 1):
+		s += racha(i)
+	return s

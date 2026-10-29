@@ -22,7 +22,7 @@ const RUTA_ARBOL := "res://data/arbol/arbol.tres"
 @export var huecos_iniciales: int = 6
 @export var cana_inicial: StringName = &"cana_rota"
 ## Segundos sin tocar nada para que cuente como "de chill" (rama Chill).
-@export var segundos_para_chill: float = 20.0
+@export var segundos_para_chill: float = 8.0
 
 var rublos: float = 0.0
 var rublos_totales: float = 0.0

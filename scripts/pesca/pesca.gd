@@ -20,6 +20,12 @@ signal barca_llena(pez: PezData)
 signal bloqueo_barca_llena(llena: bool)
 ## La suerte dio un pez de más (rama Suerte).
 signal captura_doble(pez: PezData)
+## El corcho tiembla mientras esperas. aviso = true: es el de justo antes de picar.
+signal picoteo(aviso: bool)
+## Estabas de chill y no tocaste nada: el pez se va sin más (sin X, no cuenta como escapado).
+signal pez_se_va(pez: PezData)
+## La cadena entra en un tramo de racha nuevo (StatsPesca.racha_desde). Para lo visual.
+signal racha_subida(tramo: int)
 
 enum Estado { INACTIVO, ESPERANDO, PASO, ENTRE_PASOS, RESULTADO }
 enum Tipo { SIMPLE, DOBLE, MACHACAR }
@@ -57,6 +63,10 @@ var _bloqueo: float = 0.0
 var _llena: bool = false
 ## Esta picada llega tras un rato de chill (rama Chill: Meditación y Ron de coco).
 var _tras_chill: bool = false
+## Se ha pulsado algo del minijuego en esta picada.
+var _tocado: bool = false
+var _t_picoteo: float = 0.0
+var _avisado: bool = false
 
 
 func _ready() -> void:
@@ -79,6 +89,7 @@ func _process(delta: float) -> void:
 				return
 			# De chill pican antes (rama Chill).
 			_contador -= delta * (1.0 + (Juego.efecto(&"espera_chill") if Juego.de_chill() else 0.0))
+			_picotear(delta)
 			if _contador <= 0.0:
 				_picar()
 		Estado.PASO:
@@ -109,6 +120,7 @@ func _unhandled_input(event: InputEvent) -> void:
 func pulsar(accion: StringName) -> void:
 	if estado != Estado.PASO:
 		return
+	_tocado = true
 	var p: Paso = pasos[indice]
 	match p.tipo:
 		Tipo.SIMPLE:
@@ -135,8 +147,11 @@ func pulsar(accion: StringName) -> void:
 
 func esperar() -> void:
 	pez = null
+	# Las rebajas de espera del árbol van en hiperbólica: +100 % = la mitad de espera, nunca cero.
 	_contador = randf_range(stats.espera_min, stats.espera_max) * Juego.cana().mult_espera * Juego.mult_espera_cebo() \
-		* maxf(0.3, 1.0 - Juego.efecto(&"espera"))
+		/ (1.0 + Juego.efecto(&"espera"))
+	_t_picoteo = randf_range(stats.picoteo_min, stats.picoteo_max)
+	_avisado = false
 	_cambiar_estado(Estado.ESPERANDO)
 	intensidad_cambiada.emit(0.0)
 
@@ -187,9 +202,21 @@ func paso_actual() -> Paso:
 	return pasos[indice] if estado == Estado.PASO else null
 
 
+func _picotear(delta: float) -> void:
+	if not _avisado and _contador <= stats.aviso_picada:
+		_avisado = true
+		picoteo.emit(true)
+		return
+	_t_picoteo -= delta
+	if _t_picoteo <= 0.0 and _contador > stats.aviso_picada + 0.5:
+		_t_picoteo = randf_range(stats.picoteo_min, stats.picoteo_max)
+		picoteo.emit(false)
+
+
 func _picar() -> void:
 	cana = Juego.cana()
 	_tras_chill = Juego.de_chill()
+	_tocado = false
 	pez = _tirar_pez()
 	if pez == null:
 		esperar()
@@ -277,6 +304,9 @@ func _acertar() -> void:
 	aciertos += 1
 	Juego.registrar_combo(indice + 1)
 	acierto.emit(indice + 1, pez.pasos_perfect)
+	var tramo: int = stats.tramo_racha(indice + 1)
+	if tramo > stats.tramo_racha(indice):
+		racha_subida.emit(tramo)
 	_avanzar()
 
 
@@ -291,6 +321,12 @@ func _avanzar() -> void:
 
 
 func _tiempo_agotado() -> void:
+	# De chill y sin tocar nada: le dejas ir. Así se puede estar tumbado sin pescar mientras trabajan los demás
+	# (y la caña Sabia o la Pesca de memoria no pescan solas).
+	if indice == 0 and not _tocado and _tras_chill:
+		pez_se_va.emit(pez)
+		esperar()
+		return
 	if pasos[indice].tipo == Tipo.MACHACAR:
 		var escapa: bool = pez.escapa_si_falla_machacar()
 		machacar_fallido.emit(escapa)
@@ -325,16 +361,16 @@ func _escapar() -> void:
 
 
 func _capturar() -> void:
-	var ratio: float = float(aciertos) / float(pez.pasos_perfect)
+	var perfect: float = float(pez.pasos_perfect)
 	var perfecto: bool = aciertos >= pez.pasos_perfect
 	var peso: float = randf_range(pez.peso_min, pez.peso_max) * (1.0 + Juego.efecto(&"peso"))
-	ratio = minf(1.0, ratio + Juego.efecto(&"calidad"))
-	var mult: float = lerpf(stats.mult_calidad_min, 1.0, ratio)
+	var ratio: float = minf(1.0, float(aciertos) / perfect + Juego.efecto(&"calidad"))
+	# Cada botón acertado paga 1/perfect del pez, multiplicado por su tramo de racha: los combos largos
+	# a mano son los que dan el dinero gordo. Con pocos botones, al menos mult_calidad_min.
+	var mult: float = maxf(stats.mult_calidad_min, stats.suma_racha(aciertos) / perfect + Juego.efecto(&"calidad"))
 	mult *= maxf(0.1, 1.0 - stats.penalizacion_machacar * machacar_fallados)
 	if perfecto:
 		mult *= stats.mult_perfecto
-	# Los combos largos a mano son los que dan el dinero gordo.
-	mult *= 1.0 + stats.bonus_por_boton * aciertos
 	var valor: float = pez.valor_base * (peso / ((pez.peso_min + pez.peso_max) * 0.5)) * mult
 	var captura: Dictionary = {
 		"id": String(pez.id), "peso": peso, "calidad": ratio, "perfecto": perfecto, "valor": valor,

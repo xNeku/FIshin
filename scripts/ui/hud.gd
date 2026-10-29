@@ -29,6 +29,8 @@ extends CanvasLayer
 @export var salto_prompt_maximo: float = 220.0
 @export var color_numeros: Color = Color("ff9a3c")
 @export var color_perfecto: Color = Color("ffd84a")
+## Color del contador de combo según el tramo de racha (StatsPesca.racha_desde): 0 = sin tramo.
+@export var colores_racha: Array[Color] = [Color("e8e8e8"), Color("8fe3ff"), Color("4fa3ff"), Color("7dff8a"), Color("ffd84a"), Color("ff9a3c"), Color("ff5a5a"), Color("ff6bd8"), Color("b56bff"), Color("ffffff")]
 @export var colores_rareza: Array[Color] = [Color("e8e8e8"), Color("4fa3ff"), Color("b56bff"), Color("ffb02e")]
 ## Frase de cada acierto según cuántos botones llevas: la palabra i sale desde el botón umbrales_palabras[i].
 @export var palabras_acierto: Array[String] = ["Bien", "Genial", "¡Brutal!", "¡LOCURA!", "¡¡DIOS!!", "¡¡¡INHUMANO!!!"]
@@ -40,6 +42,8 @@ extends CanvasLayer
 @export var destello_acierto_max: float = 0.6
 @export var destello_captura: float = 0.2
 @export var destello_perfecto: float = 0.5
+## Al subir de tramo de racha.
+@export var destello_racha: float = 0.45
 
 ## Letras de las pistas "[E] ..." y su acción del Input Map.
 const TECLA_A_ACCION: Dictionary = {"E": &"interactuar", "Q": &"cambiar_modo", "Tab": &"menu"}
@@ -104,6 +108,7 @@ func _ready() -> void:
 		pesca.barca_llena.connect(_on_barca_llena)
 		pesca.bloqueo_barca_llena.connect(_on_bloqueo_barca_llena)
 		pesca.intensidad_cambiada.connect(func(i: float) -> void: _intensidad_objetivo = i)
+		pesca.racha_subida.connect(_on_racha)
 		_on_estado(pesca.estado)
 	if comercio:
 		comercio.venta_terminada.connect(_on_vendido)
@@ -276,12 +281,24 @@ func _on_acierto(indice: int, _total: int) -> void:
 	_destello = lerpf(destello_acierto_min, destello_acierto_max, k)
 	combo.visible = indice >= 2
 	combo.text = "x%d" % indice
+	if not colores_racha.is_empty():
+		combo.modulate = colores_racha[mini(pesca.stats.tramo_racha(indice), colores_racha.size() - 1)]
 	combo.pivot_offset = combo.size * 0.5
 	combo.scale = Vector2.ONE * (1.2 + k)
 	create_tween().tween_property(combo, "scale", Vector2.ONE * (0.8 + 0.6 * k), 0.15)
 	# Frases de acierto ("Genial", "¡Brutal!"...): quitadas por ahora, se retomarán más adelante.
 	#var c: Color = color_numeros.lerp(color_perfecto, k)
 	#_popup_en(_palabra(indice), c, prompt.position + teclas.position + teclas.size * 0.5 + Vector2(0, -120), 0.7 + 0.7 * k)
+
+
+## Tramo de racha nuevo: destello y el contador pega un salto (sin textos).
+func _on_racha(_tramo: int) -> void:
+	_destello = maxf(_destello, destello_racha)
+	combo.pivot_offset = combo.size * 0.5
+	var k: float = pesca.intensidad()
+	var tw := create_tween()
+	tw.tween_property(combo, "scale", Vector2.ONE * (2.2 + k), 0.08)
+	tw.tween_property(combo, "scale", Vector2.ONE * (0.8 + 0.6 * k), 0.3).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 
 
 func _palabra(indice: int) -> String:

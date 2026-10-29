@@ -36,6 +36,9 @@ extends Node3D
 @export var duracion_lanzado: float = 0.55
 @export var altura_lanzado: float = 1.6
 @export var hundimiento_picada: float = 0.18
+## Picoteos mientras esperas: el de mentira y el aviso de justo antes de picar.
+@export var hundimiento_picoteo: float = 0.05
+@export var hundimiento_aviso: float = 0.1
 @export var temblor_maximo: float = 0.12
 
 @export_group("Ondas")
@@ -70,6 +73,9 @@ func _ready() -> void:
 			_hundido = hundimiento_picada
 			_poner_pose(textura_tira, punta_tira)
 			_salpicar(18))
+		pesca.picoteo.connect(func(aviso: bool) -> void:
+			_hundido = hundimiento_aviso if aviso else hundimiento_picoteo
+			_salpicar(4 if aviso else 2))
 		pesca.acierto.connect(func(_i: int, _n: int) -> void: _apretar())
 		pesca.intensidad_cambiada.connect(func(i: float) -> void: _intensidad = i)
 		_on_estado(pesca.estado)

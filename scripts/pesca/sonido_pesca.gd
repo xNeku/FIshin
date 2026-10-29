@@ -2,7 +2,9 @@ extends Node
 ## Sonidos del minijuego. El tono de los aciertos sube con la cadena y el latido aparece y acelera con la intensidad.
 
 @export var pesca: Pesca
-@export var subida_tono_por_acierto: float = 0.06
+@export var subida_tono_por_acierto: float = 0.04
+## Tope del tono de los aciertos (con combos de 100 se iba a las nubes).
+@export var tono_maximo: float = 2.0
 ## El latido no suena hasta llegar a esta intensidad: se descubre con cadenas largas.
 @export var latido_desde: float = 0.2
 @export var latido_volumen_min_db: float = -30.0
@@ -18,6 +20,8 @@ extends Node
 @onready var perfecto: AudioStreamPlayer = $Perfecto
 @onready var escapa: AudioStreamPlayer = $Escapa
 @onready var latido: AudioStreamPlayer = $Latido
+## Al entrar en un tramo de racha nuevo (opcional).
+@onready var racha: AudioStreamPlayer = get_node_or_null("Racha")
 
 var _intensidad: float = 0.0
 
@@ -36,6 +40,10 @@ func _ready() -> void:
 	pesca.pez_escapado.connect(func(_p: PezData) -> void: escapa.play())
 	pesca.barca_llena.connect(func(_p: PezData) -> void: escapa.play())
 	pesca.intensidad_cambiada.connect(func(i: float) -> void: _intensidad = i)
+	if racha:
+		pesca.racha_subida.connect(func(tramo: int) -> void:
+			racha.pitch_scale = minf(tono_maximo, 1.0 + 0.08 * float(tramo - 1))
+			racha.play())
 
 
 func _process(_delta: float) -> void:
@@ -47,5 +55,5 @@ func _process(_delta: float) -> void:
 
 
 func _on_acierto(indice: int, _total: int) -> void:
-	acierto.pitch_scale = 1.0 + subida_tono_por_acierto * float(indice - 1)
+	acierto.pitch_scale = minf(tono_maximo, 1.0 + subida_tono_por_acierto * float(indice - 1))
 	acierto.play()

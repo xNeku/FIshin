@@ -12,6 +12,6 @@ cadena_min = 3
 cadena_max = 15
 sesgo_cadena = 1.25
 mult_tiempo = 1.1
-mult_espera = 0.8
+mult_espera = 0.7
 mult_rareza = 1.6
 auto_primer_boton = true

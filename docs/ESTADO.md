@@ -62,6 +62,9 @@ Parada para valorar rumbo (29 oct). Hay un tramo jugable de principio a fin de l
 - Gráficos: atril del bestiario redibujado, iconos hamaca y brazo, rejilla de pesca más suave (`zona_pesca.gdshader`: `linea_tenue`, `largo_cruce`).
 - Estudio: `docs/INCREMENTAL.md` con fórmulas de incremental aplicadas a Fishin. Hallazgo: la curva de combo lineal no premia los combos largos, y la cadena no pasa del perfect.
 
+## Sesión 29 oct (noche)
+- Balance de combo, ritmo, chill y pescadores por fórmula, con el simulador v2 (`docs/herramientas/simular_economia.py`) y lo aprendido de osu!, Guitar Hero, AdVenture Capitalist, Cookie Clicker y Cast n Chill (`docs/INCREMENTAL.md`).
+
 ## Siguiente paso
 Sesión de progresión con el diseñador hasta el midgame (economía y orden de desbloqueos), partiendo de `docs/PROGRESION.md` (borrador v1) y `docs/INCREMENTAL.md`.
 
@@ -84,7 +87,9 @@ Por decidir con el diseñador en la charla de rumbo. Candidatos:
 - Sin frases en el HUD: fuera llegadas, ¡PICA!, calidad y estado de arriba (solo queda "¡Barca llena! Ve a vender"). Fallo/escape = X roja (`scenes/ui/popup_icono.tscn`, `art/ui/x_roja.png`). `AparicionData.texto_llegada` ya no se usa.
 - Nada de textos flotantes en el mundo (ni carteles, ni contadores encima de pescadores o cubo). Las frases de acierto del minijuego están comentadas en hud.gd (_on_acierto) para retomarlas más adelante.
 - Interfaz estilo Animal Well (paneles negros, borde blanco, selección amarilla) con filtro retro de tubo y animaciones de entrada. Teclas dibujadas del pack CC0 de Xelu; mando PlayStation por defecto, también Xbox. Acción posible abajo a la derecha, alternando cada 2 s si hay varias.
-- El náufrago no pesca solo (fuera el piloto). Lo pasivo nunca sustituye a pescar a mano; cada botón acertado sube un 12 % el valor.
+- El náufrago no pesca solo (fuera el piloto). Lo pasivo nunca sustituye a pescar a mano.
+- Racha: cada botón acertado paga una parte del pez, y en racha paga más (×1,25 desde el 5.º ... ×6 desde el 200.º; `StatsPesca.racha_desde` / `racha_mult`). Al subir de tramo suenan un arpegio y un destello y el contador cambia de color. Ver `docs/INCREMENTAL.md` §6.
+- Pesca tranquila: esperas de 6-14 s con picoteos del corcho y aviso antes de picar. De chill (8 s sin tocar nada), el pez que no tocas se va sin castigo (`Pesca.pez_se_va`). Peces ×2,5 de valor para mantener el ₽/min. Pescadores rebajados a ~8,3 ₽/min. La rejilla de la zona de pesca está oculta (ZonaPesca, visible = false en main.tscn).
 - Estilo B pixelado, sin desenfoque. Nada de modelos 3D en objetos. Prota en donut rosa (no hay barca), piernas de frente, caña a la derecha. Viejo entre palmeras con hoguera delante.
 
 ## Pendiente del diseñador

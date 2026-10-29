@@ -84,35 +84,61 @@ Las probabilidades y los porcentajes de reducción **no pueden sumar sin límite
 | `1 / (1 + x)` | reducciones de tiempo | un +100 % de "velocidad" es la mitad de espera, nunca cero |
 | `x^0,5` o `log(1+x)` pasado un umbral | softcap | sigue subiendo, pero cada vez menos |
 
-En Fishin, la espera usa `maxf(0.3, 1 − espera)`, que es un tope duro. Si un día se pasa de 0,7 en total, los niveles extra no harán nada. Cambiarlo a `1 / (1 + espera)` es una línea, pero mueve todos los números de la rama, así que **queda para la sesión de balance**. Pasa lo mismo con `segunda_oportunidad`, `pesca_doble` y `venta_doble`: hoy son probabilidades sumadas tal cual.
+En Fishin, la espera ya va en hiperbólica: `espera × 1 / (1 + efecto espera)` (Paciencia + Cigarrito al máximo = +90 % de ritmo, es decir, un 47 % menos de espera). Siguen sumadas tal cual `segunda_oportunidad`, `pesca_doble` y `venta_doble`: mientras el árbol no pase del 50 % en ninguna, no hace falta tocarlas.
 
-## 6. Lo que cuesta el combo (ojo, choque con el diseño)
+## 6. El combo: la racha (hecho)
 
-Decidido: **el dinero gordo viene de los combos largos hechos a mano**. Con la fórmula actual eso no pasa:
+**Problema que había:** el valor del pez era `× (1 + 0,12 · aciertos)`. El valor y el tiempo crecían los dos en línea, así que un x100 rendía por segundo lo mismo que un x5. Además, entre picada y picada solo pasaban 1,5-3,5 s: pescar 20 sardinas seguidas costaba casi lo mismo que un pez largo.
+
+**Lo que hacen otros:**
+- **osu!**: cada golpe vale `valor × (1 + combo × dificultad / 25)`, así que lo que suma una cadena crece con el cuadrado de su largo.
+- **Guitar Hero**: el multiplicador sube x2, x3, x4 cada 10 notas seguidas y se pierde al fallar. El tope (x4, x8 con Star Power) evita que se dispare.
+- **Taiko**: el bonus es `combo / 10` con tope 10.
+
+**Fórmula de Fishin:** pago por botón (osu!) con tramos (Guitar Hero) y un tope por tramo:
 
 ```
-valor del pez ∝ 1 + 0,12 · aciertos         (lineal)
-tiempo de la picada ≈ 4,5 s + 0,5 s · aciertos   (también lineal)
+multiplicador del botón i = racha(i): 1 hasta el 4.º; ×1,25 desde el 5.º; ×1,5 desde el 10.º; ×2 desde el 20.º;
+                            ×2,5 desde el 35.º; ×3 desde el 50.º; ×3,5 desde el 75.º; ×4 desde el 100.º;
+                            ×5 desde el 150.º; ×6 desde el 200.º (el tope)
+valor = base × peso × max(0,3, Σ racha(1..aciertos) / perfect) × (2 si perfecto) × penalización de machacar
 ```
 
-Valor por segundo según el largo del combo (salen del simulador):
-
-| Fórmula | x3 | x5 | x10 | x20 | x50 | x100 | x200 | Multiplicador a x200 |
+| Cadena perfecta | x1 | x5 | x10 | x20 | x35 | x50 | x100 | x200 |
 |---|---|---|---|---|---|---|---|---|
-| lineal 0,12 (la de ahora) | 0,23 | 0,23 | 0,23 | 0,23 | 0,24 | 0,24 | 0,24 | ×25 |
-| cuadrática suave `1 + 0,12a + 0,004a²` | 0,23 | 0,24 | 0,27 | 0,35 | 0,58 | 0,97 | 1,77 | ×185 |
-| potencia `1 + 0,05·a^1,5` | 0,21 | 0,22 | 0,27 | 0,38 | 0,63 | 0,94 | 1,36 | ×142 |
-| tramos: lineal × 1,5 cada 25 | 0,23 | 0,23 | 0,23 | 0,23 | 0,53 | 1,21 | 6,13 | ×641 |
+| Multiplicador medio de la racha | 1,00 | 1,05 | 1,18 | 1,36 | 1,65 | 1,92 | 2,59 | 3,56 |
+| Rinde por segundo (con el mismo valor por botón) | — | 0,67 | — | 2,50 | — | 5,87 | 10,2 | 16,4 |
 
-- Con la lineal, **un combo de 100 rinde por segundo lo mismo que uno de 5**: pescar largo no compensa, solo luce más.
-- Además, hoy la cadena se corta en `pasos_perfect` del pez (de 5 a 14), así que de momento no existen combos de 20 o más.
-- El modo flow (desde el botón 15) y el modo infinito necesitan que la cadena pueda pasar del perfect.
+- Cada botón acertado paga una parte del pez, y en racha paga más.
+- Al cambiar de tramo hay recompensa sin texto: sonido de arpegio (`art/sfx/racha.wav`), destello, el contador da un salto y cambia de color (`HUD.colores_racha`).
+- Rinde más por segundo por dos motivos: la espera entre picadas (unos 10 s) se reparte entre más botones, y los tramos suben el pago.
+- Por encima de 200 el multiplicador ya no sube: el modo infinito crece en línea y no rompe la economía.
+- Todo está en `data/stats_pesca.tres` (`racha_desde`, `racha_mult`) para ajustarlo en el inspector.
 
-**[ABIERTO] Qué curva quieres para el combo.** Mi opinión:
+**Guía para poner precio a un pez nuevo** (para que los peces largos compensen su tiempo):
 
-- La **cuadrática suave** es la más honesta: cada botón vale un poco más que el anterior, sin saltos raros.
-- La **de tramos** da momentos de "¡x1,5!" al cruzar 25, 50, 75..., muy de feel. Pega con el flow y con logros como "combo 200".
-- Se pueden combinar: cuadrática suave de base, y tramos solo como celebración visual, sin tocar el dinero.
+```
+base ≈ k_tramo × (espera media + 0,6 s × perfect) × perfect^0,3 × rareza
+```
+
+El `perfect^0,3` es la prima por dificultad. Comparado con un pez de x5, uno de x50 rinde unas 3,6 veces más por segundo y uno de x200, unas 11. Rinde más, pero no tanto como para que los cortos sobren.
+
+**Pendiente:** la cadena sigue cortándose en el `perfect` del pez, así que los combos de 20 o más llegan con los peces de perfect alto (midgame 10-25, final 30-60). El modo infinito será aparte.
+
+## 6.5 Ritmo de pesca y chill (hecho)
+
+Referencia: **Cast n Chill** (Steam, 2025, "muy positivas"). Las reseñas destacan que el sedal en el agua sin que pique nada "a veces es lo mejor", y su modo idle.
+
+- **Espera realista:** de 6 a 14 s (antes 1,5-3,5 s). Caña Decente ×0,85, Sabia ×0,7. Salen unos 4,4 peces/min, uno cada ~14 s.
+- **Picoteos:** mientras esperas, el corcho tiembla de vez en cuando (picoteos falsos cada 2,5-6 s). Justo antes de picar (0,9 s) hay un aviso. Así el que está tranquilo ve venir el pez y no se asusta. Valores en `StatsPesca` (`picoteo_min`, `picoteo_max`, `aviso_picada`) y la fuerza en la Barca (`hundimiento_picoteo`, `hundimiento_aviso`).
+- **Chill:**
+  - Estás de chill tras **8 s sin tocar nada**. La Hamaca lo baja 1 s por nivel, hasta 4 s.
+  - Con esperas de 6-14 s, en casi todas las picadas entras en chill a mitad de espera. Por eso Brisa marina y Ronquido (pican más rápido de chill) ya funcionan.
+- **Dejar pasar:**
+  - Si estás de chill y pica un pez que no tocas, se va solo: sin X, sin sonido de escape y sin contar como escapado.
+  - Puedes quedarte tumbado en el donut todo lo que quieras mientras los pescadores (y la rama Chill: Siesta, Atardecer, Nirvana) generan por detrás, y volver a pescar cuando te apetezca.
+  - De paso cierra un agujero: la caña Sabia y la Pesca de memoria pescaban solas si no tocabas nada.
+- **Mismo ritmo de dinero:** los peces valen unas 2,5 veces más (sardina 14, caballa 25, lubina 60, bota 85, atún 130, kraken 1.100). Así el ₽/min se queda como estaba (Rota ~57, Decente ~138, Sabia ~275) y los precios, el árbol y las llegadas por dinero no se descuadran. El viejo pasa de 100 a 50 peces para seguir llegando hacia el minuto 12.
 
 ## 7. Activo frente a pasivo
 
@@ -128,7 +154,16 @@ Formas de garantizarlo sin poner un tope feo:
 2. **Los multiplicadores grandes solo afectan a lo manual** (combo, perfecto, flow). Los de Carisma afectan a todo, pero son aditivos.
 3. **Los negocios dependen de tu suministro** (decidido): sin tus peces buenos, el sushi va a medio gas.
 
-Cifras de ahora: un pescador saca unos **21 ₽/min** (sardina, 10 por viaje, unos 57 s por ciclo). El manual va de 60 ₽/min (caña Rota) a 250 ₽/min (Sabia). Con la regla 1:3, en la Sabia caben 3 o 4 pescadores antes de que lo pasivo pese demasiado. Esa es una buena cifra para el límite inicial de contratación.
+Cifras de ahora (rebajadas): un pescador saca unos **8,3 ₽/min**. Pesca una sardina cada 38 s, lleva 6 por viaje y les saca el 40 % del valor (`calidad` 0,15).
+
+```
+ingreso de un pescador = valor_sardina × lerp(0,3, 1, calidad) × capacidad / (capacidad × tiempo_por_pez + viaje)
+                       = 14 × 0,405 × 6 / (6 × 38 + 15) × 60 ≈ 8,3 ₽/min
+```
+
+- Cuando llega el puerto (con la caña Sabia, ~275 ₽/min a mano), el primero es un 3 % de lo tuyo.
+- Con la regla 1:3 caben unos 10 antes de que lo pasivo pese demasiado. Así queda sitio para que el árbol (Carisma y Chill) y el pantalán los hagan crecer sin romper nada.
+- Bolsas extra (Carisma) pasa a +1 pez por nivel; antes era +2, que con 6 de capacidad era demasiado.
 
 ## 8. Contratar pescadores (decidido: se habla con el primero; el límite viene del árbol y del pantalán)
 
@@ -139,7 +174,7 @@ coste del pescador n = 150 · 1,6^n      →  150, 240, 384, 614, 983, 1.573, 2.
 límite = 2 (base) + nodos del árbol + nivel del pantalán × 2
 ```
 
-- Payback del primero: 150 / 21 ≈ 7 min; el quinto, unos 47 min.
+- Payback del primero: 150 / 8,3 ≈ 18 min; el quinto, unos 2 h. Es lento a propósito: el pescador es compañía y un empujón, no la forma de ganar. Si se quiere más alegre, se baja la base del coste, no se sube lo que pesca.
 - Eso empuja a mejorar el pantalán o a subir Carisma (velocidad y capacidad del pescador) en vez de acumular gente.
 - Mejorar al pescador (multiplicar sus 21 ₽/min) suele ser mejor palanca que contratar más, porque no ocupa bordes.
 - Recuerda que el puerto tiene bordes físicos limitados: el límite de contratación nunca debería pasar de los bordes que hay, o el jugador paga por alguien que no cabe. El código ya avisa en vez de colgarse.
@@ -197,7 +232,17 @@ Reiniciar a cambio de una moneda permanente: `moneda = floor((total ganado / 1e6
 - Kittens Game: recursos encadenados, almacenes con tope, el equilibrio como puzzle.
 - Antimatter Dimensions: números enormes, varias capas de prestigio, ritmo muy medido.
 - Forager: expansión de terreno que se paga y desbloquea más recursos (nuestra referencia directa).
-- Anatomía de un incremental (Kongregate, post "The Math of Idle Games", partes I-III). Es la lectura clásica sobre costes, pagos y prestigio.
+- Anthony Pecorella (productor de AdVenture Capitalist), "The Math of Idle Games", partes I-III. Es la lectura clásica:
+  - Parte I: crecimiento, costes, compra en bloque y máximo asequible.
+  - Parte II: modelos de crecimiento por derivadas, al estilo Antimatter Dimensions.
+  - Parte III: bucles de prestigio.
+  - Enlaces: [I](https://www.gamedeveloper.com/design/the-math-of-idle-games-part-i), [II](https://www.gamedeveloper.com/disciplines/the-math-of-idle-games-part-ii), [III](https://www.gamedeveloper.com/design/the-math-of-idle-games-part-iii).
+- Cookie Clicker: coste `base × 1,15^n`, que dobla el precio cada 5 edificios; la compra en bloque es una serie geométrica ([wiki](https://cookieclicker.wiki.gg/wiki/Building)).
+- AdVenture Capitalist: hitos a 25, 50, 100, 200... unidades que reducen a la mitad el tiempo de ciclo ([wiki](https://adventure-capitalist.fandom.com/wiki/Businesses)).
+- osu! (ScoreV1): el valor de cada golpe crece con el combo ([wiki](https://osu.ppy.sh/wiki/be/Gameplay/Score/ScoreV1/osu%21)).
+- Guitar Hero: multiplicador x2, x3, x4 cada 10 notas, que se pierde al fallar ([wiki](https://guitarhero.fandom.com/wiki/Multiplier)).
+- Cast n Chill: pesca idle tranquila con modo automático ([reseña de Shacknews](https://www.shacknews.com/article/144913/cast-n-chill-review-score)).
+- Devlog "Active or idle?": bonus por no tocar y enfriamientos en los clics para equilibrar los dos estilos ([itch.io](https://fourda.itch.io/four-divine-abidings-full/devlog/981439/active-or-idle)). Es lo mismo que hacemos con la rama Chill.
 
 ---
 
@@ -207,8 +252,9 @@ Reiniciar a cambio de una moneda permanente: `moneda = floor((total ganado / 1e6
 |---|---|
 | Costes geométricos (árbol, tienda) | Hecho |
 | Efectos por cubos (`Juego.efecto`) | Hecho |
-| Topes de probabilidad / reducción | Topes duros; pasar a hiperbólicos en el balance |
-| Curva de combo con peso | Falta; la lineal no premia los combos largos |
+| Topes de probabilidad / reducción | Espera en hiperbólica; las probabilidades siguen sumadas (bajo el 50 %) |
+| Curva de combo con peso | Hecho: racha por tramos con tope ×6 |
+| Esperas realistas, picoteos y chill que deja pasar | Hecho |
 | Cadena más allá del perfect (flow, infinito) | Falta |
 | Contratación con límite | Falta (decidido cómo; faltan los números) |
 | Suministro de negocios `min(clientes, raciones)` | Falta (T2) |

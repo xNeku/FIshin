@@ -89,7 +89,8 @@ Lo que ya está hecho cubre **T0 y T1** (comerciante, primera isla, viejo, camin
 ### 1.2 Trabajadores
 - [DECIDIDO] Los edificios con trabajadores permiten contratar más, como los pescadores.
 - [DECIDIDO] Los pescadores se contratan **hablando con el primero**, que siempre está fijo en su puesto. Hay un **límite** de cuántos puedes tener, que sube con nodos del árbol y con mejoras del pantalán.
-- [PROPUESTA] Coste `150 · 1,6^n` y límite `2 + árbol + 2 por nivel del pantalán`. Un pescador da unos 21 ₽/min, así que caben 3 o 4 antes de romper la regla pasivo ≤ manual/3 (ver `docs/INCREMENTAL.md` §7-8).
+- [PROPUESTA] Coste `150 · 1,6^n` y límite `2 + árbol + 2 por nivel del pantalán`.
+- [DECIDIDO] Los pescadores daban demasiado al empezar (21 ₽/min). Rebajado a unos 8,3 ₽/min: una sardina cada 38 s, 6 por viaje, al 40 % de su valor. Ver `docs/INCREMENTAL.md` §7-8.
 - [PROPUESTA] Cada edificio tiene un **máximo de trabajadores por nivel** (subir de nivel = más plazas).
 - [PROPUESTA] Cada trabajador nuevo cuesta más que el anterior (×1,15 cada uno) y aporta lo mismo. Las mejoras de edificio y el árbol (Carisma) multiplican a todos.
 
@@ -320,10 +321,9 @@ Nota: en tiendas de móvil la marihuana sube la clasificación por edad. Se acep
 - [ABIERTO] Hasta dónde quiere el diseñador que llegue un combo "normal" de final de juego.
 - [DECIDIDO] El modo infinito, equilibrado: los números grandes son por orgullo y estadísticas, no por dinero.
 - [DECIDIDO] Logros de combos enormes (por ejemplo, x200) y peces que solo salen con combos larguísimos.
-- **Choque con el código actual** (ver `docs/INCREMENTAL.md` §6):
-  - La cadena se corta en `pasos_perfect` del pez (5–14), así que hoy no hay combos de más de 14.
-  - El bonus es lineal (+12 % por botón): un x100 rinde por segundo lo mismo que un x5.
-  - [ABIERTO] Qué curva de combo se quiere (cuadrática suave, potencia o tramos).
+- [DECIDIDO] El diseñador deja la curva en manos de Claude: que dé bastante y dé dopamina, y que un combo largo compense más que pescar muchos cortos seguidos.
+- Hecho: **racha** (ver `docs/INCREMENTAL.md` §6). Cada botón paga una parte del pez, y en racha paga más: ×1,25 desde el 5.º, ×1,5 desde el 10.º, ×2 desde el 20.º... hasta ×6 desde el 200.º. Al cambiar de tramo suenan un arpegio y un destello. Valores en `data/stats_pesca.tres`.
+- Pendiente: la cadena sigue cortándose en el `perfect` del pez; los combos largos llegan con peces de perfect alto.
 
 ---
 
@@ -351,7 +351,10 @@ Nota: en tiendas de móvil la marihuana sube la clasificación por edad. Se acep
 | porteador | el cubo se vende solo al llenarse | Puerto |
 | espera_chill / trabajadores_chill | sin tocar nada: pican antes / trabajadores más rápidos | Pesca / Trabajador |
 
-**Problema con `espera_chill`** (Brisa marina, Ronquido): cuenta como chill cuando llevas un rato sin tocar nada (20 s de base, mínimo 3 s). Pero entre un pez y el siguiente solo pasan unos 3-5 s (resultado 1,6 s + espera de 1,5-3,5 s), y cada pez pide pulsar. Resultado: ese efecto casi nunca se activa. `trabajadores_chill` y los efectos "tras chill" sí funcionan, porque basta con dejar de pescar un rato. [ABIERTO] Opciones: que la espera chill cuente desde que estás en pose chill (sin pez), quitar ese efecto o convertirlo en otra cosa.
+**Chill** (lo regula Claude, por decisión del diseñador: la pesca es tranquila, con momentos de calma mientras lo pasivo genera por detrás):
+- Esperas de 6-14 s con picoteos del corcho y un aviso antes de picar.
+- De chill tras 8 s sin tocar nada (la Hamaca lo baja 1 s por nivel, hasta 4 s). Así Brisa marina y Ronquido funcionan dentro de casi cada espera.
+- De chill, si pica un pez y no lo tocas, se va sin castigo. Puedes quedarte tumbado mientras trabajan los demás. Ver `docs/INCREMENTAL.md` §6.5.
 | umbral_chill | antes cuentas como de chill | Juego |
 | trabajadores_lluvia | con lluvia, trabajadores más rápidos | Trabajador |
 | raros_tras_chill / tiempo_tras_chill | la picada que llega tras un rato de chill: más raros / más tiempo por botón | Pesca |
@@ -440,7 +443,6 @@ Simulador: `docs/herramientas/simular_economia.py`. Juega con los peces, cañas 
 4. Uso de la marihuana.
 5. Rama de endgame (más adelante).
 
-6. Curva de valor del combo (lineal ahora; ver `docs/INCREMENTAL.md` §6).
-7. ¿Se deja que la cadena pase del perfect (necesario para el flow y para los combos de x200)?
+6. ¿Se deja que la cadena pase del perfect (necesario para el flow y para los combos de x200), o los combos largos llegan solo con peces de perfect alto?
 
 Resueltas: contratar hablando con el primer pescador, con límite por árbol + pantalán (decidido); el tiempo es un reloj propio del juego, con guiños a la hora real en logros secretos (decidido); los recursos son materiales que se gastan (decidido); cuarta rama Chill (decidido); cultivos algas, bambú y marihuana (decidido).
