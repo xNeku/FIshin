@@ -47,8 +47,9 @@ class Paso:
 @export_range(0.05, 0.95) var piloto_retraso: float = 0.35
 ## Cada cuánto machaca el piloto (segundos).
 @export var piloto_ritmo_machacar: float = 0.09
-## Calidad de lo que pesca el piloto (se le suma el efecto "piloto_calidad").
-@export_range(0.0, 1.0) var piloto_calidad: float = 0.5
+## Calidad de lo que pesca el piloto (se le suma el efecto "piloto_calidad"). Baja a propósito:
+## lo pasivo nunca sustituye a pescar a mano.
+@export_range(0.0, 1.0) var piloto_calidad: float = 0.3
 
 var estado: Estado = Estado.INACTIVO
 var pez: PezData
@@ -206,9 +207,11 @@ func _tirar_pez() -> PezData:
 	var pesos: Array[float] = []
 	var total: float = 0.0
 	var hondo: int = cana.profundidad + int(Juego.efecto(&"profundidad"))
+	# El piloto automático solo saca peces comunes.
+	var solo_comunes: bool = Juego.efecto(&"piloto") > 0.0 and Juego.de_chill()
 	var suerte: float = 1.0 + Juego.efecto(&"raros") + (Juego.efecto(&"raros_tormenta") if Juego.lloviendo else 0.0)
 	for p: PezData in peces:
-		if p.profundidad > hondo:
+		if p.profundidad > hondo or (solo_comunes and p.rareza != PezData.Rareza.COMUN):
 			continue
 		var w: float = p.probabilidad
 		if p.rareza != PezData.Rareza.COMUN:
@@ -350,6 +353,9 @@ func _capturar() -> void:
 	mult *= maxf(0.1, 1.0 - stats.penalizacion_machacar * machacar_fallados)
 	if perfecto:
 		mult *= stats.mult_perfecto
+	# Los combos largos a mano son los que dan el dinero gordo.
+	if not _piloto:
+		mult *= 1.0 + stats.bonus_por_boton * aciertos
 	var valor: float = pez.valor_base * (peso / ((pez.peso_min + pez.peso_max) * 0.5)) * mult
 	var captura: Dictionary = {
 		"id": String(pez.id), "peso": peso, "calidad": ratio, "perfecto": perfecto, "valor": valor,

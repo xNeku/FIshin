@@ -8,6 +8,7 @@ Marcas: [DECIDIDO] lo decidió el diseñador · [PROPUESTA] sugerencia de Claude
 - [DECIDIDO] Fantasía: empiezas de náufrago flotando en un donut y acabas con una villa pesquera centrada en ti. Todo el mundo pesca, vende y compra para ti.
 - [DECIDIDO] Referencias: Coal LLC (estilo y tono), Forager (expansión), Octopath Traveler (2.5D), Animal Well (interfaz).
 - [DECIDIDO] Plataformas: Windows, Mac y Linux; lo que importa es PC (Steam, con logros). Android, quizá en el futuro si va bien en Steam. Que el diseñador trabaje en la tablet es por comodidad; no condiciona la salida. Móvil más adelante (la interfaz y el input se piensan táctiles desde el principio).
+- [DECIDIDO] Lo pasivo nunca sustituye a pescar a mano: el dinero gordo sale de los combos buenos; lo pasivo sube poco a poco y solo se rompe en el endgame.
 - [DECIDIDO] Tiene que dar para sus horas y poder dejarse abierto: primero se trabaja a mano y luego se disfruta viendo la ciudad automatizada, con combos de vez en cuando para pillar peces guapos en su época y hora.
 
 ## 2. Protagonista

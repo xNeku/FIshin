@@ -269,6 +269,10 @@ Nota: en tiendas de móvil la marihuana sube la clasificación por edad. Se acep
 
 ## 8. Equilibrio
 
+- [DECIDIDO] **Lo pasivo nunca mata la pesca.** El dinero gordo siempre sale de una pesca loca a mano: un combo de la hostia tras varios intentos para sacar un buen pez. Lo pasivo (trabajadores, negocios, piloto) crece poco a poco, de la mano de la economía, y solo se rompe al llegar al endgame. Para avanzar del todo siempre hace falta trabajo manual.
+- [PROPUESTA] Implementado: cada botón acertado a mano suma un +12 % al valor del pez (`StatsPesca.bonus_por_boton`): un combo de 10 vale ×2,2 y uno de 50, ×7. El piloto automático solo saca comunes, con calidad máxima 0,3, sin bonus de combo, y cuesta 5M ₽.
+- [PROPUESTA] Objetivo de equilibrio: hasta el endgame, lo pasivo da como mucho un tercio de lo que gana alguien pescando bien a mano en el mismo tramo.
+
 [PROPUESTA] Reglas para que la curva funcione:
 1. **Tiempo hasta la siguiente cosa**: lo próximo tiene que poder comprarse en **2 a 5 minutos** de ingreso al principio y **10 a 20 minutos** al final. Nunca más de 30.
 2. **Precios**:

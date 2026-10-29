@@ -9,12 +9,12 @@
 script = ExtResource("1_script")
 id = &"ch_piloto"
 nombre = "Piloto automático"
-descripcion = "Si no tocas nada, el náufrago pesca solo (con poca calidad). Déjalo abierto y vete a por un café."
+descripcion = "Si no tocas nada, el náufrago pesca solo: solo peces comunes y de poca calidad. Para dejarlo abierto; el dinero de verdad sigue siendo tuyo."
 rama = ExtResource("2_rama")
 icono = ExtResource("3_icono")
 clave = true
 niveles = 1
-coste_base = 120000.0
+coste_base = 5000000.0
 crecimiento = 1.0
 efecto = &"piloto"
 valor_por_nivel = 1.0
