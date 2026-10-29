@@ -7,7 +7,8 @@ Marcas: [DECIDIDO] lo decidió el diseñador · [PROPUESTA] sugerencia de Claude
 - [DECIDIDO] Meta del protagonista: pescar todos los peces que existen y estar en paz. Una colección completa como objetivo final.
 - [DECIDIDO] Fantasía: empiezas de náufrago flotando en un donut y acabas con una villa pesquera centrada en ti. Todo el mundo pesca, vende y compra para ti.
 - [DECIDIDO] Referencias: Coal LLC (estilo y tono), Forager (expansión), Octopath Traveler (2.5D), Animal Well (interfaz).
-- [DECIDIDO] Plataformas: Windows y Mac. Móvil más adelante (la interfaz y el input se piensan táctiles desde el principio).
+- [DECIDIDO] Plataformas: Windows y Mac; lo que importa es PC (Steam, con logros). Móvil más adelante (la interfaz y el input se piensan táctiles desde el principio).
+- [DECIDIDO] Tiene que dar para sus horas y poder dejarse abierto: primero se trabaja a mano y luego se disfruta viendo la ciudad automatizada, con combos de vez en cuando para pillar peces guapos en su época y hora.
 
 ## 2. Protagonista
 - [DECIDIDO] Náufrago dejado, consumido por tabaco, alcohol y malos vicios, pero carismático y buen rollero. Está de puto chill porque es un máquina.
@@ -70,6 +71,7 @@ Marcas: [DECIDIDO] lo decidió el diseñador · [PROPUESTA] sugerencia de Claude
 
 ## 6. Economía
 - [DECIDIDO] Una sola moneda que lo es todo: dinero, experiencia y economía. Rublos (₽).
+- [DECIDIDO] Además hay materiales (algas, coral, bambú, perlas, marihuana) que se gastan en mejoras junto con los rublos, para que no se pueda pasar de ninguna línea. Detalle en `docs/PROGRESION.md`.
 - [DECIDIDO] Al poco de empezar aparece un barco comerciante: le vendes peces y le compras cosas. Vende la siguiente caña, cebo y +1 hueco.
 - [PROPUESTA] Precios: caña decente 150 ₽, cebo 15 ₽, cajón 60 ₽ (×1.8 por compra, máximo 4).
 - [DECIDIDO] El cebo da X probabilidad de X cosas (más probabilidad de cierto pez o rareza, pesca duplicada...) y su efecto dura un tiempo.
@@ -92,6 +94,7 @@ Marcas: [DECIDIDO] lo decidió el diseñador · [PROPUESTA] sugerencia de Claude
 ## 8. Progresión: árbol de habilidades
 - [DECIDIDO] Árbol pagado con dinero. Ramas de ejemplo: Carisma (mejores acuerdos y posibilidades), Suerte, Fuerza (peces más pesados), Destreza (más progresión de botones y más valor por acierto).
 - [DECIDIDO] Se abre hablando con el viejo (SkillTreeMan), no desde el menú.
+- [DECIDIDO] Ramas: Carisma, Suerte, Pesca y Chill. Más adelante, una rama de endgame acorde a tener una ciudad.
 - [ABIERTO] Nodos, costes y efectos. El diseñador lo escribe en el **Árbol de Fishin**: https://claude.ai/artifact/UtP4gNUbFFwpX9SPeTcTnu (colecciones `ramas` y `nodos`), con una imagen de referencia del flujo.
 
 ## 9. Menú (Tab / Options / atrás de Android)

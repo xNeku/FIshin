@@ -8,3 +8,6 @@
 - Un trabajador que lleve el cubo a vender solo (decidido para cuando exista el árbol).
 - Los bonsáis del viejo crecen con el árbol (decidido).
 - Que la Q se esconda mientras hay una picada en curso.
+- Rama de endgame del árbol, acorde con tener una ciudad (no solo pescar de chill). Concepto para más adelante.
+- Uso de la marihuana (tercer cultivo, decidido que entra).
+- Pantalla de logros propia + conexión a Steam (GodotSteam) solo en la build de PC.

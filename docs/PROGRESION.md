@@ -6,6 +6,17 @@ Los números son [PROPUESTA] para empezar a probar; se ajustan jugando.
 
 ---
 
+## Visión (lo que tiene que sentirse)
+- [DECIDIDO] Un juego que da para sus horas y que a veces se deja abierto. Primero lo trabajas mucho a mano; luego puedes jugar de chill, haciendo otra cosa, solo mirando lo automatizada que está tu ciudad.
+- [DECIDIDO] De vez en cuando te haces unos combos para sacar peces muy guapos, justo en su época y a su hora, y logros de Steam.
+- [DECIDIDO] Lo que importa es PC. El móvil, si llega, después.
+- [PROPUESTA] En números:
+  - **15–25 h** para desbloquearlo todo.
+  - Una cola larga de **40 h o más** para completar la colección: peces de época y hora, legendarios, perfectos.
+  - Ratos de idle sin límite.
+
+---
+
 ## 0. Cómo encaja todo
 
 Hay **siete líneas** que crecen a la vez y se enganchan entre sí:
@@ -24,7 +35,8 @@ Hay **siete líneas** que crecen a la vez y se enganchan entre sí:
 - [DECIDIDO] Al final el náufrago forma una villa a la que vienen turistas que compran, comen en restaurantes, etc.
 - [DECIDIDO] El jugador puede acabar teniéndolo todo; la gracia está en **en qué orden** gasta.
 - [PROPUESTA] Regla de oro: cada cosa nueva tiene que hacer una de estas dos cosas: **multiplicar lo que ganas** (×2 o más) o **abrir una mecánica nueva**. Si no hace ninguna, sobra.
-- [PROPUESTA] El dinero (₽) sigue siendo lo único con lo que se paga. Algas, coral, bambú y perlas son **materiales** que además se piden en ciertas mejoras (ver punto 5 y la pregunta abierta).
+- [DECIDIDO] El dinero (₽) es la única moneda. Los recursos (algas, coral, bambú, perlas...) son **materiales** que se gastan en mejoras además de los rublos. Así el jugador no puede saltarse ninguna línea.
+- [PROPUESTA] Cada material tiene que ser obligatorio para algo que el jugador quiere de verdad. Por ejemplo: ampliar la pecera pide coral, el hotel pide bambú y las mejoras de lujo piden perlas. Si un material se puede ignorar, sobra.
 
 ---
 
@@ -69,7 +81,7 @@ Lo que ya está hecho cubre **T0 y T1** (comerciante, primera isla, viejo, camin
 | 13 | Bambuzal | Productor | T3 | [ABIERTO] | Bambú (construcción) | Parcelas |
 | 14 | Cabañas / hotel de bambú | Atracción | T3 | Bambú | Los turistas se quedan más y gastan más | Plantas, lujo |
 | 15 | Chiringuito / tienda de souvenirs | Transformador | T3 | [ABIERTO] | Coral y perlas → recuerdos para turistas | — |
-| 16 | Tercer cultivo | Productor | T4 | [ABIERTO] | Ver punto 5 | Parcelas |
+| 16 | Plantación de marihuana | Productor | T3–T4 | [ABIERTO] | Ver punto 5 | Parcelas |
 | 17 | Casino | Atracción | T4 | [ABIERTO] | Ver IDEAS | — |
 
 [PROPUESTA] Cada edificio tiene **niveles** (1 → 5 o más). Subir de nivel cuesta mucho más y cambia cómo se ve el edificio (más grande, más bonito). Así se ve la villa crecer.
@@ -94,7 +106,15 @@ Lo que ya está hecho cubre **T0 y T1** (comerciante, primera isla, viejo, camin
 
 - [DECIDIDO] Se paga con dinero y se abre en el viejo. Al final se puede tener todo; hay que elegir el orden.
 - [DECIDIDO] Ramas que tiene claras el diseñador: **Carisma**, **Suerte** y **Pesca**.
-- [ABIERTO] Si hay más ramas.
+- [DECIDIDO] Cuarta rama: **Chill**.
+- [DECIDIDO] Habrá más adelante una rama de endgame que encaje con que ya tiene una ciudad y no solo pesca de chill. Se piensa más tarde (concepto de endgame).
+
+[PROPUESTA] **Tamaño del árbol** (para 15–25 h):
+- **4 ramas × 15 nodos = unos 60 nodos**, y luego la rama de endgame con 15 más.
+- Unos **10 nodos clave**, que cambian cómo juegas: porteador, auto-pesca del primer botón, auto-pesca completa, pesca doble, turistas que gastan más...
+- **El resto son mejoras de porcentaje con niveles** (1 a 5): dan sensación de compra constante sin llenar el árbol de cosas distintas.
+- Contando niveles salen **150–200 compras** en toda la partida. Si sale una cada 5–10 minutos, cuadra con las horas.
+- Cada rama tiene nodos de **todos los tramos**: el árbol nunca se acaba antes de tiempo y siempre hay algo en él que perseguir.
 
 [PROPUESTA] Ejemplos de nodos para empezar a discutir (5 a 8 por rama, con costes que se multiplican):
 
@@ -121,7 +141,11 @@ Lo que ya está hecho cubre **T0 y T1** (comerciante, primera isla, viejo, camin
 - Peces más pesados (lo que el GDD llamaba Fuerza)
 - Auto-pesca del primer botón y, al final, auto-pesca completa
 
-[PROPUESTA] Cuarta rama posible, **Chill** (muy del personaje): todo lo que gana el náufrago sin hacer nada. Por ejemplo, ganar más mientras no pulsas, que los edificios produzcan más, o que el clima dé ventajas (en tormenta salen más raros).
+**Chill** [DECIDIDO como rama] (muy del personaje: lo que gana el náufrago sin hacer nada). [PROPUESTA] Ejemplos:
+- Ganar más mientras no pulsas.
+- Edificios que producen más.
+- Ventajas por clima (en tormenta salen más raros).
+- Vista de "mirar la ciudad" con todo funcionando solo.
 
 ---
 
@@ -133,16 +157,22 @@ Lo que ya está hecho cubre **T0 y T1** (comerciante, primera isla, viejo, camin
 [PROPUESTA] Valor de un pez = **valor base de la especie × peso × calidad × multiplicadores** (árbol, edificios).
 Las especies profundas tienen más valor base, aunque sean de la misma rareza. Así una caña mejor siempre se nota en el dinero.
 
-| Caña | Tramo | Profundidad | Cadena | Valor medio por pez |
-|------|-------|-------------|--------|---------------------|
-| Rota | T0 | 1 | 1–5 | ×1 [hecho] |
-| Decente | T0 | 2 | 2–9 | ×3 [hecho] |
-| Sabia | T1 | 3 | 3–15 | ×10 [hecho] |
-| 4 | T2 | 4 | — | ×30 |
-| 5 | T3 | 5 | — | ×100 |
-| 6 | T3 | 6 | — | ×300 |
-| 7 | T4 | 7 | — | ×1.000 |
-| Legendaria | T4 | 8 | — | ×3.000 |
+- [ABIERTO] Número de cañas. El diseñador plantea 15.
+- [PROPUESTA] **15 = 12 de progresión + 3 especiales hechas con materiales.**
+  - Las **12 de progresión** van de dos o tres por tramo: rota, decente y sabia (hechas), y 9 más. Cada una abre profundidad nueva y multiplica el valor medio unas ×2,5. De la primera a la duodécima, unas ×10.000.
+  - Las **3 especiales**: caña de bambú, de coral y de perla. No son "la siguiente"; cada una tiene un truco (por ejemplo, la de perla sube los perfectos) y piden materiales. Así los materiales también sirven a la pesca.
+  - Riesgo: 15 cañas que solo cambien números se vuelven aburridas. Cada caña tiene que notarse: un pez nuevo que ya puedes pescar, cadenas más largas o un efecto.
+
+| Caña | Tramo | Profundidad | Valor medio por pez |
+|------|-------|-------------|---------------------|
+| 1 Rota | T0 | 1 | ×1 [hecho] |
+| 2 Decente | T0 | 2 | ×3 [hecho] |
+| 3 Sabia | T1 | 3 | ×10 [hecho] |
+| 4–5 | T1–T2 | 4–5 | ×25 – ×60 |
+| 6–8 | T2–T3 | 6–8 | ×150 – ×1.000 |
+| 9–11 | T3–T4 | 9–11 | ×2.500 – ×15.000 |
+| 12 | T4 | 12 | ×40.000 |
+| Bambú, coral, perla | T2–T4 | — | Truco propio, pide materiales |
 
 [PROPUESTA] Otros objetos, cada uno tocando una sola cosa para que se entienda:
 - **Anzuelos**: peces más pesados.
@@ -185,7 +215,7 @@ Las especies profundas tienen más valor base, aunque sean de la misma rareza. A
 - [DECIDIDO] Cultivos: pocos tipos, cada uno en su zona, que se van desbloqueando. Recolectar tiene que ser gracioso (el náufrago se levanta y lo hace él).
 - [DECIDIDO] Taladro marino automático en un islote propio que da coral.
 - [DECIDIDO] Submarinistas que sacan perlas.
-- [ABIERTO] Qué tres cultivos. El diseñador propone algas, marihuana y bambú.
+- [DECIDIDO] Tres cultivos: algas, bambú y marihuana. La marihuana va adelante; su uso concreto se verá más tarde.
 
 | Recurso | Tramo | De dónde sale | Para qué sirve [PROPUESTA] |
 |---------|-------|---------------|---------------------------|
@@ -193,11 +223,11 @@ Las especies profundas tienen más valor base, aunque sean de la misma rareza. A
 | Coral | T2 | Taladro marino | Decorar y ampliar la pecera, mejoras de edificios |
 | Bambú | T3 | Bambuzal | Construir (cabañas, hotel, ampliaciones del pantalán) |
 | Perlas | T3 | Centro de buceo | Mejoras de lujo, souvenirs caros |
-| Tercer cultivo | T4 | Zona propia | [ABIERTO] |
+| Marihuana | T3–T4 | Zona propia | [ABIERTO] (se verá; por el tono, algo de "chill") |
 
 [PROPUESTA] Cada recurso se recoge **a mano al principio** (gracioso y con animación) y **solo después**, cuando contratas a su trabajador.
 
-Aviso sobre la marihuana: encaja con el personaje, pero en tiendas de móvil sube la clasificación por edad, y alguna plataforma pone pegas. En PC (Steam) no hay problema. Hay que tenerlo en cuenta si el móvil va en serio.
+Nota: en tiendas de móvil la marihuana sube la clasificación por edad. Se acepta, porque la prioridad es PC.
 
 ---
 
@@ -218,6 +248,19 @@ Aviso sobre la marihuana: encaja con el personaje, pero en tiendas de móvil sub
 - [PROPUESTA] El atractivo decide cuántos turistas llegan por minuto. Cada turista gasta en los negocios que haya (sushi, souvenirs, hotel, casino).
 - [PROPUESTA] Es el ingreso pasivo grande del final: a partir de T3 los turistas tienen que ganar más que tu caña.
 - [PROPUESTA] Los turistas se ven paseando por el camino (sprites sencillos). Es la prueba visual de que la villa vive.
+
+---
+
+## 7.5 Logros (Steam)
+- [DECIDIDO] Habrá logros de Steam.
+- [PROPUESTA] Unos **50–60 logros** repartidos en:
+  - **Pesca**: combos x10, x25 y x50, primer perfecto, primer machacar.
+  - **Colección**: especies de cada tramo, todos los legendarios, peces de cada época.
+  - **Villa**: cada edificio, X trabajadores, atractivo máximo.
+  - **Dinero**: 1K, 1M, 1B...
+  - **Secretos**: la bota vieja en tormenta, pescar a las 3 de la mañana...
+- [PROPUESTA] Se montan ya **dentro del juego, por datos** (`.tres` con id, condición y dibujo) y con su pantalla propia. Steam se conecta al exportar.
+- Aviso técnico: Steam en Godot necesita GodotSteam, un addon compilado, y nuestra regla es no usar addons compilados (por el editor de Android). Solución: los logros funcionan dentro del juego desde ya, y GodotSteam solo entra en la build de PC al final.
 
 ---
 
@@ -245,8 +288,10 @@ Aviso sobre la marihuana: encaja con el personaje, pero en tiendas de móvil sub
 4. Se implementa **por tramos**: primero T2 completo (algas, sushi, taladro) jugable y equilibrado; luego T3. No se pasa al siguiente hasta que el actual divierta (regla del proyecto).
 
 ## Preguntas abiertas (de una en una)
-1. ¿Los recursos (algas, coral, bambú, perlas) se **gastan como materiales** en mejoras, además de los rublos, o solo se **venden** por rublos? Choca con "una sola moneda que lo es todo" del GDD.
+1. Cómo pasa el tiempo en el juego (día/noche y estaciones): decide cuándo salen los peces de época y hora.
 2. ¿Qué pez desbloquea el sushi y con qué condición llegan el huerto de algas y el taladro?
-3. ¿Hay cuarta rama del árbol (por ejemplo Chill)?
-4. ¿Cuál es el tercer cultivo definitivo?
-5. Cómo pasa el tiempo en el juego (día/noche y estaciones), para los peces del Excel.
+3. Número final de cañas (propuesta: 12 + 3 especiales).
+4. Uso de la marihuana.
+5. Rama de endgame (más adelante).
+
+Resueltas: los recursos son materiales que se gastan (decidido); cuarta rama Chill (decidido); cultivos algas, bambú y marihuana (decidido).
