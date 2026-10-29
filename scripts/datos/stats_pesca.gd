@@ -24,5 +24,5 @@ extends Resource
 ## Penalización al valor por cada barra de machacar no llenada.
 @export var penalizacion_machacar: float = 0.25
 ## El dinero gordo sale de los combos a mano: cada botón acertado suma esto al valor del pez
-## (0.12 = un combo de 10 vale ×2,2; uno de 50, ×7). El piloto automático no lo cobra.
+## (0.12 = un combo de 10 vale ×2,2; uno de 50, ×7).
 @export var bonus_por_boton: float = 0.12

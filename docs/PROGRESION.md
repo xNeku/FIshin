@@ -270,7 +270,9 @@ Nota: en tiendas de móvil la marihuana sube la clasificación por edad. Se acep
 ## 8. Equilibrio
 
 - [DECIDIDO] **Lo pasivo nunca mata la pesca.** El dinero gordo siempre sale de una pesca loca a mano: un combo de la hostia tras varios intentos para sacar un buen pez. Lo pasivo (trabajadores, negocios, piloto) crece poco a poco, de la mano de la economía, y solo se rompe al llegar al endgame. Para avanzar del todo siempre hace falta trabajo manual.
-- [PROPUESTA] Implementado: cada botón acertado a mano suma un +12 % al valor del pez (`StatsPesca.bonus_por_boton`): un combo de 10 vale ×2,2 y uno de 50, ×7. El piloto automático solo saca comunes, con calidad máxima 0,3, sin bonus de combo, y cuesta 5M ₽.
+- [DECIDIDO] El náufrago no pesca solo: ya lo hacen los trabajadores y los negocios. Fuera el piloto automático.
+- [PROPUESTA] Implementado: cada botón acertado suma un +12 % al valor del pez (`StatsPesca.bonus_por_boton`): un combo de 10 vale ×2,2 y uno de 50, ×7.
+- [PROPUESTA] En su lugar, la rama Chill premia volver a pescar tras un rato de chill: **Meditación** (clave: la siguiente picada trae más raros) y **Ron de coco** (más tiempo por botón en esa picada).
 - [PROPUESTA] Objetivo de equilibrio: hasta el endgame, lo pasivo da como mucho un tercio de lo que gana alguien pescando bien a mano en el mismo tramo.
 
 [PROPUESTA] Reglas para que la curva funcione:
@@ -294,6 +296,21 @@ Nota: en tiendas de móvil la marihuana sube la clasificación por edad. Se acep
 
 ## Cañas (decidido)
 - [DECIDIDO] Cañas diferentes; algunas tendrán funciones propias más adelante.
+- [DECIDIDO] **Modos de pesca según la caña** (para el futuro, de midgame):
+  - **Caña de volumen**: cada tecla acertada es un pez, en cadena; cuando hay que pulsar más rápido, cada pulsación es un pez. Peores de calidad, pero no mucho. Sirve para nutrir los negocios.
+  - **Caña de trofeo**: pesca muy poco y solo está atenta a peces de más de X valor (o de X peso). Tarda en picar, no siempre sale algo gordo (para eso está la Suerte) y pide un combo larguísimo.
+- [DECIDIDO] Todo encadenado: lo que vendes en la lonja (cuánto y de qué calidad) alimenta a los negocios. Cuanto más y mejor vendas, mejores platos y más producción sacan.
+- [PROPUESTA] Las cañas con modo propio son las especiales del 12 + 3. La de volumen encaja con el bambú (material barato) y la de trofeo, con la perla o el coral.
+
+## Tamaño de los combos
+- [DECIDIDO] En algún momento habrá un modo infinito para ver hasta dónde llegan los jugadores. El número se va regulando.
+- [PROPUESTA] Escalones:
+  - Arranque: 1–5 botones.
+  - Midgame: perfectos de 10–25.
+  - Final: legendarios y caña de trofeo de 30–60. A los 50 se nota la locura máxima.
+  - Modo infinito (endgame): sin límite, con tabla de récords de Steam y fuera de la economía (o con el bonus de dinero topado).
+- [PROPUESTA] Para que no sea solo reflejos: un respiro corto cada 10 botones y un tiempo mínimo por botón que nunca baje de ~0,4 s.
+- [ABIERTO] Hasta dónde quiere el diseñador que llegue un combo "normal" de final de juego.
 
 ---
 
@@ -322,7 +339,7 @@ Nota: en tiendas de móvil la marihuana sube la clasificación por edad. Se acep
 | espera_chill / trabajadores_chill | sin tocar nada: pican antes / trabajadores más rápidos | Pesca / Trabajador |
 | umbral_chill | antes cuentas como de chill | Juego |
 | trabajadores_lluvia | con lluvia, trabajadores más rápidos | Trabajador |
-| piloto / piloto_calidad | sin tocar nada, el náufrago pesca solo / con más calidad | Pesca |
+| raros_tras_chill / tiempo_tras_chill | la picada que llega tras un rato de chill: más raros / más tiempo por botón | Pesca |
 | sushi_velocidad, sushi_clientes, turistas, propinas, perla_peces, coral_doble, cultivos, hierba, casino, mirador | futuros (nodos con candado) | — |
 
 ---

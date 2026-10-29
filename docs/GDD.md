@@ -8,6 +8,7 @@ Marcas: [DECIDIDO] lo decidió el diseñador · [PROPUESTA] sugerencia de Claude
 - [DECIDIDO] Fantasía: empiezas de náufrago flotando en un donut y acabas con una villa pesquera centrada en ti. Todo el mundo pesca, vende y compra para ti.
 - [DECIDIDO] Referencias: Coal LLC (estilo y tono), Forager (expansión), Octopath Traveler (2.5D), Animal Well (interfaz).
 - [DECIDIDO] Plataformas: Windows, Mac y Linux; lo que importa es PC (Steam, con logros). Android, quizá en el futuro si va bien en Steam. Que el diseñador trabaje en la tablet es por comodidad; no condiciona la salida. Móvil más adelante (la interfaz y el input se piensan táctiles desde el principio).
+- [DECIDIDO] El náufrago no pesca solo (fuera el piloto automático); lo pasivo lo hacen trabajadores y negocios.
 - [DECIDIDO] Lo pasivo nunca sustituye a pescar a mano: el dinero gordo sale de los combos buenos; lo pasivo sube poco a poco y solo se rompe en el endgame.
 - [DECIDIDO] Tiene que dar para sus horas y poder dejarse abierto: primero se trabaja a mano y luego se disfruta viendo la ciudad automatizada, con combos de vez en cuando para pillar peces guapos en su época y hora.
 
@@ -55,7 +56,8 @@ Marcas: [DECIDIDO] lo decidió el diseñador · [PROPUESTA] sugerencia de Claude
 - [DECIDIDO] Sensación de adentrarse: zoom con shake hacia el jugador según el progreso.
 - [DECIDIDO] El espectáculo se descubre poco a poco; al principio es suave. La escala es de juego entero: combos de ~50 botones al final, y ahí se nota la locura.
 - [PROPUESTA] Implementado: la intensidad va por botones seguidos (máximo a los 50, `StatsPesca.botones_intensidad_maxima`): viñeta, aberración, latido desde ~10 botones, tono de acierto que sube, el botón salta por la pantalla y un congelado breve al capturar.
-- [DECIDIDO] Futuro: modo infinito (zoom de ida y vuelta en bucle) y música con el beat cuadrado a las pulsaciones.
+- [DECIDIDO] Futuro: modo infinito (zoom de ida y vuelta en bucle) y música con el beat cuadrado a las pulsaciones. Es para ver hasta dónde llegan los jugadores.
+- [DECIDIDO] Futuro: modos de pesca según la caña (volumen y trofeo; ver `docs/PROGRESION.md`).
 - [DECIDIDO] Las dobles tardan en salir. [PROPUESTA] Desde el 5º botón (`dobles_desde_boton`).
 - [DECIDIDO] Pulsaciones dobles (tipo R2 + X). Teclado: números con la izquierda y flechas con la derecha; las dobles combinan una de cada.
 - [DECIDIDO] Peces pesados o especiales tienen tramos de machacar un botón para llenar una barra. Si no la llenas, los legendarios y extraños se escapan y los normales salen peores.

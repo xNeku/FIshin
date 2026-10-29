@@ -42,15 +42,6 @@ class Paso:
 @export var pausa_entre_pasos: float = 0.12
 @export var duracion_resultado: float = 1.6
 
-@export_group("Piloto automático (rama Chill)")
-## Qué parte del tiempo de cada botón espera el piloto antes de pulsar solo.
-@export_range(0.05, 0.95) var piloto_retraso: float = 0.35
-## Cada cuánto machaca el piloto (segundos).
-@export var piloto_ritmo_machacar: float = 0.09
-## Calidad de lo que pesca el piloto (se le suma el efecto "piloto_calidad"). Baja a propósito:
-## lo pasivo nunca sustituye a pescar a mano.
-@export_range(0.0, 1.0) var piloto_calidad: float = 0.3
-
 var estado: Estado = Estado.INACTIVO
 var pez: PezData
 var cana: CanaData
@@ -64,9 +55,8 @@ var _pulsadas: Array[StringName] = []
 var _contador: float = 0.0
 var _bloqueo: float = 0.0
 var _llena: bool = false
-## Esta picada la está haciendo el piloto automático.
-var _piloto: bool = false
-var _t_piloto: float = 0.0
+## Esta picada llega tras un rato de chill (rama Chill: Meditación y Ron de coco).
+var _tras_chill: bool = false
 
 
 func _ready() -> void:
@@ -93,8 +83,7 @@ func _process(delta: float) -> void:
 				_picar()
 		Estado.PASO:
 			tiempo_restante -= delta
-			_pilotar(delta)
-			if estado == Estado.PASO and tiempo_restante <= 0.0:
+			if tiempo_restante <= 0.0:
 				_tiempo_agotado()
 		Estado.ENTRE_PASOS:
 			_contador -= delta
@@ -189,6 +178,7 @@ func paso_actual() -> Paso:
 
 func _picar() -> void:
 	cana = Juego.cana()
+	_tras_chill = Juego.de_chill()
 	pez = _tirar_pez()
 	if pez == null:
 		esperar()
@@ -196,7 +186,6 @@ func _picar() -> void:
 	indice = 0
 	aciertos = 0
 	machacar_fallados = 0
-	_piloto = false
 	_generar_pasos()
 	pez_pica.emit(pez)
 	_iniciar_paso()
@@ -207,11 +196,10 @@ func _tirar_pez() -> PezData:
 	var pesos: Array[float] = []
 	var total: float = 0.0
 	var hondo: int = cana.profundidad + int(Juego.efecto(&"profundidad"))
-	# El piloto automático solo saca peces comunes.
-	var solo_comunes: bool = Juego.efecto(&"piloto") > 0.0 and Juego.de_chill()
-	var suerte: float = 1.0 + Juego.efecto(&"raros") + (Juego.efecto(&"raros_tormenta") if Juego.lloviendo else 0.0)
+	var suerte: float = 1.0 + Juego.efecto(&"raros") + (Juego.efecto(&"raros_tormenta") if Juego.lloviendo else 0.0) \
+		+ (Juego.efecto(&"raros_tras_chill") if _tras_chill else 0.0)
 	for p: PezData in peces:
-		if p.profundidad > hondo or (solo_comunes and p.rareza != PezData.Rareza.COMUN):
+		if p.profundidad > hondo:
 			continue
 		var w: float = p.probabilidad
 		if p.rareza != PezData.Rareza.COMUN:
@@ -236,7 +224,7 @@ func _generar_pasos() -> void:
 	todas.append_array(FLECHAS)
 	# Cada picada da un largo distinto: muchas veces solo 1 o 2 botones. Solo llegas al perfect si sale largo.
 	var n: int = mini(pez.pasos_perfect, cana.tirar_largo_cadena(int(Juego.efecto(&"cadena_extra")), Juego.efecto(&"sesgo_cadena")))
-	var mult: float = pez.mult_tiempo * cana.mult_tiempo * Juego.mult_tiempo_cebo() * (1.0 + Juego.efecto(&"tiempo_reaccion"))
+	var mult: float = pez.mult_tiempo * cana.mult_tiempo * Juego.mult_tiempo_cebo() * (1.0 + Juego.efecto(&"tiempo_reaccion") + (Juego.efecto(&"tiempo_tras_chill") if _tras_chill else 0.0))
 	var dobles_desde: int = stats.dobles_desde_boton + int(Juego.efecto(&"dobles_tarde"))
 	var pulsaciones: int = maxi(1, ceili(pez.pulsaciones_machacar / (1.0 + Juego.efecto(&"machacar"))))
 	var anterior: StringName = &""
@@ -266,7 +254,6 @@ func _iniciar_paso() -> void:
 	var p: Paso = pasos[indice]
 	tiempo_restante = p.tiempo
 	golpes = 0
-	_t_piloto = 0.0
 	_pulsadas.clear()
 	_cambiar_estado(Estado.PASO)
 	paso_nuevo.emit(p, indice)
@@ -274,9 +261,7 @@ func _iniciar_paso() -> void:
 
 func _acertar() -> void:
 	aciertos += 1
-	# Lo que hace el piloto no cuenta para los hitos de combo.
-	if not _piloto:
-		Juego.registrar_combo(indice + 1)
+	Juego.registrar_combo(indice + 1)
 	acierto.emit(indice + 1, pez.pasos_perfect)
 	_avanzar()
 
@@ -319,23 +304,6 @@ func _fallar() -> void:
 		_capturar()
 
 
-## Piloto automático (rama Chill): si no tocas nada, el náufrago pesca solo, con menos calidad.
-func _pilotar(delta: float) -> void:
-	if Juego.efecto(&"piloto") <= 0.0 or not Juego.de_chill():
-		return
-	var p: Paso = pasos[indice]
-	_t_piloto += delta
-	if p.tipo == Tipo.MACHACAR:
-		if _t_piloto >= piloto_ritmo_machacar:
-			_t_piloto = 0.0
-			_piloto = true
-			pulsar(p.acciones[0])
-	elif _t_piloto >= p.tiempo * piloto_retraso:
-		_piloto = true
-		for a: StringName in p.acciones:
-			pulsar(a)
-
-
 func _escapar() -> void:
 	Juego.anadir_escapado()
 	pez_escapado.emit(pez)
@@ -347,15 +315,12 @@ func _capturar() -> void:
 	var perfecto: bool = aciertos >= pez.pasos_perfect
 	var peso: float = randf_range(pez.peso_min, pez.peso_max) * (1.0 + Juego.efecto(&"peso"))
 	ratio = minf(1.0, ratio + Juego.efecto(&"calidad"))
-	if _piloto:
-		ratio = minf(ratio, piloto_calidad + Juego.efecto(&"piloto_calidad"))
 	var mult: float = lerpf(stats.mult_calidad_min, 1.0, ratio)
 	mult *= maxf(0.1, 1.0 - stats.penalizacion_machacar * machacar_fallados)
 	if perfecto:
 		mult *= stats.mult_perfecto
 	# Los combos largos a mano son los que dan el dinero gordo.
-	if not _piloto:
-		mult *= 1.0 + stats.bonus_por_boton * aciertos
+	mult *= 1.0 + stats.bonus_por_boton * aciertos
 	var valor: float = pez.valor_base * (peso / ((pez.peso_min + pez.peso_max) * 0.5)) * mult
 	var captura: Dictionary = {
 		"id": String(pez.id), "peso": peso, "calidad": ratio, "perfecto": perfecto, "valor": valor,
