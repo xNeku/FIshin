@@ -17,8 +17,10 @@ extends CanvasLayer
 ## Altura de la X sobre los pies del náufrago cuando va andando.
 @export var altura_cabeza_andando: float = 2.0
 @export var velocidad_contador: float = 6.0
-## Iconos de teclas: <carpeta>/<teclado|mando>_<accion>[_pulsada].png. Redibuja los PNG para cambiarlos.
+## Iconos de teclas: <carpeta>/<teclado|xbox|ps>_<accion>[_pulsada].png. Redibuja los PNG para cambiarlos.
 @export_dir var carpeta_teclas: String = "res://art/ui/teclas"
+## Dibujos para un mando que no se reconoce por su nombre.
+@export_enum("ps", "xbox") var mando_por_defecto: String = "ps"
 ## Al machacar, cada cuánto se aprieta sola la tecla dibujada (segundos).
 @export var ritmo_machacar: float = 0.12
 ## Cuánto salta de sitio el botón al tope de intensidad (píxeles).
@@ -72,7 +74,7 @@ var _destello: float = 0.0
 var _pos_prompt: Vector2
 var _mat: ShaderMaterial
 var _ultima_x: int = -1000
-var _mando: bool = false
+var _dispositivo: String = "teclado"
 var _iconos: Dictionary = {}
 var _accion_machacar: StringName = &""
 var _t_machacar: float = 0.0
@@ -188,7 +190,7 @@ func _pintar_tecla(tecla: TextureRect, accion: StringName) -> void:
 	tecla.texture = _icono(accion)
 	tecla.set_meta("accion", accion)
 	# En teclado las teclas son blancas: se tiñen (números / flechas). Los botones del mando ya traen color.
-	if _mando:
+	if _dispositivo != "teclado":
 		tecla.self_modulate = Color.WHITE
 	else:
 		tecla.self_modulate = (color_flechas if accion in Pesca.FLECHAS else color_numeros).lerp(Color.WHITE, 0.55)
@@ -196,10 +198,22 @@ func _pintar_tecla(tecla: TextureRect, accion: StringName) -> void:
 
 ## Icono dibujado de una acción para el último dispositivo usado (teclado o mando).
 func _icono(accion: StringName, pulsada: bool = false) -> Texture2D:
-	var ruta: String = "%s/%s_%s%s.png" % [carpeta_teclas, "mando" if _mando else "teclado", accion, "_pulsada" if pulsada else ""]
+	var ruta: String = "%s/%s_%s%s.png" % [carpeta_teclas, _dispositivo, accion, "_pulsada" if pulsada else ""]
 	if not _iconos.has(ruta):
 		_iconos[ruta] = load(ruta) if ResourceLoader.exists(ruta) else null
 	return _iconos[ruta]
+
+
+## Xbox o PlayStation según el nombre que da el mando; si no se sabe, mando_por_defecto.
+func _tipo_mando(dispositivo: int) -> String:
+	var nombre: String = Input.get_joy_name(dispositivo).to_lower()
+	for clave: String in ["xbox", "xinput", "microsoft"]:
+		if nombre.contains(clave):
+			return "xbox"
+	for clave: String in ["playstation", "dualsense", "dualshock", "sony", "ps3", "ps4", "ps5", "wireless controller"]:
+		if nombre.contains(clave):
+			return "ps"
+	return mando_por_defecto
 
 
 ## Pista "[E] Texto": la letra entre corchetes se cambia por el dibujo de su tecla.
@@ -219,13 +233,13 @@ func _pista(caja: PanelContainer, texto: String) -> void:
 
 func _input(event: InputEvent) -> void:
 	# El último dispositivo usado decide qué dibujos salen.
-	var mando: bool = _mando
+	var dispositivo: String = _dispositivo
 	if event is InputEventJoypadButton or (event is InputEventJoypadMotion and absf((event as InputEventJoypadMotion).axis_value) > 0.5):
-		mando = true
+		dispositivo = _tipo_mando(event.device)
 	elif event is InputEventKey or event is InputEventMouseButton:
-		mando = false
-	if mando != _mando:
-		_mando = mando
+		dispositivo = "teclado"
+	if dispositivo != _dispositivo:
+		_dispositivo = dispositivo
 		for t: TextureRect in [tecla1, tecla2]:
 			if t.has_meta("accion"):
 				_pintar_tecla(t, t.get_meta("accion"))
