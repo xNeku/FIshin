@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="PezData" format=3]
+
+[ext_resource type="Script" path="res://scripts/datos/pez_data.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://art/peces/lata_oxidada.png" id="2_icono"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"lata_oxidada"
+nombre = "Lata Oxidada"
+rareza = 0
+icono = ExtResource("2_icono")
+profundidad = 2
+tipo = 6
+zona = 0
+ubicacion = ""
+estaciones = 6
+horario = 0
+valor_base = 25.5
+peso_min = 0.1
+peso_max = 0.3
+probabilidad = 10.0
+pasos_perfect = 6
+mult_tiempo = 0.988
+prob_doble = 0.04
+machacar_cada = 0
+pulsaciones_machacar = 10
+tiempo_machacar = 1.9

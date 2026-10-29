@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="PezData" format=3]
+
+[ext_resource type="Script" path="res://scripts/datos/pez_data.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://art/peces/langosta_europea.png" id="2_icono"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"langosta_europea"
+nombre = "Langosta Europea"
+rareza = 3
+icono = ExtResource("2_icono")
+profundidad = 3
+tipo = 1
+zona = 0
+ubicacion = ""
+estaciones = 3
+horario = 2
+valor_base = 800
+peso_min = 1.0
+peso_max = 4.0
+probabilidad = 0.7
+pasos_perfect = 10
+mult_tiempo = 0.936
+prob_doble = 0.23
+machacar_cada = 6
+pulsaciones_machacar = 17
+tiempo_machacar = 2.25

@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="PezData" format=3]
+
+[ext_resource type="Script" path="res://scripts/datos/pez_data.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://art/peces/peixe_sapo.png" id="2_icono"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"peixe_sapo"
+nombre = "Peixe Sapo (Rape)"
+rareza = 4
+icono = ExtResource("2_icono")
+profundidad = 5
+tipo = 0
+zona = 0
+ubicacion = ""
+estaciones = 9
+horario = 2
+valor_base = 8632
+peso_min = 2.0
+peso_max = 15.0
+probabilidad = 0.2
+pasos_perfect = 18
+mult_tiempo = 0.892
+prob_doble = 0.36
+machacar_cada = 6
+pulsaciones_machacar = 21
+tiempo_machacar = 2.45

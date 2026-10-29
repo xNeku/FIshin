@@ -20,15 +20,29 @@ RACHA_MULT = [1.25, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 5.0, 6.0]
 MAESTRIA_DESDE = [10, 50, 200, 1000]
 MAESTRIA_MULT = [1.1, 1.25, 1.5, 2.0]
 
-# --- data/peces/*.tres ---  id, rareza, prof, valor, pmin, pmax, prob, perfect, mult_t, machacar_cada, prob_doble
-PECES = [
-    ("sardina", 0, 1, 14, .1, .3, 10, 5, 1.0, 0, 0.0),
-    ("caballa", 0, 1, 25, .3, .8, 7, 6, 1.0, 0, 0.1),
-    ("lubina", 1, 1, 60, 1, 4, 4, 8, .95, 0, .25),
-    ("bota_vieja", 2, 1, 85, .5, 1, 1.2, 7, .9, 4, .4),
-    ("atun", 1, 2, 130, 20, 60, 2, 10, .95, 5, .2),
-    ("kraken", 3, 3, 1100, 5, 15, .3, 14, .9, 5, .35),
-]
+# --- data/peces/*.tres --- (se leen de la carpeta) id, rareza, prof, valor, pmin, pmax, prob, perfect, mult_t,
+# machacar_cada, prob_doble. Rareza: 0 común, 1 poco común, 2 raro, 3 épico, 4 legendario, 5 mítico.
+import glob, os
+_RAIZ = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+PESO_NIVEL_ARRIBA = 0.45   # StatsPesca.peso_por_nivel_arriba
+
+
+def _leer_peces():
+    r = []
+    for f in sorted(glob.glob(os.path.join(_RAIZ, "data", "peces", "*.tres"))):
+        d = {}
+        for linea in open(f, encoding="utf-8"):
+            if " = " in linea and not linea.startswith("["):
+                k, v = linea.strip().split(" = ", 1)
+                d[k] = v
+        g = lambda k, x=0.0: float(d.get(k, x))
+        r.append((d["id"].strip('&"'), int(g("rareza")), int(g("profundidad", 1)), g("valor_base", 5), g("peso_min", .5),
+                  g("peso_max", 2), g("probabilidad", 1), int(g("pasos_perfect", 6)), g("mult_tiempo", 1),
+                  int(g("machacar_cada")), g("prob_doble")))
+    return r
+
+
+PECES = _leer_peces()
 # --- data/canas/*.tres ---
 CANAS = {
     "rota": dict(prof=1, cmin=1, cmax=5, sesgo=2.0, mt=1.0, me=1.0, mr=1.0, auto=False),
@@ -70,7 +84,8 @@ def p_acierto(t, doble=False, jugador=1.0):
 
 
 def tirar(c):
-    ws = [(p, p[6] * (1 if p[1] == 0 else c["mr"])) for p in PECES if p[2] <= c["prof"]]
+    ws = [(p, p[6] * PESO_NIVEL_ARRIBA ** (c["prof"] - p[2]) * (c["mr"] if p[1] >= 2 else 1))
+          for p in PECES if p[2] <= c["prof"]]
     r = random.random() * sum(w for _, w in ws)
     for p, w in ws:
         r -= w
@@ -111,7 +126,7 @@ def picada(c, jugador=1.0, forzar=None):
         if mach:
             if random.random() < 0.85:
                 aciertos += 1
-            elif p[1] >= 2:
+            elif p[1] >= 3:
                 return 0.0, t + RESULTADO, aciertos, False
             else:
                 mach_fall += 1
@@ -140,7 +155,7 @@ def ritmo(cana, jugador=1.0, n=20000):
 
 
 def trabajador():
-    sard = PECES[0]
+    sard = min((p for p in PECES if p[2] == 1 and p[1] == 0), key=lambda p: p[3])
     v = sard[3] * TRAB["mult_valor"]
     ciclo = TRAB["capacidad"] * TRAB["t_pez"] + TRAB["viaje"]
     return v * TRAB["capacidad"] / ciclo * 60
@@ -167,7 +182,7 @@ if __name__ == "__main__":
 
 # Condiciones de llegada (las de data/apariciones y data/articulos). Cámbialas aquí para probar.
 COND = dict(comerciante_peces=3, isla_totales=400, cana_decente=300, viejo_peces=75, camino_puntos=700,
-            sabia=4500, lonja_totales=8000, puerto_puntos=1000)
+            sabia=6000, lonja_totales=10000, puerto_puntos=1000)
 # Segundos sin pescar por cada viaje a vender (andar, menús): con el camino y la lonja hay que moverse.
 ANDAR_ANTES_CAMINO, ANDAR_DESPUES_CAMINO = 8.0, 35.0
 

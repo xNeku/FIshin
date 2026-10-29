@@ -19,7 +19,7 @@ signal terminada
 
 @export_group("Cuándo")
 ## Se celebra cualquier pez de esta rareza o más.
-@export var rareza_minima: PezData.Rareza = PezData.Rareza.EXTRANO
+@export var rareza_minima: PezData.Rareza = PezData.Rareza.EPICO
 ## También se celebra cualquier pez de este peso o más (kg).
 @export var peso_minimo: float = 15.0
 ## Si es true, también se celebra cualquier perfecto.

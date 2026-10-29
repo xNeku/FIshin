@@ -42,8 +42,10 @@ class Paso:
 
 
 @export var stats: StatsPesca
-## Peces que pueden picar. Se filtran por la profundidad de la caña.
+## Peces que pueden picar. Si se deja vacío, se cargan todos los de carpeta_peces.
+## Se filtran por la profundidad de la caña.
 @export var peces: Array[PezData] = []
+@export_dir var carpeta_peces: String = "res://data/peces"
 @export var activa: bool = true
 @export var pausa_entre_pasos: float = 0.12
 @export var duracion_resultado: float = 1.6
@@ -70,6 +72,11 @@ var _avisado: bool = false
 
 
 func _ready() -> void:
+	if peces.is_empty() and carpeta_peces != "":
+		for f: String in DirAccess.get_files_at(carpeta_peces):
+			var limpio: String = f.trim_suffix(".remap")
+			if limpio.ends_with(".tres"):
+				peces.append(load(carpeta_peces.path_join(limpio)))
 	if activa:
 		esperar()
 
@@ -239,10 +246,11 @@ func _tirar_pez() -> PezData:
 	for p: PezData in peces:
 		if p.profundidad > hondo:
 			continue
-		var w: float = p.probabilidad
-		if p.rareza != PezData.Rareza.COMUN:
+		# Cuanto más hondo pescas, menos salen los peces de arriba (siguen saliendo, pero menos).
+		var w: float = p.probabilidad * pow(stats.peso_por_nivel_arriba, hondo - p.profundidad)
+		if p.rareza >= PezData.Rareza.RARO:
 			w *= cana.mult_rareza * suerte
-		if p.rareza == PezData.Rareza.LEGENDARIO:
+		if p.rareza >= PezData.Rareza.LEGENDARIO:
 			w *= 1.0 + Juego.efecto(&"legendarios")
 		posibles.append(p)
 		pesos.append(w)

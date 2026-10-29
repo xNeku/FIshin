@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="PezData" format=3]
+
+[ext_resource type="Script" path="res://scripts/datos/pez_data.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://art/peces/remol.png" id="2_icono"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"remol"
+nombre = "Rémol"
+rareza = 3
+icono = ExtResource("2_icono")
+profundidad = 3
+tipo = 0
+zona = 0
+ubicacion = ""
+estaciones = 12
+horario = 0
+valor_base = 822
+peso_min = 1.0
+peso_max = 5.0
+probabilidad = 0.7
+pasos_perfect = 10
+mult_tiempo = 0.936
+prob_doble = 0.23
+machacar_cada = 6
+pulsaciones_machacar = 17
+tiempo_machacar = 2.25

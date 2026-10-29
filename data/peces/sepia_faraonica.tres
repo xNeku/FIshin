@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="PezData" format=3]
+
+[ext_resource type="Script" path="res://scripts/datos/pez_data.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://art/peces/sepia_faraonica.png" id="2_icono"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"sepia_faraonica"
+nombre = "Sepia Faraónica"
+rareza = 0
+icono = ExtResource("2_icono")
+profundidad = 11
+tipo = 2
+zona = 1
+ubicacion = "Mar Rojo"
+estaciones = 3
+horario = 2
+valor_base = 1474
+peso_min = 0.5
+peso_max = 2.0
+probabilidad = 10.0
+pasos_perfect = 30
+mult_tiempo = 0.88
+prob_doble = 0.4
+machacar_cada = 0
+pulsaciones_machacar = 19
+tiempo_machacar = 2.35

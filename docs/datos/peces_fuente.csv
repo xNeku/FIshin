@@ -1,0 +1,201 @@
+zona,n,nombre,tipo,ubicacion,peso,estaciones,horario,rareza_excel,categoria
+Galicia,1,Sargo,Pez,,0.3 - 2.5 kg,"Invierno, Primavera",Ambos,1.50%,Común
+Galicia,2,Sargo Picudo,Pez,,0.4 - 2.0 kg,"Primavera, Verano",Día,1.50%,Común
+Galicia,3,Muble (Corcón),Pez,,1.0 - 4.0 kg,"Verano, Otoño",Día,1.50%,Común
+Galicia,4,Xarda (Caballa),Pez,,0.2 - 1.0 kg,"Primavera, Verano",Día,1.50%,Común
+Galicia,5,Chicharro (Jurel),Pez,,0.1 - 1.0 kg,"Verano, Otoño",Noche,1.50%,Común
+Galicia,6,Pinto,Pez,,0.5 - 3.0 kg,"Primavera, Verano",Día,1.50%,Común
+Galicia,7,Maragota,Pez,,0.5 - 2.5 kg,"Primavera, Verano",Día,1.50%,Común
+Galicia,8,Faneca,Pez,,0.2 - 0.8 kg,"Otoño, Invierno",Ambos,1.50%,Común
+Galicia,9,Doncella (Juliana),Pez,,0.1 - 0.4 kg,"Primavera, Verano",Día,1.50%,Común
+Galicia,10,Boga,Pez,,0.2 - 1.2 kg,"Verano, Otoño",Ambos,1.50%,Común
+Galicia,11,Salpa,Pez,,0.5 - 2.0 kg,"Primavera, Verano",Día,1.50%,Común
+Galicia,12,Pejerrey,Pez,,0.05 - 0.2 kg,"Otoño, Invierno",Ambos,1.50%,Común
+Galicia,13,Gobio de Roca,Pez,,0.05 - 0.1 kg,"Primavera, Verano",Día,1.50%,Común
+Galicia,14,Blenio (Moma),Pez,,0.05 - 0.1 kg,"Verano, Otoño",Día,1.50%,Común
+Galicia,15,Castañuela,Pez,,0.1 - 0.3 kg,"Verano, Otoño",Día,1.50%,Común
+Galicia,16,Oblada,Pez,,0.2 - 0.6 kg,"Primavera, Verano",Ambos,1.50%,Común
+Galicia,17,Aguja,Pez,,0.3 - 1.5 kg,"Verano, Otoño",Día,1.50%,Común
+Galicia,18,Espadín,Pez,,0.05 - 0.1 kg,"Invierno, Primavera",Noche,1.50%,Común
+Galicia,19,Boquerón,Pez,,0.05 - 0.1 kg,"Primavera, Verano",Noche,1.50%,Común
+Galicia,20,Sardina,Pez,,0.1 - 0.3 kg,"Verano, Otoño",Noche,1.50%,Común
+Galicia,21,Alacha,Pez,,0.1 - 0.3 kg,"Otoño, Invierno",Noche,1.50%,Común
+Galicia,22,Rubio,Pez,,0.5 - 1.5 kg,"Invierno, Primavera",Ambos,1.50%,Común
+Galicia,23,Caballa Pinta,Pez,,0.3 - 1.2 kg,"Primavera, Verano",Día,1.50%,Común
+Galicia,24,Lisa,Pez,,0.5 - 2.5 kg,"Verano, Otoño",Día,1.50%,Común
+Galicia,25,Capellán,Pez,,0.1 - 0.3 kg,"Otoño, Invierno",Noche,1.50%,Común
+Galicia,26,Chucla,Pez,,0.1 - 0.4 kg,"Primavera, Verano",Día,1.50%,Común
+Galicia,27,Jurelillo,Pez,,0.1 - 0.5 kg,"Verano, Otoño",Noche,1.50%,Común
+Galicia,28,Raspallón,Pez,,0.1 - 0.4 kg,"Primavera, Verano",Ambos,1.50%,Común
+Galicia,29,Trompetero,Pez,,0.05 - 0.2 kg,"Otoño, Invierno",Día,1.50%,Común
+Galicia,30,Falso Abadejo,Pez,,0.5 - 2.0 kg,"Invierno, Primavera",Ambos,1.50%,Común
+Galicia,31,Alga Parda,Objeto,,0.1 - 2.0 kg,"Otoño, Invierno",Ambos,1.50%,Común
+Galicia,32,Alga Roja,Objeto,,0.1 - 1.0 kg,"Primavera, Verano",Ambos,1.50%,Común
+Galicia,33,Bota de Agua Vieja,Objeto,,1.0 - 2.0 kg,"Invierno, Primavera",Ambos,1.50%,Común
+Galicia,34,Lata Oxidada,Objeto,,0.1 - 0.3 kg,"Verano, Otoño",Ambos,1.50%,Común
+Galicia,35,Rama a la Deriva,Objeto,,1.0 - 5.0 kg,"Otoño, Invierno",Ambos,1.50%,Común
+Galicia,36,Botella de Cristal,Objeto,,0.5 - 1.0 kg,"Primavera, Verano",Ambos,1.50%,Común
+Galicia,37,Neumático Roto,Objeto,,5.0 - 15.0 kg,"Invierno, Primavera",Ambos,1.50%,Común
+Galicia,38,Estrella de Mar,Equinodermo,,0.1 - 0.5 kg,"Primavera, Verano",Ambos,1.50%,Común
+Galicia,39,Erizo de Mar,Equinodermo,,0.1 - 0.3 kg,"Otoño, Invierno",Ambos,1.50%,Común
+Galicia,40,Cangrejo Verde,Crustáceo,,0.05 - 0.2 kg,"Primavera, Verano",Ambos,1.50%,Común
+Galicia,41,Lubina (Robaliza),Pez,,1.0 - 7.0 kg,"Otoño, Invierno",Noche,1.00%,Poco Común
+Galicia,42,Calamar (Lura),Cefalópodo,,0.2 - 1.2 kg,"Otoño, Invierno",Noche,1.00%,Poco Común
+Galicia,43,Chopo (Sepia),Cefalópodo,,0.2 - 1.5 kg,"Primavera, Otoño",Noche,1.00%,Poco Común
+Galicia,44,Cabracho (Tiñoso),Pez,,0.5 - 2.5 kg,"Primavera, Verano",Ambos,1.00%,Poco Común
+Galicia,45,Escórpora,Pez,,0.2 - 1.0 kg,"Primavera, Verano",Ambos,1.00%,Poco Común
+Galicia,46,Araña de Mar,Pez,,0.2 - 0.8 kg,"Verano, Otoño",Día,1.00%,Poco Común
+Galicia,47,Pargo,Pez,,1.0 - 5.0 kg,"Primavera, Verano",Ambos,1.00%,Poco Común
+Galicia,48,Breca,Pez,,0.5 - 2.0 kg,"Otoño, Invierno",Ambos,1.00%,Poco Común
+Galicia,49,Pagel,Pez,,0.5 - 2.0 kg,"Primavera, Verano",Ambos,1.00%,Poco Común
+Galicia,50,Chopa,Pez,,0.3 - 1.5 kg,"Verano, Otoño",Ambos,1.00%,Poco Común
+Galicia,51,Besugo,Pez,,0.5 - 3.0 kg,"Invierno, Primavera",Noche,1.00%,Poco Común
+Galicia,52,Herrerita,Pez,,0.2 - 1.0 kg,"Primavera, Verano",Día,1.00%,Poco Común
+Galicia,53,Pescadilla,Pez,,0.5 - 2.0 kg,"Otoño, Invierno",Noche,1.00%,Poco Común
+Galicia,54,Abadejo,Pez,,1.0 - 4.0 kg,"Invierno, Primavera",Noche,1.00%,Poco Común
+Galicia,55,Bacaladilla,Pez,,0.2 - 0.6 kg,"Primavera, Verano",Noche,1.00%,Poco Común
+Galicia,56,Platija,Pez,,0.3 - 1.5 kg,"Otoño, Invierno",Noche,1.00%,Poco Común
+Galicia,57,Solla,Pez,,0.5 - 2.0 kg,"Invierno, Primavera",Ambos,1.00%,Poco Común
+Galicia,58,Acedía,Pez,,0.1 - 0.4 kg,"Primavera, Verano",Noche,1.00%,Poco Común
+Galicia,59,Nécora,Crustáceo,,0.1 - 0.3 kg,"Verano, Otoño",Noche,1.00%,Poco Común
+Galicia,60,Camarón,Crustáceo,,0.01 - 0.05 kg,"Primavera, Verano",Noche,1.00%,Poco Común
+Galicia,61,Quisquilla,Crustáceo,,0.01 - 0.05 kg,"Verano, Otoño",Ambos,1.00%,Poco Común
+Galicia,62,Pulpo de Roca,Cefalópodo,,1.0 - 5.0 kg,"Invierno, Primavera",Ambos,1.00%,Poco Común
+Galicia,63,Potarro,Cefalópodo,,0.5 - 2.0 kg,"Otoño, Invierno",Noche,1.00%,Poco Común
+Galicia,64,Pepino de Mar,Equinodermo,,0.2 - 0.8 kg,"Primavera, Verano",Ambos,1.00%,Poco Común
+Galicia,65,Mensaje en Botella,Objeto,,0.5 - 1.0 kg,"Otoño, Invierno",Ambos,1.00%,Poco Común
+Galicia,66,Dorada,Pez,,1.0 - 5.0 kg,"Verano, Otoño",Día,0.50%,Raro
+Galicia,67,Congrio,Pez,,5.0 - 25.0 kg,"Invierno, Primavera",Noche,0.50%,Raro
+Galicia,68,Lenguado,Pez,,0.2 - 1.5 kg,"Otoño, Invierno",Noche,0.50%,Raro
+Galicia,69,Raya Clavata,Pez,,2.0 - 10.0 kg,"Primavera, Verano",Noche,0.50%,Raro
+Galicia,70,Raya Pintada,Pez,,1.5 - 8.0 kg,"Verano, Otoño",Noche,0.50%,Raro
+Galicia,71,Sargo Imperial,Pez,,1.0 - 4.0 kg,"Primavera, Verano",Día,0.50%,Raro
+Galicia,72,Urrta,Pez,,2.0 - 8.0 kg,"Verano, Otoño",Día,0.50%,Raro
+Galicia,73,Dentón,Pez,,2.0 - 8.0 kg,"Verano, Otoño",Día,0.50%,Raro
+Galicia,74,Merluza,Pez,,1.0 - 6.0 kg,"Invierno, Primavera",Noche,0.50%,Raro
+Galicia,75,Bacalao,Pez,,2.0 - 10.0 kg,"Invierno, Primavera",Noche,0.50%,Raro
+Galicia,76,Carbonero,Pez,,1.0 - 7.0 kg,"Otoño, Invierno",Ambos,0.50%,Raro
+Galicia,77,Maruca,Pez,,2.0 - 9.0 kg,"Invierno, Primavera",Noche,0.50%,Raro
+Galicia,78,Llampuga (Dorado),Pez,,2.0 - 12.0 kg,"Verano, Otoño",Día,0.50%,Raro
+Galicia,79,Bonito del Norte,Pez,,4.0 - 15.0 kg,"Verano, Otoño",Día,0.50%,Raro
+Galicia,80,Centolla,Crustáceo,,1.0 - 4.0 kg,"Invierno, Primavera",Noche,0.50%,Raro
+Galicia,81,Bogavante,Crustáceo,,0.5 - 3.0 kg,"Primavera, Verano",Noche,0.50%,Raro
+Galicia,82,Buey de Mar,Crustáceo,,0.5 - 2.5 kg,"Otoño, Invierno",Noche,0.50%,Raro
+Galicia,83,Santiaguiño,Crustáceo,,0.05 - 0.15 kg,"Invierno, Primavera",Noche,0.50%,Raro
+Galicia,84,Anémona (Ortega),Objeto/Flora,,0.1 - 0.3 kg,"Primavera, Verano",Ambos,0.50%,Raro
+Galicia,85,Caballito de Mar,Pez,,0.01 - 0.05 kg,"Verano, Otoño",Día,0.50%,Raro
+Galicia,86,Rodaballo,Pez,,1.0 - 6.0 kg,"Primavera, Verano",Ambos,0.30%,Épico
+Galicia,87,Rémol,Pez,,1.0 - 5.0 kg,"Otoño, Invierno",Ambos,0.30%,Épico
+Galicia,88,Pez Espada,Pez,,20.0 - 80.0 kg,"Verano, Otoño",Noche,0.30%,Épico
+Galicia,89,Atún Rojo (Cachón),Pez,,30.0 - 100.0 kg,"Primavera, Verano",Día,0.30%,Épico
+Galicia,90,Melva,Pez,,1.0 - 3.0 kg,"Verano, Otoño",Día,0.30%,Épico
+Galicia,91,Bacoreta,Pez,,2.0 - 10.0 kg,"Verano, Otoño",Día,0.30%,Épico
+Galicia,92,Pez Limón (Serviola),Pez,,5.0 - 20.0 kg,"Primavera, Verano",Día,0.30%,Épico
+Galicia,93,Pez Ballesta,Pez,,1.0 - 3.0 kg,"Verano, Otoño",Día,0.30%,Épico
+Galicia,94,Langosta Europea,Crustáceo,,1.0 - 4.0 kg,"Primavera, Verano",Noche,0.30%,Épico
+Galicia,95,Pulpo Gigante,Cefalópodo,,6.0 - 15.0 kg,"Invierno, Primavera",Noche,0.30%,Épico
+Galicia,96,San Martiño,Pez,,1.0 - 4.0 kg,"Invierno, Primavera",Día,0.40%,Legendario
+Galicia,97,Peixe Sapo (Rape),Pez,,2.0 - 15.0 kg,"Invierno, Primavera",Noche,0.40%,Legendario
+Galicia,98,Morena,Pez,,2.0 - 8.0 kg,"Verano, Otoño",Noche,0.40%,Legendario
+Galicia,99,Fletán (Halibut),Pez,,10.0 - 50.0 kg,"Otoño, Invierno",Ambos,0.40%,Legendario
+Galicia,100,Pinta Roja (Tiburón),Escualo,,1.0 - 3.0 kg,"Invierno, Primavera",Noche,0.40%,Mítico
+Mundo,1,Pez Payaso,Pez,Gran Barrera de Coral,0.1 - 0.3 kg,"Primavera, Verano",Día,1.50%,Común
+Mundo,2,Cirujano Azul,Pez,Indo-Pacífico,0.2 - 0.6 kg,"Verano, Otoño",Día,1.50%,Común
+Mundo,3,Pez Loro,Pez,Mar Caribe,0.5 - 2.5 kg,"Primavera, Verano",Día,1.50%,Común
+Mundo,4,Salmón Rosado,Pez,Golfo de Alaska,1.5 - 3.0 kg,"Verano, Otoño",Ambos,1.50%,Común
+Mundo,5,Bacalao del Atlántico,Pez,Atlántico Norte,2.0 - 5.0 kg,"Invierno, Primavera",Noche,1.50%,Común
+Mundo,6,Arenque Báltico,Pez,Mar Báltico,0.1 - 0.4 kg,"Otoño, Invierno",Noche,1.50%,Común
+Mundo,7,Caballa del Pacífico,Pez,Pacífico Norte,0.3 - 1.2 kg,"Primavera, Verano",Día,1.50%,Común
+Mundo,8,Pez León,Pez,Mar Rojo,0.5 - 1.2 kg,"Verano, Otoño",Noche,1.50%,Común
+Mundo,9,Pez Trompeta,Pez,Océano Índico,0.2 - 0.8 kg,"Primavera, Verano",Día,1.50%,Común
+Mundo,10,Pargo Colorado,Pez,Golfo de México,1.0 - 4.0 kg,"Verano, Otoño",Ambos,1.50%,Común
+Mundo,11,Corvina Peruana,Pez,Pacífico Sur,1.0 - 5.0 kg,"Otoño, Invierno",Noche,1.50%,Común
+Mundo,12,Pez Volador,Pez,Océanos Tropicales,0.2 - 0.7 kg,"Primavera, Verano",Día,1.50%,Común
+Mundo,13,Lisa Rayada,Pez,Mar Mediterráneo,0.5 - 2.0 kg,"Verano, Otoño",Día,1.50%,Común
+Mundo,14,Anchoa Europea,Pez,Mar Negro,0.05 - 0.1 kg,"Primavera, Verano",Noche,1.50%,Común
+Mundo,15,Pez Ángel Emperador,Pez,Indo-Pacífico,0.5 - 1.5 kg,"Primavera, Verano",Día,1.50%,Común
+Mundo,16,Pez Mariposa,Pez,Hawái,0.1 - 0.3 kg,"Verano, Otoño",Día,1.50%,Común
+Mundo,17,Lenguado del Pacífico,Pez,Pacífico Oriental,0.5 - 2.5 kg,"Otoño, Invierno",Noche,1.50%,Común
+Mundo,18,Pez Gato de Mar,Pez,Golfo de Tailandia,1.0 - 3.5 kg,"Verano, Otoño",Noche,1.50%,Común
+Mundo,19,Abadejo de Alaska,Pez,Mar de Bering,0.5 - 2.0 kg,"Invierno, Primavera",Ambos,1.50%,Común
+Mundo,20,Cangrejo Ermitaño,Crustáceo,Costas Globales,0.05 - 0.2 kg,"Primavera, Verano",Ambos,1.50%,Común
+Mundo,21,Cangrejo Azul,Crustáceo,Atlántico Occidental,0.2 - 0.5 kg,"Verano, Otoño",Noche,1.50%,Común
+Mundo,22,Langosta Espinosa,Crustáceo,Mar Caribe,1.0 - 3.0 kg,"Primavera, Verano",Noche,1.50%,Común
+Mundo,23,Erizo Morado,Equinodermo,Pacífico Central,0.1 - 0.4 kg,"Otoño, Invierno",Ambos,1.50%,Común
+Mundo,24,Estrella de Mar Roja,Equinodermo,Atlántico Norte,0.1 - 0.5 kg,"Primavera, Verano",Ambos,1.50%,Común
+Mundo,25,Pepino de Mar,Equinodermo,Indo-Pacífico,0.2 - 1.0 kg,"Verano, Otoño",Ambos,1.50%,Común
+Mundo,26,Calamar de Arrecife,Cefalópodo,Mar Caribe,0.2 - 0.8 kg,"Otoño, Invierno",Noche,1.50%,Común
+Mundo,27,Sepia Faraónica,Cefalópodo,Mar Rojo,0.5 - 2.0 kg,"Primavera, Verano",Noche,1.50%,Común
+Mundo,28,Pez Cofre,Pez,Indo-Pacífico,0.2 - 0.6 kg,"Verano, Otoño",Día,1.50%,Común
+Mundo,29,Pez Globo (Fugu),Pez,Costas de Japón,0.5 - 2.0 kg,"Otoño, Invierno",Noche,1.50%,Común
+Mundo,30,Pescadilla Austral,Pez,Atlántico Sur,0.5 - 1.5 kg,"Invierno, Primavera",Noche,1.50%,Común
+Mundo,31,Platija Americana,Pez,Atlántico Noroccidental,0.4 - 1.5 kg,"Primavera, Verano",Noche,1.50%,Común
+Mundo,32,Pez Ardilla,Pez,Arrecifes Tropicales,0.2 - 0.5 kg,"Verano, Otoño",Noche,1.50%,Común
+Mundo,33,Sargo Picudo,Pez,Mar Mediterráneo,0.5 - 1.5 kg,"Invierno, Primavera",Ambos,1.50%,Común
+Mundo,34,Pez Ballesta,Pez,Pacífico Tropical,1.0 - 3.0 kg,"Primavera, Verano",Día,1.50%,Común
+Mundo,35,Jurel Cola Amarilla,Pez,Pacífico Sur,1.0 - 4.0 kg,"Verano, Otoño",Ambos,1.50%,Común
+Mundo,36,Pez Murciélago,Pez,Mar Rojo,0.5 - 1.5 kg,"Otoño, Invierno",Día,1.50%,Común
+Mundo,37,Blenio Cornudo,Pez,Mar Mediterráneo,0.05 - 0.1 kg,"Primavera, Verano",Día,1.50%,Común
+Mundo,38,Pez Pipa,Pez,Océano Atlántico,0.05 - 0.2 kg,"Verano, Otoño",Día,1.50%,Común
+Mundo,39,Gobio Neón,Pez,Arrecifes Globales,0.01 - 0.05 kg,"Primavera, Verano",Día,1.50%,Común
+Mundo,40,Pez Dardo,Pez,Indo-Pacífico,0.05 - 0.15 kg,"Verano, Otoño",Día,1.50%,Común
+Mundo,41,Barracuda,Pez,Mar Caribe,2.0 - 15.0 kg,"Primavera, Verano",Día,1.00%,Poco Común
+Mundo,42,Dorado (Mahi Mahi),Pez,Pacífico Tropical,5.0 - 15.0 kg,"Verano, Otoño",Día,1.00%,Poco Común
+Mundo,43,Pez Limón,Pez,Mar Mediterráneo,3.0 - 10.0 kg,"Primavera, Verano",Día,1.00%,Poco Común
+Mundo,44,Pez Gallo,Pez,Pacífico Oriental,5.0 - 20.0 kg,"Verano, Otoño",Día,1.00%,Poco Común
+Mundo,45,Róbalo Blanco,Pez,Golfo de México,2.0 - 8.0 kg,"Otoño, Invierno",Noche,1.00%,Poco Común
+Mundo,46,Pargo Cubera,Pez,Mar Caribe,5.0 - 15.0 kg,"Verano, Otoño",Noche,1.00%,Poco Común
+Mundo,47,Mero Goliat (Juvenil),Pez,Costas de Florida,10.0 - 30.0 kg,"Primavera, Verano",Ambos,1.00%,Poco Común
+Mundo,48,Pez Sargazo,Pez,Mar de los Sargazos,0.1 - 0.4 kg,"Verano, Otoño",Día,1.00%,Poco Común
+Mundo,49,Caballito de Mar,Pez,Pacífico Occidental,0.01 - 0.1 kg,"Primavera, Verano",Día,1.00%,Poco Común
+Mundo,50,Dragón de Mar Foliáceo,Pez,Sur de Australia,0.1 - 0.3 kg,"Otoño, Invierno",Día,1.00%,Poco Común
+Mundo,51,Anguila Jardinera,Pez,Indo-Pacífico,0.2 - 0.5 kg,"Primavera, Verano",Día,1.00%,Poco Común
+Mundo,52,Raya Látigo,Pez,Océano Atlántico,2.0 - 8.0 kg,"Verano, Otoño",Noche,1.00%,Poco Común
+Mundo,53,Pez Erizo,Pez,Arrecifes Tropicales,1.0 - 3.0 kg,"Otoño, Invierno",Noche,1.00%,Poco Común
+Mundo,54,Cangrejo Araña (Juvenil),Crustáceo,Aguas de Japón,2.0 - 5.0 kg,"Invierno, Primavera",Noche,1.00%,Poco Común
+Mundo,55,Langosta de Boston,Crustáceo,Atlántico Norte,1.0 - 4.0 kg,"Otoño, Invierno",Noche,1.00%,Poco Común
+Mundo,56,Pulpo Anillos Azules,Cefalópodo,Australia,0.05 - 0.15 kg,"Primavera, Verano",Día,1.00%,Poco Común
+Mundo,57,Calamar Volador,Cefalópodo,Océano Pacífico,0.5 - 2.0 kg,"Verano, Otoño",Noche,1.00%,Poco Común
+Mundo,58,Nautilus,Cefalópodo,Indo-Pacífico,1.0 - 2.5 kg,"Otoño, Invierno",Noche,1.00%,Poco Común
+Mundo,59,Pez Mandarín,Pez,Filipinas,0.05 - 0.1 kg,"Primavera, Verano",Ocaso,1.00%,Poco Común
+Mundo,60,Pez Loro Arcoíris,Pez,Gran Barrera de Coral,2.0 - 6.0 kg,"Primavera, Verano",Día,1.00%,Poco Común
+Mundo,61,Manta de Arrecife,Pez,Islas Maldivas,20.0 - 50.0 kg,"Verano, Otoño",Día,1.00%,Poco Común
+Mundo,62,Pez Espada (Juvenil),Pez,Mar Mediterráneo,10.0 - 30.0 kg,"Verano, Otoño",Noche,1.00%,Poco Común
+Mundo,63,Bonito del Pacífico,Pez,Pacífico Norte,2.0 - 6.0 kg,"Primavera, Verano",Día,1.00%,Poco Común
+Mundo,64,Halibut del Pacífico,Pez,Golfo de Alaska,10.0 - 40.0 kg,"Otoño, Invierno",Ambos,1.00%,Poco Común
+Mundo,65,Pez Hielo,Pez,Océano Antártico,0.5 - 2.0 kg,"Invierno, Primavera",Día,1.00%,Poco Común
+Mundo,66,Atún de Aleta Amarilla,Pez,Océano Pacífico,15.0 - 50.0 kg,"Primavera, Verano",Día,0.50%,Raro
+Mundo,67,Pez Vela,Pez,Océano Índico,20.0 - 60.0 kg,"Verano, Otoño",Día,0.50%,Raro
+Mundo,68,Wahoo (Peto),Pez,Mares Tropicales,10.0 - 30.0 kg,"Primavera, Verano",Día,0.50%,Raro
+Mundo,69,Sábalo (Tarpon),Pez,Mar Caribe,15.0 - 50.0 kg,"Verano, Otoño",Noche,0.50%,Raro
+Mundo,70,Mero Gigante,Pez,Gran Barrera de Coral,50.0 - 150.0 kg,"Otoño, Invierno",Ambos,0.50%,Raro
+Mundo,71,Pez Luna (Mola Mola),Pez,Océanos Abiertos,100.0 - 300.0 kg,"Primavera, Verano",Día,0.50%,Raro
+Mundo,72,Tiburón Punta Negra,Escualo,Arrecifes Globales,10.0 - 25.0 kg,"Verano, Otoño",Noche,0.50%,Raro
+Mundo,73,Tiburón Martillo,Escualo,Islas Galápagos,50.0 - 120.0 kg,"Primavera, Verano",Día,0.50%,Raro
+Mundo,74,Tiburón Toro,Escualo,Costas Tropicales,60.0 - 150.0 kg,"Verano, Otoño",Ambos,0.50%,Raro
+Mundo,75,Raya Águila,Pez,Mar Caribe,15.0 - 40.0 kg,"Primavera, Verano",Día,0.50%,Raro
+Mundo,76,Pez Sierra,Pez,Costas de Australia,40.0 - 100.0 kg,"Otoño, Invierno",Noche,0.50%,Raro
+Mundo,77,Esturión Beluga,Pez,Mar Caspio,30.0 - 100.0 kg,"Invierno, Primavera",Noche,0.50%,Raro
+Mundo,78,Cangrejo Rey Real,Crustáceo,Mar de Bering,3.0 - 8.0 kg,"Otoño, Invierno",Noche,0.50%,Raro
+Mundo,79,Cangrejo de los Cocoteros,Crustáceo,Islas del Pacífico,2.0 - 4.0 kg,"Primavera, Verano",Noche,0.50%,Raro
+Mundo,80,Pulpo Gigante del Pacífico,Cefalópodo,Pacífico Norte,15.0 - 40.0 kg,"Invierno, Primavera",Noche,0.50%,Raro
+Mundo,81,Calamar de Humboldt,Cefalópodo,Corriente de Humboldt,20.0 - 50.0 kg,"Verano, Otoño",Noche,0.50%,Raro
+Mundo,82,Pez Remo (Juvenil),Pez,Zona Mesopelágica,5.0 - 15.0 kg,"Otoño, Invierno",Noche,0.50%,Raro
+Mundo,83,Celacanto,Pez,Costas de Sudáfrica,30.0 - 80.0 kg,"Invierno, Primavera",Noche,0.50%,Raro
+Mundo,84,Pez Víbora,Pez,Zona Abisal,0.5 - 2.0 kg,"Otoño, Invierno",Noche,0.50%,Raro
+Mundo,85,Rape Abisal,Pez,Atlántico Profundo,2.0 - 5.0 kg,"Invierno, Primavera",Noche,0.50%,Raro
+Mundo,86,Marlín Azul,Pez,Océano Atlántico,100.0 - 300.0 kg,"Verano, Otoño",Día,0.30%,Épico
+Mundo,87,Marlín Negro,Pez,Océano Pacífico,150.0 - 400.0 kg,"Primavera, Verano",Día,0.30%,Épico
+Mundo,88,Atún Rojo Gigante,Pez,Atlántico Norte,150.0 - 350.0 kg,"Invierno, Primavera",Día,0.30%,Épico
+Mundo,89,Tiburón Blanco,Escualo,Costas de Sudáfrica,500.0 - 1000 kg,"Verano, Otoño",Día,0.30%,Épico
+Mundo,90,Tiburón Mako,Escualo,Océanos Abiertos,100.0 - 300.0 kg,"Primavera, Verano",Ambos,0.30%,Épico
+Mundo,91,Tiburón Zorro,Escualo,Océano Pacífico,100.0 - 250.0 kg,"Otoño, Invierno",Noche,0.30%,Épico
+Mundo,92,Mantarraya Gigante,Pez,Indo-Pacífico,500.0 - 1200 kg,"Primavera, Verano",Día,0.30%,Épico
+Mundo,93,Pez Espada Gigante,Pez,Aguas Internacionales,100.0 - 400.0 kg,"Verano, Otoño",Noche,0.30%,Épico
+Mundo,94,Narval,Mamífero,Océano Ártico,800.0 - 1200 kg,"Invierno, Primavera",Día,0.30%,Épico
+Mundo,95,Beluga,Mamífero,Mar Ártico,900.0 - 1400 kg,"Primavera, Verano",Día,0.30%,Épico
+Mundo,96,Calamar Gigante,Cefalópodo,Fosas del Atlántico,150.0 - 275.0 kg,"Otoño, Invierno",Noche,0.40%,Legendario
+Mundo,97,Tiburón Ballena,Escualo,Mares Tropicales,2000 - 5000 kg,"Primavera, Verano",Día,0.40%,Legendario
+Mundo,98,Pez Remo Gigante,Pez,Océano Profundo,100.0 - 250.0 kg,"Invierno, Primavera",Noche,0.40%,Legendario
+Mundo,99,Cachalote,Mamífero,Océanos Globales,5000 - 15000 kg,"Verano, Otoño",Ambos,0.40%,Legendario
+Mundo,100,Tiburón de Groenlandia,Escualo,Océano Ártico,700.0 - 1000 kg,"Invierno, Primavera",Noche,0.40%,Mítico

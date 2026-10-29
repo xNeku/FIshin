@@ -244,13 +244,36 @@ Las especies profundas tienen más valor base, aunque sean de la misma rareza. A
 
 | Pez | Desbloquea |
 |-----|-----------|
-| Atún o salmón | Restaurante de sushi |
+| Atún rojo o salmón rosado | Restaurante de sushi |
 | Pez de arrecife | Taladro de coral |
 | Primer pez extraño | Pecera |
 | Ostra | Centro de buceo |
 | Primer legendario | [ABIERTO] |
 
-[PROPUESTA] Unas 8 especies por tramo más legendarios: entre 40 y 50 peces en total.
+### Catálogo (hecho): 201 especies
+El diseñador pasó dos listas: **100 de Galicia y 100 del mundo** (`docs/datos/peces_fuente.csv`, sacado de su Excel). Se convierten en datos del juego con `python3 docs/herramientas/importar_peces.py 22 1.35`. Hay que volver a ejecutarlo si cambia la lista o las fórmulas, y luego `godot --headless --path . --import`.
+
+- **Rareza en 6 categorías**, como en el Excel: Común, Poco común, Raro, Épico, Legendario y Mítico.
+  - Probabilidad por categoría: 10 / 5 / 2 / 0,7 / 0,2 / 0,06.
+  - Los % del Excel no se usan, porque ponían el legendario (0,4 %) por encima del épico (0,3 %) y el mítico igual que el legendario.
+  - Desde Raro, la suerte de la caña y del árbol los sube. Desde Épico, se escapan si fallas el machaque.
+- **Profundidad**: Galicia en la 1-6 (T0-T2, cañas 1-6) y el mundo en la 7-12 (T2-T4), unas 17 especies por nivel.
+  - Dentro de cada categoría, de ligero a pesado.
+  - Los legendarios cierran tramo:
+    - Galicia: San Martiño en la 2, kraken bebé en la 3, Peixe Sapo en la 4, Morena en la 5, Fletán en la 6, y la Pinta Roja mítica en la 6.
+    - Mundo: Calamar gigante en la 9 ... Cachalote en la 12, y el Tiburón de Groenlandia mítico.
+  - Sardina, caballa (xarda), lubina (robaliza) y bota vieja se quedan en la 1 con su id de siempre. El atún pasa a ser el Atún Rojo (Cachón).
+- **Cuanto más hondo, menos salen los de arriba**: cada nivel por encima de tu caña pesa ×0,45 (`StatsPesca.peso_por_nivel_arriba`). Cada caña nueva trae de verdad peces nuevos.
+- **Valores por fórmula** (ver la cabecera del importador):
+  - `valor = 22 × 1,35^(prof−1) × rareza (1/2/5/12/40/120) × tamaño × lo que cuesta pescarlo`.
+  - El perfect sale de la tabla del ciclo.
+  - La dificultad (menos tiempo por botón, dobles, machaques) sube con la profundidad y la rareza.
+- **Estaciones y horario**: vienen del Excel y se guardan en cada pez, pero aún no filtran nada. Esperan al reloj del juego ([ABIERTO] duración del día y las estaciones).
+- **Iconos**: placeholders 16×10 por forma (pez normal, alargado, plano, alto, atún, espada, raya, tiburón, caballito, cangrejo, gamba, pulpo, calamar, estrella, erizo, pepino, bota, lata, botella, rama, neumático, alga, ballena), con color por especie. Los legendarios llevan un detalle dorado.
+- **Ojo con el Excel**:
+  - Hay mamíferos (narval, beluga, cachalote). Pescarlos con caña puede chirriar; se podrían pasar a "avistamientos". [ABIERTO]
+  - Hay especies repetidas en las dos listas (sargo picudo, caballito, pez ballesta, pepino de mar, pez limón): las del mundo llevan `_mundo` en el id.
+  - "Pinta roja" sale como tiburón mítico de 1-3 kg, pero en Galicia es un pez común.
 
 ---
 
@@ -432,24 +455,27 @@ Simulador: `docs/herramientas/simular_economia.py`. Juega con los peces, cañas 
 [PROPUESTA] Guía de ritmo: manda la carta. Simulado con un jugador normal (media de 20 partidas, `docs/herramientas/simular_economia.py`). Cuenta el rato que se pierde andando para vender: 8 s por venta en el donut y 35 s cuando ya hay camino.
 
 **T0 Náufrago y principio del T1 (lo que ya está hecho, con los datos nuevos)**
+
+Con el catálogo de 201 especies (jugador normal; el bueno llega unos 4 min antes y el flojo unos 5 después):
+
 | Min | Llega | Condición (nueva) | Qué aporta | ₽/min |
 |-----|-------|-------------------|------------|-------|
-| 1 | Comerciante | 3 peces | Vender, tienda | ~44 |
-| 9 | Caña decente | **300 ₽** (antes 150) | ×2,5 | ~110 |
-| 11 | Primera isla (bestiario) | **400 ₽ totales** (antes 200) | Suelo, colección, maestría a la vista | ~110 |
+| 1 | Comerciante | 3 peces | Vender, tienda | ~45 (Rota) |
+| 8 | Caña decente | **300 ₽** (antes 150) | ×3 (épicos y un legendario desde la prof. 2) | ~150 |
+| 10 | Primera isla (bestiario) | **400 ₽ totales** (antes 200) | Suelo, colección, maestría a la vista | ~150 |
 | 10-30 | Cajones extra | 60 ₽ ×1,8 | Más huecos | |
-| 23 | Viejo y árbol | 75 peces | Nodos baratos (+10-30 %) | ~130 |
-| 42 | Camino | **700 puntos de pesca** (antes 20 min) | Andar; empieza a costar tiempo vender | |
-| 52 | Sabia caña | **4.500 ₽** (antes 2.000) | ×2 | ~220 |
-| 56 | Puerto | Camino + **1.000 puntos de pesca** (antes combo x10, min ~73) | 1 pescador (~8 ₽/min) | ~230 |
-| 68 | Lonja | Camino + **8.000 ₽ totales** (antes 1.500) | ×1,2 vendiendo allí | ~270 |
+| 22 | Viejo y árbol | 75 peces | Nodos baratos (+10-30 %) | ~160 |
+| 40 | Camino | **700 puntos de pesca** (antes 20 min) | Andar; empieza a costar tiempo vender | |
+| 53 | Sabia caña | **6.000 ₽** (antes 2.000) | ×2,3 | ~350 |
+| 55 | Puerto | Camino + **1.000 puntos de pesca** (antes combo x10, min ~73) | 1 pescador (~9 ₽/min) | ~360 |
+| 66 | Lonja | Camino + **10.000 ₽ totales** (antes 1.500) | ×1,2 vendiendo allí | ~400 |
 
 **Premiar al que pesca bien** [DECIDIDO: hay que premiarlo, que acabe antes]:
 - **Puntos de pesca** (`Juego.stats.puntos_pesca`): cada pez suma la racha de su cadena, ×2 si es perfecto. El camino y el puerto llegan por puntos, no por minutos ni por un solo combo.
-- Con eso (simulado):
-  - Bueno: camino 40, puerto 54.
-  - Normal: camino 42, puerto 56.
-  - Flojo: camino 46, puerto 61.
+- Con eso (simulado, con el catálogo):
+  - Bueno: camino 38, puerto 52, lonja 62.
+  - Normal: camino 40, puerto 55, lonja 66.
+  - Flojo: camino 44, puerto 60, lonja 71.
 - **Hoy la diferencia es pequeña en el T0-T1.** La caña decide al azar lo larga que es la cadena, y casi todas son cortas y lentas (más de 0,9 s por botón), así que todos las aciertan.
   - La habilidad empieza a notarse con cadenas de 10 o más (botones de 0,4 s) y en el flow (0,3 s).
   - Para que se note antes hay dos palancas.

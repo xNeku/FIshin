@@ -31,7 +31,8 @@ extends CanvasLayer
 @export var color_perfecto: Color = Color("ffd84a")
 ## Color del contador de combo según el tramo de racha (StatsPesca.racha_desde): 0 = sin tramo.
 @export var colores_racha: Array[Color] = [Color("e8e8e8"), Color("8fe3ff"), Color("4fa3ff"), Color("7dff8a"), Color("ffd84a"), Color("ff9a3c"), Color("ff5a5a"), Color("ff6bd8"), Color("b56bff"), Color("ffffff")]
-@export var colores_rareza: Array[Color] = [Color("e8e8e8"), Color("4fa3ff"), Color("b56bff"), Color("ffb02e")]
+## Común, poco común, raro, épico, legendario, mítico.
+@export var colores_rareza: Array[Color] = [Color("e8e8e8"), Color("7dff8a"), Color("4fa3ff"), Color("b56bff"), Color("ffb02e"), Color("ff5a7a")]
 ## Frase de cada acierto según cuántos botones llevas: la palabra i sale desde el botón umbrales_palabras[i].
 @export var palabras_acierto: Array[String] = ["Bien", "Genial", "¡Brutal!", "¡LOCURA!", "¡¡DIOS!!", "¡¡¡INHUMANO!!!"]
 @export var umbrales_palabras: Array[int] = [1, 5, 10, 20, 35, 50]
@@ -47,7 +48,6 @@ extends CanvasLayer
 
 ## Letras de las pistas "[E] ..." y su acción del Input Map.
 const TECLA_A_ACCION: Dictionary = {"E": &"interactuar", "Q": &"cambiar_modo", "Tab": &"menu"}
-const NOMBRES_RAREZA: Array[String] = ["Común", "Raro", "Extraño", "Legendario"]
 
 @onready var efecto: ColorRect = $EfectoPantalla
 @onready var rublos: Label = $Info/Lista/Rublos
@@ -325,7 +325,7 @@ func _on_capturado(c: Dictionary, pez: PezData) -> void:
 	var col: Color = colores_rareza[pez.rareza]
 	resultado.visible = true
 	icono.texture = pez.icono
-	nombre.text = "%s  ·  %s" % [pez.nombre, NOMBRES_RAREZA[pez.rareza]]
+	nombre.text = "%s  ·  %s" % [pez.nombre, PezData.NOMBRES_RAREZA[pez.rareza]]
 	nombre.modulate = col
 	detalle.text = "%s  ·  %s  ·  %s" % [Formato.calidad(c.calidad, c.perfecto), Formato.peso(c.peso), Formato.dinero(c.valor)]
 	_destello = destello_perfecto if c.perfecto else destello_captura

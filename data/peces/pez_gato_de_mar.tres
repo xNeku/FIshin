@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="PezData" format=3]
+
+[ext_resource type="Script" path="res://scripts/datos/pez_data.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://art/peces/pez_gato_de_mar.png" id="2_icono"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"pez_gato_de_mar"
+nombre = "Pez Gato de Mar"
+rareza = 0
+icono = ExtResource("2_icono")
+profundidad = 12
+tipo = 0
+zona = 1
+ubicacion = "Golfo de Tailandia"
+estaciones = 6
+horario = 2
+valor_base = 2813
+peso_min = 1.0
+peso_max = 3.5
+probabilidad = 10.0
+pasos_perfect = 40
+mult_tiempo = 0.868
+prob_doble = 0.44
+machacar_cada = 0
+pulsaciones_machacar = 20
+tiempo_machacar = 2.4

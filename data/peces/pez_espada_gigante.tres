@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="PezData" format=3]
+
+[ext_resource type="Script" path="res://scripts/datos/pez_data.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://art/peces/pez_espada_gigante.png" id="2_icono"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"pez_espada_gigante"
+nombre = "Pez Espada Gigante"
+rareza = 3
+icono = ExtResource("2_icono")
+profundidad = 10
+tipo = 0
+zona = 1
+ubicacion = "Aguas Internacionales"
+estaciones = 6
+horario = 2
+valor_base = 26123
+peso_min = 100.0
+peso_max = 400.0
+probabilidad = 0.7
+pasos_perfect = 35
+mult_tiempo = 0.852
+prob_doble = 0.5
+machacar_cada = 4
+pulsaciones_machacar = 24
+tiempo_machacar = 2.6

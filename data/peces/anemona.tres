@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="PezData" format=3]
+
+[ext_resource type="Script" path="res://scripts/datos/pez_data.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://art/peces/anemona.png" id="2_icono"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"anemona"
+nombre = "Anémona (Ortega)"
+rareza = 2
+icono = ExtResource("2_icono")
+profundidad = 1
+tipo = 7
+zona = 0
+ubicacion = ""
+estaciones = 3
+horario = 0
+valor_base = 94.5
+peso_min = 0.1
+peso_max = 0.3
+probabilidad = 2.0
+pasos_perfect = 6
+mult_tiempo = 0.98
+prob_doble = 0.1
+machacar_cada = 0
+pulsaciones_machacar = 13
+tiempo_machacar = 2.05

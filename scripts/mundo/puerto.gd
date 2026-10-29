@@ -131,6 +131,9 @@ func _pez_mas_barato() -> PezData:
 		var limpio: String = f.trim_suffix(".remap")
 		if limpio.ends_with(".tres"):
 			var p: PezData = load("res://data/peces/" + limpio)
+			# Solo peces de verdad y de la primera profundidad (nada de latas ni bichos del fondo).
+			if p.tipo != PezData.Tipo.PEZ or p.profundidad > 1:
+				continue
 			if _pez_barato == null or p.valor_base < _pez_barato.valor_base:
 				_pez_barato = p
 	return _pez_barato

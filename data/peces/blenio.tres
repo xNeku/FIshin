@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="PezData" format=3]
+
+[ext_resource type="Script" path="res://scripts/datos/pez_data.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://art/peces/blenio.png" id="2_icono"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"blenio"
+nombre = "Blenio (Moma)"
+rareza = 0
+icono = ExtResource("2_icono")
+profundidad = 1
+tipo = 0
+zona = 0
+ubicacion = ""
+estaciones = 6
+horario = 1
+valor_base = 15.4
+peso_min = 0.05
+peso_max = 0.1
+probabilidad = 10.0
+pasos_perfect = 5
+mult_tiempo = 1.0
+prob_doble = 0.0
+machacar_cada = 0
+pulsaciones_machacar = 9
+tiempo_machacar = 1.85

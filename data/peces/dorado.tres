@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="PezData" format=3]
+
+[ext_resource type="Script" path="res://scripts/datos/pez_data.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://art/peces/dorado.png" id="2_icono"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"dorado"
+nombre = "Dorado (Mahi Mahi)"
+rareza = 1
+icono = ExtResource("2_icono")
+profundidad = 11
+tipo = 0
+zona = 1
+ubicacion = "Pacífico Tropical"
+estaciones = 6
+horario = 1
+valor_base = 4494
+peso_min = 5.0
+peso_max = 15.0
+probabilidad = 5.0
+pasos_perfect = 34
+mult_tiempo = 0.88
+prob_doble = 0.45
+machacar_cada = 4
+pulsaciones_machacar = 21
+tiempo_machacar = 2.45

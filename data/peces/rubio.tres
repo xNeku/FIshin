@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="PezData" format=3]
+
+[ext_resource type="Script" path="res://scripts/datos/pez_data.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://art/peces/rubio.png" id="2_icono"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"rubio"
+nombre = "Rubio"
+rareza = 0
+icono = ExtResource("2_icono")
+profundidad = 5
+tipo = 0
+zona = 0
+ubicacion = ""
+estaciones = 9
+horario = 0
+valor_base = 106
+peso_min = 0.5
+peso_max = 1.5
+probabilidad = 10.0
+pasos_perfect = 10
+mult_tiempo = 0.952
+prob_doble = 0.16
+machacar_cada = 0
+pulsaciones_machacar = 13
+tiempo_machacar = 2.05

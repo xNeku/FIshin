@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="PezData" format=3]
+
+[ext_resource type="Script" path="res://scripts/datos/pez_data.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://art/peces/manta_de_arrecife.png" id="2_icono"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"manta_de_arrecife"
+nombre = "Manta de Arrecife"
+rareza = 1
+icono = ExtResource("2_icono")
+profundidad = 12
+tipo = 0
+zona = 1
+ubicacion = "Islas Maldivas"
+estaciones = 6
+horario = 1
+valor_base = 10513
+peso_min = 20.0
+peso_max = 50.0
+probabilidad = 5.0
+pasos_perfect = 50
+mult_tiempo = 0.868
+prob_doble = 0.49
+machacar_cada = 4
+pulsaciones_machacar = 22
+tiempo_machacar = 2.5

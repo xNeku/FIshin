@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="PezData" format=3]
+
+[ext_resource type="Script" path="res://scripts/datos/pez_data.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://art/peces/pez_vela.png" id="2_icono"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"pez_vela"
+nombre = "Pez Vela"
+rareza = 2
+icono = ExtResource("2_icono")
+profundidad = 10
+tipo = 0
+zona = 1
+ubicacion = "Océano Índico"
+estaciones = 6
+horario = 1
+valor_base = 9711
+peso_min = 20.0
+peso_max = 60.0
+probabilidad = 2.0
+pasos_perfect = 32
+mult_tiempo = 0.872
+prob_doble = 0.46
+machacar_cada = 4
+pulsaciones_machacar = 22
+tiempo_machacar = 2.5

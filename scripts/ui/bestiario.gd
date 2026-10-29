@@ -49,6 +49,9 @@ func _refrescar() -> void:
 		if limpio.ends_with(".tres"):
 			peces.append(load("res://data/peces/" + limpio))
 	peces.sort_custom(func(a: PezData, b: PezData) -> bool:
+		# Por profundidad (lo que vas descubriendo con cada caña) y dentro, por rareza.
+		if a.profundidad != b.profundidad:
+			return a.profundidad < b.profundidad
 		return a.rareza < b.rareza if a.rareza != b.rareza else a.valor_base < b.valor_base)
 	for p: PezData in peces:
 		var ficha: Node = escena_ficha.instantiate()

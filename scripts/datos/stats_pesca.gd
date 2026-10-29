@@ -18,6 +18,10 @@ extends Resource
 ## El último picoteo avisa de que va a picar: este tiempo antes de la picada de verdad.
 @export var aviso_picada: float = 0.9
 
+## Peces de niveles de profundidad por encima del de tu caña: su probabilidad se multiplica por esto
+## por cada nivel (0.45: el de un nivel arriba sale la mitad, el de dos, una quinta parte...).
+@export var peso_por_nivel_arriba: float = 0.45
+
 @export_group("Sensación")
 ## Botones seguidos que hacen falta para el máximo de zoom, shake y efectos.
 ## Pensado para los combos de final de juego (~50): al principio todo es muy ligero.

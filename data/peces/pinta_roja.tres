@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="PezData" format=3]
+
+[ext_resource type="Script" path="res://scripts/datos/pez_data.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://art/peces/pinta_roja.png" id="2_icono"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"pinta_roja"
+nombre = "Pinta Roja (Tiburón)"
+rareza = 5
+icono = ExtResource("2_icono")
+profundidad = 6
+tipo = 4
+zona = 0
+ubicacion = ""
+estaciones = 9
+horario = 2
+valor_base = 49731
+peso_min = 1.0
+peso_max = 3.0
+probabilidad = 0.06
+pasos_perfect = 36
+mult_tiempo = 0.86
+prob_doble = 0.45
+machacar_cada = 5
+pulsaciones_machacar = 24
+tiempo_machacar = 2.6

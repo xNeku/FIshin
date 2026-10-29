@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="PezData" format=3]
+
+[ext_resource type="Script" path="res://scripts/datos/pez_data.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://art/peces/tiburon_ballena.png" id="2_icono"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"tiburon_ballena"
+nombre = "Tiburón Ballena"
+rareza = 4
+icono = ExtResource("2_icono")
+profundidad = 11
+tipo = 4
+zona = 1
+ubicacion = "Mares Tropicales"
+estaciones = 3
+horario = 1
+valor_base = 190722
+peso_min = 2000.0
+peso_max = 5000.0
+probabilidad = 0.2
+pasos_perfect = 58
+mult_tiempo = 0.85
+prob_doble = 0.5
+machacar_cada = 4
+pulsaciones_machacar = 27
+tiempo_machacar = 2.75

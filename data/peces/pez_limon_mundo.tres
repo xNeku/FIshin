@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="PezData" format=3]
+
+[ext_resource type="Script" path="res://scripts/datos/pez_data.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://art/peces/pez_limon_mundo.png" id="2_icono"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"pez_limon_mundo"
+nombre = "Pez Limón"
+rareza = 1
+icono = ExtResource("2_icono")
+profundidad = 10
+tipo = 0
+zona = 1
+ubicacion = "Mar Mediterráneo"
+estaciones = 3
+horario = 1
+valor_base = 2636
+peso_min = 3.0
+peso_max = 10.0
+probabilidad = 5.0
+pasos_perfect = 28
+mult_tiempo = 0.892
+prob_doble = 0.41
+machacar_cada = 4
+pulsaciones_machacar = 20
+tiempo_machacar = 2.4

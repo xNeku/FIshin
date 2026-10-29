@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="PezData" format=3]
+
+[ext_resource type="Script" path="res://scripts/datos/pez_data.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://art/peces/cachalote.png" id="2_icono"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"cachalote"
+nombre = "Cachalote"
+rareza = 4
+icono = ExtResource("2_icono")
+profundidad = 12
+tipo = 5
+zona = 1
+ubicacion = "Océanos Globales"
+estaciones = 6
+horario = 0
+valor_base = 480275
+peso_min = 5000.0
+peso_max = 15000.0
+probabilidad = 0.2
+pasos_perfect = 104
+mult_tiempo = 0.85
+prob_doble = 0.5
+machacar_cada = 4
+pulsaciones_machacar = 28
+tiempo_machacar = 2.8

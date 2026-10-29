@@ -1,8 +1,13 @@
 class_name PezData
 extends Resource
-## Un tipo de pez. Cada .tres en data/peces/ es un pez.
+## Un tipo de pez. Cada .tres en data/peces/ es un pez (la Pesca los carga todos de la carpeta).
+## Los de la lista del diseñador salen de docs/datos/peces_fuente.csv con docs/herramientas/importar_peces.py.
 
-enum Rareza { COMUN, RARO, EXTRANO, LEGENDARIO }
+enum Rareza { COMUN, POCO_COMUN, RARO, EPICO, LEGENDARIO, MITICO }
+enum Tipo { PEZ, CRUSTACEO, CEFALOPODO, EQUINODERMO, ESCUALO, MAMIFERO, OBJETO, FLORA }
+enum Zona { GALICIA, MUNDO }
+
+const NOMBRES_RAREZA: Array[String] = ["Común", "Poco común", "Raro", "Épico", "Legendario", "Mítico"]
 
 @export var id: StringName
 @export var nombre: String = ""
@@ -10,6 +15,15 @@ enum Rareza { COMUN, RARO, EXTRANO, LEGENDARIO }
 @export var icono: Texture2D
 ## Profundidad mínima de caña para que pueda picar.
 @export var profundidad: int = 1
+
+@export_group("Ficha")
+@export var tipo: Tipo = Tipo.PEZ
+@export var zona: Zona = Zona.GALICIA
+## Dónde vive (para el bestiario; sobre todo los del mundo).
+@export var ubicacion: String = ""
+## Cuándo sale. Aún no se usa al pescar: espera al reloj del juego (día/noche y estaciones).
+@export_flags("Primavera", "Verano", "Otoño", "Invierno") var estaciones: int = 15
+@export_enum("Siempre", "Día", "Noche", "Ocaso") var horario: int = 0
 
 @export_group("Economía")
 @export var valor_base: float = 5.0
@@ -33,4 +47,4 @@ enum Rareza { COMUN, RARO, EXTRANO, LEGENDARIO }
 
 ## Los raros de verdad se escapan si no llenas la barra; los normales salen peores.
 func escapa_si_falla_machacar() -> bool:
-	return rareza >= Rareza.EXTRANO
+	return rareza >= Rareza.EPICO

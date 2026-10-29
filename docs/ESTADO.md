@@ -49,7 +49,7 @@ Parada para valorar rumbo (29 oct). Hay un tramo jugable de principio a fin de l
 - Llegada por mar: `Mundo._lado_de_llegada` (punto cardinal del centro de la isla vista desde la barca).
 - Árbol de habilidades: datos en `data/arbol/` (`arbol.tres` con ramas y nodos; RamaArbolData, NodoArbolData). Juego guarda `habilidades` (id → nivel, save v4) y da `Juego.efecto(nombre)`, `mejorar_habilidad`, `motivo_no_mejorar`, `mult_venta`, `mult_trabajadores`, `de_chill` (segundos sin tocar nada). Pantalla: `scenes/ui/arbol.tscn` (arbol.gd), con cada nodo como instancia de `nodo_arbol.tscn` colocada a mano en Lienzo/Nodos; los caminos (`conexion_arbol.tscn`, shader `agua_camino`) se trazan solos por los requisitos. Se abre con el viejo (Interactuable accion ARBOL), que tiene botón a su tienda. Iconos 12×12 en `art/ui/arbol/iconos/` (blancos, se tiñen con el color de la rama).
 - `scripts/ui/iconos_input.gd` (IconosInput): dibujos de teclas según el dispositivo; lo usan HUD y árbol.
-- Peces: `data/peces/*.tres` (PezData). Arte placeholder en `art/` (generado por script, sustituible).
+- Peces: `data/peces/*.tres` (PezData, 201 especies), generados desde `docs/datos/peces_fuente.csv` con `docs/herramientas/importar_peces.py`. Iconos placeholder en `art/peces/` (generados por forma, sustituibles). La Pesca carga la carpeta entera (`Pesca.carpeta_peces`).
 
 ## Herramientas de diseño (artefactos)
 - Carta de Fishin (mapa): https://claude.ai/artifact/2oRoaePEyuUyDUYBJnK9oA. Colección `elementos` con {nombre, tipo, estado, x, y, w, h (caja), celdas [[x,y]...] (forma real; si falta, es el rectángulo de la caja), orden, condicion, descripcion}. Coordenadas: barca en (0,0), x a la derecha, y hacia arriba (en Godot, y+ = -Z). 1 casilla = 2 m.
@@ -69,6 +69,14 @@ Parada para valorar rumbo (29 oct). Hay un tramo jugable de principio a fin de l
 - Juego de 15-20 h: tramos nuevos (midgame a las 5-6 h), tabla del ciclo (caña, peces, combos, racha y pasivo suben juntos) y orientación v3 en `PROGRESION.md`.
 - Datos: espera 8-20 s; cañas sin bonus de tiempo; árbol de tiempo recortado (como mucho +15 %); cebo de gusano +20 % durante 10 pescas; caña decente 300, Sabia 4.500; isla a 400 ₽ totales, camino a 40 min, lonja a 6.500, viejo a 75 peces.
 - Maestría por especie (`Juego.capturados`, save v5) en el bestiario.
+
+## Sesión 30 oct (tarde)
+- Modo flow: un 30 % menos de tiempo por botón, mínimo 0,3 s. El sushi no caduca (decidido).
+- Puntos de pesca (`Juego.stats.puntos_pesca`, condición PUNTOS_PESCA): camino a 700 y puerto a 1.000. El que pesca mejor llega antes.
+- Catálogo de 201 especies desde el Excel del diseñador (`docs/datos/peces_fuente.csv`, `docs/herramientas/importar_peces.py 22 1.35`). Rareza en 6 categorías, peso por nivel de profundidad, iconos por forma.
+  - La Pesca carga la carpeta `data/peces`; main.tscn ya no lleva la lista.
+  - Sabia a 6.000 ₽ y lonja a 10.000 ₽ totales.
+- El simulador lee los .tres directamente.
 
 ## Siguiente paso
 Sesión de progresión con el diseñador hasta el midgame (economía y orden de desbloqueos), partiendo de `docs/PROGRESION.md` (borrador v1) y `docs/INCREMENTAL.md`.

@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="PezData" format=3]
+
+[ext_resource type="Script" path="res://scripts/datos/pez_data.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://art/peces/calamar_volador.png" id="2_icono"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"calamar_volador"
+nombre = "Calamar Volador"
+rareza = 1
+icono = ExtResource("2_icono")
+profundidad = 8
+tipo = 2
+zona = 1
+ubicacion = "Océano Pacífico"
+estaciones = 6
+horario = 2
+valor_base = 797
+peso_min = 0.5
+peso_max = 2.0
+probabilidad = 5.0
+pasos_perfect = 18
+mult_tiempo = 0.916
+prob_doble = 0.33
+machacar_cada = 0
+pulsaciones_machacar = 18
+tiempo_machacar = 2.3

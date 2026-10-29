@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="PezData" format=3]
+
+[ext_resource type="Script" path="res://scripts/datos/pez_data.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://art/peces/fletan.png" id="2_icono"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"fletan"
+nombre = "Fletán (Halibut)"
+rareza = 4
+icono = ExtResource("2_icono")
+profundidad = 6
+tipo = 0
+zona = 0
+ubicacion = ""
+estaciones = 12
+horario = 0
+valor_base = 16988
+peso_min = 10.0
+peso_max = 50.0
+probabilidad = 0.2
+pasos_perfect = 23
+mult_tiempo = 0.88
+prob_doble = 0.4
+machacar_cada = 5
+pulsaciones_machacar = 22
+tiempo_machacar = 2.5

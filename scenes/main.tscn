@@ -38,16 +38,9 @@
 [ext_resource type="Script" path="res://scripts/pesca/pesca.gd" id="4_pesca"]
 [ext_resource type="Script" path="res://scripts/pesca/camara_pesca.gd" id="5_camara"]
 [ext_resource type="Script" path="res://scripts/pesca/sonido_pesca.gd" id="6_sonido"]
-[ext_resource type="Script" path="res://scripts/datos/pez_data.gd" id="7_pez_data"]
 [ext_resource type="Resource" path="res://data/stats_pesca.tres" id="8_stats"]
 [ext_resource type="Shader" path="res://shaders/agua.gdshader" id="9_agua"]
 [ext_resource type="Shader" path="res://shaders/zona_pesca.gdshader" id="10_zona"]
-[ext_resource type="Resource" path="res://data/peces/sardina.tres" id="pez_sardina"]
-[ext_resource type="Resource" path="res://data/peces/caballa.tres" id="pez_caballa"]
-[ext_resource type="Resource" path="res://data/peces/lubina.tres" id="pez_lubina"]
-[ext_resource type="Resource" path="res://data/peces/atun.tres" id="pez_atun"]
-[ext_resource type="Resource" path="res://data/peces/bota_vieja.tres" id="pez_bota_vieja"]
-[ext_resource type="Resource" path="res://data/peces/kraken_bebe.tres" id="pez_kraken_bebe"]
 [ext_resource type="AudioStream" path="res://art/sfx/acierto.wav" id="sfx_acierto"]
 [ext_resource type="AudioStream" path="res://art/sfx/fallo.wav" id="sfx_fallo"]
 [ext_resource type="AudioStream" path="res://art/sfx/picada.wav" id="sfx_picada"]
@@ -191,7 +184,6 @@ objetivo = NodePath("../Barca/Foco")
 [node name="Pesca" type="Node" parent="."]
 script = ExtResource("4_pesca")
 stats = ExtResource("8_stats")
-peces = Array[ExtResource("7_pez_data")]([ExtResource("pez_sardina"), ExtResource("pez_caballa"), ExtResource("pez_lubina"), ExtResource("pez_atun"), ExtResource("pez_bota_vieja"), ExtResource("pez_kraken_bebe")])
 
 [node name="Celebracion" type="Node" parent="." node_paths=PackedStringArray("pesca", "camara", "protagonista", "pez_levantado", "luz", "brillos", "fanfarria", "ocultar")]
 script = ExtResource("13_celebracion")

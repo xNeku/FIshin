@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="PezData" format=3]
+
+[ext_resource type="Script" path="res://scripts/datos/pez_data.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://art/peces/pez_sierra.png" id="2_icono"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"pez_sierra"
+nombre = "Pez Sierra"
+rareza = 2
+icono = ExtResource("2_icono")
+profundidad = 11
+tipo = 0
+zona = 1
+ubicacion = "Costas de Australia"
+estaciones = 12
+horario = 2
+valor_base = 15836
+peso_min = 40.0
+peso_max = 100.0
+probabilidad = 2.0
+pasos_perfect = 38
+mult_tiempo = 0.86
+prob_doble = 0.5
+machacar_cada = 4
+pulsaciones_machacar = 23
+tiempo_machacar = 2.55

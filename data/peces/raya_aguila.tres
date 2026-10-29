@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="PezData" format=3]
+
+[ext_resource type="Script" path="res://scripts/datos/pez_data.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://art/peces/raya_aguila.png" id="2_icono"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"raya_aguila"
+nombre = "Raya Águila"
+rareza = 2
+icono = ExtResource("2_icono")
+profundidad = 9
+tipo = 0
+zona = 1
+ubicacion = "Mar Caribe"
+estaciones = 3
+horario = 1
+valor_base = 5516
+peso_min = 15.0
+peso_max = 40.0
+probabilidad = 2.0
+pasos_perfect = 25
+mult_tiempo = 0.884
+prob_doble = 0.42
+machacar_cada = 4
+pulsaciones_machacar = 21
+tiempo_machacar = 2.45

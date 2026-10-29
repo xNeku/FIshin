@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="PezData" format=3]
+
+[ext_resource type="Script" path="res://scripts/datos/pez_data.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://art/peces/pez_limon.png" id="2_icono"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"pez_limon"
+nombre = "Pez Limón (Serviola)"
+rareza = 3
+icono = ExtResource("2_icono")
+profundidad = 5
+tipo = 0
+zona = 0
+ubicacion = ""
+estaciones = 3
+horario = 1
+valor_base = 2188
+peso_min = 5.0
+peso_max = 20.0
+probabilidad = 0.7
+pasos_perfect = 13
+mult_tiempo = 0.912
+prob_doble = 0.31
+machacar_cada = 6
+pulsaciones_machacar = 19
+tiempo_machacar = 2.35

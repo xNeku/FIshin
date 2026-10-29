@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="PezData" format=3]
+
+[ext_resource type="Script" path="res://scripts/datos/pez_data.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://art/peces/pez_pipa.png" id="2_icono"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"pez_pipa"
+nombre = "Pez Pipa"
+rareza = 0
+icono = ExtResource("2_icono")
+profundidad = 7
+tipo = 0
+zona = 1
+ubicacion = "Océano Atlántico"
+estaciones = 6
+horario = 1
+valor_base = 175
+peso_min = 0.05
+peso_max = 0.2
+probabilidad = 10.0
+pasos_perfect = 14
+mult_tiempo = 0.928
+prob_doble = 0.24
+machacar_cada = 0
+pulsaciones_machacar = 15
+tiempo_machacar = 2.15

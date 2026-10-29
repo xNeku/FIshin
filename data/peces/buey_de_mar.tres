@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="PezData" format=3]
+
+[ext_resource type="Script" path="res://scripts/datos/pez_data.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://art/peces/buey_de_mar.png" id="2_icono"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"buey_de_mar"
+nombre = "Buey de Mar"
+rareza = 2
+icono = ExtResource("2_icono")
+profundidad = 2
+tipo = 1
+zona = 0
+ubicacion = ""
+estaciones = 12
+horario = 2
+valor_base = 201
+peso_min = 0.5
+peso_max = 2.5
+probabilidad = 2.0
+pasos_perfect = 8
+mult_tiempo = 0.968
+prob_doble = 0.14
+machacar_cada = 0
+pulsaciones_machacar = 14
+tiempo_machacar = 2.1

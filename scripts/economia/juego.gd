@@ -188,7 +188,7 @@ func anadir_captura(captura: Dictionary, pez: PezData) -> bool:
 	stats.peces_pescados += 1
 	if captura.perfecto:
 		stats.perfectos += 1
-	if pez.rareza == PezData.Rareza.LEGENDARIO:
+	if pez.rareza >= PezData.Rareza.LEGENDARIO:
 		stats.legendarios += 1
 	coleccion[String(pez.id)] = maxf(coleccion.get(String(pez.id), 0.0), captura.calidad)
 	capturados[String(pez.id)] = int(capturados.get(String(pez.id), 0)) + 1

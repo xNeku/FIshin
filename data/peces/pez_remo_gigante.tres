@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="PezData" format=3]
+
+[ext_resource type="Script" path="res://scripts/datos/pez_data.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://art/peces/pez_remo_gigante.png" id="2_icono"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"pez_remo_gigante"
+nombre = "Pez Remo Gigante"
+rareza = 4
+icono = ExtResource("2_icono")
+profundidad = 9
+tipo = 0
+zona = 1
+ubicacion = "Océano Profundo"
+estaciones = 9
+horario = 2
+valor_base = 71199
+peso_min = 100.0
+peso_max = 250.0
+probabilidad = 0.2
+pasos_perfect = 39
+mult_tiempo = 0.85
+prob_doble = 0.5
+machacar_cada = 4
+pulsaciones_machacar = 25
+tiempo_machacar = 2.65

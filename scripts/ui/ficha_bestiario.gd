@@ -1,8 +1,6 @@
 extends PanelContainer
 ## Una especie en el bestiario. Sin pescar: silueta y "???".
 
-const NOMBRES_RAREZA: Array[String] = ["Común", "Raro", "Extraño", "Legendario"]
-
 @onready var icono: TextureRect = $Margen/Contenido/Icono
 @onready var nombre: Label = $Margen/Contenido/Nombre
 @onready var detalle: Label = $Margen/Contenido/Detalle
@@ -18,7 +16,7 @@ func mostrar(pez: PezData, mejor_calidad: float) -> void:
 	else:
 		icono.modulate = Color.WHITE
 		nombre.text = pez.nombre
-		detalle.text = "%s\n%s\n%s" % [NOMBRES_RAREZA[pez.rareza], Formato.calidad(mejor_calidad, mejor_calidad >= 1.0), _maestria(pez)]
+		detalle.text = "%s\n%s\n%s" % [PezData.NOMBRES_RAREZA[pez.rareza], Formato.calidad(mejor_calidad, mejor_calidad >= 1.0), _maestria(pez)]
 
 
 ## "Maestría 2" y debajo "63/200" (o el multiplicador al tope).

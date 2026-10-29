@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="PezData" format=3]
+
+[ext_resource type="Script" path="res://scripts/datos/pez_data.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://art/peces/pez_erizo.png" id="2_icono"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"pez_erizo"
+nombre = "Pez Erizo"
+rareza = 1
+icono = ExtResource("2_icono")
+profundidad = 9
+tipo = 0
+zona = 1
+ubicacion = "Arrecifes Tropicales"
+estaciones = 12
+horario = 2
+valor_base = 1344
+peso_min = 1.0
+peso_max = 3.0
+probabilidad = 5.0
+pasos_perfect = 22
+mult_tiempo = 0.904
+prob_doble = 0.37
+machacar_cada = 0
+pulsaciones_machacar = 19
+tiempo_machacar = 2.35
