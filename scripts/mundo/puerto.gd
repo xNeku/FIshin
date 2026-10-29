@@ -74,15 +74,17 @@ func _poblar() -> void:
 	if Juego.trabajadores < 1:
 		Juego.contratar_trabajador()
 	while trabajadores.size() < Juego.trabajadores:
-		_contratar()
+		# Sin bordes libres no se puede colocar a nadie más (antes esto se quedaba en bucle infinito).
+		if not _contratar():
+			break
 
 
-func _contratar() -> void:
+func _contratar() -> bool:
 	var m: Node = get_parent()
 	var puesto: Dictionary = _elegir_puesto(m)
 	if puesto.is_empty():
 		push_warning("No queda ningún borde libre para otro pescador")
-		return
+		return false
 	var t: Trabajador = escena_trabajador.instantiate()
 	(contenedor if contenedor else self).add_child(t)
 	var sentado: bool = m.es_tablon(puesto.celda) and randf() < prob_sentado
@@ -91,6 +93,7 @@ func _contratar() -> void:
 	if primero and not lineas_primero.is_empty():
 		t.charla.lineas = lineas_primero
 	trabajadores.append(t)
+	return true
 
 
 func _elegir_puesto(m: Node) -> Dictionary:

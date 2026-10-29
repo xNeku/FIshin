@@ -3,8 +3,6 @@ extends CanvasLayer
 ## uno lleva su NodoArbolData; los caminos de agua se trazan solos según los requisitos.
 ## Se abre hablando con el viejo; pausa el juego mientras está abierto.
 
-## Lo que mide una casilla de la rejilla del árbol (para colocar nodos nuevos a mano).
-@export var tam_casilla: float = 132.0
 @export var escena_conexion: PackedScene
 @export var tienda: Tienda
 @export_group("Animación")
@@ -65,6 +63,7 @@ func _ready() -> void:
 		na.elegido.connect(_elegir)
 		na.accionado.connect(_comprar)
 	_trazar_caminos()
+	_animar_nodos(false)
 	vista.gui_input.connect(_input_vista)
 	boton_tienda.pressed.connect(_abrir_tienda)
 	Juego.rublos_cambiados.connect(func(_r: float) -> void:
@@ -78,6 +77,7 @@ func abrir(vendedor: Interactuable = null) -> void:
 	abierto = true
 	raiz.visible = true
 	get_tree().paused = true
+	_animar_nodos(true)
 	_refrescar()
 	_cascada()
 	var primero: NodoArbol = _sel if _sel else _primero_disponible()
@@ -91,6 +91,13 @@ func cerrar() -> void:
 	abierto = false
 	raiz.visible = false
 	get_tree().paused = false
+	_animar_nodos(false)
+
+
+## Los nodos solo laten mientras el árbol está abierto.
+func _animar_nodos(si: bool) -> void:
+	for na: NodoArbol in _todos:
+		na.set_process(si)
 
 
 func _process(delta: float) -> void:

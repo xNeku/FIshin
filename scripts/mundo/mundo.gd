@@ -50,6 +50,8 @@ signal aparicion_terminada(datos: AparicionData)
 @export var reposo_cielo: float = 2.2
 
 var _ocupado: bool = false
+var _pisables: Array[Vector2i] = []
+var _firma_pisables: int = -1
 var _llegando: AparicionData
 
 
@@ -80,12 +82,18 @@ func ocupado() -> bool:
 
 ## Casillas por las que se puede andar: la barca y todo lo que ya ha llegado.
 func celdas_pisables() -> Array[Vector2i]:
+	# Se pregunta muchas veces por fotograma (HUD, jugador, pescadores): se guarda hasta que algo llega.
+	var firma: int = hash([Juego.flags, _llegando])
+	if firma == _firma_pisables:
+		return _pisables
 	var r: Array[Vector2i] = [Vector2i.ZERO]
 	for a: AparicionData in apariciones:
 		if ya_aparecio(a) and a != _llegando:
 			for c: Vector2i in a.celdas:
 				if not c in a.celdas_bloqueadas:
 					r.append(c)
+	_pisables = r
+	_firma_pisables = firma
 	return r
 
 

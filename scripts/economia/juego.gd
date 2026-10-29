@@ -11,6 +11,9 @@ signal habilidades_cambiadas
 
 const VERSION_SAVE := 4
 const RUTA_SAVE := "user://partida.json"
+const RUTA_COPIA := "user://partida.anterior.json"
+## Opciones del jugador (filtro, etc.): van aparte para que borrar la partida no las toque.
+const RUTA_OPCIONES := "user://opciones.cfg"
 const RUTA_CANAS := "res://data/canas/%s.tres"
 const RUTA_PECES := "res://data/peces/%s.tres"
 const RUTA_ARBOL := "res://data/arbol/arbol.tres"
@@ -54,6 +57,9 @@ var lloviendo: bool = false
 
 ## true mientras el náufrago anda fuera de la barca (no se guarda).
 var en_movimiento: bool = false
+## Dinero de una venta que aún va volando (peces o monedas). Se guarda como si ya hubiera llegado,
+## para no perderlo si se cierra el juego a mitad de la animación.
+var dinero_en_camino: float = 0.0
 
 var _t_guardado: float = 0.0
 var _cana: CanaData
@@ -378,29 +384,61 @@ func comprar(art: ArticuloData) -> bool:
 	return true
 
 
+# --- Opciones ---
+
+func opcion(clave: String, defecto: Variant) -> Variant:
+	var cfg := ConfigFile.new()
+	if cfg.load(RUTA_OPCIONES) != OK:
+		# Saves viejos guardaban las opciones en los flags de la partida.
+		return flags.get(clave, defecto)
+	return cfg.get_value("opciones", clave, defecto)
+
+
+func poner_opcion(clave: String, valor: Variant) -> void:
+	var cfg := ConfigFile.new()
+	cfg.load(RUTA_OPCIONES)
+	cfg.set_value("opciones", clave, valor)
+	cfg.save(RUTA_OPCIONES)
+
+
 # --- Guardado ---
 
 func guardar() -> void:
 	var datos: Dictionary = {
-		"version": VERSION_SAVE, "rublos": rublos, "rublos_totales": rublos_totales,
+		"version": VERSION_SAVE, "rublos": rublos + dinero_en_camino, "rublos_totales": rublos_totales + dinero_en_camino,
 		"capturas": capturas, "huecos": huecos, "cana": String(cana_id), "cebo": cebo, "compras": compras,
 		"stats": stats, "coleccion": coleccion, "flags": flags,
 		"trabajadores": trabajadores, "cubo": cubo_capturas, "cubo_en_mano": cubo_en_mano,
 		"habilidades": habilidades,
 		"fecha": Time.get_unix_time_from_system(),
 	}
-	var f := FileAccess.open(RUTA_SAVE, FileAccess.WRITE)
-	if f:
-		f.store_string(JSON.stringify(datos))
+	# Primero a un temporal y luego se cambia por el bueno: si se corta a medias, el save anterior sigue vivo.
+	var tmp: String = RUTA_SAVE + ".tmp"
+	var f := FileAccess.open(tmp, FileAccess.WRITE)
+	if f == null:
+		return
+	f.store_string(JSON.stringify(datos))
+	f.close()
+	if FileAccess.file_exists(RUTA_SAVE):
+		DirAccess.rename_absolute(RUTA_SAVE, RUTA_COPIA)
+	DirAccess.rename_absolute(tmp, RUTA_SAVE)
+
+
+func _leer_save(ruta: String) -> Dictionary:
+	if not FileAccess.file_exists(ruta):
+		return {}
+	var datos: Variant = JSON.parse_string(FileAccess.get_file_as_string(ruta))
+	return datos if datos is Dictionary else {}
 
 
 func cargar() -> void:
-	if not FileAccess.file_exists(RUTA_SAVE):
-		return
-	var datos: Variant = JSON.parse_string(FileAccess.get_file_as_string(RUTA_SAVE))
-	if not datos is Dictionary:
-		push_warning("Save corrupto, se ignora")
-		return
+	var datos: Dictionary = _leer_save(RUTA_SAVE)
+	if datos.is_empty():
+		# El save está roto o no existe: se tira de la copia del guardado anterior.
+		datos = _leer_save(RUTA_COPIA)
+		if datos.is_empty():
+			return
+		push_warning("Save roto, se carga la copia anterior")
 	# v1 no tenía huecos, caña, cebo ni compras: se quedan los valores por defecto.
 	rublos = datos.get("rublos", 0.0)
 	rublos_totales = datos.get("rublos_totales", 0.0)
@@ -434,7 +472,10 @@ func cargar() -> void:
 
 
 func borrar_partida() -> void:
-	DirAccess.remove_absolute(ProjectSettings.globalize_path(RUTA_SAVE))
+	for ruta: String in [RUTA_SAVE, RUTA_COPIA]:
+		if FileAccess.file_exists(ruta):
+			DirAccess.remove_absolute(ProjectSettings.globalize_path(ruta))
+	dinero_en_camino = 0.0
 	rublos = 0.0
 	rublos_totales = 0.0
 	capturas.clear()
@@ -456,3 +497,5 @@ func borrar_partida() -> void:
 	inventario_cambiado.emit()
 	cana_cambiada.emit(cana())
 	cebo_cambiado.emit()
+	cubo_cambiado.emit()
+	trabajadores_cambiados.emit(trabajadores)

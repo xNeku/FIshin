@@ -28,9 +28,7 @@ extends CanvasLayer
 ## Cuánto salta de sitio el botón al tope de intensidad (píxeles).
 @export var salto_prompt_maximo: float = 220.0
 @export var color_numeros: Color = Color("ff9a3c")
-@export var color_flechas: Color = Color("4fd6ff")
 @export var color_perfecto: Color = Color("ffd84a")
-@export var color_fallo: Color = Color("ff4a4a")
 @export var colores_rareza: Array[Color] = [Color("e8e8e8"), Color("4fa3ff"), Color("b56bff"), Color("ffb02e")]
 ## Frase de cada acierto según cuántos botones llevas: la palabra i sale desde el botón umbrales_palabras[i].
 @export var palabras_acierto: Array[String] = ["Bien", "Genial", "¡Brutal!", "¡LOCURA!", "¡¡DIOS!!", "¡¡¡INHUMANO!!!"]
@@ -139,6 +137,8 @@ func _process(delta: float) -> void:
 
 	_intensidad = lerpf(_intensidad, _intensidad_objetivo, 1.0 - exp(-4.0 * dt))
 	_destello = lerpf(_destello, 0.0, 1.0 - exp(-8.0 * dt))
+	# Si no hay nada que enseñar se apaga: así no copia la pantalla entera en cada fotograma.
+	efecto.visible = _intensidad > 0.005 or _destello > 0.005
 	if _mat:
 		_mat.set_shader_parameter("intensidad", _intensidad)
 		_mat.set_shader_parameter("destello", _destello)

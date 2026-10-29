@@ -1,6 +1,6 @@
 extends CanvasLayer
 ## Filtro retro (tele de tubo) por encima de todo. Se enciende o apaga desde Opciones;
-## se guarda en Juego.flags["filtro_crt"]. Los valores del efecto están en el material del nodo Filtro.
+## se guarda en las opciones (Juego.opcion). Los valores del efecto están en el material del nodo Filtro.
 
 @onready var filtro: ColorRect = $Filtro
 
@@ -11,10 +11,9 @@ func _ready() -> void:
 
 
 func activo() -> bool:
-	return Juego.flags.get("filtro_crt", true)
+	return Juego.opcion("filtro_crt", true)
 
 
 func activar(si: bool) -> void:
-	Juego.flags["filtro_crt"] = si
-	Juego.guardar()
+	Juego.poner_opcion("filtro_crt", si)
 	filtro.visible = si

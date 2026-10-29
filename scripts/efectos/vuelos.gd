@@ -49,8 +49,12 @@ func enviar_dinero(desde: Node3D, hacia: Node3D, cantidad: float, sumar: bool = 
 	var texturas: Array[Texture2D] = []
 	for v: float in valores:
 		texturas.append(_textura_dinero(v))
+	if sumar:
+		for v: float in valores:
+			Juego.dinero_en_camino += v
 	await enviar(desde, hacia, texturas, func(i: int) -> void:
 		if sumar:
+			Juego.dinero_en_camino -= valores[i]
 			Juego.sumar_rublos(valores[i]), sfx_moneda)
 
 

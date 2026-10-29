@@ -18,4 +18,3 @@ condicion = 1
 valor = 1500.0
 requiere = Array[StringName]([&"camino"])
 llegada = 3
-texto_llegada = "¡La Lonja!"

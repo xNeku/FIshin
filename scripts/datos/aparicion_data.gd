@@ -31,5 +31,3 @@ enum Llegada { MAR, CIELO, CONSTRUIR, EMERGER }
 
 @export_group("Llegada")
 @export var llegada: Llegada = Llegada.MAR
-## Texto grande al llegar. Vacío = "¡Ha llegado <nombre>!".
-@export var texto_llegada: String = ""

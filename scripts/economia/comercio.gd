@@ -73,7 +73,9 @@ func _vender(capturas: Array[Dictionary], desde: Node3D, comprador: Node3D) -> f
 	for c: Dictionary in capturas:
 		total += c.valor * (2.0 if randf() < Juego.efecto(&"venta_doble") else 1.0)
 	total *= Juego.mult_venta(en_lonja)
+	Juego.dinero_en_camino += total
 	await Vuelos.enviar_peces(desde, comprador, capturas)
+	Juego.dinero_en_camino -= total
 	await Vuelos.enviar_dinero(comprador, desde, total)
 	venta_terminada.emit(total)
 	return total
