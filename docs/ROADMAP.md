@@ -42,7 +42,7 @@ Regla: no se pasa de fase hasta que la actual sea jugable y divertida. Cada tare
 - [x] Racha de combo por tramos (osu! + Guitar Hero), modo flow más rápido (Leer el agua)
 - [x] Pesca tranquila: esperas de 8-20 s, picoteos, chill que deja pasar el pez
 - [x] Puntos de pesca: el que pesca mejor desbloquea antes (camino y puerto)
-- [ ] Racha entre peces (pendiente de decidir)
+- [x] Racha entre peces: descartada (el combo es de cada pez); más cadenas largas al principio
 
 
 ## Fase 5 — Villa e incremental

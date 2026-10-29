@@ -481,9 +481,8 @@ Simulado con un jugador normal, espera de 5-15 s y lonja ×1,3. El bueno llega u
 - **Hoy la diferencia es pequeña en el T0-T1.** La caña decide al azar lo larga que es la cadena, y casi todas son cortas y lentas (más de 0,9 s por botón), así que todos las aciertan.
   - La habilidad empieza a notarse con cadenas de 10 o más (botones de 0,4 s) y en el flow (0,3 s).
   - Para que se note antes hay dos palancas.
-    - **A.** Racha entre peces: si no fallas, el contador de racha sigue de un pez al siguiente, como en Guitar Hero, donde la racha no se corta entre notas. El que nunca falla llega a ×1,25, ×1,5... con peces cortos.
-    - **B.** Que el largo de la cadena dependa menos del azar: el `sesgo_cadena` de la caña, más suave.
-  - [ABIERTO] Lo decide el diseñador.
+    - [DECIDIDO] No hay racha entre peces: el combo es de cada pez.
+    - [DECIDIDO] Lo que se busca es que al jugador le salgan cadenas largas más a menudo desde el principio. Hecho: cañas con cadenas más largas y menos sesgadas, y las esperas largas dan cadenas más largas (`cadena_por_espera`). Pendiente de que el diseñador lo pruebe.
 
 **T1 Puerto (lo siguiente por hacer)**
 | Min | Llega | Condición orientativa | Qué aporta | ₽/min |
