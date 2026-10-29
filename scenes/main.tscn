@@ -154,10 +154,11 @@ transform = Transform3D(0.819152, 0.439385, -0.368688, 0, 0.642788, 0.766044, 0.
 light_color = Color(1, 0.93, 0.82, 1)
 shadow_enabled = true
 
-[node name="Agua" type="MeshInstance3D" parent="."]
+[node name="Agua" type="MeshInstance3D" parent="." node_paths=PackedStringArray("mundo")]
 cast_shadow = 0
 mesh = SubResource("malla_agua")
 script = ExtResource("agua_script")
+mundo = NodePath("../Mundo")
 
 [node name="ZonaPesca" type="MeshInstance3D" parent="."]
 visible = false

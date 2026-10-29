@@ -258,6 +258,16 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
+[node name="IconoInteractuar" type="TextureRect" parent="Popups"]
+visible = false
+texture_filter = 1
+layout_mode = 0
+offset_right = 64.0
+offset_bottom = 64.0
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
 [node name="Accion" type="PanelContainer" parent="."]
 anchors_preset = 3
 anchor_left = 1.0
@@ -292,16 +302,13 @@ layout_mode = 2
 text = "Bajar a tierra"
 
 [node name="Resultado" type="PanelContainer" parent="."]
-anchors_preset = 7
-anchor_left = 0.5
+anchors_preset = 2
 anchor_top = 1.0
-anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -420.0
-offset_top = -180.0
-offset_right = 420.0
+offset_left = 40.0
+offset_top = -470.0
+offset_right = 360.0
 offset_bottom = -40.0
-grow_horizontal = 2
 grow_vertical = 0
 mouse_filter = 2
 
@@ -309,33 +316,48 @@ mouse_filter = 2
 layout_mode = 2
 mouse_filter = 2
 
-[node name="Fila" type="HBoxContainer" parent="Resultado/Margen"]
+[node name="Carta" type="VBoxContainer" parent="Resultado/Margen"]
 layout_mode = 2
 mouse_filter = 2
-theme_override_constants/separation = 24
+theme_override_constants/separation = 8
+alignment = 1
 
-[node name="Icono" type="TextureRect" parent="Resultado/Margen/Fila"]
-texture_filter = 1
-custom_minimum_size = Vector2(160, 100)
+[node name="Nuevo" type="Label" parent="Resultado/Margen/Carta"]
 layout_mode = 2
+theme_type_variation = &"Dinero"
+text = "¡NUEVO!"
+horizontal_alignment = 1
+
+[node name="Icono" type="TextureRect" parent="Resultado/Margen/Carta"]
+texture_filter = 1
+custom_minimum_size = Vector2(256, 160)
+layout_mode = 2
+size_flags_horizontal = 4
 mouse_filter = 2
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Textos" type="VBoxContainer" parent="Resultado/Margen/Fila"]
+[node name="Nombre" type="Label" parent="Resultado/Margen/Carta"]
+custom_minimum_size = Vector2(260, 0)
 layout_mode = 2
-size_flags_horizontal = 3
-mouse_filter = 2
-alignment = 1
+text = "Sardina"
+horizontal_alignment = 1
+autowrap_mode = 3
 
-[node name="Nombre" type="Label" parent="Resultado/Margen/Fila/Textos"]
-layout_mode = 2
-text = "Sardina · Común"
-
-[node name="Detalle" type="Label" parent="Resultado/Margen/Fila/Textos"]
+[node name="Rareza" type="Label" parent="Resultado/Margen/Carta"]
 layout_mode = 2
 theme_type_variation = &"Pequeno"
-text = "Buena · 0.20 kg · 4 ₽"
+text = "Común"
+horizontal_alignment = 1
+
+[node name="Detalle" type="Label" parent="Resultado/Margen/Carta"]
+custom_minimum_size = Vector2(260, 0)
+layout_mode = 2
+theme_type_variation = &"Pequeno"
+text = "Buena
+0.20 kg · 4 ₽"
+horizontal_alignment = 1
+autowrap_mode = 3
 
 [node name="Entrada" parent="Resultado" instance=ExtResource("anim_entrada")]
 estilo = 1

@@ -22,6 +22,13 @@ uniform float lluvia : hint_range(0.0, 1.0) = 0.0;
 uniform float densidad_gotas = 0.7;
 // Cuánto pesa la altura de la ola en el color (bajo = agua más uniforme).
 uniform float peso_altura : hint_range(0.0, 1.0) = 0.55;
+// 1 = color por bandas y crestas claras (estilo); 0 = agua realista de un solo tono (Opciones del menú).
+uniform float estilo_bandas : hint_range(0.0, 1.0) = 1.0;
+// Tierra: casillas con isla (las pone agua.gd). Pegado a la costa el agua se calma y no se mete en las islas.
+uniform sampler2D mascara_tierra : filter_linear, repeat_disable;
+uniform float radio_mascara = 24.0;
+uniform float tamano_celda = 2.0;
+uniform float calma_costa : hint_range(0.0, 1.0) = 1.0;
 
 varying vec3 pos_mundo;
 varying float altura;
@@ -45,12 +52,20 @@ float azar(vec2 c) {
 	return fract(sin(dot(c, vec2(127.1, 311.7))) * 43758.5453);
 }
 
+// 1 en mar abierto, 0 en el borde de una isla (misma cuenta que Agua.atenuacion en agua.gd).
+float atenuacion(vec2 p) {
+	vec2 uv = (p / tamano_celda + radio_mascara + 0.5) / (2.0 * radio_mascara + 1.0);
+	float m = texture(mascara_tierra, uv).r;
+	return 1.0 - smoothstep(0.0, 0.5, m) * calma_costa;
+}
+
 void vertex() {
 	pos_mundo = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
 	vec3 o = olas(pos_mundo.xz, tiempo);
+	float a = altura_ola * atenuacion(pos_mundo.xz);
 	altura = o.x;
-	VERTEX.y += o.x * altura_ola;
-	NORMAL = normalize(vec3(-o.y * altura_ola, 1.0, -o.z * altura_ola));
+	VERTEX.y += o.x * a;
+	NORMAL = normalize(vec3(-o.y * a, 1.0, -o.z * a));
 }
 
 void fragment() {
@@ -77,8 +92,8 @@ void fragment() {
 
 	float k = clamp(altura * 0.5 + 0.5, 0.0, 1.0);
 	k = floor(k * bandas) / bandas;
-	vec3 c = mix(color_profundo.rgb, color_claro.rgb, k * peso_altura);
-	c = mix(c, color_cresta.rgb, step(umbral_cresta, k + nm.x * 0.08) * 0.6);
+	vec3 c = mix(color_profundo.rgb, color_claro.rgb, mix(0.3, k * peso_altura, estilo_bandas));
+	c = mix(c, color_cresta.rgb, step(umbral_cresta, k + nm.x * 0.08) * 0.6 * estilo_bandas);
 	c = mix(c, color_cresta.rgb, step(0.5, anillo) * 0.7);
 	ALBEDO = c;
 	NORMAL_MAP = mix(nm, vec3(0.5, 0.5, 1.0), 1.0 - step(0.01, fuerza_detalle));

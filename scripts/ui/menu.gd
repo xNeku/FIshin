@@ -15,6 +15,7 @@ extends CanvasLayer
 @onready var boton_borrar: Button = $Raiz/Panel/Margen/Pestanas/Opciones/Borrar
 @onready var boton_salir: Button = $Raiz/Panel/Margen/Pestanas/Opciones/Salir
 @onready var boton_filtro: Button = $Raiz/Panel/Margen/Pestanas/Opciones/Filtro
+@onready var boton_agua: Button = $Raiz/Panel/Margen/Pestanas/Opciones/Agua
 
 var abierto: bool = false
 var _seleccion: String = ""
@@ -35,6 +36,13 @@ func _ready() -> void:
 			crt.activar(not crt.activo())
 		_refrescar_filtro())
 	_refrescar_filtro.call_deferred()
+	boton_agua.pressed.connect(func() -> void:
+		var si: bool = not Juego.opcion("agua_bandas", true)
+		Juego.poner_opcion("agua_bandas", si)
+		for a: Node in get_tree().get_nodes_in_group("agua"):
+			a.poner_bandas(si)
+		_refrescar_agua())
+	_refrescar_agua()
 	boton_salir.pressed.connect(func() -> void:
 		Juego.guardar()
 		get_tree().quit())
@@ -189,6 +197,10 @@ func _on_borrar() -> void:
 	Juego.borrar_partida()
 	cerrar()
 	get_tree().reload_current_scene()
+
+
+func _refrescar_agua() -> void:
+	boton_agua.text = "Agua: %s" % ("con bandas" if Juego.opcion("agua_bandas", true) else "realista")
 
 
 func _refrescar_filtro() -> void:

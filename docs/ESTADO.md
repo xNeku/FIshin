@@ -89,6 +89,16 @@ Parada para valorar rumbo (29 oct). Hay un tramo jugable de principio a fin de l
 - Pistas con el dibujo del botón: `scenes/ui/pista_accion.tscn` (PistaAccion: acción + texto, detecta el mando también en pausa). Puestas en la tienda, el menú, el bestiario y el árbol.
 - Iconos nuevos en `art/ui/teclas/` (ui_accept, ui_cancel, pestana_*, accion_extra); L1/R1/LB/RB redibujados para que se lean.
 
+## Sesión 31 oct
+- Prueba del diseñador: 29 min, 93 peces y 3,36K ₽. El simulador daba ~99 peces y ~3,5K a esa altura, así que cuadra.
+- Interactuar: el botón sale encima de la cabeza (`HUD._icono_interactuar`, nodo `Popups/IconoInteractuar`; altura en `Interactuable.altura_icono` y `BarcoComerciante.altura_icono`). La caja de abajo a la derecha solo enseña la Q.
+- Carta del pez abajo a la izquierda, con ¡NUEVO! la primera vez. Dura 4 s si es nueva y 2,5 s si no (`HUD.duracion_carta_nueva` / `duracion_carta`).
+- El viejo y sus cosas, en la fila del fondo de su isla (`isla_skilltree.tscn`).
+- Agua:
+  - Máscara de tierra (`Agua.actualizar_tierra`, `mascara_tierra` en el shader): pegado a la costa se calma. Antes, con lluvia o tormenta, las olas (0,29-0,57 m) pasaban del suelo de las islas (0,25 m).
+  - Opción "Agua: con bandas / realista" (`estilo_bandas`, `Juego.opcion("agua_bandas")`).
+- Viejo a los 75 peces (~min 23).
+
 ## Siguiente paso
 Sesión de progresión con el diseñador hasta el midgame (economía y orden de desbloqueos), partiendo de `docs/PROGRESION.md` (borrador v1) y `docs/INCREMENTAL.md`.
 

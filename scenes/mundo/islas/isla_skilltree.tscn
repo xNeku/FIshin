@@ -115,7 +115,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
 mesh = SubResource("b_hierba")
 
 [node name="Viejo" type="Sprite3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0.71, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.0, 0.71, -2.1)
 billboard = 2
 alpha_cut = 1
 texture_filter = 0
@@ -123,7 +123,7 @@ pixel_size = 0.04
 texture = ExtResource("3_viejo")
 
 [node name="InteraccionViejo" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.0, 0.0, -2.0)
 script = ExtResource("4_interactuable")
 accion = 5
 texto_accion = "Hablar con el viejo"
@@ -133,7 +133,7 @@ articulos = Array[ExtResource("5_articulo")]([ExtResource("6_cana_sabia")])
 saludos = Array[String](["Mmmh... ¿una caña? Para lo demás, mira el árbol, chaval.", "Ommm... ¿Una caña? Esta la tallé yo con paciencia. Y con un cuchillo.", "La paz no se pesca. Bueno, a veces sí."])
 
 [node name="Hoguera" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0.25, 1.0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.0, 0.25, -1.05)
 
 [node name="Troncos" type="Sprite3D" parent="Hoguera"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
@@ -148,7 +148,7 @@ texture = ExtResource("10_troncos")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.12, 0.02)
 
 [node name="PalmeraIzq" type="Sprite3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.05, 0.25, -0.55)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.65, 0.25, -2.55)
 offset = Vector2(0, 11.5)
 billboard = 2
 alpha_cut = 1
@@ -157,7 +157,7 @@ pixel_size = 0.09
 texture = ExtResource("9_palmera")
 
 [node name="PalmeraDer" type="Sprite3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.95, 0.25, -0.65)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.65, 0.25, -2.65)
 offset = Vector2(0, 11.5)
 flip_h = true
 billboard = 2
@@ -167,7 +167,7 @@ pixel_size = 0.08
 texture = ExtResource("9_palmera")
 
 [node name="BonsaiIzq" type="Sprite3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.85, 0.25, 0.45)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.2, 0.25, -1.5)
 offset = Vector2(0, 5.5)
 billboard = 2
 alpha_cut = 1
@@ -176,7 +176,7 @@ pixel_size = 0.045
 texture = ExtResource("11_bonsai")
 
 [node name="BonsaiDer" type="Sprite3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.15, 0.25, 0.45)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, 0.25, -1.5)
 offset = Vector2(0, 5.5)
 flip_h = true
 billboard = 2
@@ -195,7 +195,7 @@ pixel_size = 0.06
 texture = ExtResource("12_roca")
 
 [node name="Palmera3" type="Sprite3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.4, 0.25, -2.6)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.9, 0.25, -0.45)
 offset = Vector2(0, 11.5)
 billboard = 2
 alpha_cut = 1

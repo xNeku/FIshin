@@ -4,14 +4,68 @@ extends MeshInstance3D
 ## para que lo que flota (donut, corcho, sombras) vaya encima de la ola de verdad.
 ## Las olas son las mismas que en shaders/agua.gdshader (si cambias una, cambia la otra).
 
+## Para saber dónde hay tierra: pegado a la costa el agua se calma (si no, con tormenta se mete en las islas).
+@export var mundo: Node
+## Casillas a cada lado de la barca que cubre la máscara de tierra.
+@export var radio_mascara: int = 24
+
 var tiempo: float = 0.0
 var _material: ShaderMaterial
+var _mascara: Image
 
 
 func _ready() -> void:
 	_material = mesh.surface_get_material(0) as ShaderMaterial
 	# Las olas siguen moviéndose con el menú abierto.
 	process_mode = Node.PROCESS_MODE_ALWAYS
+	add_to_group("agua")
+	poner_bandas(Juego.opcion("agua_bandas", true))
+	if mundo:
+		mundo.aparicion_llegada.connect(func(_d: AparicionData) -> void: actualizar_tierra())
+		mundo.aparicion_terminada.connect(func(_d: AparicionData) -> void: actualizar_tierra())
+	actualizar_tierra.call_deferred()
+
+
+## Agua con bandas de color (estilo) o de un solo tono (realista). Se elige en Opciones.
+func poner_bandas(si: bool) -> void:
+	if _material:
+		_material.set_shader_parameter("estilo_bandas", 1.0 if si else 0.0)
+
+
+## Rehace la máscara de tierra con las casillas de todo lo que ya ha llegado.
+func actualizar_tierra() -> void:
+	if _material == null or mundo == null:
+		return
+	var n: int = radio_mascara * 2 + 1
+	_mascara = Image.create(n, n, false, Image.FORMAT_R8)
+	for a: AparicionData in mundo.apariciones:
+		if not mundo.ya_aparecio(a):
+			continue
+		for c: Vector2i in a.celdas:
+			var px: Vector2i = Vector2i(c.x + radio_mascara, -c.y + radio_mascara)
+			if px.x >= 0 and px.y >= 0 and px.x < n and px.y < n:
+				_mascara.set_pixelv(px, Color.WHITE)
+	_material.set_shader_parameter("mascara_tierra", ImageTexture.create_from_image(_mascara))
+	_material.set_shader_parameter("radio_mascara", float(radio_mascara))
+	_material.set_shader_parameter("tamano_celda", float(mundo.tamano_celda))
+
+
+## 1 en mar abierto, 0 en el borde de una isla (misma cuenta que el shader, con filtrado bilineal).
+func atenuacion(p: Vector3) -> float:
+	if _mascara == null or mundo == null:
+		return 1.0
+	var n: int = _mascara.get_width()
+	var f: Vector2 = Vector2(p.x, p.z) / float(mundo.tamano_celda) + Vector2.ONE * float(radio_mascara)
+	var i: Vector2i = Vector2i(floori(f.x), floori(f.y))
+	var t: Vector2 = f - Vector2(i)
+	var m: float = 0.0
+	for d: Vector2i in [Vector2i(0, 0), Vector2i(1, 0), Vector2i(0, 1), Vector2i(1, 1)]:
+		var q: Vector2i = i + d
+		if q.x < 0 or q.y < 0 or q.x >= n or q.y >= n:
+			continue
+		var w: float = (t.x if d.x == 1 else 1.0 - t.x) * (t.y if d.y == 1 else 1.0 - t.y)
+		m += _mascara.get_pixelv(q).r * w
+	return 1.0 - smoothstep(0.0, 0.5, m) * _param("calma_costa", 1.0)
 
 
 func _process(delta: float) -> void:
@@ -23,13 +77,13 @@ func _process(delta: float) -> void:
 
 ## Altura del agua (en el mundo) en la posición x/z dada.
 func altura(p: Vector3) -> float:
-	return global_position.y + _olas(Vector2(p.x, p.z)).x * _param("altura_ola", 0.14)
+	return global_position.y + _olas(Vector2(p.x, p.z)).x * _param("altura_ola", 0.14) * atenuacion(p)
 
 
 ## Inclinación del agua en x/z (derivadas de la altura).
 func pendiente(p: Vector3) -> Vector2:
 	var o: Vector3 = _olas(Vector2(p.x, p.z))
-	var a: float = _param("altura_ola", 0.14)
+	var a: float = _param("altura_ola", 0.14) * atenuacion(p)
 	return Vector2(o.y * a, o.z * a)
 
 

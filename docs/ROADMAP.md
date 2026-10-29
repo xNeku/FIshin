@@ -39,6 +39,10 @@ Regla: no se pasa de fase hasta que la actual sea jugable y divertida. Cada tare
 - [ ] Modo infinito con récords
 - [ ] Rehacer el cebo (probabilidades + duración)
 - [x] Mecánicas avanzadas de pesca: machacar y pulsación doble (adelantado)
+- [x] Racha de combo por tramos (osu! + Guitar Hero), modo flow más rápido (Leer el agua)
+- [x] Pesca tranquila: esperas de 8-20 s, picoteos, chill que deja pasar el pez
+- [x] Puntos de pesca: el que pesca mejor desbloquea antes (camino y puerto)
+- [ ] Racha entre peces (pendiente de decidir)
 
 
 ## Fase 5 — Villa e incremental
@@ -47,10 +51,13 @@ Regla: no se pasa de fase hasta que la actual sea jugable y divertida. Cada tare
 - [ ] Más edificios y trabajadores (mejoras del puerto...)
 - [ ] Ingresos pasivos, stats por segundo
 - [ ] Progreso offline (si se decide)
-- [ ] Balance de curvas
+- [~] Balance de curvas: hecho hasta el puerto y la lonja (~70 min) con el simulador; falta el resto del T1 y el T2
 
 ## Fase 6 — Contenido
-- [ ] Catálogo de peces (Excel del diseñador), legendarios, colección (la meta)
+- [x] Catálogo de peces del Excel del diseñador: 201 especies (Galicia + mundo), 6 rarezas, iconos placeholder
+- [x] Maestría por especie en el bestiario
+- [ ] Bestiario con filtros por zona o fichas compactas (hay 201)
+- [ ] Peces que desbloquean edificios (sushi...)
 - [ ] Tiempo del juego: día/noche y estaciones
 - [ ] Más edificios, ramas e hitos
 
@@ -60,6 +67,8 @@ Regla: no se pasa de fase hasta que la actual sea jugable y divertida. Cada tare
 - [x] Barco comerciante en sprite, donut que flota sobre la ola
 - [x] Interfaz estilo Animal Well (fuente pixel, paneles, selección amarilla), filtro retro, animaciones de entrada
 - [x] Teclas y botones dibujados (teclado, PlayStation, Xbox), sin frases en pantalla, X roja de fallo
+- [x] Carta del pez abajo a la izquierda (¡NUEVO!), botón de interactuar sobre la cabeza
+- [x] Agua que se calma en la costa (ya no pisa las islas con tormenta); opción de agua realista sin bandas
 - [ ] Probar rendimiento en la tablet
 - [ ] Guía de medidas del arte
 - [ ] Partículas, música y SFX
@@ -68,5 +77,6 @@ Regla: no se pasa de fase hasta que la actual sea jugable y divertida. Cada tare
 ## Fase 8 — Export y release
 - [ ] GitHub Actions: builds de Windows, Mac (y Android)
 - [x] Mando (PlayStation y Xbox) con iconos según el mando
+- [x] Menús, tienda y árbol navegables con mando (L1/R1 pestañas, Círculo atrás, Triángulo extra)
 - [ ] Input táctil y UI móvil
 - [ ] Release

@@ -144,20 +144,21 @@ func _refrescar_cubo() -> void:
 	cubo_mano.visible = Juego.cubo_en_mano
 
 
-## Texto de ayuda para el HUD.
-## Acciones que se pueden hacer ahora, como "[Q] Texto" (el HUD las enseña y alterna).
+## Con qué se puede interactuar ahora (el HUD pinta el botón encima de su cabeza). null si nada.
+func objetivo_interaccion() -> Interactuable:
+	if not andando or saltando or cercano == null:
+		return null
+	if cercano.accion == Interactuable.Accion.VENTA and comercio.peces_para_vender() == 0:
+		return null
+	return cercano
+
+
+## Acciones de la caja de abajo a la derecha, como "[Q] Texto" (el HUD las enseña y alterna).
+## Lo de interactuar (E) no va aquí: sale encima de la cabeza de con quien hablas.
 func acciones() -> Array[String]:
 	var lista: Array[String] = []
 	if andando:
-		if cercano:
-			if cercano.accion == Interactuable.Accion.VENTA:
-				var n: int = comercio.peces_para_vender()
-				lista.append("[E] Vender todo (%d peces)" % n if n > 0 else "Lonja: no llevas nada que vender")
-			elif Juego.cubo_en_mano and cercano.compra_peces:
-				lista.append("[E] Vender el cubo (%d peces)" % Juego.cubo_capturas.size())
-			else:
-				lista.append("[E] " + cercano.texto_accion)
-		elif Juego.cubo_en_mano:
+		if Juego.cubo_en_mano and (cercano == null or not cercano.compra_peces):
 			lista.append("Lleva el cubo a un comerciante")
 		if en_barca() and not Juego.cubo_en_mano:
 			lista.append("[Q] Volver a pescar")

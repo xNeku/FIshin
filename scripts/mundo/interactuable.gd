@@ -11,6 +11,8 @@ enum Accion { TIENDA, BESTIARIO, DIALOGO, CUBO, VENTA, ARBOL }
 @export var radio: float = 1.8
 ## Si hay varios a mano, gana el de más prioridad (el cubo antes que una charla).
 @export var prioridad: int = 0
+## Altura sobre este nodo a la que sale el botón de interactuar cuando estás cerca (su cabeza).
+@export var altura_icono: float = 2.0
 
 @export_group("Tienda")
 @export var nombre: String = ""

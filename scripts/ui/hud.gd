@@ -23,6 +23,12 @@ extends CanvasLayer
 @export var cambio_acciones: float = 2.0
 ## Cuánto se desplaza la cola al entrar cada botón nuevo (efecto de que vienen hacia ti).
 @export var desliz_cola: float = 90.0
+## Carta del pez (abajo a la izquierda): segundos que se queda si es una especie nueva y si no.
+@export var duracion_carta_nueva: float = 4.0
+@export var duracion_carta: float = 2.5
+## Botón de interactuar sobre la cabeza: cuánto bota (píxeles) y cada cuánto se aprieta solo (segundos).
+@export var bote_icono: float = 6.0
+@export var ritmo_icono: float = 0.7
 ## Al machacar, cada cuánto se aprieta sola la tecla dibujada (segundos).
 @export var ritmo_machacar: float = 0.12
 ## Cuánto salta de sitio el botón al tope de intensidad (píxeles).
@@ -67,10 +73,14 @@ const TECLA_A_ACCION: Dictionary = {"E": &"interactuar", "Q": &"cambiar_modo", "
 @onready var combo: Label = $Combo
 @onready var popups: Control = $Popups
 @onready var resultado: PanelContainer = $Resultado
-@onready var icono: TextureRect = $Resultado/Margen/Fila/Icono
-@onready var nombre: Label = $Resultado/Margen/Fila/Textos/Nombre
-@onready var detalle: Label = $Resultado/Margen/Fila/Textos/Detalle
+@onready var icono: TextureRect = $Resultado/Margen/Carta/Icono
+@onready var nombre: Label = $Resultado/Margen/Carta/Nombre
+@onready var rareza: Label = $Resultado/Margen/Carta/Rareza
+@onready var detalle: Label = $Resultado/Margen/Carta/Detalle
+@onready var nuevo: Label = $Resultado/Margen/Carta/Nuevo
 @onready var caja_accion: PanelContainer = $Accion
+## Botón de interactuar que flota encima de la cabeza (opcional: Popups/IconoInteractuar).
+@onready var icono_interactuar: TextureRect = get_node_or_null("Popups/IconoInteractuar")
 
 var _rublos_mostrados: float = 0.0
 var _intensidad_objetivo: float = 0.0
@@ -85,6 +95,8 @@ var _acciones: Array[String] = []
 var _t_accion: float = 0.0
 var _i_accion: int = 0
 var _dispositivo: String = ""
+var _t_icono: float = 0.0
+var _t_carta: float = 0.0
 
 
 func _ready() -> void:
@@ -129,6 +141,11 @@ func _process(delta: float) -> void:
 	if cebo.visible:
 		cebo.text = "Cebo: %d pescas" % int(Juego.cebo.pescas)
 	_mostrar_acciones(dt)
+	_icono_interactuar(dt)
+	if resultado.visible:
+		_t_carta -= dt
+		if _t_carta <= 0.0:
+			resultado.visible = false
 	_al_cambiar_dispositivo()
 	# Machacando, la tecla dibujada se aprieta sola para que se vea qué hay que hacer.
 	if _accion_machacar != &"":
@@ -233,8 +250,6 @@ func _icono(accion: StringName, pulsada: bool = false) -> Texture2D:
 ## Caja de abajo a la derecha: lo que se puede hacer ahora. Si hay varias cosas, van alternando.
 func _mostrar_acciones(dt: float) -> void:
 	var lista: Array[String] = jugador.acciones() if jugador else []
-	if barco and barco.puede_hablar() and not (celebracion and celebracion.celebrando) and not (pesca and pesca.en_curso()):
-		lista.push_front("[E] Hablar con el comerciante")
 	caja_accion.visible = not lista.is_empty()
 	if lista.is_empty():
 		_t_accion = 0.0
@@ -251,6 +266,34 @@ func _mostrar_acciones(dt: float) -> void:
 			entrada.entrar()
 	_i_accion = i
 	_pista(caja_accion, lista[i])
+
+
+## El botón de interactuar encima de la cabeza de con quien puedes hablar (o de lo que puedes usar).
+func _icono_interactuar(dt: float) -> void:
+	if icono_interactuar == null:
+		return
+	var p: Variant = _punto_interaccion()
+	icono_interactuar.visible = p != null and camara != null
+	if not icono_interactuar.visible:
+		return
+	_t_icono += dt
+	var pulsada: bool = fmod(_t_icono, ritmo_icono * 2.0) >= ritmo_icono * 1.6
+	icono_interactuar.texture = IconosInput.icono(&"interactuar", pulsada)
+	var pantalla: Vector2 = popups.get_global_transform().affine_inverse() * camara.unproject_position(p)
+	var bote: float = sin(_t_icono * 4.0) * bote_icono
+	icono_interactuar.position = pantalla - icono_interactuar.size * 0.5 + Vector2(0.0, bote)
+
+
+## Punto del mundo donde va el botón de interactuar, o null si no hay nada.
+func _punto_interaccion() -> Variant:
+	if jugador and jugador.has_method("objetivo_interaccion"):
+		var i: Interactuable = jugador.objetivo_interaccion()
+		if i:
+			return i.global_position + Vector3.UP * i.altura_icono
+	if barco and barco.puede_hablar() and not (celebracion and celebracion.celebrando) and not (pesca and pesca.en_curso()) \
+			and not get_tree().paused:
+		return barco.global_position + Vector3.UP * barco.altura_icono
+	return null
 
 
 ## Pista "[E] Texto": la letra entre corchetes se cambia por el dibujo de su tecla.
@@ -331,12 +374,18 @@ func _on_machacar_fallido(escapa: bool) -> void:
 
 
 func _on_capturado(c: Dictionary, pez: PezData) -> void:
-	var col: Color = colores_rareza[pez.rareza]
+	var col: Color = colores_rareza[mini(pez.rareza, colores_rareza.size() - 1)]
+	# Nueva especie: es la primera que entra en la colección.
+	var es_nuevo: bool = Juego.capturas_especie(pez.id) <= 1
 	resultado.visible = true
+	_t_carta = duracion_carta_nueva if es_nuevo else duracion_carta
+	nuevo.visible = es_nuevo
 	icono.texture = pez.icono
-	nombre.text = "%s  ·  %s" % [pez.nombre, PezData.NOMBRES_RAREZA[pez.rareza]]
+	nombre.text = pez.nombre
 	nombre.modulate = col
-	detalle.text = "%s  ·  %s  ·  %s" % [Formato.calidad(c.calidad, c.perfecto), Formato.peso(c.peso), Formato.dinero(c.valor)]
+	rareza.text = PezData.NOMBRES_RAREZA[pez.rareza]
+	rareza.modulate = col
+	detalle.text = "%s\n%s  ·  %s" % [Formato.calidad(c.calidad, c.perfecto), Formato.peso(c.peso), Formato.dinero(c.valor)]
 	_destello = destello_perfecto if c.perfecto else destello_captura
 
 

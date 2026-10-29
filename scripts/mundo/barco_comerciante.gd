@@ -17,6 +17,8 @@ var compra_peces: bool = true
 @export var agua: Agua
 @export var flotacion: float = -0.12
 @export var inclinacion_ola: float = 0.5
+## Altura sobre el barco a la que sale el botón de hablar (encima de la cabeza del comerciante).
+@export var altura_icono: float = 1.7
 
 @onready var sombra: Node3D = get_node_or_null("Sombra")
 
