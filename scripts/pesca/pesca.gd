@@ -68,6 +68,8 @@ var _tras_chill: bool = false
 ## Se ha pulsado algo del minijuego en esta picada.
 var _tocado: bool = false
 var _t_picoteo: float = 0.0
+## 0..1: lo que ha tardado en picar esta vez dentro de su rango (largo = cadena más larga, más probable).
+var _espera_k: float = 0.0
 var _avisado: bool = false
 
 
@@ -155,7 +157,8 @@ func pulsar(accion: StringName) -> void:
 func esperar() -> void:
 	pez = null
 	# Las rebajas de espera del árbol van en hiperbólica: +100 % = la mitad de espera, nunca cero.
-	_contador = randf_range(stats.espera_min, stats.espera_max) * Juego.cana().mult_espera * Juego.mult_espera_cebo() \
+	_espera_k = randf()
+	_contador = lerpf(stats.espera_min, stats.espera_max, _espera_k) * Juego.cana().mult_espera * Juego.mult_espera_cebo() \
 		/ (1.0 + Juego.efecto(&"espera"))
 	_t_picoteo = randf_range(stats.picoteo_min, stats.picoteo_max)
 	_avisado = false
@@ -273,7 +276,8 @@ func _generar_pasos() -> void:
 	todas.append_array(NUMEROS)
 	todas.append_array(FLECHAS)
 	# Cada picada da un largo distinto: muchas veces solo 1 o 2 botones. Solo llegas al perfect si sale largo.
-	var n: int = mini(pez.pasos_perfect, cana.tirar_largo_cadena(int(Juego.efecto(&"cadena_extra")), Juego.efecto(&"sesgo_cadena")))
+	var quitar: float = Juego.efecto(&"sesgo_cadena") + _espera_k * stats.cadena_por_espera
+	var n: int = mini(pez.pasos_perfect, cana.tirar_largo_cadena(int(Juego.efecto(&"cadena_extra")), quitar))
 	var mult: float = pez.mult_tiempo * cana.mult_tiempo * Juego.mult_tiempo_cebo() * (1.0 + Juego.efecto(&"tiempo_reaccion") + (Juego.efecto(&"tiempo_tras_chill") if _tras_chill else 0.0))
 	var dobles_desde: int = stats.dobles_desde_boton + int(Juego.efecto(&"dobles_tarde"))
 	var pulsaciones: int = maxi(1, ceili(pez.pulsaciones_machacar / (1.0 + Juego.efecto(&"machacar"))))

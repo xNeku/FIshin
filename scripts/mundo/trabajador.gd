@@ -9,10 +9,10 @@ enum Estado { YENDO_A_PUESTO, PESCANDO, YENDO_AL_CUBO, ESPERANDO_CUBO, DEJANDO }
 @export var textura_sentado: Texture2D
 @export var velocidad: float = 2.2
 ## Segundos de media por pez.
-@export var tiempo_por_pez: float = 38.0
+@export var tiempo_por_pez: float = 14.0
 @export_range(0.0, 1.0) var variacion: float = 0.4
 ## Peces que coge antes de ir al cubo.
-@export var capacidad: int = 6
+@export var capacidad: int = 8
 ## Calidad de sus capturas (0..1). Pescan peor que tú.
 @export_range(0.0, 1.0) var calidad: float = 0.15
 @export var altura_suelo: float = 0.25

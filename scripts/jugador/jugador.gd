@@ -116,6 +116,10 @@ func interactuar(i: Interactuable) -> void:
 	if i.accion == Interactuable.Accion.VENTA:
 		comercio.vender_todo(i)
 		return
+	if i.clave_primera_vez != "" and not i.lineas_primera_vez.is_empty() and not Juego.flags.get(i.clave_primera_vez, false):
+		Juego.flags[i.clave_primera_vez] = true
+		dialogo.abrir(i.nombre, i.lineas_primera_vez)
+		return
 	# Con el cubo en la mano, cualquiera que compre peces se lo queda.
 	if Juego.cubo_en_mano and i.compra_peces:
 		comercio.vender_cubo(i)

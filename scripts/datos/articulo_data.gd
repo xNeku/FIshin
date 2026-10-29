@@ -2,7 +2,8 @@ class_name ArticuloData
 extends Resource
 ## Algo que se compra en una tienda. Cada .tres en data/articulos/ es uno.
 
-enum Tipo { CANA, CEBO, HUECO }
+## TRABAJADOR: contrata un pescador más para el puerto (lo vende el primer pescador).
+enum Tipo { CANA, CEBO, HUECO, TRABAJADOR }
 
 @export var id: StringName
 @export var nombre: String = ""
@@ -12,6 +13,8 @@ enum Tipo { CANA, CEBO, HUECO }
 @export var precio: float = 10.0
 ## El precio se multiplica por esto tras cada compra.
 @export var crecimiento_precio: float = 1.0
+## Precios fijos de las primeras compras (si se rellena); después sigue el último × crecimiento_precio.
+@export var precios: Array[float] = []
 ## Veces que se puede comprar. 0 = sin límite.
 @export var max_compras: int = 1
 
@@ -31,4 +34,8 @@ enum Tipo { CANA, CEBO, HUECO }
 
 
 func precio_actual(compras: int) -> float:
+	if not precios.is_empty():
+		if compras < precios.size():
+			return precios[compras]
+		return precios.back() * pow(crecimiento_precio, compras - precios.size() + 1)
 	return precio * pow(crecimiento_precio, compras)

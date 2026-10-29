@@ -14,6 +14,6 @@ celdas = Array[Vector2i]([Vector2i(2, 0), Vector2i(3, 0), Vector2i(4, 0), Vector
 pieza_por_celda = ExtResource("3_pieza")
 orden = 5
 condicion = 4
-valor = 1000.0
+valor = 800.0
 requiere = Array[StringName]([&"camino"])
 llegada = 2

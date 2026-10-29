@@ -10,8 +10,11 @@ extends Resource
 ## Las dobles solo pueden salir a partir de este botón de la cadena (1 = desde el primero).
 @export var dobles_desde_boton: int = 5
 ## Segundos hasta que pica (al azar entre los dos). Pesca tranquila: entre picada y picada hay calma.
-@export var espera_min: float = 8.0
-@export var espera_max: float = 20.0
+@export var espera_min: float = 5.0
+@export var espera_max: float = 15.0
+## Cuanto más tarda en picar, más fácil que la cadena sea larga (no siempre): a la espera más larga
+## se le quita esta parte del sesgo hacia cadenas cortas de la caña (0 = da igual lo que tarde).
+@export_range(0.0, 0.9) var cadena_por_espera: float = 0.7
 ## Picoteos de mentira mientras esperas (el corcho tiembla un poco): cada cuánto, al azar entre los dos.
 @export var picoteo_min: float = 2.5
 @export var picoteo_max: float = 6.0

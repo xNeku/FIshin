@@ -73,6 +73,9 @@ func _vender(capturas: Array[Dictionary], desde: Node3D, comprador: Node3D) -> f
 	for c: Dictionary in capturas:
 		total += c.valor * (2.0 if randf() < Juego.efecto(&"venta_doble") else 1.0)
 	total *= Juego.mult_venta(en_lonja)
+	# La lonja paga más que el comerciante (Interactuable.mult_precio).
+	if comprador is Interactuable:
+		total *= (comprador as Interactuable).mult_precio
 	Juego.dinero_en_camino += total
 	await Vuelos.enviar_peces(desde, comprador, capturas)
 	Juego.dinero_en_camino -= total

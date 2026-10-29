@@ -9,7 +9,8 @@ random.seed(1)
 # --- data/stats_pesca.tres ---
 T0, FACT, TMIN = 1.5, .88, .4        # tiempo del 1er botón, factor por botón, mínimo
 MULT_DOBLE, DOBLES_DESDE = 1.4, 5
-ESPERA = (8.0, 20.0)                  # segundos hasta que pica (rango base)
+ESPERA = (5.0, 15.0)                  # segundos hasta que pica (rango base)
+CADENA_POR_ESPERA = 0.7               # cuanto más tarda en picar, menos sesgo a cadenas cortas
 RESULTADO = 1.6                       # pausa tras el pez
 PAUSA = 0.12                          # entre botones
 CAL_MIN, PERFECTO, PEN_MACHACAR = 0.3, 2.0, 0.25
@@ -45,12 +46,12 @@ def _leer_peces():
 PECES = _leer_peces()
 # --- data/canas/*.tres ---
 CANAS = {
-    "rota": dict(prof=1, cmin=1, cmax=5, sesgo=2.0, mt=1.0, me=1.0, mr=1.0, auto=False),
-    "decente": dict(prof=2, cmin=2, cmax=9, sesgo=1.6, mt=1.0, me=.85, mr=1.3, auto=False),
-    "sabia": dict(prof=3, cmin=3, cmax=15, sesgo=1.25, mt=1.0, me=.7, mr=1.6, auto=True),
+    "rota": dict(prof=1, cmin=1, cmax=6, sesgo=1.6, mt=1.0, me=1.0, mr=1.0, auto=False),
+    "decente": dict(prof=2, cmin=2, cmax=10, sesgo=1.35, mt=1.0, me=.85, mr=1.3, auto=False),
+    "sabia": dict(prof=3, cmin=3, cmax=16, sesgo=1.1, mt=1.0, me=.7, mr=1.6, auto=True),
 }
 # --- scenes/mundo/trabajador.tscn ---
-TRAB = dict(t_pez=38.0, capacidad=6, viaje=15.0, mult_valor=0.4)
+TRAB = dict(t_pez=14.0, capacidad=8, viaje=15.0, mult_valor=0.4)
 
 
 def racha(i):
@@ -94,9 +95,10 @@ def tirar(c):
     return ws[-1][0]
 
 
-def largo(c):
+def largo(c, quitar=0.0):
     o = c["cmax"] - c["cmin"] + 1
-    return c["cmin"] + min(o - 1, int(o * random.random() ** c["sesgo"]))
+    sesgo = max(0.45, c["sesgo"] * (1 - min(0.85, quitar)))
+    return c["cmin"] + min(o - 1, int(o * random.random() ** sesgo))
 
 
 def mult_valor(aciertos, perfect, mach_fall):
@@ -113,8 +115,9 @@ PUNTOS = [0.0]  # puntos de pesca: suma de racha de cada pez (×2 si perfecto). 
 
 def picada(c, jugador=1.0, forzar=None):
     p = forzar or tirar(c)
-    n = p[7] if forzar else min(p[7], largo(c))
-    t = random.uniform(*ESPERA) * c["me"]
+    k = random.random()
+    n = p[7] if forzar else min(p[7], largo(c, k * CADENA_POR_ESPERA))
+    t = (ESPERA[0] + (ESPERA[1] - ESPERA[0]) * k) * c["me"]
     aciertos = mach_fall = 0
     for i in range(n):
         tm = max(TMIN, T0 * FACT ** i) * p[8] * c["mt"]
@@ -181,8 +184,17 @@ if __name__ == "__main__":
 
 
 # Condiciones de llegada (las de data/apariciones y data/articulos). Cámbialas aquí para probar.
-COND = dict(comerciante_peces=3, isla_totales=400, cana_decente=300, viejo_peces=75, camino_puntos=700,
-            sabia=6000, lonja_totales=10000, puerto_puntos=1000)
+COND = dict(comerciante_peces=3, isla_totales=400, cana_decente=300, viejo_peces=58, camino_puntos=600,
+            sabia=6800, lonja_totales=11000, puerto_puntos=800)
+LONJA = 1.3   # Interactuable.mult_precio de la lonja
+
+
+def precio_pescador(comprados):
+    """data/articulos/contratar_pescador.tres: 1.000, 5.000, 10.000 y luego ×1,5."""
+    lista = [1000, 5000, 10000]
+    return lista[comprados] if comprados < len(lista) else lista[-1] * 1.5 ** (comprados - len(lista) + 1)
+
+
 # Segundos sin pescar por cada viaje a vender (andar, menús): con el camino y la lonja hay que moverse.
 ANDAR_ANTES_CAMINO, ANDAR_DESPUES_CAMINO = 8.0, 35.0
 
@@ -205,6 +217,8 @@ def linea_de_tiempo(jugador=1.0, semilla=1, cond=COND, horas=2.0):
 
     while t < 3600 * horas:
         v, dt, cb, ok = picada(CANAS[cana], jugador)
+        if "lonja" in hitos:
+            v *= LONJA
         t += dt; pend += v; peces += ok; mejor = max(mejor, cb)
         pasivo = trabajador() / 60 * dt * trabajadores
         rublos += pasivo; totales += pasivo
@@ -223,6 +237,11 @@ def linea_de_tiempo(jugador=1.0, semilla=1, cond=COND, horas=2.0):
         if PUNTOS[0] >= cond["puerto_puntos"] and "camino" in hitos:
             hito("puerto"); trabajadores = max(trabajadores, 1)
         if totales >= cond["lonja_totales"] and "camino" in hitos: hito("lonja")
+        # Pescadores: después de la Sabia, compra el siguiente en cuanto puede (máximo 20).
+        if trabajadores and cana == "sabia" and trabajadores < 20:
+            precio = precio_pescador(trabajadores - 1)
+            if rublos >= precio:
+                rublos -= precio; trabajadores += 1; hito(f"pescador {trabajadores}")
     hitos["_rpm_final"] = (totales / (t / 60))
     return hitos
 

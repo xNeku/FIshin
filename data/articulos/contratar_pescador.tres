@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="ArticuloData" format=3]
+
+[ext_resource type="Script" path="res://scripts/datos/articulo_data.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://art/personajes/naufrago.png" id="2_icono"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"contratar_pescador"
+nombre = "Contratar pescador"
+descripcion = "Uno más en el puerto: pesca solo y deja lo que saca en el cubo."
+icono = ExtResource("2_icono")
+tipo = 3
+precio = 1000.0
+crecimiento_precio = 1.5
+precios = Array[float]([1000.0, 5000.0, 10000.0])
+max_compras = 19

@@ -117,6 +117,18 @@ Parada para valorar rumbo (29 oct). Hay un tramo jugable de principio a fin de l
 - HUD: "Primavera · día 3 · 21:40" en el panel de Info. Bestiario: estaciones y hora de cada pez.
 - Peces por nivel según estación y hora: de 3 (invierno de día) a 9.
 
+## Sesión 1 nov: más ágil (juego de ~10 h)
+- Espera de 5-15 s (`StatsPesca.espera_min/max`). Cuanto más tarda en picar, más larga suele ser la cadena (`cadena_por_espera` 0,7; `CanaData.tirar_largo_cadena` admite sesgo < 1).
+- Cadenas de las cañas: Rota 1-6, Decente 2-10, Sabia 3-16, menos sesgadas a cortas.
+- Lonja ×1,3 (`Interactuable.mult_precio`).
+- Contratar pescadores:
+  - Se hace hablando con el primero (`ArticuloData.Tipo.TRABAJADOR`, `precios` fijos y luego ×1,5, máximo 19 compras: 20 en total).
+  - La primera vez cuenta su historia (`Interactuable.lineas_primera_vez` / `clave_primera_vez`).
+  - `Juego.plazas_trabajadores` lo pone el puerto con los bordes libres.
+- Pescadores más rápidos: 14 s por pez, 8 por viaje (~23 ₽/min).
+- Llegadas más juntas: viejo a 58 peces, camino a 600 puntos, puerto a 800, Sabia a 6.800 ₽, lonja a 11.000 ₽ totales.
+- Mando: interactuar con R2 y panel de estado con Select. HUD de cristal (`PanelCristal` + `art/ui/cristal.tres`). Luna que cruza la noche.
+
 ## Siguiente paso
 Sesión de progresión con el diseñador hasta el midgame (economía y orden de desbloqueos), partiendo de `docs/PROGRESION.md` (borrador v1) y `docs/INCREMENTAL.md`.
 

@@ -2,6 +2,8 @@
 
 [ext_resource type="Script" path="res://scripts/mundo/puerto.gd" id="1_script"]
 [ext_resource type="PackedScene" path="res://scenes/mundo/trabajador.tscn" id="2_trabajador"]
+[ext_resource type="Resource" path="res://data/articulos/contratar_pescador.tres" id="10_contratar"]
+[ext_resource type="Script" path="res://scripts/datos/articulo_data.gd" id="11_articulo"]
 [ext_resource type="Script" path="res://scripts/mundo/interactuable.gd" id="3_interactuable"]
 [ext_resource type="Script" path="res://scripts/mundo/cubo.gd" id="4_cubo"]
 [ext_resource type="Texture2D" path="res://art/articulos/cubo.png" id="5_cubo"]
@@ -11,6 +13,7 @@
 [node name="PuertoPesquero" type="Node3D" node_paths=PackedStringArray("cubo", "contenedor")]
 script = ExtResource("1_script")
 escena_trabajador = ExtResource("2_trabajador")
+articulos_primero = Array[ExtResource("11_articulo")]([ExtResource("10_contratar")])
 cubo = NodePath("Cubo")
 lineas_primero = Array[String](["Ey, ¿tú eres el náufrago? Mi primo, el mercader, no para de hablar de ti.", "Dice que tienes un rollo que flipas. Y mira... me ha convencido.", "A partir de hoy pesco para ti. Lo que saque lo dejo en el cubo de la otra punta.", "Tú vienes, coges el cubo y se lo llevas a quien te lo compre. Trato hecho, jefe."])
 contenedor = NodePath("Trabajadores")

@@ -55,6 +55,8 @@ var reloj_data: RelojData
 var velocidad_reloj: float = 1.0
 ## Pescadores del puerto contratados.
 var trabajadores: int = 0
+## Bordes libres donde aún cabe un pescador (lo pone el puerto; no se guarda).
+var plazas_trabajadores: int = 99
 ## Lo que han dejado los pescadores en el cubo del puerto.
 var cubo_capturas: Array[Dictionary] = []
 ## true mientras el náufrago lleva el cubo en la mano.
@@ -409,6 +411,8 @@ func motivo_no_comprar(art: ArticuloData) -> String:
 		return "Ya tienes algo mejor"
 	if art.tipo == ArticuloData.Tipo.CEBO and not cebo.is_empty():
 		return "Ya llevas cebo"
+	if art.tipo == ArticuloData.Tipo.TRABAJADOR and plazas_trabajadores <= 0:
+		return "No caben más"
 	if rublos < precio(art):
 		return "Faltan rublos"
 	return ""
@@ -428,6 +432,8 @@ func comprar(art: ArticuloData) -> bool:
 		ArticuloData.Tipo.HUECO:
 			huecos += art.huecos
 			inventario_cambiado.emit()
+		ArticuloData.Tipo.TRABAJADOR:
+			contratar_trabajador()
 	return true
 
 

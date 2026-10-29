@@ -9,8 +9,12 @@ extends Isla
 ## Puesto del primer pescador y hacia dónde mira (agua).
 @export var puesto_inicial: Vector2i = Vector2i(4, -1)
 @export var dir_inicial: Vector2i = Vector2i(0, -1)
-## Lo que dice el primer pescador al hablar con él.
+## Lo que te cuenta el primer pescador la primera vez que hablas con él.
 @export_multiline var lineas_primero: Array[String] = []
+## Lo que dice al abrir su tienda (contratar) las siguientes veces.
+@export_multiline var saludos_primero: Array[String] = ["¿Más manos? En el muelle hay gente con ganas de pescar.", "Cuantos más seamos, más peces en el cubo, jefe."]
+## Lo que vende el primer pescador: contratar a más (data/articulos/contratar_pescador.tres).
+@export var articulos_primero: Array[ArticuloData] = []
 ## Probabilidad de sentarse al borde cuando el puesto es de tablones.
 @export_range(0.0, 1.0) var prob_sentado: float = 0.6
 @export var contenedor: Node3D
@@ -70,6 +74,17 @@ func punto_entrega() -> Vector3:
 	return m.celda_a_mundo(celda_cubo) + Vector3(randf_range(-0.5, 0.5), 0.25, randf_range(0.3, 0.7))
 
 
+## Cuántos pescadores más caben (bordes libres); la tienda no deja contratar si no hay sitio.
+func _contar_plazas() -> void:
+	var m: Node = get_parent()
+	var ocupados: Array = trabajadores.map(func(t: Trabajador) -> Array: return [t.puesto.celda, t.puesto.dir])
+	var libres: int = 0
+	for p: Dictionary in m.puestos_de_pesca():
+		if p.celda != celda_cubo and not [p.celda, p.dir] in ocupados:
+			libres += 1
+	Juego.plazas_trabajadores = libres
+
+
 func _poblar() -> void:
 	if Juego.trabajadores < 1:
 		Juego.contratar_trabajador()
@@ -90,9 +105,19 @@ func _contratar() -> bool:
 	var sentado: bool = m.es_tablon(puesto.celda) and randf() < prob_sentado
 	var primero: bool = trabajadores.is_empty()
 	t.iniciar(m, self, _pez_mas_barato(), puesto, sentado, puesto.celda if primero else celda_cubo)
-	if primero and not lineas_primero.is_empty():
+	if primero:
+		# Se contrata hablando con él: su charla es una tienda.
+		t.charla.nombre = "Pescador"
 		t.charla.lineas = lineas_primero
+		t.charla.saludos = saludos_primero
+		t.charla.lineas_primera_vez = lineas_primero
+		t.charla.clave_primera_vez = "charla_primer_pescador"
+		if not articulos_primero.is_empty():
+			t.charla.accion = Interactuable.Accion.TIENDA
+			t.charla.articulos = articulos_primero
+			t.charla.texto_accion = "Contratar"
 	trabajadores.append(t)
+	_contar_plazas()
 	return true
 
 

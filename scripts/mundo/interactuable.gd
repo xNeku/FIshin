@@ -14,11 +14,20 @@ enum Accion { TIENDA, BESTIARIO, DIALOGO, CUBO, VENTA, ARBOL }
 ## Altura sobre este nodo a la que sale el botón de interactuar cuando estás cerca (su cabeza).
 @export var altura_icono: float = 2.0
 
+## Al venderle peces (lonja, comerciante): multiplica lo que paga.
+@export var mult_precio: float = 1.0
+
 @export_group("Tienda")
 @export var nombre: String = ""
 @export var articulos: Array[ArticuloData] = []
 @export var compra_peces: bool = false
 @export var saludos: Array[String] = []
+
+@export_group("Primera vez")
+## Si se rellena, la primera vez que hablas con él dice esto (diálogo) y después hace su acción normal.
+@export_multiline var lineas_primera_vez: Array[String] = []
+## Flag que recuerda que ya te lo dijo (Juego.flags).
+@export var clave_primera_vez: String = ""
 
 @export_group("Diálogo")
 ## Frases que dice, una tras otra (E para avanzar). El nombre se toma de "nombre".

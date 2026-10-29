@@ -42,19 +42,21 @@ Hay **siete líneas** que crecen a la vez y se enganchan entre sí:
 
 ## Tramos del juego (la columna vertebral)
 
-- [DECIDIDO] Unas 15-20 h hasta acabar y entrar en el endgame. Sin prisas: el jugador anda por el mapa vendiendo y mejorando (en ese rato no pesca, pero lo pasivo sigue).
-- [PROPUESTA] v2 de tiempos: el midgame cae hacia las **5-6 h**, no a las 2.
-  - Cada tramo trae su mecánica y multiplica el ingreso por unas 10.
-  - El ingreso crece cada vez más despacio por hora (×3 por hora en el T1, ×1,5 en el T4). Así los intervalos entre novedades se alargan solos.
+- [DECIDIDO] **Experiencia corta, unas 10 h**, y después un endgame tocho y largo para los fanáticos: mucha gente no aguanta más de 10 h en un juego así. Antes eran 15-20 h.
+- [DECIDIDO] Todo más ágil:
+  - Espera de 5-15 s; cuanto más tarda en picar, más probable que la cadena sea larga.
+  - Llegadas más juntas y pescadores antes.
+  - La lonja paga más.
+- [PROPUESTA] Tiempos v3: midgame hacia las 3,5 h.
 
-| Tramo | Nombre | Cuándo | Ingreso | Novedad cada | Mecánica nueva |
-|-------|--------|--------|---------|--------------|----------------|
-| T0 | Náufrago | 0 – 45 min | 40 → 150 ₽/min | 5-10 min | Pescar a mano, vender, primeras cañas, árbol |
-| T1 | Puerto | 45 min – 2,5 h | 200 → 1,5K | 10-15 min | Andar, lonja, pescadores, contratar, pantalán |
-| T2 | Aldea (midgame hacia las 5-6 h) | 2,5 – 6 h | 1,5K → 20K | 15-25 min | Algas, sushi con suministro, taladro, modo flow |
-| T3 | Pueblo turístico | 6 – 12 h | 20K → 400K | 25-40 min | Turistas, pecera, buceo y perlas, bambú |
-| T4 | Ciudad loca | 12 – 18 h | 400K → 5M | 30-50 min | Casino, legendarios, cañas especiales |
-| — | Endgame | 18 h + | rompe | — | Modo infinito, récords, lo pasivo por fin pesa más que tú |
+| Tramo | Nombre | Cuándo | Novedad cada | Mecánica nueva |
+|-------|--------|--------|--------------|----------------|
+| T0 | Náufrago | 0 – 25 min | 3-6 min | Pescar a mano, comerciante, primeras cañas, árbol |
+| T1 | Puerto | 25 min – 1,5 h | 6-10 min | Pescadores (comprables), lonja, Sabia, pantalán |
+| T2 | Aldea (midgame hacia las 3,5 h) | 1,5 – 4 h | 10-20 min | Algas, sushi con suministro, taladro, modo flow, edificio reloj |
+| T3 | Pueblo turístico | 4 – 7 h | 15-25 min | Turistas, pecera, buceo y perlas, bambú; peces del mundo |
+| T4 | Ciudad loca | 7 – 10 h | 20-30 min | Casino, legendarios del mundo, cañas especiales |
+| — | Endgame | 10 h + | — | Largo para los fanáticos: modo infinito, récords, maestrías, todo al máximo |
 
 ## El ciclo: todo va de la mano
 
@@ -128,8 +130,8 @@ Lo que ya está hecho cubre **T0 y T1** (comerciante, primera isla, viejo, camin
 ### 1.2 Trabajadores
 - [DECIDIDO] Los edificios con trabajadores permiten contratar más, como los pescadores.
 - [DECIDIDO] Los pescadores se contratan **hablando con el primero**, que siempre está fijo en su puesto. Hay un **límite** de cuántos puedes tener, que sube con nodos del árbol y con mejoras del pantalán.
-- [PROPUESTA] Coste `150 · 1,6^n` y límite `2 + árbol + 2 por nivel del pantalán`.
-- [DECIDIDO] Los pescadores daban demasiado al empezar (21 ₽/min). Rebajado a unos 8,3 ₽/min: una sardina cada 38 s, 6 por viaje, al 40 % de su valor. Ver `docs/INCREMENTAL.md` §7-8.
+- [DECIDIDO] Hecho: desde que llega el puerto se compran más hablando con el primer pescador. Cuestan 1.000, 5.000 y 10.000 ₽, y después cada uno ×1,5 (`data/articulos/contratar_pescador.tres`). Máximo 20.
+- Rendimiento: un pez barato cada 14 s y 8 por viaje, al 40 % de su valor: unos 23 ₽/min cada uno. Con 5 pescadores, lo pasivo es ~1/4 de lo que haces a mano.
 - [PROPUESTA] Cada edificio tiene un **máximo de trabajadores por nivel** (subir de nivel = más plazas).
 - [PROPUESTA] Cada trabajador nuevo cuesta más que el anterior (×1,15 cada uno) y aporta lo mismo. Las mejoras de edificio y el árbol (Carisma) multiplican a todos.
 
@@ -454,21 +456,21 @@ Simulador: `docs/herramientas/simular_economia.py`. Juega con los peces, cañas 
 ### Orientación v3 (espera de 8-20 s, andar para vender, maestría)
 [PROPUESTA] Guía de ritmo: manda la carta. Simulado con un jugador normal (media de 20 partidas, `docs/herramientas/simular_economia.py`). Cuenta el rato que se pierde andando para vender: 8 s por venta en el donut y 35 s cuando ya hay camino.
 
-**T0 Náufrago y principio del T1 (lo que ya está hecho, con los datos nuevos)**
+**T0 y principio del T1 (lo que ya está hecho), v4**
 
-Con el catálogo de 201 especies (jugador normal; el bueno llega unos 4 min antes y el flojo unos 5 después):
+Simulado con un jugador normal, espera de 5-15 s y lonja ×1,3. El bueno llega unos 2-3 min antes y el flojo unos 5 después.
 
-| Min | Llega | Condición (nueva) | Qué aporta | ₽/min |
-|-----|-------|-------------------|------------|-------|
-| 1 | Comerciante | 3 peces | Vender, tienda | ~45 (Rota) |
-| 8 | Caña decente | **300 ₽** (antes 150) | ×3 (épicos y un legendario desde la prof. 2) | ~150 |
-| 10 | Primera isla (bestiario) | **400 ₽ totales** (antes 200) | Suelo, colección, maestría a la vista | ~150 |
-| 10-30 | Cajones extra | 60 ₽ ×1,8 | Más huecos | |
-| 22 | Viejo y árbol | 75 peces | Nodos baratos (+10-30 %) | ~160 |
-| 40 | Camino | **700 puntos de pesca** (antes 20 min) | Andar; empieza a costar tiempo vender | |
-| 53 | Sabia caña | **6.000 ₽** (antes 2.000) | ×2,3 | ~350 |
-| 55 | Puerto | Camino + **1.000 puntos de pesca** (antes combo x10, min ~73) | 1 pescador (~9 ₽/min) | ~360 |
-| 66 | Lonja | Camino + **10.000 ₽ totales** (antes 1.500) | ×1,2 vendiendo allí | ~400 |
+| Min | Llega | Condición | Qué aporta |
+|-----|-------|-----------|------------|
+| 1 | Comerciante | 3 peces | Vender, tienda |
+| 5 | Caña decente | 300 ₽ | ×2,5 (~250 ₽/min) |
+| 6 | Primera isla (bestiario) | 400 ₽ totales | Suelo, colección |
+| 15 | Viejo y árbol | **58 peces** | Árbol, tienda del viejo |
+| 20 | Camino | **600 puntos de pesca** | Andar |
+| 26 | Puerto (primer pescador) | Camino + **800 puntos de pesca** | 1 pescador (~23 ₽/min) |
+| 35 | Sabia caña | **6.800 ₽** | ×2 (~490 ₽/min) |
+| 38-90 | Pescadores 2 a 5 | Hablando con el primero: 1.000, 5.000, 10.000, 15.000 ₽ (luego ×1,5; máximo 20) | +23 ₽/min cada uno |
+| 45 | Lonja | Camino + **11.000 ₽ totales** | Paga ×1,3 (antes igual que el comerciante) |
 
 **Premiar al que pesca bien** [DECIDIDO: hay que premiarlo, que acabe antes]:
 - **Puntos de pesca** (`Juego.stats.puntos_pesca`): cada pez suma la racha de su cadena, ×2 si es perfecto. El camino y el puerto llegan por puntos, no por minutos ni por un solo combo.
