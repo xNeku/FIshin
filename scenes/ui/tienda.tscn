@@ -4,6 +4,7 @@
 [ext_resource type="PackedScene" path="res://scenes/ui/fila_tienda.tscn" id="2_fila"]
 [ext_resource type="AudioStream" path="res://art/sfx/captura.wav" id="3_compra"]
 [ext_resource type="PackedScene" path="res://scenes/ui/animacion_entrada.tscn" id="anim_entrada"]
+[ext_resource type="PackedScene" path="res://scenes/ui/pista_accion.tscn" id="pista"]
 
 [node name="Tienda" type="CanvasLayer"]
 process_mode = 3
@@ -79,6 +80,27 @@ layout_mode = 2
 theme_override_constants/separation = 20
 alignment = 2
 
+[node name="Pistas" type="HBoxContainer" parent="Raiz/Panel/Margen/Contenido/Botones"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+theme_override_constants/separation = 32
+
+[node name="PistaElegir" parent="Raiz/Panel/Margen/Contenido/Botones/Pistas" instance=ExtResource("pista")]
+layout_mode = 2
+accion = &"ui_accept"
+texto = "Elegir"
+
+[node name="PistaVender" parent="Raiz/Panel/Margen/Contenido/Botones/Pistas" instance=ExtResource("pista")]
+layout_mode = 2
+accion = &"accion_extra"
+texto = "Vender todo"
+
+[node name="PistaCerrar" parent="Raiz/Panel/Margen/Contenido/Botones/Pistas" instance=ExtResource("pista")]
+layout_mode = 2
+accion = &"ui_cancel"
+texto = "Cerrar"
+
 [node name="Vender" type="Button" parent="Raiz/Panel/Margen/Contenido/Botones"]
 custom_minimum_size = Vector2(420, 80)
 layout_mode = 2
@@ -88,7 +110,7 @@ text = "Vender todo"
 [node name="Cerrar" type="Button" parent="Raiz/Panel/Margen/Contenido/Botones"]
 custom_minimum_size = Vector2(240, 80)
 layout_mode = 2
-text = "Cerrar [E]"
+text = "Cerrar"
 
 [node name="SfxCompra" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("3_compra")

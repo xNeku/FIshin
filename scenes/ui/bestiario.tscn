@@ -3,6 +3,7 @@
 [ext_resource type="Script" path="res://scripts/ui/bestiario.gd" id="1_script"]
 [ext_resource type="PackedScene" path="res://scenes/ui/ficha_bestiario.tscn" id="2_ficha"]
 [ext_resource type="PackedScene" path="res://scenes/ui/animacion_entrada.tscn" id="anim_entrada"]
+[ext_resource type="PackedScene" path="res://scenes/ui/pista_accion.tscn" id="pista"]
 
 [node name="Bestiario" type="CanvasLayer"]
 process_mode = 3
@@ -60,6 +61,16 @@ mouse_filter = 2
 theme_override_font_sizes/font_size = 30
 text = "0 / 6 especies"
 
+[node name="Separacion" type="Control" parent="Raiz/Panel/Margen/Contenido/Cabecera"]
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="PistaCerrar" parent="Raiz/Panel/Margen/Contenido/Cabecera" instance=ExtResource("pista")]
+layout_mode = 2
+accion = &"ui_cancel"
+texto = "Cerrar"
+
 [node name="Lista" type="ScrollContainer" parent="Raiz/Panel/Margen/Contenido"]
 layout_mode = 2
 size_flags_vertical = 3
@@ -76,7 +87,7 @@ columns = 4
 custom_minimum_size = Vector2(240, 70)
 layout_mode = 2
 size_flags_horizontal = 8
-text = "Cerrar [E]"
+text = "Cerrar"
 
 [node name="EntradaFondo" parent="Raiz" instance=ExtResource("anim_entrada")]
 estilo = 3

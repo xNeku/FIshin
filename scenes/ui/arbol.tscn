@@ -80,6 +80,7 @@
 [ext_resource type="Resource" path="res://data/arbol/nodos/ch_huerto.tres" id="d_ch_huerto"]
 [ext_resource type="Resource" path="res://data/arbol/nodos/ch_hierba.tres" id="d_ch_hierba"]
 [ext_resource type="Resource" path="res://data/arbol/nodos/ch_nirvana.tres" id="d_ch_nirvana"]
+[ext_resource type="PackedScene" path="res://scenes/ui/pista_accion.tscn" id="pista"]
 
 [sub_resource type="ShaderMaterial" id="mat_fondo"]
 shader = ExtResource("fondo")
@@ -819,7 +820,7 @@ anchor_top = 1.0
 anchor_bottom = 1.0
 offset_left = 32.0
 offset_top = -84.0
-offset_right = 600.0
+offset_right = 1200.0
 offset_bottom = -28.0
 grow_vertical = 0
 mouse_filter = 2
@@ -864,6 +865,26 @@ stretch_mode = 5
 layout_mode = 2
 theme_type_variation = &"Pequeno"
 text = "Salir"
+
+[node name="PistaRamas" type="HBoxContainer" parent="Raiz/Pie"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 4
+
+[node name="Anterior" parent="Raiz/Pie/PistaRamas" instance=ExtResource("pista")]
+layout_mode = 2
+accion = &"pestana_anterior"
+texto = ""
+
+[node name="Siguiente" parent="Raiz/Pie/PistaRamas" instance=ExtResource("pista")]
+layout_mode = 2
+accion = &"pestana_siguiente"
+texto = "Ramas"
+
+[node name="PistaTienda" parent="Raiz/Pie" instance=ExtResource("pista")]
+layout_mode = 2
+accion = &"accion_extra"
+texto = "Tienda"
 
 [node name="BotonTienda" type="Button" parent="Raiz"]
 layout_mode = 1

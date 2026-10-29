@@ -12,6 +12,12 @@ extends CanvasLayer
 @export var retraso_cascada: float = 0.06
 @export var zooms: Array[float] = [0.5, 0.75, 1.0, 1.25]
 @export var suavizado_camara: float = 10.0
+@export_group("Mando")
+## Al mantener la cruceta o el stick: espera antes de repetir y cada cuánto repite (segundos).
+@export var retardo_repeticion: float = 0.32
+@export var ritmo_repeticion: float = 0.13
+## Cuánto se abre el cono de búsqueda del siguiente nodo (0.35 ≈ 70° a cada lado).
+@export var cono_navegacion: float = 0.35
 
 @onready var raiz: Control = $Raiz
 @onready var vista: Control = $Raiz/Vista
@@ -32,6 +38,7 @@ extends CanvasLayer
 @onready var ficha_motivo: Label = $Raiz/Ficha/Contenido/Motivo
 @onready var pista_mejorar: TextureRect = $Raiz/Pie/Mejorar/Icono
 @onready var pista_salir: TextureRect = $Raiz/Pie/Salir/Icono
+@onready var pista_tienda: Control = get_node_or_null("Raiz/Pie/PistaTienda")
 @onready var boton_tienda: Button = $Raiz/BotonTienda
 @onready var sfx_mejorar: AudioStreamPlayer = $SfxMejorar
 @onready var sfx_no: AudioStreamPlayer = $SfxNo
@@ -50,6 +57,8 @@ var _arrastrando: bool = false
 var _comprando: bool = false
 var _en_tienda: bool = false
 var _dispositivo: String = ""
+var _dir_nav: Vector2 = Vector2.ZERO
+var _t_nav: float = 0.0
 
 
 func _ready() -> void:
@@ -74,6 +83,8 @@ func _ready() -> void:
 func abrir(vendedor: Interactuable = null) -> void:
 	_vendedor = vendedor
 	boton_tienda.visible = vendedor != null and not vendedor.articulos.is_empty()
+	if pista_tienda:
+		pista_tienda.visible = boton_tienda.visible
 	abierto = true
 	raiz.visible = true
 	get_tree().paused = true
@@ -91,6 +102,9 @@ func cerrar() -> void:
 	abierto = false
 	raiz.visible = false
 	get_tree().paused = false
+	var foco: Control = get_viewport().gui_get_focus_owner()
+	if foco and raiz.is_ancestor_of(foco):
+		foco.release_focus()
 	_animar_nodos(false)
 
 
@@ -107,27 +121,111 @@ func _process(delta: float) -> void:
 	if not _arrastrando:
 		lienzo.position = lienzo.position.lerp(_objetivo, 1.0 - exp(-suavizado_camara * delta))
 	_colocar_ficha()
+	_navegar_mando(delta)
 	if IconosInput.dispositivo != _dispositivo:
 		_dispositivo = IconosInput.dispositivo
 		pista_mejorar.texture = IconosInput.icono(&"interactuar")
-		pista_salir.texture = IconosInput.icono(&"cambiar_modo")
+		pista_salir.texture = IconosInput.icono(&"ui_cancel")
 
 
 func _input(event: InputEvent) -> void:
-	if abierto:
-		IconosInput.detectar(event)
+	if not abierto:
+		return
+	IconosInput.detectar(event)
+	if _en_tienda:
+		return
+	# La cruceta y el stick los lleva _navegar_mando: el foco automático de Godot salta mal entre nodos sueltos.
+	for a: StringName in [&"ui_left", &"ui_right", &"ui_up", &"ui_down"]:
+		if event.is_action(a):
+			get_viewport().set_input_as_handled()
+			return
 
 
 func _unhandled_input(event: InputEvent) -> void:
 	if not abierto or _en_tienda:
 		return
-	if event.is_action_pressed("menu") or event.is_action_pressed("cambiar_modo") or event.is_action_pressed("ui_cancel"):
+	if event.is_action_pressed("menu") or event.is_action_pressed("ui_cancel"):
 		get_viewport().set_input_as_handled()
 		cerrar()
 	elif event is InputEventKey and event.is_action_pressed("interactuar") and _sel:
 		# En mando, el botón de aceptar ya pulsa el nodo enfocado.
 		get_viewport().set_input_as_handled()
 		_comprar(_sel)
+	elif event.is_action_pressed("pestana_anterior") or event.is_action_pressed("pestana_siguiente"):
+		get_viewport().set_input_as_handled()
+		_saltar_rama(-1 if event.is_action_pressed("pestana_anterior") else 1)
+	elif event.is_action_pressed("accion_extra") and boton_tienda.visible:
+		get_viewport().set_input_as_handled()
+		_abrir_tienda()
+
+
+# --- Mando ---
+
+## Cruceta o stick: salta al nodo visible más cercano en esa dirección; al mantener, repite.
+func _navegar_mando(delta: float) -> void:
+	if _en_tienda or _comprando:
+		return
+	var v: Vector2 = Input.get_vector(&"ui_left", &"ui_right", &"ui_up", &"ui_down")
+	if v.length() < 0.5:
+		_dir_nav = Vector2.ZERO
+		return
+	var d: Vector2 = v.normalized()
+	if _dir_nav == Vector2.ZERO or _dir_nav.dot(d) < 0.7:
+		_t_nav = retardo_repeticion
+	else:
+		_t_nav -= delta
+		if _t_nav > 0.0:
+			return
+		_t_nav = ritmo_repeticion
+	_dir_nav = d
+	var siguiente: NodoArbol = _vecino(d)
+	if siguiente:
+		siguiente.grab_focus()
+
+
+func _vecino(d: Vector2) -> NodoArbol:
+	var desde: Vector2 = _sel.centro() if _sel else origen_centro()
+	var mejor: NodoArbol = null
+	var nota_mejor: float = INF
+	for na: NodoArbol in _todos:
+		if na == _sel or not na.visible:
+			continue
+		var o: Vector2 = na.centro() - desde
+		var dist: float = o.length()
+		var coseno: float = o.dot(d) / maxf(dist, 0.001)
+		if coseno < cono_navegacion:
+			continue
+		# Cerca y en línea gana; lo que está muy de lado cuenta como más lejos.
+		var nota: float = dist * (1.0 + 2.5 * (1.0 - coseno))
+		if nota < nota_mejor:
+			nota_mejor = nota
+			mejor = na
+	return mejor
+
+
+## L1/R1: salta a la rama anterior o siguiente (al nodo que puedes comprar más cerca del viejo).
+func _saltar_rama(paso: int) -> void:
+	if Juego.arbol == null or Juego.arbol.ramas.is_empty():
+		return
+	var ramas: Array = Juego.arbol.ramas
+	var i: int = ramas.find(_sel.datos.rama) if _sel and _sel.datos.rama else -1
+	for k in range(1, ramas.size() + 1):
+		var rama: Resource = ramas[(i + paso * k + ramas.size() * 4) % ramas.size()]
+		var elegido: NodoArbol = null
+		var nota_mejor: float = INF
+		for na: NodoArbol in _todos:
+			if na.datos.rama != rama or not na.visible:
+				continue
+			# Primero lo que se puede comprar; luego lo comprado; lo bloqueado al final.
+			var peso: float = {NodoArbol.Estado.DISPONIBLE: 0.0, NodoArbol.Estado.COMPRADO: 1.0, NodoArbol.Estado.MAX: 1.0}.get(na.estado, 2.0)
+			var nota: float = peso * 100000.0 + na.centro().distance_to(origen_centro())
+			if nota < nota_mejor:
+				nota_mejor = nota
+				elegido = na
+		if elegido:
+			elegido.grab_focus()
+			_centrar(elegido.centro())
+			return
 
 
 # --- Caminos ---

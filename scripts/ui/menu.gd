@@ -24,6 +24,9 @@ var _texto_borrar: String
 func _ready() -> void:
 	raiz.visible = false
 	_texto_borrar = boton_borrar.text
+	# Las pestañas se cambian con L1/R1 (o Q/E), no con el foco.
+	pestanas.get_tab_bar().focus_mode = Control.FOCUS_NONE
+	pestanas.tab_changed.connect(func(_t: int) -> void: _enfocar_pestana.call_deferred())
 	boton_volver.pressed.connect(cerrar)
 	boton_borrar.pressed.connect(_on_borrar)
 	boton_filtro.pressed.connect(func() -> void:
@@ -40,9 +43,48 @@ func _ready() -> void:
 			_refrescar_barca())
 
 
-func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed("menu") and _alternar():
+func _input(event: InputEvent) -> void:
+	# En _input (antes que la interfaz): así Tab no lo usa un botón para mover el foco.
+	if event.is_action_pressed("menu"):
+		if _alternar():
+			get_viewport().set_input_as_handled()
+	elif not abierto:
+		return
+	elif event.is_action_pressed("ui_cancel"):
 		get_viewport().set_input_as_handled()
+		cerrar()
+	elif event.is_action_pressed("pestana_anterior") or event.is_action_pressed("pestana_siguiente"):
+		get_viewport().set_input_as_handled()
+		var n: int = pestanas.get_tab_count()
+		var paso: int = -1 if event.is_action_pressed("pestana_anterior") else 1
+		pestanas.current_tab = (pestanas.current_tab + paso + n) % n
+		_enfocar_pestana.call_deferred()
+
+
+## Pone el foco en lo primero que se pueda pulsar de la pestaña abierta (para el mando).
+func _enfocar_pestana() -> void:
+	if not abierto:
+		return
+	var pagina: Control = pestanas.get_current_tab_control()
+	var destino: Control = _primer_enfocable(pagina)
+	if destino:
+		destino.grab_focus()
+	else:
+		var foco: Control = get_viewport().gui_get_focus_owner()
+		if foco:
+			foco.release_focus()
+
+
+func _primer_enfocable(n: Node) -> Control:
+	for h: Node in n.get_children():
+		if h is Control and (h as Control).is_visible_in_tree():
+			var c: Control = h
+			if c.focus_mode != Control.FOCUS_NONE and not (c is BaseButton and (c as BaseButton).disabled):
+				return c
+			var dentro: Control = _primer_enfocable(c)
+			if dentro:
+				return dentro
+	return null
 
 
 func _notification(what: int) -> void:
@@ -69,11 +111,15 @@ func abrir() -> void:
 	boton_borrar.text = _texto_borrar
 	_refrescar_barca()
 	_refrescar_stats()
+	_enfocar_pestana.call_deferred()
 
 
 func cerrar() -> void:
 	abierto = false
 	raiz.visible = false
+	var foco: Control = get_viewport().gui_get_focus_owner()
+	if foco and raiz.is_ancestor_of(foco):
+		foco.release_focus()
 	get_tree().paused = false
 
 

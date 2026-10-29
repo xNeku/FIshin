@@ -84,6 +84,7 @@ var _t_machacar: float = 0.0
 var _acciones: Array[String] = []
 var _t_accion: float = 0.0
 var _i_accion: int = 0
+var _dispositivo: String = ""
 
 
 func _ready() -> void:
@@ -128,6 +129,7 @@ func _process(delta: float) -> void:
 	if cebo.visible:
 		cebo.text = "Cebo: %d pescas" % int(Juego.cebo.pescas)
 	_mostrar_acciones(dt)
+	_al_cambiar_dispositivo()
 	# Machacando, la tecla dibujada se aprieta sola para que se vea qué hay que hacer.
 	if _accion_machacar != &"":
 		_t_machacar += dt
@@ -268,7 +270,14 @@ func _pista(caja: PanelContainer, texto: String) -> void:
 
 func _input(event: InputEvent) -> void:
 	# El último dispositivo usado decide qué dibujos salen.
-	if IconosInput.detectar(event):
+	IconosInput.detectar(event)
+	_al_cambiar_dispositivo()
+
+
+## Repinta las teclas si se ha cambiado de teclado a mando o al revés (aunque lo detectara un menú en pausa).
+func _al_cambiar_dispositivo() -> void:
+	if IconosInput.dispositivo != _dispositivo:
+		_dispositivo = IconosInput.dispositivo
 		for t: TextureRect in [tecla1, tecla2]:
 			if t.has_meta("accion"):
 				_pintar_tecla(t, t.get_meta("accion"))

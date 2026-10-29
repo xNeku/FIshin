@@ -36,10 +36,18 @@ func _ready() -> void:
 	boton_cerrar.pressed.connect(cerrar)
 
 
-func _unhandled_input(event: InputEvent) -> void:
-	if abierta and (event.is_action_pressed("menu") or event.is_action_pressed("interactuar")):
+func _input(event: InputEvent) -> void:
+	if not abierta:
+		return
+	# Va en _input (antes que la interfaz) para que Tab o Círculo cierren aunque haya un botón con el foco.
+	# La E solo cierra con teclado: en el mando, el botón de interactuar es el de aceptar.
+	if event.is_action_pressed("ui_cancel") or event.is_action_pressed("menu") \
+			or (event is InputEventKey and event.is_action_pressed("interactuar")):
 		get_viewport().set_input_as_handled()
 		cerrar()
+	elif event.is_action_pressed("accion_extra") and boton_vender.visible:
+		get_viewport().set_input_as_handled()
+		_vender()
 
 
 func _notification(what: int) -> void:
@@ -59,11 +67,16 @@ func abrir(vendedor: Node) -> void:
 	dialogo.text = frases.pick_random() if not frases.is_empty() else ""
 	boton_vender.visible = vendedor.compra_peces
 	_refrescar()
+	_enfocar.call_deferred(0)
 
 
 func cerrar() -> void:
 	abierta = false
 	raiz.visible = false
+	# Que ningún botón escondido se quede con el foco (en el mando, aceptar es el botón de interactuar).
+	var foco: Control = get_viewport().gui_get_focus_owner()
+	if foco and raiz.is_ancestor_of(foco):
+		foco.release_focus()
 	get_tree().paused = false
 	cerrada.emit()
 
@@ -86,7 +99,38 @@ func _comprar(art: ArticuloData) -> void:
 	if Juego.comprar(art):
 		sfx_compra.play()
 		dialogo.text = frase_compra
+		var i: int = _indice_enfocado()
 		_refrescar()
+		# Las filas se rehacen: el foco vuelve a la misma fila para seguir con el mando.
+		_enfocar.call_deferred(i)
+
+
+## Pone el foco en el botón de la fila i (o el más cercano que se pueda pulsar); si no, en vender o cerrar.
+func _enfocar(i: int) -> void:
+	if not abierta:
+		return
+	var botones: Array[Button] = []
+	for f: Node in lista.get_children():
+		if not f.is_queued_for_deletion() and "boton" in f:
+			botones.append(f.boton)
+	for b: Button in botones.slice(i) + botones.slice(0, i):
+		if not b.disabled:
+			b.grab_focus()
+			return
+	if boton_vender.visible and not boton_vender.disabled:
+		boton_vender.grab_focus()
+	else:
+		boton_cerrar.grab_focus()
+
+
+func _indice_enfocado() -> int:
+	var foco: Control = get_viewport().gui_get_focus_owner()
+	var i: int = 0
+	for f: Node in lista.get_children():
+		if "boton" in f and f.boton == foco:
+			return i
+		i += 1
+	return 0
 
 
 func _vender() -> void:

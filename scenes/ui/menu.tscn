@@ -4,6 +4,7 @@
 [ext_resource type="PackedScene" path="res://scenes/ui/hueco_barca.tscn" id="2_hueco"]
 [ext_resource type="PackedScene" path="res://scenes/ui/fila_variante.tscn" id="3_variante"]
 [ext_resource type="PackedScene" path="res://scenes/ui/animacion_entrada.tscn" id="anim_entrada"]
+[ext_resource type="PackedScene" path="res://scenes/ui/pista_accion.tscn" id="pista"]
 
 [node name="Menu" type="CanvasLayer"]
 process_mode = 3
@@ -136,6 +137,44 @@ custom_minimum_size = Vector2(420, 80)
 layout_mode = 2
 size_flags_horizontal = 4
 text = "Guardar y salir"
+
+[node name="Pie" type="HBoxContainer" parent="Raiz"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 272.0
+offset_top = -104.0
+offset_right = 1100.0
+offset_bottom = -48.0
+grow_vertical = 0
+mouse_filter = 2
+theme_override_constants/separation = 40
+
+[node name="PistaPestanas" type="HBoxContainer" parent="Raiz/Pie"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 4
+
+[node name="Anterior" parent="Raiz/Pie/PistaPestanas" instance=ExtResource("pista")]
+layout_mode = 2
+accion = &"pestana_anterior"
+texto = ""
+
+[node name="Siguiente" parent="Raiz/Pie/PistaPestanas" instance=ExtResource("pista")]
+layout_mode = 2
+accion = &"pestana_siguiente"
+texto = "Pestañas"
+
+[node name="PistaElegir" parent="Raiz/Pie" instance=ExtResource("pista")]
+layout_mode = 2
+accion = &"ui_accept"
+texto = "Elegir"
+
+[node name="PistaVolver" parent="Raiz/Pie" instance=ExtResource("pista")]
+layout_mode = 2
+accion = &"ui_cancel"
+texto = "Volver"
 
 [node name="EntradaFondo" parent="Raiz" instance=ExtResource("anim_entrada")]
 estilo = 3

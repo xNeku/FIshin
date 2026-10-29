@@ -48,7 +48,8 @@ Parada para valorar rumbo (29 oct). Hay un tramo jugable de principio a fin de l
 - Guardado: se escribe a `partida.json.tmp` y se cambia por el bueno; el anterior queda en `partida.anterior.json` y se carga si el principal está roto. El dinero que va volando en una venta (`Juego.dinero_en_camino`) se guarda como si hubiera llegado.
 - Llegada por mar: `Mundo._lado_de_llegada` (punto cardinal del centro de la isla vista desde la barca).
 - Árbol de habilidades: datos en `data/arbol/` (`arbol.tres` con ramas y nodos; RamaArbolData, NodoArbolData). Juego guarda `habilidades` (id → nivel, save v4) y da `Juego.efecto(nombre)`, `mejorar_habilidad`, `motivo_no_mejorar`, `mult_venta`, `mult_trabajadores`, `de_chill` (segundos sin tocar nada). Pantalla: `scenes/ui/arbol.tscn` (arbol.gd), con cada nodo como instancia de `nodo_arbol.tscn` colocada a mano en Lienzo/Nodos; los caminos (`conexion_arbol.tscn`, shader `agua_camino`) se trazan solos por los requisitos. Se abre con el viejo (Interactuable accion ARBOL), que tiene botón a su tienda. Iconos 12×12 en `art/ui/arbol/iconos/` (blancos, se tiñen con el color de la rama).
-- `scripts/ui/iconos_input.gd` (IconosInput): dibujos de teclas según el dispositivo; lo usan HUD y árbol.
+- `scripts/ui/iconos_input.gd` (IconosInput): dibujos de teclas según el dispositivo; lo usan HUD, árbol y las pistas de los menús (`scenes/ui/pista_accion.tscn`).
+- Mando: Cruz/A aceptar e interactuar, Círculo/B cancelar, L1/R1 pestañas o ramas (L1 en juego = bajar/subir al donut), Triángulo/Y acción extra (vender todo, tienda del viejo), Start menú.
 - Peces: `data/peces/*.tres` (PezData, 201 especies), generados desde `docs/datos/peces_fuente.csv` con `docs/herramientas/importar_peces.py`. Iconos placeholder en `art/peces/` (generados por forma, sustituibles). La Pesca carga la carpeta entera (`Pesca.carpeta_peces`).
 
 ## Herramientas de diseño (artefactos)
@@ -77,6 +78,16 @@ Parada para valorar rumbo (29 oct). Hay un tramo jugable de principio a fin de l
   - La Pesca carga la carpeta `data/peces`; main.tscn ya no lleva la lista.
   - Sabia a 6.000 ₽ y lonja a 10.000 ₽ totales.
 - El simulador lee los .tres directamente.
+
+## Sesión 30 oct (noche): mando
+- Causa de fondo: en Godot 4.7, `ui_accept` y `ui_cancel` de serie no traen botones de mando. Ahora están en el Input Map: aceptar = Cruz/A, Enter, Espacio; cancelar = Círculo/B, Esc.
+- Acciones nuevas: `pestana_anterior` (L1/LB, Q), `pestana_siguiente` (R1/RB, E) y `accion_extra` (Triángulo/Y, T).
+- Tienda: foco al abrir y tras comprar; Círculo/Tab cierra (la E solo con teclado); Triángulo vende todo. Esto arregla el bloqueo de no poder vender con mando.
+- Menú de pausa: L1/R1 cambian de pestaña; el foco cae en la pestaña; Círculo vuelve.
+- Árbol: navegación propia con cruceta y stick (`_navegar_mando`: nodo más cercano en esa dirección, con repetición al mantener); L1/R1 saltan de rama; Triángulo abre la tienda del viejo; Círculo sale (ya no L1).
+- Bestiario: Círculo cierra; el stick o la cruceta desplazan la lista. Diálogo: Círculo cierra.
+- Pistas con el dibujo del botón: `scenes/ui/pista_accion.tscn` (PistaAccion: acción + texto, detecta el mando también en pausa). Puestas en la tienda, el menú, el bestiario y el árbol.
+- Iconos nuevos en `art/ui/teclas/` (ui_accept, ui_cancel, pestana_*, accion_extra); L1/R1/LB/RB redibujados para que se lean.
 
 ## Siguiente paso
 Sesión de progresión con el diseñador hasta el midgame (economía y orden de desbloqueos), partiendo de `docs/PROGRESION.md` (borrador v1) y `docs/INCREMENTAL.md`.

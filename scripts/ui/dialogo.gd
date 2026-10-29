@@ -32,7 +32,7 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("interactuar"):
 		get_viewport().set_input_as_handled()
 		avanzar()
-	elif event.is_action_pressed("menu"):
+	elif event.is_action_pressed("menu") or event.is_action_pressed("ui_cancel"):
 		get_viewport().set_input_as_handled()
 		cerrar()
 
