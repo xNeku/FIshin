@@ -16,7 +16,22 @@ func mostrar(pez: PezData, mejor_calidad: float) -> void:
 	else:
 		icono.modulate = Color.WHITE
 		nombre.text = pez.nombre
-		detalle.text = "%s\n%s\n%s" % [PezData.NOMBRES_RAREZA[pez.rareza], Formato.calidad(mejor_calidad, mejor_calidad >= 1.0), _maestria(pez)]
+		detalle.text = "%s\n%s\n%s\n%s" % [PezData.NOMBRES_RAREZA[pez.rareza], _cuando(pez), Formato.calidad(mejor_calidad, mejor_calidad >= 1.0), _maestria(pez)]
+
+
+## "Pri · Ver · noche": en qué estaciones y a qué hora sale.
+func _cuando(pez: PezData) -> String:
+	var partes: Array[String] = []
+	if pez.estaciones != 15:
+		for i in 4:
+			if pez.estaciones & (1 << i):
+				partes.append(RelojData.ESTACIONES[i].substr(0, 3))
+	else:
+		partes.append("Todo el año")
+	var horas: Array[String] = ["", "de día", "de noche", "al ocaso"]
+	if pez.horario > 0:
+		partes.append(horas[pez.horario])
+	return " · ".join(partes)
 
 
 ## "Maestría 2" y debajo "63/200" (o el multiplicador al tope).

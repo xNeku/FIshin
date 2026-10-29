@@ -104,6 +104,14 @@ Parada para valorar rumbo (29 oct). Hay un tramo jugable de principio a fin de l
 - Píxeles del mundo: opción en Opciones (grandes 4 / medianos 3 / finos 2; `Pixelador.poner_encogimiento`, `Juego.opcion("pixel_mundo")`). Por defecto, medianos. Con 4, cada píxel del dibujo de los personajes ocupaba ~1,3 píxeles del mundo y se veían emborronados.
 - No hay ciclo de día y noche: lo oscuro era el clima de tormenta. El reloj (día/noche, estaciones) está pendiente de que el diseñador decida duraciones.
 
+## Reloj (31 oct)
+- `RelojData` (`data/reloj.tres`): día 720 s y noche 480 s, transición de 60 s, 6 días por estación. Tintes de noche y ocaso, luz y ambiente de noche.
+- `Juego.reloj` (se guarda, save v6; se para en pausa), `Juego.velocidad_reloj` y `Juego.pez_disponible(pez)`. La Pesca filtra por estación y horario (si no queda ninguno, ignora el reloj).
+- Noche: `shaders/noche.gdshader` en el Contenedor del Pixelador. Oscurece y tiñe el mundo, y respeta lo muy claro (fuego, luna). El Clima baja el sol y el ambiente de noche.
+- Luna: nodo `Luna` en main.tscn (`scripts/mundo/luna.gd`), reflejo en el mar arriba de la vista, con los dibujos `art/mundo/luna/luna_0..7.png`.
+- HUD: "Primavera · día 3 · 21:40" en el panel de Info. Bestiario: estaciones y hora de cada pez.
+- Peces por nivel según estación y hora: de 3 (invierno de día) a 9.
+
 ## Siguiente paso
 Sesión de progresión con el diseñador hasta el midgame (economía y orden de desbloqueos), partiendo de `docs/PROGRESION.md` (borrador v1) y `docs/INCREMENTAL.md`.
 

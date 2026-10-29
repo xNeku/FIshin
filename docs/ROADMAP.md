@@ -58,7 +58,7 @@ Regla: no se pasa de fase hasta que la actual sea jugable y divertida. Cada tare
 - [x] Maestría por especie en el bestiario
 - [ ] Bestiario con filtros por zona o fichas compactas (hay 201)
 - [ ] Peces que desbloquean edificios (sushi...)
-- [ ] Tiempo del juego: día/noche y estaciones
+- [x] Tiempo del juego: día/noche (20 min) y estaciones (2 h), noche con luna, peces por estación y hora
 - [ ] Más edificios, ramas e hitos
 
 ## Fase 7 — Pulido

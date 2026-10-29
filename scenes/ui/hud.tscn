@@ -55,6 +55,11 @@ layout_mode = 2
 theme_type_variation = &"Titulo"
 text = "Caña rota"
 
+[node name="Reloj" type="Label" parent="Info/Lista"]
+layout_mode = 2
+theme_type_variation = &"Titulo"
+text = "Primavera · día 1 · 06:00"
+
 [node name="Cebo" type="Label" parent="Info/Lista"]
 layout_mode = 2
 theme_type_variation = &"Pequeno"

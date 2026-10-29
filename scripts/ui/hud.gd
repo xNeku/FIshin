@@ -60,6 +60,7 @@ const TECLA_A_ACCION: Dictionary = {"E": &"interactuar", "Q": &"cambiar_modo", "
 @onready var barca: Label = $Info/Lista/Barca
 @onready var cana: Label = $Info/Lista/Cana
 @onready var cebo: Label = $Info/Lista/Cebo
+@onready var reloj: Label = get_node_or_null("Info/Lista/Reloj")
 @onready var estado: Label = $Estado
 @onready var prompt: Control = $Prompt
 @onready var teclas: Control = $Prompt/Teclas
@@ -137,6 +138,9 @@ func _process(delta: float) -> void:
 	rublos.text = Formato.dinero(_rublos_mostrados)
 	barca.text = "Barca: %d/%d huecos · %d peces (%s)" % [Juego.huecos_usados(), Juego.huecos, Juego.capturas.size(), Formato.dinero(Juego.valor_inventario())]
 	cana.text = Juego.cana().nombre
+	var rd: RelojData = Juego.reloj_data
+	if reloj and rd:
+		reloj.text = "%s · día %d · %s" % [RelojData.ESTACIONES[rd.estacion(Juego.reloj)], rd.dia_de_estacion(Juego.reloj), rd.hora_texto(Juego.reloj)]
 	cebo.visible = not Juego.cebo.is_empty()
 	if cebo.visible:
 		cebo.text = "Cebo: %d pescas" % int(Juego.cebo.pescas)

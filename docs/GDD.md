@@ -70,7 +70,9 @@ Marcas: [DECIDIDO] lo decidió el diseñador · [PROPUESTA] sugerencia de Claude
 - [DECIDIDO] Habrá un catálogo grande de peces sacado de una enciclopedia, con sus rangos de peso. El diseñador lo pasará en un Excel.
 - [DECIDIDO] Los peces se agrupan por momento del día (día / noche) y por estación.
 - [DECIDIDO] El tiempo es un reloj propio del juego (día/noche y estaciones), con algún guiño a la hora real en logros secretos.
-- [ABIERTO] Duración del día y de cada estación.
+- [DECIDIDO] Un día dura 20 min reales: 12 de día (06:00-18:00) y 8 de noche (18:00-06:00). Cada estación dura 2 h (6 días); un año, 8 h.
+- [DECIDIDO] Hecho: `data/reloj.tres` (RelojData), con noche oscura y reflejo de la luna en el mar. La luna tiene 8 fases, una por noche, y en luna nueva no se ve. Los peces solo pican en su estación y su horario.
+- [DECIDIDO] En el midgame, cuando llega la calidad de vida, habrá un edificio reloj para adelantar el tiempo o hacer que pase más rápido (`Juego.velocidad_reloj`).
 - [ABIERTO] Input táctil para móvil.
 
 ## 6. Economía

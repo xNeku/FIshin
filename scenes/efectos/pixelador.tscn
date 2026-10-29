@@ -1,6 +1,10 @@
 [gd_scene format=3]
 
 [ext_resource type="Script" path="res://scripts/efectos/pixelador.gd" id="1_script"]
+[ext_resource type="Shader" path="res://shaders/noche.gdshader" id="2_noche"]
+
+[sub_resource type="ShaderMaterial" id="mat_noche"]
+shader = ExtResource("2_noche")
 
 [node name="Pixelador" type="CanvasLayer"]
 layer = -10
@@ -8,6 +12,7 @@ script = ExtResource("1_script")
 
 [node name="Contenedor" type="SubViewportContainer" parent="."]
 texture_filter = 1
+material = SubResource("mat_noche")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0

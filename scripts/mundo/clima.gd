@@ -30,6 +30,7 @@ var _t_restante: float = 0.0
 var _t_relampago: float = 8.0
 var _destello: float = 0.0
 var _valores: Dictionary = {}
+var _noche_aplicada: float = -1.0
 
 
 func _ready() -> void:
@@ -54,6 +55,10 @@ func _process(delta: float) -> void:
 		var s: float = smoothstep(0.0, 1.0, _k)
 		for clave: String in _destino:
 			_valores[clave] = _mezclar(_origen[clave], _destino[clave], s)
+		_aplicar(_valores)
+	# Al anochecer y amanecer la luz cambia poco a poco (reloj del juego).
+	var rd: RelojData = Juego.reloj_data
+	if rd and absf(rd.factor_noche(Juego.reloj) + rd.factor_ocaso(Juego.reloj) - _noche_aplicada) > 0.002:
 		_aplicar(_valores)
 	if lluvia and camara:
 		lluvia.global_position = camara.global_position + Vector3(0, 6, -6)
@@ -120,12 +125,16 @@ func _aplicar(v: Dictionary) -> void:
 		cielo.ground_horizon_color = v.cielo_horizonte
 		var cn: Color = v.color_nubes
 		cielo.sky_cover_modulate = Color(cn.r, cn.g, cn.b, v.nubes)
-	env.ambient_light_energy = v.energia_ambiente
+	var rd: RelojData = Juego.reloj_data
+	var n: float = rd.factor_noche(Juego.reloj) if rd else 0.0
+	var o: float = rd.factor_ocaso(Juego.reloj) if rd else 0.0
+	_noche_aplicada = n + o
+	env.ambient_light_energy = v.energia_ambiente * (lerpf(1.0, rd.ambiente_noche, n) if rd else 1.0)
 	env.fog_enabled = v.niebla > 0.001
 	env.fog_density = v.niebla
 	env.fog_light_color = v.color_niebla
-	sol.light_color = v.color_sol
-	sol.light_energy = v.energia_sol + _destello * fuerza_relampago
+	sol.light_color = (v.color_sol as Color).lerp(rd.tinte_ocaso if rd else Color.WHITE, o * 0.6).lerp(Color(0.6, 0.7, 1.0), n * 0.7)
+	sol.light_energy = v.energia_sol * (lerpf(1.0, rd.luz_noche, n) if rd else 1.0) + _destello * fuerza_relampago
 	var m := agua.mesh.surface_get_material(0) as ShaderMaterial
 	if m:
 		m.set_shader_parameter("color_profundo", v.agua_profundo)

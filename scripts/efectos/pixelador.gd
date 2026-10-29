@@ -27,9 +27,22 @@ func poner_encogimiento(n: int) -> void:
 
 
 func _process(_delta: float) -> void:
+	_noche()
 	if camara_fuente == null:
 		return
 	camara.global_transform = camara_fuente.global_transform
 	camara.fov = camara_fuente.fov
 	camara.h_offset = camara_fuente.h_offset
 	camara.v_offset = camara_fuente.v_offset
+
+
+## Oscurece y tiñe el mundo según la hora (reloj del juego; colores en data/reloj.tres).
+func _noche() -> void:
+	var rd: RelojData = Juego.reloj_data
+	var m: ShaderMaterial = contenedor.material as ShaderMaterial
+	if rd == null or m == null:
+		return
+	m.set_shader_parameter("noche", rd.factor_noche(Juego.reloj))
+	m.set_shader_parameter("ocaso", rd.factor_ocaso(Juego.reloj))
+	m.set_shader_parameter("tinte_noche", rd.tinte_noche)
+	m.set_shader_parameter("tinte_ocaso", rd.tinte_ocaso)

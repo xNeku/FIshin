@@ -9,7 +9,7 @@ signal cubo_cambiado
 signal trabajadores_cambiados(cantidad: int)
 signal habilidades_cambiadas
 
-const VERSION_SAVE := 5
+const VERSION_SAVE := 6
 const RUTA_SAVE := "user://partida.json"
 const RUTA_COPIA := "user://partida.anterior.json"
 ## Opciones del jugador (filtro, etc.): van aparte para que borrar la partida no las toque.
@@ -18,6 +18,7 @@ const RUTA_CANAS := "res://data/canas/%s.tres"
 const RUTA_PECES := "res://data/peces/%s.tres"
 const RUTA_ARBOL := "res://data/arbol/arbol.tres"
 const RUTA_STATS := "res://data/stats_pesca.tres"
+const RUTA_RELOJ := "res://data/reloj.tres"
 
 @export var segundos_autoguardado: float = 20.0
 @export var huecos_iniciales: int = 6
@@ -47,6 +48,11 @@ var coleccion: Dictionary = {}
 var capturados: Dictionary = {}
 ## El mismo recurso que usa la Pesca (los valores se tocan en data/stats_pesca.tres).
 var stats_pesca: StatsPesca
+## Reloj del juego: segundos que han pasado desde el primer amanecer (día, noche y estaciones en data/reloj.tres).
+var reloj: float = 0.0
+var reloj_data: RelojData
+## Multiplica lo rápido que pasa el tiempo (para el futuro edificio del reloj).
+var velocidad_reloj: float = 1.0
 ## Pescadores del puerto contratados.
 var trabajadores: int = 0
 ## Lo que han dejado los pescadores en el cubo del puerto.
@@ -80,12 +86,15 @@ func _ready() -> void:
 	if ResourceLoader.exists(RUTA_ARBOL):
 		arbol = load(RUTA_ARBOL)
 	stats_pesca = load(RUTA_STATS)
+	reloj_data = load(RUTA_RELOJ)
+	reloj = reloj_data.inicio if reloj_data else 0.0
 	cargar()
 	_recalcular_efectos()
 
 
 func _process(delta: float) -> void:
 	stats.tiempo_jugado += delta
+	reloj += delta * velocidad_reloj
 	_t_sin_tocar += delta
 	_t_guardado += delta
 	if _t_guardado >= segundos_autoguardado:
@@ -193,6 +202,22 @@ func anadir_captura(captura: Dictionary, pez: PezData) -> bool:
 	coleccion[String(pez.id)] = maxf(coleccion.get(String(pez.id), 0.0), captura.calidad)
 	capturados[String(pez.id)] = int(capturados.get(String(pez.id), 0)) + 1
 	inventario_cambiado.emit()
+	return true
+
+
+## Si el pez puede picar ahora (estación y hora de su ficha).
+func pez_disponible(pez: PezData) -> bool:
+	if reloj_data == null:
+		return true
+	if pez.estaciones != 0 and (pez.estaciones & reloj_data.bit_estacion(reloj)) == 0:
+		return false
+	match pez.horario:
+		1:
+			return not reloj_data.es_noche(reloj)
+		2:
+			return reloj_data.es_noche(reloj)
+		3:
+			return reloj_data.es_ocaso(reloj)
 	return true
 
 
@@ -431,7 +456,7 @@ func guardar() -> void:
 		"capturas": capturas, "huecos": huecos, "cana": String(cana_id), "cebo": cebo, "compras": compras,
 		"stats": stats, "coleccion": coleccion, "capturados": capturados, "flags": flags,
 		"trabajadores": trabajadores, "cubo": cubo_capturas, "cubo_en_mano": cubo_en_mano,
-		"habilidades": habilidades,
+		"habilidades": habilidades, "reloj": reloj,
 		"fecha": Time.get_unix_time_from_system(),
 	}
 	# Primero a un temporal y luego se cambia por el bueno: si se corta a medias, el save anterior sigue vivo.
@@ -478,6 +503,8 @@ func cargar() -> void:
 	for k: String in ["peces_pescados", "perfectos", "escapados", "legendarios", "mejor_combo"]:
 		stats[k] = int(stats[k])
 	coleccion = datos.get("coleccion", {})
+	# v5 no tenía reloj: empieza por la mañana del primer día.
+	reloj = float(datos.get("reloj", reloj_data.inicio if reloj_data else 0.0))
 	# v4 no tenía maestría: se cuenta desde ahora.
 	capturados.clear()
 	var cap: Variant = datos.get("capturados", {})
@@ -515,6 +542,7 @@ func borrar_partida() -> void:
 		stats[k] = 0.0 if k in ["tiempo_jugado", "puntos_pesca"] else 0
 	coleccion.clear()
 	capturados.clear()
+	reloj = reloj_data.inicio if reloj_data else 0.0
 	flags.clear()
 	trabajadores = 0
 	cubo_capturas.clear()

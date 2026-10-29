@@ -237,7 +237,7 @@ Las especies profundas tienen más valor base, aunque sean de la misma rareza. A
 [PROPUESTA] La variedad sale de cuatro cosas, para que siempre haya algo nuevo que perseguir:
 1. **Profundidad** (la caña).
 2. **Zona**: cerca del taladro salen peces de arrecife; cerca del centro de buceo, ostras.
-3. **Hora y estación** ([ABIERTO] cómo pasa el tiempo).
+3. **Hora y estación**: día de 20 min (12 de día y 8 de noche), estaciones de 2 h. Hecho.
 4. **Cebo**.
 
 [PROPUESTA] Peces que desbloquean cosas:
@@ -515,7 +515,6 @@ Con el catálogo de 201 especies (jugador normal; el bueno llega unos 4 min ante
 4. Se implementa **por tramos**: primero T2 completo (algas, sushi, taladro) jugable y equilibrado; luego T3. No se pasa al siguiente hasta que el actual divierta (regla del proyecto).
 
 ## Preguntas abiertas (de una en una)
-1. Duración del día y de las estaciones del reloj propio.
 2. ¿Qué pez desbloquea el sushi y con qué condición llegan el huerto de algas y el taladro?
 3. Número final de cañas (propuesta: 12 + 3 especiales).
 4. Uso de la marihuana.

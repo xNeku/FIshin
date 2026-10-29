@@ -243,7 +243,11 @@ func _tirar_pez() -> PezData:
 	var hondo: int = cana.profundidad + int(Juego.efecto(&"profundidad"))
 	var suerte: float = 1.0 + Juego.efecto(&"raros") + (Juego.efecto(&"raros_tormenta") if Juego.lloviendo else 0.0) \
 		+ (Juego.efecto(&"raros_tras_chill") if _tras_chill else 0.0)
-	for p: PezData in peces:
+	# Solo los de esta estación y hora (si no queda ninguno, se ignora el reloj para que siempre pique algo).
+	var lista: Array[PezData] = peces.filter(func(p: PezData) -> bool: return p.profundidad <= hondo and Juego.pez_disponible(p))
+	if lista.is_empty():
+		lista = peces
+	for p: PezData in lista:
 		if p.profundidad > hondo:
 			continue
 		# Cuanto más hondo pescas, menos salen los peces de arriba (siguen saliendo, pero menos).
