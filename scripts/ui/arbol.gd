@@ -124,7 +124,7 @@ func _process(delta: float) -> void:
 	_navegar_mando(delta)
 	if IconosInput.dispositivo != _dispositivo:
 		_dispositivo = IconosInput.dispositivo
-		pista_mejorar.texture = IconosInput.icono(&"interactuar")
+		pista_mejorar.texture = IconosInput.icono(&"ui_accept")
 		pista_salir.texture = IconosInput.icono(&"ui_cancel")
 
 

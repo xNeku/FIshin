@@ -23,6 +23,8 @@ extends CanvasLayer
 @export var cambio_acciones: float = 2.0
 ## Cuánto se desplaza la cola al entrar cada botón nuevo (efecto de que vienen hacia ti).
 @export var desliz_cola: float = 90.0
+## El panel de estado (dinero, barca, caña, reloj): si es false, solo sale al pulsar Select (acción ver_estado).
+@export var info_siempre_visible: bool = false
 ## Carta del pez (abajo a la izquierda): segundos que se queda si es una especie nueva y si no.
 @export var duracion_carta_nueva: float = 4.0
 @export var duracion_carta: float = 2.5
@@ -56,6 +58,7 @@ extends CanvasLayer
 const TECLA_A_ACCION: Dictionary = {"E": &"interactuar", "Q": &"cambiar_modo", "Tab": &"menu"}
 
 @onready var efecto: ColorRect = $EfectoPantalla
+@onready var info: Control = $Info
 @onready var rublos: Label = $Info/Lista/Rublos
 @onready var barca: Label = $Info/Lista/Barca
 @onready var cana: Label = $Info/Lista/Cana
@@ -105,6 +108,7 @@ func _ready() -> void:
 	_mat = efecto.material as ShaderMaterial
 	_rublos_mostrados = Juego.rublos
 	_pos_prompt = prompt.position
+	info.visible = info_siempre_visible
 	prompt.visible = false
 	resultado.visible = false
 	combo.visible = false
@@ -318,6 +322,8 @@ func _pista(caja: PanelContainer, texto: String) -> void:
 func _input(event: InputEvent) -> void:
 	# El último dispositivo usado decide qué dibujos salen.
 	IconosInput.detectar(event)
+	if event.is_action_pressed("ver_estado") and not get_tree().paused:
+		info.visible = not info.visible
 	_al_cambiar_dispositivo()
 
 
