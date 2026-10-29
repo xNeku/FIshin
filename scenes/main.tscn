@@ -53,15 +53,8 @@
 [ext_resource type="Script" path="res://scripts/mundo/agua.gd" id="agua_script"]
 [ext_resource type="PackedScene" path="res://scenes/efectos/crt.tscn" id="crt"]
 [ext_resource type="PackedScene" path="res://scenes/ui/arbol.tscn" id="arbol"]
-[ext_resource type="Texture2D" path="res://art/mundo/luna/luna_0.png" id="luna_0"]
-[ext_resource type="Texture2D" path="res://art/mundo/luna/luna_1.png" id="luna_1"]
-[ext_resource type="Texture2D" path="res://art/mundo/luna/luna_2.png" id="luna_2"]
-[ext_resource type="Texture2D" path="res://art/mundo/luna/luna_3.png" id="luna_3"]
-[ext_resource type="Texture2D" path="res://art/mundo/luna/luna_4.png" id="luna_4"]
-[ext_resource type="Texture2D" path="res://art/mundo/luna/luna_5.png" id="luna_5"]
-[ext_resource type="Texture2D" path="res://art/mundo/luna/luna_6.png" id="luna_6"]
-[ext_resource type="Texture2D" path="res://art/mundo/luna/luna_7.png" id="luna_7"]
 [ext_resource type="Script" path="res://scripts/mundo/luna.gd" id="luna_script"]
+[ext_resource type="Texture2D" path="res://art/mundo/luna/luna_4_0.png" id="luna_llena"]
 
 [sub_resource type="FastNoiseLite" id="ruido_nubes"]
 noise_type = 3
@@ -172,15 +165,14 @@ mundo = NodePath("../Mundo")
 [node name="Luna" type="Sprite3D" parent="." node_paths=PackedStringArray("camara", "agua")]
 transform = Transform3D(1, 0, 0, 0, 1.5, 0, 0, 0, 1, 0, 0, 0)
 cast_shadow = 0
-pixel_size = 0.07
+pixel_size = 0.085
 shaded = false
 alpha_cut = 0
 texture_filter = 0
-texture = ExtResource("luna_4")
+texture = ExtResource("luna_llena")
 script = ExtResource("luna_script")
 camara = NodePath("../Camara")
 agua = NodePath("../Agua")
-fases = Array[Texture2D]([ExtResource("luna_0"), ExtResource("luna_1"), ExtResource("luna_2"), ExtResource("luna_3"), ExtResource("luna_4"), ExtResource("luna_5"), ExtResource("luna_6"), ExtResource("luna_7")])
 
 [node name="ZonaPesca" type="MeshInstance3D" parent="."]
 visible = false
