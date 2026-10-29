@@ -55,6 +55,11 @@ Parada para valorar rumbo (29 oct). Hay un tramo jugable de principio a fin de l
 ## Herramientas de diseño (artefactos)
 - Carta de Fishin (mapa): https://claude.ai/artifact/2oRoaePEyuUyDUYBJnK9oA. Colección `elementos` con {nombre, tipo, estado, x, y, w, h (caja), celdas [[x,y]...] (forma real; si falta, es el rectángulo de la caja), orden, condicion, descripcion}. Coordenadas: barca en (0,0), x a la derecha, y hacia arriba (en Godot, y+ = -Z). 1 casilla = 2 m.
 - Árbol de Fishin: https://claude.ai/artifact/UtP4gNUbFFwpX9SPeTcTnu. Colecciones `ramas` {nombre, descripcion, orden, color} y `nodos` {nombre, rama (id), nivel, coste, estado, efecto, descripcion, requisitos[]}.
+- Llegadas de Fishin: https://claude.ai/artifact/PS8UbUq22zFGdEoN7JmqkQ. Cuándo aparece cada cosa (jugador normal), por tramos. Colecciones:
+  - `tramos` {orden, nombre, rango, ingreso, mecanica}.
+  - `llegadas` {orden, tramo, minuto, minuto_hasta?, nombre, tipo, condicion, aporta, estado: hecho/propuesta/idea, visto, nota}.
+  - El diseñador marca `visto` y escribe `nota`.
+  - Mantenerla al día cuando cambie una condición o llegue algo nuevo.
 - Se leen con ArtifactData (list). El código fuente está en `docs/herramientas/`.
 
 ## Última sesión (29 oct, tarde)

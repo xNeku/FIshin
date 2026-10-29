@@ -1,0 +1,281 @@
+<title>Llegadas de Fishin</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;600&family=Atkinson+Hyperlegible:wght@400;700&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Layout: una columna de tramos (T0…T4) y, dentro, una línea de tiempo de filas; panel negro con borde blanco como la interfaz del juego. */
+:root {
+  --fondo: #0a1226;
+  --panel: #05070d;
+  --borde: #e8e6df;
+  --texto: #eceae3;
+  --suave: #9aa3b8;
+  --amarillo: #ffd84a;
+  --hecho: #7dff8a;
+  --propuesta: #6cb6ff;
+  --idea: #8c8fa3;
+  --linea: #26304a;
+  --f-titulo: "Pixelify Sans", "Courier New", monospace;
+  --f-texto: "Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --f-num: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  color-scheme: dark;
+}
+html, body { background: var(--fondo); color: var(--texto); }
+body {
+  font-family: var(--f-texto);
+  font-size: 15px;
+  line-height: 1.45;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 28px 48px;
+}
+.envoltura { max-width: 980px; margin: 0 auto; display: grid; gap: 22px; }
+header { display: grid; gap: 10px; }
+h1 {
+  font-family: var(--f-titulo); font-weight: 600; font-size: clamp(30px, 6vw, 44px);
+  line-height: 1.05; margin: 0; letter-spacing: 0.5px; text-wrap: balance;
+}
+h1 span { color: var(--amarillo); }
+.intro { color: var(--suave); margin: 0; max-width: 68ch; }
+.resumen { display: flex; flex-wrap: wrap; gap: 10px; }
+.chip {
+  font-family: var(--f-num); font-size: 13px; border: 2px solid var(--borde); background: var(--panel);
+  padding: 4px 10px; display: inline-flex; gap: 6px; align-items: center; font-variant-numeric: tabular-nums;
+}
+.chip b { font-weight: 500; }
+.filtros { display: flex; flex-wrap: wrap; gap: 8px; }
+.filtros button {
+  font-family: var(--f-titulo); font-size: 16px; color: var(--texto); background: var(--panel);
+  border: 2px solid var(--linea); padding: 6px 14px; cursor: pointer;
+}
+.filtros button[aria-pressed="true"] { border-color: var(--amarillo); color: var(--amarillo); }
+.filtros button:focus-visible, .fila button:focus-visible, .fila textarea:focus-visible { outline: 3px solid var(--amarillo); outline-offset: 2px; }
+.tramo { background: var(--panel); border: 3px solid var(--borde); padding: 18px 18px 8px; display: grid; gap: 6px; }
+.tramo-cab { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 14px; padding-bottom: 10px; border-bottom: 2px solid var(--linea); }
+.tramo-cab h2 { font-family: var(--f-titulo); font-weight: 600; font-size: 24px; margin: 0; }
+.tramo-cab h2 .codigo { color: var(--amarillo); margin-right: 8px; }
+.tramo-cab .rango, .tramo-cab .ingreso { font-family: var(--f-num); font-size: 13px; color: var(--suave); font-variant-numeric: tabular-nums; }
+.tramo-cab .mecanica { flex-basis: 100%; color: var(--suave); font-size: 14px; margin: 0; }
+.filas { display: grid; }
+.fila {
+  display: grid; grid-template-columns: 88px minmax(0, 1fr) auto; gap: 4px 16px; align-items: start;
+  padding: 12px 0; border-bottom: 1px dashed var(--linea);
+}
+.fila:last-child { border-bottom: 0; }
+.cuando { font-family: var(--f-num); font-size: 15px; color: var(--amarillo); font-variant-numeric: tabular-nums; padding-top: 2px; }
+.cuando small { display: block; color: var(--suave); font-size: 11px; letter-spacing: 0.6px; text-transform: uppercase; }
+.que { min-width: 0; display: grid; gap: 3px; }
+.que h3 { margin: 0; font-size: 17px; font-weight: 700; }
+.tipo { font-family: var(--f-num); font-size: 11px; color: var(--suave); text-transform: uppercase; letter-spacing: 0.8px; margin-left: 6px; font-weight: 500; }
+.que p { margin: 0; color: var(--suave); }
+.que p strong { color: var(--texto); font-weight: 400; }
+.lado { display: grid; gap: 8px; justify-items: end; }
+.estado { font-family: var(--f-titulo); font-size: 14px; padding: 2px 9px; border: 2px solid currentColor; white-space: nowrap; }
+.estado.hecho { color: var(--hecho); }
+.estado.propuesta { color: var(--propuesta); }
+.estado.idea { color: var(--idea); }
+.visto {
+  font-family: var(--f-titulo); font-size: 14px; background: transparent; color: var(--suave);
+  border: 2px solid var(--linea); padding: 3px 10px; cursor: pointer; white-space: nowrap;
+}
+.visto[aria-pressed="true"] { color: var(--fondo); background: var(--amarillo); border-color: var(--amarillo); }
+.visto:disabled { cursor: default; opacity: 0.55; }
+.fila.vista h3 { color: var(--amarillo); }
+.nota { grid-column: 2 / 4; }
+.nota textarea {
+  width: 100%; box-sizing: border-box; min-height: 34px; resize: vertical; font: inherit; font-size: 14px;
+  color: var(--texto); background: transparent; border: 1px solid var(--linea); padding: 6px 8px;
+}
+.nota textarea::placeholder { color: var(--idea); }
+.vacio { border: 3px dashed var(--linea); padding: 22px; color: var(--suave); }
+.aviso { font-size: 13px; color: var(--suave); }
+.oculto-filtro { display: none; }
+@media (max-width: 560px) {
+  .fila { grid-template-columns: 64px minmax(0, 1fr); }
+  .lado { grid-column: 1 / 3; grid-auto-flow: column; justify-content: start; justify-items: start; }
+  .nota { grid-column: 1 / 3; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .visto { transition: background 0.12s, color 0.12s; }
+}
+</style>
+
+<div class="envoltura">
+  <header>
+    <h1>Llegadas de <span>Fishin</span></h1>
+    <p class="intro">Cuándo aparece cada cosa en una partida normal: islas, edificios, cañas y momentos del reloj. Los minutos salen del simulador con un jugador normal; uno bueno llega unos 4 min antes y uno flojo, unos 5 después. Marca lo que ya hayas visto en tu partida.</p>
+    <div class="resumen" id="resumen" aria-live="polite"></div>
+    <div class="filtros" role="group" aria-label="Filtrar">
+      <button type="button" id="f-todo" data-filtro="todo" aria-pressed="true">Todo</button>
+      <button type="button" id="f-hecho" data-filtro="hecho" aria-pressed="false">Ya en el juego</button>
+      <button type="button" id="f-falta" data-filtro="falta" aria-pressed="false">Por hacer</button>
+      <button type="button" id="f-sinver" data-filtro="sinver" aria-pressed="false">Sin ver</button>
+    </div>
+    <p class="aviso" id="aviso" hidden></p>
+  </header>
+  <main id="tramos">
+    <div class="vacio" id="vacio">Cargando la lista de llegadas…</div>
+  </main>
+</div>
+
+<script>
+(() => {
+  const estado = { tramos: [], llegadas: [], filtro: "todo", soloLectura: false };
+  const NOMBRE_ESTADO = { hecho: "En el juego", propuesta: "Propuesta", idea: "Idea" };
+  const raiz = document.getElementById("tramos");
+  const resumen = document.getElementById("resumen");
+  const aviso = document.getElementById("aviso");
+  let db = null;
+
+  // Minutos de juego: "min 40" hasta las 2 h; desde ahí, "3,5 h".
+  function horas(x) { return String(Math.round(x / 6) / 10).replace(".", ","); }
+  function un(x) { return x < 120 ? "min " + Math.round(x) : horas(x) + " h"; }
+  function cuando(m, hasta) {
+    if (m == null) return "—";
+    if (hasta == null || hasta === m) return un(m);
+    if (hasta < 120) return "min " + Math.round(m) + "–" + Math.round(hasta);
+    return horas(m) + "–" + horas(hasta) + " h";
+  }
+
+  function el(tag, attrs, ...hijos) {
+    const n = document.createElement(tag);
+    for (const [k, v] of Object.entries(attrs || {})) {
+      if (k === "class") n.className = v;
+      else if (k === "text") n.textContent = v;
+      else n.setAttribute(k, v);
+    }
+    for (const h of hijos) if (h != null) n.append(h);
+    return n;
+  }
+
+  function pasaFiltro(l) {
+    if (estado.filtro === "hecho") return l.estado === "hecho";
+    if (estado.filtro === "falta") return l.estado !== "hecho";
+    if (estado.filtro === "sinver") return !l.visto;
+    return true;
+  }
+
+  function pintarResumen() {
+    const n = estado.llegadas.length;
+    const hechas = estado.llegadas.filter((l) => l.estado === "hecho").length;
+    const vistas = estado.llegadas.filter((l) => l.visto).length;
+    resumen.replaceChildren(
+      el("span", { class: "chip" }, el("b", { text: String(hechas) }), " en el juego"),
+      el("span", { class: "chip" }, el("b", { text: String(n - hechas) }), " por hacer"),
+      el("span", { class: "chip" }, el("b", { text: vistas + " / " + n }), " vistas en tu partida"),
+    );
+  }
+
+  function pintar() {
+    pintarResumen();
+    if (!estado.tramos.length && !estado.llegadas.length) {
+      raiz.replaceChildren(el("div", { class: "vacio", text: "Aún no hay llegadas. Claude las carga desde el diseño del juego y las va poniendo al día." }));
+      return;
+    }
+    const secciones = [];
+    const tramos = [...estado.tramos].sort((a, b) => a.orden - b.orden);
+    for (const t of tramos) {
+      const filas = estado.llegadas
+        .filter((l) => l.tramo === t.id)
+        .sort((a, b) => (a.minuto ?? 0) - (b.minuto ?? 0) || (a.orden ?? 0) - (b.orden ?? 0));
+      const visibles = filas.filter(pasaFiltro);
+      const sec = el("section", { class: "tramo", "aria-labelledby": "t-" + t.id },
+        el("div", { class: "tramo-cab" },
+          el("h2", { id: "t-" + t.id }, el("span", { class: "codigo", text: t.id }), t.nombre),
+          el("span", { class: "rango", text: t.rango || "" }),
+          t.ingreso ? el("span", { class: "ingreso", text: t.ingreso }) : null,
+          t.mecanica ? el("p", { class: "mecanica", text: t.mecanica }) : null,
+        ),
+      );
+      const lista = el("div", { class: "filas" });
+      for (const l of visibles) lista.append(fila(l));
+      if (!visibles.length) lista.append(el("p", { class: "aviso", text: filas.length ? "Nada con este filtro." : "Todavía sin llegadas en este tramo." }));
+      sec.append(lista);
+      secciones.push(sec);
+    }
+    raiz.replaceChildren(...secciones);
+  }
+
+  function fila(l) {
+    const boton = el("button", { type: "button", class: "visto", id: "v-" + l.id, "aria-pressed": l.visto ? "true" : "false", text: l.visto ? "Visto" : "Marcar visto" });
+    if (estado.soloLectura) boton.disabled = true;
+    boton.addEventListener("click", () => marcarVisto(l, boton));
+    const nota = el("textarea", { id: "n-" + l.id, rows: "1", placeholder: "Nota (cuándo te salió, qué te pareció…)", "aria-label": "Nota sobre " + l.nombre });
+    nota.value = l.nota || "";
+    if (estado.soloLectura) nota.disabled = true;
+    nota.addEventListener("blur", () => guardarNota(l, nota));
+    return el("article", { class: "fila" + (l.visto ? " vista" : "") },
+      el("div", { class: "cuando" }, cuando(l.minuto, l.minuto_hasta), l.cuando_extra ? el("small", { text: l.cuando_extra }) : null),
+      el("div", { class: "que" },
+        el("h3", {}, l.nombre, l.tipo ? el("span", { class: "tipo", text: l.tipo }) : null),
+        l.condicion ? el("p", {}, "Llega con ", el("strong", { text: l.condicion })) : null,
+        l.aporta ? el("p", { text: l.aporta }) : null,
+      ),
+      el("div", { class: "lado" },
+        el("span", { class: "estado " + (l.estado || "idea"), text: NOMBRE_ESTADO[l.estado] || "Idea" }),
+        boton,
+      ),
+      el("div", { class: "nota" }, nota),
+    );
+  }
+
+  function soloLectura() {
+    estado.soloLectura = true;
+    aviso.hidden = false;
+    aviso.textContent = "Solo lectura: con tu acceso no se pueden guardar marcas ni notas.";
+    pintar();
+  }
+
+  async function marcarVisto(l, boton) {
+    if (!db || estado.soloLectura) return;
+    boton.disabled = true;
+    try {
+      await db.doc("llegadas/" + l.id).update({ visto: !l.visto });
+    } catch (e) {
+      if (e && e.code === "invalid_argument") soloLectura();
+      else { aviso.hidden = false; aviso.textContent = "No se ha podido guardar. Prueba otra vez en un momento."; }
+    } finally {
+      boton.disabled = estado.soloLectura;
+    }
+  }
+
+  async function guardarNota(l, caja) {
+    const texto = caja.value.trim();
+    if (!db || estado.soloLectura || texto === (l.nota || "")) return;
+    try {
+      await db.doc("llegadas/" + l.id).update({ nota: texto });
+    } catch (e) {
+      if (e && e.code === "invalid_argument") soloLectura();
+      else { aviso.hidden = false; aviso.textContent = "No se ha podido guardar la nota."; }
+    }
+  }
+
+  document.querySelectorAll(".filtros button").forEach((b) => {
+    b.addEventListener("click", () => {
+      estado.filtro = b.dataset.filtro;
+      document.querySelectorAll(".filtros button").forEach((x) => x.setAttribute("aria-pressed", x === b ? "true" : "false"));
+      pintar();
+    });
+  });
+
+  async function arrancar() {
+    db = window.claude ? await window.claude.use("db") : null;
+    if (!db) {
+      raiz.replaceChildren(el("div", { class: "vacio", text: "Esta vista no puede leer la lista. Ábrela en claude.ai con tu cuenta." }));
+      return;
+    }
+    const user = await window.claude.use("user");
+    if (user && typeof user.can === "function") {
+      try { if ((await user.can("data.write")) === false) soloLectura(); } catch (_) {}
+    }
+    db.collection("tramos").onSnapshot((s) => {
+      estado.tramos = s.docs.map((d) => ({ id: d.id, ...d.data() }));
+      pintar();
+    }, () => {});
+    db.collection("llegadas").onSnapshot((s) => {
+      estado.llegadas = s.docs.map((d) => ({ id: d.id, ...d.data() }));
+      pintar();
+    }, () => {});
+  }
+  arrancar();
+})();
+</script>
