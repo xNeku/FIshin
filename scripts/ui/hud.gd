@@ -17,6 +17,10 @@ extends CanvasLayer
 ## Altura de la X sobre los pies del náufrago cuando va andando.
 @export var altura_cabeza_andando: float = 2.0
 @export var velocidad_contador: float = 6.0
+## Iconos de teclas: <carpeta>/<teclado|mando>_<accion>[_pulsada].png. Redibuja los PNG para cambiarlos.
+@export_dir var carpeta_teclas: String = "res://art/ui/teclas"
+## Al machacar, cada cuánto se aprieta sola la tecla dibujada (segundos).
+@export var ritmo_machacar: float = 0.12
 ## Cuánto salta de sitio el botón al tope de intensidad (píxeles).
 @export var salto_prompt_maximo: float = 220.0
 @export var color_numeros: Color = Color("ff9a3c")
@@ -35,25 +39,22 @@ extends CanvasLayer
 @export var destello_captura: float = 0.2
 @export var destello_perfecto: float = 0.5
 
-const TEXTO_TECLA: Dictionary = {
-	&"pesca_1": "1", &"pesca_2": "2", &"pesca_3": "3", &"pesca_4": "4",
-	&"pesca_arriba": "↑", &"pesca_abajo": "↓", &"pesca_izq": "←", &"pesca_der": "→",
-}
+## Letras de las pistas "[E] ..." y su acción del Input Map.
+const TECLA_A_ACCION: Dictionary = {"E": &"interactuar", "Q": &"cambiar_modo", "Tab": &"menu"}
 const NOMBRES_RAREZA: Array[String] = ["Común", "Raro", "Extraño", "Legendario"]
 
 @onready var efecto: ColorRect = $EfectoPantalla
-@onready var rublos: Label = $Info/Rublos
-@onready var barca: Label = $Info/Barca
-@onready var cana: Label = $Info/Cana
-@onready var cebo: Label = $Info/Cebo
+@onready var rublos: Label = $Info/Lista/Rublos
+@onready var barca: Label = $Info/Lista/Barca
+@onready var cana: Label = $Info/Lista/Cana
+@onready var cebo: Label = $Info/Lista/Cebo
 @onready var estado: Label = $Estado
 @onready var prompt: Control = $Prompt
 @onready var teclas: Control = $Prompt/Teclas
-@onready var tecla1: PanelContainer = $Prompt/Teclas/Tecla1
-@onready var tecla2: PanelContainer = $Prompt/Teclas/Tecla2
+@onready var tecla1: TextureRect = $Prompt/Teclas/Tecla1
+@onready var tecla2: TextureRect = $Prompt/Teclas/Tecla2
 @onready var mas: Label = $Prompt/Teclas/Mas
 @onready var barra_tiempo: ProgressBar = $Prompt/BarraTiempo
-@onready var machacar: Label = $Prompt/Machacar
 @onready var barra_machacar: ProgressBar = $Prompt/BarraMachacar
 @onready var combo: Label = $Combo
 @onready var popups: Control = $Popups
@@ -61,8 +62,8 @@ const NOMBRES_RAREZA: Array[String] = ["Común", "Raro", "Extraño", "Legendario
 @onready var icono: TextureRect = $Resultado/Margen/Fila/Icono
 @onready var nombre: Label = $Resultado/Margen/Fila/Textos/Nombre
 @onready var detalle: Label = $Resultado/Margen/Fila/Textos/Detalle
-@onready var aviso: Label = $Aviso
-@onready var ayuda_modo: Label = $AyudaModo
+@onready var aviso: PanelContainer = $Aviso
+@onready var ayuda_modo: PanelContainer = $AyudaModo
 
 var _rublos_mostrados: float = 0.0
 var _intensidad_objetivo: float = 0.0
@@ -71,6 +72,10 @@ var _destello: float = 0.0
 var _pos_prompt: Vector2
 var _mat: ShaderMaterial
 var _ultima_x: int = -1000
+var _mando: bool = false
+var _iconos: Dictionary = {}
+var _accion_machacar: StringName = &""
+var _t_machacar: float = 0.0
 
 
 func _ready() -> void:
@@ -115,10 +120,16 @@ func _process(delta: float) -> void:
 	aviso.visible = barco != null and barco.puede_hablar() and not (celebracion and celebracion.celebrando) \
 		and not (pesca and pesca.en_curso())
 	if aviso.visible:
-		aviso.text = "[E] Hablar con el comerciante"
+		_pista(aviso, "[E] Hablar con el comerciante")
 	var texto_modo: String = jugador.ayuda() if jugador else ""
 	ayuda_modo.visible = texto_modo != ""
-	ayuda_modo.text = texto_modo
+	if ayuda_modo.visible:
+		_pista(ayuda_modo, texto_modo)
+	# Machacando, la tecla dibujada se aprieta sola para que se vea qué hay que hacer.
+	if _accion_machacar != &"":
+		_t_machacar += dt
+		var abajo: bool = fmod(_t_machacar, ritmo_machacar * 2.0) >= ritmo_machacar
+		tecla1.texture = _icono(_accion_machacar, abajo)
 	if Juego.en_movimiento:
 		resultado.visible = false
 
@@ -134,6 +145,8 @@ func _process(delta: float) -> void:
 
 
 func _on_estado(e: Pesca.Estado) -> void:
+	if e != Pesca.Estado.PASO:
+		_accion_machacar = &""
 	match e:
 		Pesca.Estado.ESPERANDO:
 			prompt.visible = false
@@ -157,13 +170,12 @@ func _on_paso(p: Pesca.Paso, _i: int) -> void:
 	mas.visible = doble
 	if doble:
 		_pintar_tecla(tecla2, p.acciones[1])
-	machacar.visible = mash
+	_accion_machacar = p.acciones[0] if mash else &""
 	barra_machacar.visible = mash
 	barra_tiempo.visible = true
 	if mash:
 		barra_machacar.max_value = p.pulsaciones
 		barra_machacar.value = 0
-		machacar.text = "¡MACHACA %s!" % TEXTO_TECLA.get(p.acciones[0], "?")
 	# Cuanto más dentro, más loco salta el botón por la pantalla.
 	var salto: float = salto_prompt_maximo * _intensidad_objetivo * _intensidad_objetivo
 	prompt.position = _pos_prompt + Vector2(randf_range(-salto, salto), randf_range(-salto, salto) * 0.5)
@@ -172,10 +184,51 @@ func _on_paso(p: Pesca.Paso, _i: int) -> void:
 	create_tween().tween_property(teclas, "scale", Vector2.ONE, 0.12).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 
 
-func _pintar_tecla(panel: PanelContainer, accion: StringName) -> void:
-	var texto: Label = panel.get_node("Texto")
-	texto.text = TEXTO_TECLA.get(accion, "?")
-	panel.self_modulate = color_flechas if accion in Pesca.FLECHAS else color_numeros
+func _pintar_tecla(tecla: TextureRect, accion: StringName) -> void:
+	tecla.texture = _icono(accion)
+	tecla.set_meta("accion", accion)
+	# En teclado las teclas son blancas: se tiñen (números / flechas). Los botones del mando ya traen color.
+	if _mando:
+		tecla.self_modulate = Color.WHITE
+	else:
+		tecla.self_modulate = (color_flechas if accion in Pesca.FLECHAS else color_numeros).lerp(Color.WHITE, 0.55)
+
+
+## Icono dibujado de una acción para el último dispositivo usado (teclado o mando).
+func _icono(accion: StringName, pulsada: bool = false) -> Texture2D:
+	var ruta: String = "%s/%s_%s%s.png" % [carpeta_teclas, "mando" if _mando else "teclado", accion, "_pulsada" if pulsada else ""]
+	if not _iconos.has(ruta):
+		_iconos[ruta] = load(ruta) if ResourceLoader.exists(ruta) else null
+	return _iconos[ruta]
+
+
+## Pista "[E] Texto": la letra entre corchetes se cambia por el dibujo de su tecla.
+func _pista(caja: PanelContainer, texto: String) -> void:
+	var icono: TextureRect = caja.get_node("Fila/Icono")
+	var etiqueta: Label = caja.get_node("Fila/Texto")
+	var accion: StringName = &""
+	if texto.begins_with("["):
+		var fin: int = texto.find("]")
+		accion = TECLA_A_ACCION.get(texto.substr(1, fin - 1), &"")
+		texto = texto.substr(fin + 1).strip_edges()
+	var tex: Texture2D = _icono(accion) if accion != &"" else null
+	icono.texture = tex
+	icono.visible = tex != null
+	etiqueta.text = texto
+
+
+func _input(event: InputEvent) -> void:
+	# El último dispositivo usado decide qué dibujos salen.
+	var mando: bool = _mando
+	if event is InputEventJoypadButton or (event is InputEventJoypadMotion and absf((event as InputEventJoypadMotion).axis_value) > 0.5):
+		mando = true
+	elif event is InputEventKey or event is InputEventMouseButton:
+		mando = false
+	if mando != _mando:
+		_mando = mando
+		for t: TextureRect in [tecla1, tecla2]:
+			if t.has_meta("accion"):
+				_pintar_tecla(t, t.get_meta("accion"))
 
 
 func _on_acierto(indice: int, _total: int) -> void:

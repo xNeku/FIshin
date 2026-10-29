@@ -4,56 +4,14 @@
 [ext_resource type="Shader" path="res://shaders/efecto_pantalla.gdshader" id="2_efecto"]
 [ext_resource type="PackedScene" path="res://scenes/ui/popup_texto.tscn" id="3_popup"]
 [ext_resource type="PackedScene" path="res://scenes/ui/popup_icono.tscn" id="3_popup_x"]
+[ext_resource type="Texture2D" path="res://art/ui/teclas/teclado_pesca_1.png" id="4_tecla"]
+[ext_resource type="Texture2D" path="res://art/ui/teclas/teclado_interactuar.png" id="5_tecla_e"]
+[ext_resource type="Texture2D" path="res://art/ui/teclas/teclado_cambiar_modo.png" id="6_tecla_q"]
 
 [sub_resource type="ShaderMaterial" id="mat_efecto"]
 shader = ExtResource("2_efecto")
 shader_parameter/intensidad = 0.0
 shader_parameter/destello = 0.0
-
-[sub_resource type="StyleBoxFlat" id="estilo_tecla"]
-bg_color = Color(1, 1, 1, 1)
-border_width_left = 6
-border_width_top = 6
-border_width_right = 6
-border_width_bottom = 10
-border_color = Color(0.08, 0.05, 0.1, 1)
-corner_radius_top_left = 16
-corner_radius_top_right = 16
-corner_radius_bottom_right = 16
-corner_radius_bottom_left = 16
-
-[sub_resource type="StyleBoxFlat" id="estilo_panel"]
-bg_color = Color(0.06, 0.05, 0.1, 0.82)
-border_width_left = 4
-border_width_top = 4
-border_width_right = 4
-border_width_bottom = 4
-border_color = Color(1, 1, 1, 0.25)
-corner_radius_top_left = 12
-corner_radius_top_right = 12
-corner_radius_bottom_right = 12
-corner_radius_bottom_left = 12
-
-[sub_resource type="StyleBoxFlat" id="barra_fondo"]
-bg_color = Color(0.05, 0.03, 0.08, 0.8)
-corner_radius_top_left = 6
-corner_radius_top_right = 6
-corner_radius_bottom_right = 6
-corner_radius_bottom_left = 6
-
-[sub_resource type="StyleBoxFlat" id="barra_tiempo"]
-bg_color = Color(1, 1, 1, 1)
-corner_radius_top_left = 6
-corner_radius_top_right = 6
-corner_radius_bottom_right = 6
-corner_radius_bottom_left = 6
-
-[sub_resource type="StyleBoxFlat" id="barra_machacar"]
-bg_color = Color(1, 0.55, 0.2, 1)
-corner_radius_top_left = 6
-corner_radius_top_right = 6
-corner_radius_bottom_right = 6
-corner_radius_bottom_left = 6
 
 [node name="HUD" type="CanvasLayer"]
 script = ExtResource("1_script")
@@ -69,32 +27,38 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="Info" type="VBoxContainer" parent="."]
-offset_left = 32.0
+[node name="Info" type="PanelContainer" parent="."]
+offset_left = 24.0
 offset_top = 24.0
-offset_right = 700.0
-offset_bottom = 220.0
+offset_right = 24.0
+offset_bottom = 24.0
 mouse_filter = 2
 
-[node name="Rublos" type="Label" parent="Info"]
+[node name="Lista" type="VBoxContainer" parent="Info"]
 layout_mode = 2
-theme_override_colors/font_color = Color(1, 0.85, 0.3, 1)
-theme_override_font_sizes/font_size = 56
+mouse_filter = 2
+theme_override_constants/separation = 4
+
+[node name="Rublos" type="Label" parent="Info/Lista"]
+layout_mode = 2
+theme_type_variation = &"Dinero"
+theme_override_font_sizes/font_size = 60
 text = "0 ₽"
 
-[node name="Barca" type="Label" parent="Info"]
+[node name="Barca" type="Label" parent="Info/Lista"]
 layout_mode = 2
+theme_type_variation = &"Pequeno"
 text = "Barca: 0 peces"
 
-[node name="Cana" type="Label" parent="Info"]
+[node name="Cana" type="Label" parent="Info/Lista"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 24
+theme_type_variation = &"Titulo"
 text = "Caña rota"
 
-[node name="Cebo" type="Label" parent="Info"]
+[node name="Cebo" type="Label" parent="Info/Lista"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.6, 1, 0.5, 1)
-theme_override_font_sizes/font_size = 24
+theme_type_variation = &"Pequeno"
+theme_override_colors/font_color = Color(0.55, 0.95, 0.45, 1)
 text = "Cebo: 5 pescas"
 
 [node name="Estado" type="Label" parent="."]
@@ -103,8 +67,8 @@ anchor_right = 1.0
 offset_top = 40.0
 offset_bottom = 100.0
 grow_horizontal = 2
-theme_override_font_sizes/font_size = 40
-text = "Esperando que piquen..."
+theme_override_constants/outline_size = 12
+text = "¡Barca llena! Ve a vender"
 horizontal_alignment = 1
 
 [node name="Prompt" type="Control" parent="."]
@@ -120,83 +84,58 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="Machacar" type="Label" parent="Prompt"]
-layout_mode = 0
-offset_left = -300.0
-offset_top = -150.0
-offset_right = 300.0
-offset_bottom = -90.0
-theme_override_colors/font_color = Color(1, 0.55, 0.2, 1)
-theme_override_font_sizes/font_size = 44
-text = "¡MACHACA!"
-horizontal_alignment = 1
-
 [node name="Teclas" type="HBoxContainer" parent="Prompt"]
 layout_mode = 0
 offset_left = -200.0
-offset_top = -70.0
+offset_top = -60.0
 offset_right = 200.0
-offset_bottom = 70.0
+offset_bottom = 60.0
 mouse_filter = 2
-theme_override_constants/separation = 20
+theme_override_constants/separation = 24
 alignment = 1
 
-[node name="Tecla1" type="PanelContainer" parent="Prompt/Teclas"]
-custom_minimum_size = Vector2(130, 130)
+[node name="Tecla1" type="TextureRect" parent="Prompt/Teclas"]
+texture_filter = 1
+custom_minimum_size = Vector2(120, 120)
 layout_mode = 2
 mouse_filter = 2
-theme_override_styles/panel = SubResource("estilo_tecla")
-
-[node name="Texto" type="Label" parent="Prompt/Teclas/Tecla1"]
-layout_mode = 2
-theme_override_colors/font_color = Color(0.08, 0.05, 0.1, 1)
-theme_override_constants/outline_size = 0
-theme_override_font_sizes/font_size = 80
-text = "1"
-horizontal_alignment = 1
-vertical_alignment = 1
+texture = ExtResource("4_tecla")
+expand_mode = 1
+stretch_mode = 5
 
 [node name="Mas" type="Label" parent="Prompt/Teclas"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 64
+theme_override_constants/outline_size = 12
+theme_override_font_sizes/font_size = 60
 text = "+"
 
-[node name="Tecla2" type="PanelContainer" parent="Prompt/Teclas"]
-custom_minimum_size = Vector2(130, 130)
+[node name="Tecla2" type="TextureRect" parent="Prompt/Teclas"]
+texture_filter = 1
+custom_minimum_size = Vector2(120, 120)
 layout_mode = 2
 mouse_filter = 2
-theme_override_styles/panel = SubResource("estilo_tecla")
-
-[node name="Texto" type="Label" parent="Prompt/Teclas/Tecla2"]
-layout_mode = 2
-theme_override_colors/font_color = Color(0.08, 0.05, 0.1, 1)
-theme_override_constants/outline_size = 0
-theme_override_font_sizes/font_size = 80
-text = "→"
-horizontal_alignment = 1
-vertical_alignment = 1
+texture = ExtResource("4_tecla")
+expand_mode = 1
+stretch_mode = 5
 
 [node name="BarraTiempo" type="ProgressBar" parent="Prompt"]
 layout_mode = 0
 offset_left = -160.0
-offset_top = 85.0
+offset_top = 76.0
 offset_right = 160.0
-offset_bottom = 105.0
+offset_bottom = 108.0
 mouse_filter = 2
-theme_override_styles/background = SubResource("barra_fondo")
-theme_override_styles/fill = SubResource("barra_tiempo")
 value = 100.0
 show_percentage = false
 
 [node name="BarraMachacar" type="ProgressBar" parent="Prompt"]
 layout_mode = 0
-offset_left = -260.0
+offset_left = -240.0
 offset_top = 120.0
-offset_right = 260.0
+offset_right = 240.0
 offset_bottom = 160.0
 mouse_filter = 2
-theme_override_styles/background = SubResource("barra_fondo")
-theme_override_styles/fill = SubResource("barra_machacar")
+theme_type_variation = &"BarraNaranja"
 max_value = 10.0
 show_percentage = false
 
@@ -212,9 +151,9 @@ offset_right = -80.0
 offset_bottom = 40.0
 grow_horizontal = 0
 grow_vertical = 2
-theme_override_colors/font_color = Color(1, 0.85, 0.3, 1)
+theme_type_variation = &"Dinero"
 theme_override_constants/outline_size = 16
-theme_override_font_sizes/font_size = 96
+theme_override_font_sizes/font_size = 100
 text = "x0"
 horizontal_alignment = 1
 
@@ -227,36 +166,65 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="Aviso" type="Label" parent="."]
+[node name="Aviso" type="PanelContainer" parent="."]
 anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -500.0
-offset_top = -250.0
-offset_right = 500.0
-offset_bottom = -200.0
+offset_top = -260.0
+offset_bottom = -260.0
 grow_horizontal = 2
 grow_vertical = 0
-theme_override_colors/font_color = Color(0.5, 0.85, 1, 1)
-theme_override_font_sizes/font_size = 34
-text = "[E] Vender todo al comerciante"
-horizontal_alignment = 1
+mouse_filter = 2
 
-[node name="AyudaModo" type="Label" parent="."]
+[node name="Fila" type="HBoxContainer" parent="Aviso"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 20
+
+[node name="Icono" type="TextureRect" parent="Aviso/Fila"]
+texture_filter = 1
+custom_minimum_size = Vector2(64, 68)
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("5_tecla_e")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Texto" type="Label" parent="Aviso/Fila"]
+layout_mode = 2
+text = "Hablar con el comerciante"
+
+[node name="AyudaModo" type="PanelContainer" parent="."]
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
-offset_left = 32.0
-offset_top = -70.0
-offset_right = 600.0
+offset_left = 24.0
+offset_top = -24.0
+offset_right = 24.0
 offset_bottom = -24.0
 grow_vertical = 0
 mouse_filter = 2
-theme_override_colors/font_color = Color(0.85, 0.95, 1, 1)
-theme_override_font_sizes/font_size = 30
-text = "[Q] Bajar a tierra"
+
+[node name="Fila" type="HBoxContainer" parent="AyudaModo"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 16
+
+[node name="Icono" type="TextureRect" parent="AyudaModo/Fila"]
+texture_filter = 1
+custom_minimum_size = Vector2(48, 51)
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("6_tecla_q")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Texto" type="Label" parent="AyudaModo/Fila"]
+layout_mode = 2
+theme_type_variation = &"Pequeno"
+text = "Bajar a tierra"
 
 [node name="Resultado" type="PanelContainer" parent="."]
 anchors_preset = 7
@@ -271,15 +239,10 @@ offset_bottom = -40.0
 grow_horizontal = 2
 grow_vertical = 0
 mouse_filter = 2
-theme_override_styles/panel = SubResource("estilo_panel")
 
 [node name="Margen" type="MarginContainer" parent="Resultado"]
 layout_mode = 2
 mouse_filter = 2
-theme_override_constants/margin_left = 20
-theme_override_constants/margin_top = 12
-theme_override_constants/margin_right = 20
-theme_override_constants/margin_bottom = 12
 
 [node name="Fila" type="HBoxContainer" parent="Resultado/Margen"]
 layout_mode = 2
@@ -302,9 +265,9 @@ alignment = 1
 
 [node name="Nombre" type="Label" parent="Resultado/Margen/Fila/Textos"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 40
 text = "Sardina · Común"
 
 [node name="Detalle" type="Label" parent="Resultado/Margen/Fila/Textos"]
 layout_mode = 2
+theme_type_variation = &"Pequeno"
 text = "Buena · 0.20 kg · 4 ₽"
