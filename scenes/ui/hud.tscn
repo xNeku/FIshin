@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" path="res://art/ui/teclas/teclado_pesca_1.png" id="4_tecla"]
 [ext_resource type="Texture2D" path="res://art/ui/teclas/teclado_cambiar_modo.png" id="6_tecla_q"]
 [ext_resource type="PackedScene" path="res://scenes/ui/animacion_entrada.tscn" id="anim_entrada"]
+[ext_resource type="Material" path="res://art/ui/cristal.tres" id="cristal"]
 
 [sub_resource type="ShaderMaterial" id="mat_efecto"]
 shader = ExtResource("2_efecto")
@@ -28,6 +29,8 @@ grow_vertical = 2
 mouse_filter = 2
 
 [node name="Info" type="PanelContainer" parent="."]
+material = ExtResource("cristal")
+theme_type_variation = &"PanelCristal"
 offset_left = 24.0
 offset_top = 24.0
 offset_right = 24.0
@@ -53,11 +56,13 @@ text = "Barca: 0 peces"
 [node name="Cana" type="Label" parent="Info/Lista"]
 layout_mode = 2
 theme_type_variation = &"Titulo"
+theme_override_colors/font_color = Color(0.8, 0.85, 0.9, 1)
 text = "Caña rota"
 
 [node name="Reloj" type="Label" parent="Info/Lista"]
 layout_mode = 2
 theme_type_variation = &"Titulo"
+theme_override_colors/font_color = Color(0.8, 0.85, 0.9, 1)
 text = "Primavera · día 1 · 06:00"
 
 [node name="Cebo" type="Label" parent="Info/Lista"]
@@ -274,6 +279,8 @@ expand_mode = 1
 stretch_mode = 5
 
 [node name="Accion" type="PanelContainer" parent="."]
+material = ExtResource("cristal")
+theme_type_variation = &"PanelCristal"
 anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
@@ -307,6 +314,8 @@ layout_mode = 2
 text = "Bajar a tierra"
 
 [node name="Resultado" type="PanelContainer" parent="."]
+material = ExtResource("cristal")
+theme_type_variation = &"PanelCristal"
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0

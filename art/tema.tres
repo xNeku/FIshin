@@ -3,6 +3,7 @@
 [ext_resource type="FontFile" path="res://art/fuentes/FishinPixel.ttf" id="1_fuente"]
 [ext_resource type="Texture2D" path="res://art/ui/panel.png" id="t_panel"]
 [ext_resource type="Texture2D" path="res://art/ui/panel_sel.png" id="t_panel_sel"]
+[ext_resource type="Texture2D" path="res://art/ui/panel_cristal.png" id="t_panel_cristal"]
 [ext_resource type="Texture2D" path="res://art/ui/foco.png" id="t_foco"]
 [ext_resource type="Texture2D" path="res://art/ui/boton.png" id="t_boton"]
 [ext_resource type="Texture2D" path="res://art/ui/boton_sel.png" id="t_boton_sel"]
@@ -22,6 +23,17 @@ content_margin_top = 24.0
 content_margin_right = 28.0
 content_margin_bottom = 24.0
 texture = ExtResource("t_panel")
+texture_margin_left = 16.0
+texture_margin_top = 16.0
+texture_margin_right = 16.0
+texture_margin_bottom = 16.0
+
+[sub_resource type="StyleBoxTexture" id="panel_cristal"]
+content_margin_left = 28.0
+content_margin_top = 22.0
+content_margin_right = 28.0
+content_margin_bottom = 22.0
+texture = ExtResource("t_panel_cristal")
 texture_margin_left = 16.0
 texture_margin_top = 16.0
 texture_margin_right = 16.0
@@ -196,6 +208,8 @@ Label/colors/font_outline_color = Color(0, 0, 0, 1)
 Label/constants/outline_size = 0
 Panel/styles/panel = SubResource("panel")
 PanelContainer/styles/panel = SubResource("panel")
+PanelCristal/base_type = &"PanelContainer"
+PanelCristal/styles/panel = SubResource("panel_cristal")
 PanelSeleccion/base_type = &"PanelContainer"
 PanelSeleccion/styles/panel = SubResource("panel_sel")
 Pequeno/base_type = &"Label"
