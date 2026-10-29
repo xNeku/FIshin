@@ -2,7 +2,9 @@ shader_type canvas_item;
 // Filtro retro de tele de tubo: líneas de barrido, máscara de fósforo, resplandor, aberración,
 // viñeta y una curvatura muy suave. Va encima de todo (mundo, HUD y menús).
 
-uniform sampler2D pantalla : hint_screen_texture, filter_linear_mipmap;
+// La imagen se lee píxel a píxel (nítida); la versión suavizada solo se usa para el resplandor.
+uniform sampler2D pantalla : hint_screen_texture, filter_nearest;
+uniform sampler2D pantalla_suave : hint_screen_texture, filter_linear_mipmap;
 // Alto de cada línea de barrido en píxeles de pantalla (4 = una por píxel del juego a 1080p).
 uniform float alto_linea = 4.0;
 uniform float fuerza_lineas : hint_range(0.0, 1.0) = 0.35;
@@ -27,7 +29,7 @@ void fragment() {
 		vec2 ab = (uv - 0.5) * aberracion * 2.0;
 		vec3 c = vec3(texture(pantalla, uv + ab).r, texture(pantalla, uv).g, texture(pantalla, uv - ab).b);
 		// Resplandor: lo claro se derrama un poco (mipmaps de la pantalla).
-		vec3 halo = textureLod(pantalla, uv, 3.0).rgb * 0.6 + textureLod(pantalla, uv, 5.0).rgb * 0.4;
+		vec3 halo = textureLod(pantalla_suave, uv, 3.0).rgb * 0.6 + textureLod(pantalla_suave, uv, 5.0).rgb * 0.4;
 		c += max(halo - 0.35, 0.0) * resplandor;
 		// Líneas de barrido y máscara de fósforo (columnas R, G, B).
 		vec2 px = uv / SCREEN_PIXEL_SIZE;

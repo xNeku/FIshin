@@ -16,6 +16,11 @@ extends CanvasLayer
 @onready var boton_salir: Button = $Raiz/Panel/Margen/Pestanas/Opciones/Salir
 @onready var boton_filtro: Button = $Raiz/Panel/Margen/Pestanas/Opciones/Filtro
 @onready var boton_agua: Button = $Raiz/Panel/Margen/Pestanas/Opciones/Agua
+@onready var boton_pixeles: Button = $Raiz/Panel/Margen/Pestanas/Opciones/Pixeles
+
+## Tamaño de los píxeles del mundo: encogimiento del Pixelador y su nombre en el botón.
+const PIXELES: Array[int] = [4, 3, 2]
+const NOMBRES_PIXELES: Array[String] = ["grandes", "medianos", "finos"]
 
 var abierto: bool = false
 var _seleccion: String = ""
@@ -43,6 +48,15 @@ func _ready() -> void:
 			a.poner_bandas(si)
 		_refrescar_agua())
 	_refrescar_agua()
+	boton_pixeles.pressed.connect(func() -> void:
+		var pix: Node = get_tree().get_first_node_in_group("pixelador")
+		var actual: int = pix.encogimiento if pix else 3
+		var i: int = (maxi(0, PIXELES.find(actual)) + 1) % PIXELES.size()
+		Juego.poner_opcion("pixel_mundo", PIXELES[i])
+		if pix:
+			pix.poner_encogimiento(PIXELES[i])
+		_refrescar_pixeles())
+	_refrescar_pixeles.call_deferred()
 	boton_salir.pressed.connect(func() -> void:
 		Juego.guardar()
 		get_tree().quit())
@@ -197,6 +211,12 @@ func _on_borrar() -> void:
 	Juego.borrar_partida()
 	cerrar()
 	get_tree().reload_current_scene()
+
+
+func _refrescar_pixeles() -> void:
+	var pix: Node = get_tree().get_first_node_in_group("pixelador")
+	var i: int = PIXELES.find(pix.encogimiento if pix else 3)
+	boton_pixeles.text = "Píxeles: %s" % (NOMBRES_PIXELES[i] if i >= 0 else str(pix.encogimiento))
 
 
 func _refrescar_agua() -> void:

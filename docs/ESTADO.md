@@ -99,6 +99,11 @@ Parada para valorar rumbo (29 oct). Hay un tramo jugable de principio a fin de l
   - Opción "Agua: con bandas / realista" (`estilo_bandas`, `Juego.opcion("agua_bandas")`).
 - Viejo a los 75 peces (~min 23).
 
+## Nitidez (31 oct)
+- Filtro CRT nítido: lee la imagen píxel a píxel (`filter_nearest`); sin curvatura ni aberración; resplandor 0,2. Los valores siguen en el material de `crt.tscn`.
+- Píxeles del mundo: opción en Opciones (grandes 4 / medianos 3 / finos 2; `Pixelador.poner_encogimiento`, `Juego.opcion("pixel_mundo")`). Por defecto, medianos. Con 4, cada píxel del dibujo de los personajes ocupaba ~1,3 píxeles del mundo y se veían emborronados.
+- No hay ciclo de día y noche: lo oscuro era el clima de tormenta. El reloj (día/noche, estaciones) está pendiente de que el diseñador decida duraciones.
+
 ## Siguiente paso
 Sesión de progresión con el diseñador hasta el midgame (economía y orden de desbloqueos), partiendo de `docs/PROGRESION.md` (borrador v1) y `docs/INCREMENTAL.md`.
 

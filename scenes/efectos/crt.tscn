@@ -8,10 +8,10 @@ shader = ExtResource("2_shader")
 shader_parameter/alto_linea = 4.0
 shader_parameter/fuerza_lineas = 0.35
 shader_parameter/fuerza_mascara = 0.12
-shader_parameter/resplandor = 0.35
-shader_parameter/aberracion = 0.0012
+shader_parameter/resplandor = 0.2
+shader_parameter/aberracion = 0.0
 shader_parameter/vineta = 0.35
-shader_parameter/curvatura = 0.025
+shader_parameter/curvatura = 0.0
 shader_parameter/parpadeo = 0.012
 shader_parameter/brillo = 1.12
 
