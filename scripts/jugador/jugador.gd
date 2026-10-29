@@ -140,19 +140,26 @@ func _refrescar_cubo() -> void:
 
 
 ## Texto de ayuda para el HUD.
-func ayuda() -> String:
+## Acciones que se pueden hacer ahora, como "[Q] Texto" (el HUD las enseña y alterna).
+func acciones() -> Array[String]:
+	var lista: Array[String] = []
 	if andando:
 		if cercano:
 			if cercano.accion == Interactuable.Accion.VENTA:
 				var n: int = comercio.peces_para_vender()
-				return "[E] Vender todo (%d peces)" % n if n > 0 else "Lonja: no llevas nada que vender"
-			if Juego.cubo_en_mano and cercano.compra_peces:
-				return "[E] Vender el cubo (%d peces)" % Juego.cubo_capturas.size()
-			return "[E] " + cercano.texto_accion
-		if Juego.cubo_en_mano:
-			return "Lleva el cubo a un comerciante"
-		return "[Q] Volver a pescar" if en_barca() else ""
-	return "[Q] Bajar a tierra" if puede_bajar() else ""
+				lista.append("[E] Vender todo (%d peces)" % n if n > 0 else "Lonja: no llevas nada que vender")
+			elif Juego.cubo_en_mano and cercano.compra_peces:
+				lista.append("[E] Vender el cubo (%d peces)" % Juego.cubo_capturas.size())
+			else:
+				lista.append("[E] " + cercano.texto_accion)
+		elif Juego.cubo_en_mano:
+			lista.append("Lleva el cubo a un comerciante")
+		if en_barca() and not Juego.cubo_en_mano:
+			lista.append("[Q] Volver a pescar")
+	elif mundo.celdas_pisables().size() > 1:
+		# En el donut siempre se ve la Q en cuanto hay tierra a la que bajar.
+		lista.append("[Q] Bajar a tierra")
+	return lista
 
 
 func _process(delta: float) -> void:

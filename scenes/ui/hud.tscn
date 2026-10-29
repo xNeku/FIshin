@@ -5,7 +5,6 @@
 [ext_resource type="PackedScene" path="res://scenes/ui/popup_texto.tscn" id="3_popup"]
 [ext_resource type="PackedScene" path="res://scenes/ui/popup_icono.tscn" id="3_popup_x"]
 [ext_resource type="Texture2D" path="res://art/ui/teclas/teclado_pesca_1.png" id="4_tecla"]
-[ext_resource type="Texture2D" path="res://art/ui/teclas/teclado_interactuar.png" id="5_tecla_e"]
 [ext_resource type="Texture2D" path="res://art/ui/teclas/teclado_cambiar_modo.png" id="6_tecla_q"]
 
 [sub_resource type="ShaderMaterial" id="mat_efecto"]
@@ -166,64 +165,37 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="Aviso" type="PanelContainer" parent="."]
-anchors_preset = 7
-anchor_left = 0.5
+[node name="Accion" type="PanelContainer" parent="."]
+anchors_preset = 3
+anchor_left = 1.0
 anchor_top = 1.0
-anchor_right = 0.5
+anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = -260.0
-offset_bottom = -260.0
-grow_horizontal = 2
-grow_vertical = 0
-mouse_filter = 2
-
-[node name="Fila" type="HBoxContainer" parent="Aviso"]
-layout_mode = 2
-mouse_filter = 2
-theme_override_constants/separation = 20
-
-[node name="Icono" type="TextureRect" parent="Aviso/Fila"]
-texture_filter = 1
-custom_minimum_size = Vector2(64, 68)
-layout_mode = 2
-mouse_filter = 2
-texture = ExtResource("5_tecla_e")
-expand_mode = 1
-stretch_mode = 5
-
-[node name="Texto" type="Label" parent="Aviso/Fila"]
-layout_mode = 2
-text = "Hablar con el comerciante"
-
-[node name="AyudaModo" type="PanelContainer" parent="."]
-anchors_preset = 2
-anchor_top = 1.0
-anchor_bottom = 1.0
-offset_left = 24.0
+offset_left = -24.0
 offset_top = -24.0
-offset_right = 24.0
+offset_right = -24.0
 offset_bottom = -24.0
+grow_horizontal = 0
 grow_vertical = 0
 mouse_filter = 2
 
-[node name="Fila" type="HBoxContainer" parent="AyudaModo"]
+[node name="Fila" type="HBoxContainer" parent="Accion"]
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/separation = 16
 
-[node name="Icono" type="TextureRect" parent="AyudaModo/Fila"]
+[node name="Icono" type="TextureRect" parent="Accion/Fila"]
 texture_filter = 1
-custom_minimum_size = Vector2(48, 51)
+custom_minimum_size = Vector2(72, 72)
 layout_mode = 2
+size_flags_vertical = 4
 mouse_filter = 2
 texture = ExtResource("6_tecla_q")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Texto" type="Label" parent="AyudaModo/Fila"]
+[node name="Texto" type="Label" parent="Accion/Fila"]
 layout_mode = 2
-theme_type_variation = &"Pequeno"
 text = "Bajar a tierra"
 
 [node name="Resultado" type="PanelContainer" parent="."]

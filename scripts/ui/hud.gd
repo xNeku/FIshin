@@ -21,6 +21,8 @@ extends CanvasLayer
 @export_dir var carpeta_teclas: String = "res://art/ui/teclas"
 ## Dibujos para un mando que no se reconoce por su nombre.
 @export_enum("ps", "xbox") var mando_por_defecto: String = "ps"
+## Con varias acciones posibles a la vez, cada cuánto cambia la caja de abajo a la derecha (segundos).
+@export var cambio_acciones: float = 2.0
 ## Al machacar, cada cuánto se aprieta sola la tecla dibujada (segundos).
 @export var ritmo_machacar: float = 0.12
 ## Cuánto salta de sitio el botón al tope de intensidad (píxeles).
@@ -64,8 +66,7 @@ const NOMBRES_RAREZA: Array[String] = ["Común", "Raro", "Extraño", "Legendario
 @onready var icono: TextureRect = $Resultado/Margen/Fila/Icono
 @onready var nombre: Label = $Resultado/Margen/Fila/Textos/Nombre
 @onready var detalle: Label = $Resultado/Margen/Fila/Textos/Detalle
-@onready var aviso: PanelContainer = $Aviso
-@onready var ayuda_modo: PanelContainer = $AyudaModo
+@onready var caja_accion: PanelContainer = $Accion
 
 var _rublos_mostrados: float = 0.0
 var _intensidad_objetivo: float = 0.0
@@ -78,6 +79,8 @@ var _dispositivo: String = "teclado"
 var _iconos: Dictionary = {}
 var _accion_machacar: StringName = &""
 var _t_machacar: float = 0.0
+var _acciones: Array[String] = []
+var _t_accion: float = 0.0
 
 
 func _ready() -> void:
@@ -119,14 +122,7 @@ func _process(delta: float) -> void:
 	cebo.visible = not Juego.cebo.is_empty()
 	if cebo.visible:
 		cebo.text = "Cebo: %d pescas" % int(Juego.cebo.pescas)
-	aviso.visible = barco != null and barco.puede_hablar() and not (celebracion and celebracion.celebrando) \
-		and not (pesca and pesca.en_curso())
-	if aviso.visible:
-		_pista(aviso, "[E] Hablar con el comerciante")
-	var texto_modo: String = jugador.ayuda() if jugador else ""
-	ayuda_modo.visible = texto_modo != ""
-	if ayuda_modo.visible:
-		_pista(ayuda_modo, texto_modo)
+	_mostrar_acciones(dt)
 	# Machacando, la tecla dibujada se aprieta sola para que se vea qué hay que hacer.
 	if _accion_machacar != &"":
 		_t_machacar += dt
@@ -189,11 +185,6 @@ func _on_paso(p: Pesca.Paso, _i: int) -> void:
 func _pintar_tecla(tecla: TextureRect, accion: StringName) -> void:
 	tecla.texture = _icono(accion)
 	tecla.set_meta("accion", accion)
-	# En teclado las teclas son blancas: se tiñen (números / flechas). Los botones del mando ya traen color.
-	if _dispositivo != "teclado":
-		tecla.self_modulate = Color.WHITE
-	else:
-		tecla.self_modulate = (color_flechas if accion in Pesca.FLECHAS else color_numeros).lerp(Color.WHITE, 0.55)
 
 
 ## Icono dibujado de una acción para el último dispositivo usado (teclado o mando).
@@ -214,6 +205,23 @@ func _tipo_mando(dispositivo: int) -> String:
 		if nombre.contains(clave):
 			return "ps"
 	return mando_por_defecto
+
+
+## Caja de abajo a la derecha: lo que se puede hacer ahora. Si hay varias cosas, van alternando.
+func _mostrar_acciones(dt: float) -> void:
+	var lista: Array[String] = jugador.acciones() if jugador else []
+	if barco and barco.puede_hablar() and not (celebracion and celebracion.celebrando) and not (pesca and pesca.en_curso()):
+		lista.push_front("[E] Hablar con el comerciante")
+	caja_accion.visible = not lista.is_empty()
+	if lista.is_empty():
+		_t_accion = 0.0
+		return
+	if lista != _acciones:
+		_acciones = lista
+		_t_accion = 0.0
+	_t_accion += dt
+	var i: int = int(_t_accion / maxf(0.1, cambio_acciones)) % lista.size()
+	_pista(caja_accion, lista[i])
 
 
 ## Pista "[E] Texto": la letra entre corchetes se cambia por el dibujo de su tecla.

@@ -1,0 +1,5 @@
+Iconos de teclas y mandos: "Xelu's FREE Controllers & Keyboard PROMPTS",
+de Nicolae (XELU) Berbece (https://thoseawesomeguys.com/prompts/), licencia CC0 (dominio público).
+Copiados del addon Controller Icons de rsubtil (https://github.com/rsubtil/controller_icons)
+y pixelados a 24 px para el juego, con una versión _pulsada.
+Nombres: <teclado|ps|xbox>_<accion>[_pulsada].png. Para cambiar un icono, redibuja el PNG con el mismo nombre.
