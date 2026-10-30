@@ -3,7 +3,7 @@ extends Resource
 ## Algo que se pega al mundo al cumplir una condición (islas, edificios...). Viene de la Carta de Fishin.
 
 ## PUNTOS_PESCA: la suma de la racha de cada pez (×2 si perfecto). Premia pescar bien: el que encadena llega antes.
-enum Condicion { PECES_PESCADOS, RUBLOS_TOTALES, COMBO_MAXIMO, MINUTOS_JUGADOS, PUNTOS_PESCA }
+enum Condicion { PECES_PESCADOS, RUBLOS_TOTALES, COMBO_MAXIMO, MINUTOS_JUGADOS, PUNTOS_PESCA, PESCADORES }
 ## MAR: llega navegando. CIELO: cae con cinemática. CONSTRUIR: sus piezas salen del agua una a una.
 ## EMERGER: sube desde el fondo del mar.
 enum Llegada { MAR, CIELO, CONSTRUIR, EMERGER }
