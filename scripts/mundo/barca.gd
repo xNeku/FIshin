@@ -32,9 +32,13 @@ extends Node3D
 
 @export_group("Corcho")
 ## Dónde cae el corcho, relativo al donut.
-@export var punto_corcho: Vector3 = Vector3(1.4, 0.0, -1.7)
+@export var punto_corcho: Vector3 = Vector3(1.0, 0.0, 2.0)
 @export var duracion_lanzado: float = 0.55
 @export var altura_lanzado: float = 1.6
+## Antes de lanzar, el corcho se va por detrás (diagonal opuesta) respecto a la punta de la caña.
+@export var lanzado_desde: Vector3 = Vector3(-1.0, 1.3, -1.2)
+## Lo que tarda en echarse atrás antes del latigazo.
+@export var duracion_atras: float = 0.22
 @export var hundimiento_picada: float = 0.18
 ## Picoteos mientras esperas: el de mentira y el aviso de justo antes de picar.
 @export var hundimiento_picoteo: float = 0.05
@@ -140,11 +144,16 @@ func _poner_pose(textura: Texture2D, pixel: Vector2i) -> void:
 func _lanzar() -> void:
 	_volando = true
 	ondas.visible = false
-	var desde: Vector3 = punta.global_position
 	var hasta: Vector3 = _punto_agua()
+	# Se echa atrás por la espalda y sale de latigazo por encima hacia el agua.
+	var atras := create_tween()
+	atras.tween_method(func(k: float) -> void:
+		flotador.global_position = punta.global_position + lanzado_desde * k, 0.0, 1.0, duracion_atras).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	await atras.finished
+	var desde: Vector3 = flotador.global_position
 	var tw := create_tween()
 	tw.tween_method(func(k: float) -> void:
-		flotador.global_position = desde.lerp(hasta, k) + Vector3.UP * sin(k * PI) * altura_lanzado, 0.0, 1.0, duracion_lanzado).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+		flotador.global_position = desde.lerp(hasta, k) + Vector3.UP * sin(k * PI) * altura_lanzado, 0.0, 1.0, duracion_lanzado).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
 	await tw.finished
 	_volando = false
 	_corcho_en_agua = true
