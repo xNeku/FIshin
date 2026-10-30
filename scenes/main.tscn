@@ -67,6 +67,7 @@
 [ext_resource type="Resource" path="res://data/turistas/nivel_1.tres" id="tur_n1"]
 [ext_resource type="Resource" path="res://data/turistas/nivel_2.tres" id="tur_n2"]
 [ext_resource type="Resource" path="res://data/turistas/nivel_3.tres" id="tur_n3"]
+[ext_resource type="AudioStream" path="res://art/sfx/bocina.wav" id="tur_bocina"]
 
 [sub_resource type="FastNoiseLite" id="ruido_nubes"]
 noise_type = 3
@@ -203,13 +204,18 @@ tienda = NodePath("../Tienda")
 agua = NodePath("../Agua")
 mundo = NodePath("../Mundo")
 
-[node name="Turistas" type="Node3D" parent="." node_paths=PackedStringArray("mundo", "agua")]
+[node name="Turistas" type="Node3D" parent="." node_paths=PackedStringArray("mundo", "agua", "sfx_llegada")]
 script = ExtResource("tur_script")
 mundo = NodePath("../Mundo")
 agua = NodePath("../Agua")
 escena_turista = ExtResource("tur_turista")
 escena_barco = ExtResource("tur_barco")
 niveles = Array[ExtResource("tur_nivel")]([ExtResource("tur_n1"), ExtResource("tur_n2"), ExtResource("tur_n3")])
+sfx_llegada = NodePath("SfxBocina")
+
+[node name="SfxBocina" type="AudioStreamPlayer" parent="Turistas"]
+stream = ExtResource("tur_bocina")
+volume_db = -6.0
 
 [node name="Camara" type="Camera3D" parent="." node_paths=PackedStringArray("pesca", "objetivo")]
 transform = Transform3D(1, 0, 0, 0, 0.766044, 0.642788, 0, -0.642788, 0.766044, 0, 7, 8.5)

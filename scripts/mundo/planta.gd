@@ -16,8 +16,8 @@ var _t: float = 0.0
 
 func _ready() -> void:
 	add_to_group("plantas")
-	# Sin guardar el crecimiento: al cargar, cada una va por un punto distinto (y casi todas listas).
-	progreso = randf_range(0.5, 1.0)
+	# El crecimiento se guarda (Juego.plantas). La primera vez, cada una va por un punto distinto.
+	progreso = float(Juego.plantas.get(_clave(), randf_range(0.5, 1.0)))
 	_t = randf() * TAU
 	_pintar()
 
@@ -35,6 +35,16 @@ func _process(delta: float) -> void:
 		dibujo.rotation.z = sin(_t * 3.0) * 0.06
 
 
+func _clave() -> String:
+	return "%s/%s" % [get_parent().name, name]
+
+
+## Lo guarda Juego al guardar la partida.
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_PREDELETE or what == NOTIFICATION_EXIT_TREE:
+		Juego.plantas[_clave()] = progreso
+
+
 func lista() -> bool:
 	return progreso >= 1.0
 
@@ -44,6 +54,7 @@ func cosechar() -> int:
 	if not lista():
 		return 0
 	progreso = 0.0
+	Juego.plantas[_clave()] = 0.0
 	dibujo.rotation.z = 0.0
 	_pintar()
 	var tw := create_tween()

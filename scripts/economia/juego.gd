@@ -68,6 +68,8 @@ var cosecha: Dictionary = {}
 ## Despensa del restaurante: "raciones" (pescado que le manda la lonja), "valor" (lo que valen en total)
 ## y lo que le has dado de cada cultivo (id -> cantidad).
 var despensa: Dictionary = {"raciones": 0.0, "valor": 0.0}
+## Crecimiento de cada planta (ruta -> 0..1). Lo mantienen las plantas y se guarda.
+var plantas: Dictionary = {}
 ## Cultivos que existen (data/cultivos), por id.
 var cultivos: Dictionary = {}
 ## Artículos de tipo MEJORA (data/articulos): suman a los efectos según las veces comprados.
@@ -367,6 +369,12 @@ func entregar_cosecha() -> Dictionary:
 	return dado
 
 
+func _plantas_al_dia() -> Dictionary:
+	for n: Node in get_tree().get_nodes_in_group("plantas"):
+		plantas["%s/%s" % [n.get_parent().name, n.name]] = n.progreso
+	return plantas
+
+
 func _cargar_carpeta(carpeta: String, hacer: Callable) -> void:
 	for f: String in DirAccess.get_files_at(carpeta):
 		f = f.trim_suffix(".remap")
@@ -504,7 +512,7 @@ func guardar() -> void:
 		"capturas": capturas, "cana": String(cana_id), "cebo": cebo, "compras": compras,
 		"stats": stats, "coleccion": coleccion, "capturados": capturados, "flags": flags,
 		"trabajadores": trabajadores, "cubo": cubo_capturas, "cubo_en_mano": cubo_en_mano,
-		"habilidades": habilidades, "reloj": reloj, "cosecha": cosecha, "despensa": despensa,
+		"habilidades": habilidades, "reloj": reloj, "cosecha": cosecha, "despensa": despensa, "plantas": _plantas_al_dia(),
 		"fecha": Time.get_unix_time_from_system(),
 	}
 	# Primero a un temporal y luego se cambia por el bueno: si se corta a medias, el save anterior sigue vivo.
@@ -582,6 +590,11 @@ func cargar() -> void:
 	if de is Dictionary:
 		for k: String in de:
 			despensa[k] = float(de[k]) if k in ["raciones", "valor"] else int(de[k])
+	plantas.clear()
+	var pl: Variant = datos.get("plantas", {})
+	if pl is Dictionary:
+		for k: String in pl:
+			plantas[k] = float(pl[k])
 	for k: String in ["clientes", "visitas_turistas"]:
 		stats[k] = int(stats.get(k, 0))
 
@@ -608,6 +621,7 @@ func borrar_partida() -> void:
 	cubo_en_mano = false
 	habilidades.clear()
 	cosecha.clear()
+	plantas.clear()
 	despensa = {"raciones": 0.0, "valor": 0.0}
 	_recalcular_efectos()
 	habilidades_cambiadas.emit()

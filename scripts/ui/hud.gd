@@ -318,7 +318,9 @@ func _info_villa() -> void:
 		var r: Node = get_tree().get_first_node_in_group("restaurante")
 		restaurante.visible = r != null
 		if r:
-			restaurante.text = "O Mar: %d/%d raciones" % [r.raciones(), int(r.capacidad())]
+			var tur: Node = get_tree().get_first_node_in_group("turistas")
+			var hay: bool = tur != null and tur.activa
+			restaurante.text = "O Mar: %d/%d raciones%s" % [r.raciones(), int(r.capacidad()), " · ¡turistas!" if hay else ""]
 
 
 ## Punto del mundo donde va el botón de interactuar, o null si no hay nada.

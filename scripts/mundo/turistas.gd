@@ -34,6 +34,8 @@ extends Node3D
 @export_group("Barcos")
 ## Desde lo lejos que llegan los barcos (por el este).
 @export var distancia_llegada: float = 45.0
+## Suena cuando llega el primer barco de la visita (para que se note aunque estés pescando).
+@export var sfx_llegada: AudioStreamPlayer
 
 var activa: bool = false
 ## Grupos: {barco: BarcoTuristas, turistas: Array[Turista], muelle: Dictionary, nivel: NivelTuristasData}
@@ -41,6 +43,12 @@ var _grupos: Array[Dictionary] = []
 var _invisibles: int = 0
 var _t_invisibles: float = 0.0
 var _t_revisar: float = 0.0
+var _dia_visita: int = -1
+var _bocina_dada: bool = false
+
+
+func _ready() -> void:
+	add_to_group("turistas")
 
 
 func _process(delta: float) -> void:
@@ -58,7 +66,7 @@ func _process(delta: float) -> void:
 	var en_ventana: bool = _en_ventana(rd)
 	if en_ventana and not activa and Juego.flags.get("turistas_vienen", false) \
 			and int(Juego.flags.get("turistas_hecho", -1)) != dia and _restaurante() != null:
-		Juego.flags["turistas_hecho"] = dia
+		_dia_visita = dia
 		_empezar(rd)
 	elif activa and not en_ventana:
 		_terminar()
@@ -103,7 +111,10 @@ func niveles_abiertos() -> Array[NivelTuristasData]:
 
 func _empezar(rd: RelojData) -> void:
 	activa = true
-	Juego.stats.visitas_turistas += 1
+	_bocina_dada = false
+	if int(Juego.flags.get("turistas_contada", -1)) != _dia_visita:
+		Juego.flags["turistas_contada"] = _dia_visita
+		Juego.stats.visitas_turistas += 1
 	var abiertos: Array[NivelTuristasData] = niveles_abiertos()
 	var muelles: Array[Dictionary] = _muelles()
 	if abiertos.is_empty() or muelles.is_empty():
@@ -154,6 +165,9 @@ func _traer(datos: Dictionary, muelle: Dictionary, cada_comer: float, retraso: f
 		t.montar(barco, s)
 		grupo.turistas.append(t)
 	await barco.navegar_a(punto)
+	if not _bocina_dada and sfx_llegada:
+		_bocina_dada = true
+		sfx_llegada.play()
 	for t: Turista in grupo.turistas:
 		t.bajar(muelle.celda, cada_comer)
 		await get_tree().create_timer(0.25, false).timeout
@@ -164,6 +178,7 @@ func _traer(datos: Dictionary, muelle: Dictionary, cada_comer: float, retraso: f
 
 func _terminar() -> void:
 	activa = false
+	Juego.flags["turistas_hecho"] = _dia_visita
 	_invisibles = 0
 	for g: Dictionary in _grupos:
 		_recoger(g)
