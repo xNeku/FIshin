@@ -1,0 +1,26 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/mundo/isla.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://art/mundo/props/escalera.png" id="2_escalera"]
+[ext_resource type="Texture2D" path="res://art/mundo/props/caja.png" id="3_caja"]
+
+[node name="EntradaTuristas" type="Node3D"]
+script = ExtResource("1_script")
+
+[node name="Piezas" type="Node3D" parent="."]
+
+[node name="Escalera" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0.55, -3.1)
+billboard = 2
+alpha_cut = 1
+texture_filter = 0
+pixel_size = 0.05
+texture = ExtResource("2_escalera")
+
+[node name="Caja" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.6, 0.45, 1.2)
+billboard = 2
+alpha_cut = 1
+texture_filter = 0
+pixel_size = 0.05
+texture = ExtResource("3_caja")

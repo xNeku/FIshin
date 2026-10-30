@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="NivelTuristasData" format=3]
+
+[ext_resource type="Script" path="res://scripts/datos/nivel_turistas_data.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://art/personajes/turistas/n2_abuela_crucero.png" id="p0"]
+[ext_resource type="Texture2D" path="res://art/personajes/turistas/n2_chica_turista.png" id="p1"]
+[ext_resource type="Texture2D" path="res://art/personajes/turistas/n2_chico_gorra.png" id="p2"]
+[ext_resource type="Texture2D" path="res://art/personajes/turistas/n2_guiri_quemado.png" id="p3"]
+[ext_resource type="Texture2D" path="res://art/personajes/turistas/n2_mochilero.png" id="p4"]
+[ext_resource type="Texture2D" path="res://art/personajes/turistas/n2_senor_hawaiana.png" id="p5"]
+[ext_resource type="Texture2D" path="res://art/personajes/turistas/n2_senora_panuelo.png" id="p6"]
+[ext_resource type="Texture2D" path="res://art/personajes/turistas/n2_senora_trenzas.png" id="p7"]
+[ext_resource type="Texture2D" path="res://art/personajes/turistas/n2_turista_camara.png" id="p8"]
+[ext_resource type="Texture2D" path="res://art/personajes/turistas/n2_turista_mochila.png" id="p9"]
+[ext_resource type="Texture2D" path="res://art/mundo/barcos/velero.png" id="b0"]
+[ext_resource type="Texture2D" path="res://art/mundo/barcos/catamaran.png" id="b1"]
+
+[resource]
+script = ExtResource("1_script")
+nivel = 2
+nombre = "Turistas de todas partes"
+personas = Array[Texture2D]([ExtResource("p0"), ExtResource("p1"), ExtResource("p2"), ExtResource("p3"), ExtResource("p4"), ExtResource("p5"), ExtResource("p6"), ExtResource("p7"), ExtResource("p8"), ExtResource("p9")])
+barcos = Array[Texture2D]([ExtResource("b0"), ExtResource("b1")])
+plazas = Array[int]([5, 8])
+clientes_para_desbloquear = 300

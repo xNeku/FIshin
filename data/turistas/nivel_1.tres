@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="NivelTuristasData" format=3]
+
+[ext_resource type="Script" path="res://scripts/datos/nivel_turistas_data.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://art/personajes/turistas/n1_abuelo_bastos.png" id="p0"]
+[ext_resource type="Texture2D" path="res://art/personajes/turistas/n1_aldeana_panuelo.png" id="p1"]
+[ext_resource type="Texture2D" path="res://art/personajes/turistas/n1_chica_pueblo.png" id="p2"]
+[ext_resource type="Texture2D" path="res://art/personajes/turistas/n1_marinero_joven.png" id="p3"]
+[ext_resource type="Texture2D" path="res://art/personajes/turistas/n1_naufraga.png" id="p4"]
+[ext_resource type="Texture2D" path="res://art/personajes/turistas/n1_naufrago_barbudo.png" id="p5"]
+[ext_resource type="Texture2D" path="res://art/personajes/turistas/n1_pescador_chubasquero.png" id="p6"]
+[ext_resource type="Texture2D" path="res://art/personajes/turistas/n1_pescadora.png" id="p7"]
+[ext_resource type="Texture2D" path="res://art/personajes/turistas/n1_pueblerina_delantal.png" id="p8"]
+[ext_resource type="Texture2D" path="res://art/personajes/turistas/n1_pueblerino_boina.png" id="p9"]
+[ext_resource type="Texture2D" path="res://art/mundo/barcos/barca.png" id="b0"]
+
+[resource]
+script = ExtResource("1_script")
+nivel = 1
+nombre = "Gente del mar"
+personas = Array[Texture2D]([ExtResource("p0"), ExtResource("p1"), ExtResource("p2"), ExtResource("p3"), ExtResource("p4"), ExtResource("p5"), ExtResource("p6"), ExtResource("p7"), ExtResource("p8"), ExtResource("p9")])
+barcos = Array[Texture2D]([ExtResource("b0")])
+plazas = Array[int]([3])
+clientes_para_desbloquear = 0

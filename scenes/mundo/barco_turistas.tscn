@@ -1,0 +1,14 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/mundo/barco_turistas.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://art/mundo/barcos/barca.png" id="2_casco"]
+
+[node name="BarcoTuristas" type="Node3D"]
+script = ExtResource("1_script")
+
+[node name="Casco" type="Sprite3D" parent="."]
+billboard = 2
+alpha_cut = 1
+texture_filter = 0
+pixel_size = 0.05
+texture = ExtResource("2_casco")
