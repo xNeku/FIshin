@@ -4,7 +4,8 @@ extends Resource
 
 ## TRABAJADOR: contrata un pescador más para el puerto (lo vende el primer pescador).
 ## HUECO ya no se usa (la barca no tiene huecos); se queda para no mover los números de los .tres.
-enum Tipo { CANA, CEBO, HUECO, TRABAJADOR }
+## MEJORA: cada compra suma `valor_efecto` al efecto `efecto` (Juego.efecto), igual que un nodo del árbol.
+enum Tipo { CANA, CEBO, HUECO, TRABAJADOR, MEJORA }
 
 @export var id: StringName
 @export var nombre: String = ""
@@ -29,6 +30,12 @@ enum Tipo { CANA, CEBO, HUECO, TRABAJADOR }
 @export var cebo_mult_tiempo: float = 1.3
 ## Multiplica la espera hasta que pica mientras dura.
 @export var cebo_mult_espera: float = 1.0
+
+
+@export_group("Mejora")
+## Nombre del efecto que sube (ej. "despensa", "precio_plato", "mesas").
+@export var efecto: StringName
+@export var valor_efecto: float = 1.0
 
 
 func precio_actual(compras: int) -> float:

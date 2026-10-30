@@ -126,6 +126,8 @@ func interactuar(i: Interactuable) -> void:
 		return
 	match i.accion:
 		Interactuable.Accion.TIENDA:
+			if i.recibe_cosecha and Juego.total_cosecha() > 0:
+				await _entregar_cosecha(i)
 			tienda.abrir(i)
 		Interactuable.Accion.BESTIARIO:
 			bestiario.abrir()
@@ -137,6 +139,18 @@ func interactuar(i: Interactuable) -> void:
 		Interactuable.Accion.CUBO:
 			if not Juego.cubo_en_mano:
 				Juego.coger_cubo()
+
+
+## Lo cosechado sale volando de ti hacia quien lo recibe (un icono por unidad, hasta un tope).
+func _entregar_cosecha(i: Interactuable) -> void:
+	var texturas: Array[Texture2D] = []
+	var dado: Dictionary = Juego.entregar_cosecha()
+	for id: String in dado:
+		var c: CultivoData = Juego.cultivos.get(StringName(id))
+		if c and c.icono:
+			for k in mini(12, int(dado[id])):
+				texturas.append(c.icono)
+	await Vuelos.enviar(self, i, texturas, Callable(), null, 1.4)
 
 
 ## El cubo de la mano desaparece para salir volando hacia su sitio.

@@ -71,6 +71,18 @@ theme_type_variation = &"Pequeno"
 theme_override_colors/font_color = Color(0.55, 0.95, 0.45, 1)
 text = "Cebo: 5 pescas"
 
+[node name="Cosecha" type="Label" parent="Info/Lista"]
+layout_mode = 2
+theme_type_variation = &"Pequeno"
+theme_override_colors/font_color = Color(0.7, 0.9, 0.5, 1)
+text = "Cosecha: 9 pimientos · 4 algas"
+
+[node name="Restaurante" type="Label" parent="Info/Lista"]
+layout_mode = 2
+theme_type_variation = &"Pequeno"
+theme_override_colors/font_color = Color(0.95, 0.75, 0.5, 1)
+text = "O Mar: 34/120 raciones"
+
 [node name="Prompt" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 8

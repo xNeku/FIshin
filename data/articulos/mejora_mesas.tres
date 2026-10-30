@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="ArticuloData" format=3]
+
+[ext_resource type="Script" path="res://scripts/datos/articulo_data.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://art/mundo/props/mesa_sombrilla.png" id="2_icono"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"mejora_mesas"
+nombre = "Más mesas"
+descripcion = "Caben 6 turistas más por visita."
+icono = ExtResource("2_icono")
+tipo = 4
+precio = 7500.0
+crecimiento_precio = 2.0
+max_compras = 5
+efecto = &"mesas"
+valor_efecto = 6.0

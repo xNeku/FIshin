@@ -19,6 +19,8 @@ enum Accion { TIENDA, BESTIARIO, DIALOGO, CUBO, VENTA, ARBOL }
 @export var articulos: Array[ArticuloData] = []
 @export var compra_peces: bool = false
 @export var saludos: Array[String] = []
+## Antes de abrir la tienda, le das todo lo que has cosechado (el restaurante).
+@export var recibe_cosecha: bool = false
 
 @export_group("Primera vez")
 ## Si se rellena, la primera vez que hablas con él dice esto (diálogo) y después hace su acción normal.

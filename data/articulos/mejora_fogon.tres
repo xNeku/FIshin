@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="ArticuloData" format=3]
+
+[ext_resource type="Script" path="res://scripts/datos/articulo_data.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://art/mundo/props/llama.png" id="2_icono"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"mejora_fogon"
+nombre = "Fogón nuevo"
+descripcion = "Los platos se cobran un 25 % más."
+icono = ExtResource("2_icono")
+tipo = 4
+precio = 9000.0
+crecimiento_precio = 2.2
+max_compras = 5
+efecto = &"precio_plato"
+valor_efecto = 0.25

@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="AparicionData" format=3]
+
+[ext_resource type="Script" path="res://scripts/datos/aparicion_data.gd" id="1_script"]
+[ext_resource type="PackedScene" path="res://scenes/mundo/islas/restaurante.tscn" id="2_escena"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"restaurante"
+nombre = "Restaurante O Mar"
+escena = ExtResource("2_escena")
+ancla = Vector2i(9, 9)
+celdas = Array[Vector2i]([Vector2i(7, 7), Vector2i(8, 7), Vector2i(9, 7), Vector2i(10, 7), Vector2i(11, 7), Vector2i(7, 8), Vector2i(8, 8), Vector2i(9, 8), Vector2i(10, 8), Vector2i(11, 8), Vector2i(7, 9), Vector2i(8, 9), Vector2i(9, 9), Vector2i(10, 9), Vector2i(11, 9), Vector2i(7, 10), Vector2i(8, 10), Vector2i(9, 10), Vector2i(10, 10), Vector2i(11, 10), Vector2i(7, 11), Vector2i(8, 11), Vector2i(9, 11), Vector2i(10, 11), Vector2i(11, 11)])
+celdas_bloqueadas = Array[Vector2i]([Vector2i(9, 9), Vector2i(8, 10), Vector2i(9, 10), Vector2i(10, 10)])
+orden = 9
+condicion = 0
+valor = 0.0
+requiere = Array[StringName]([&"camino_2"])
+llegada = 1

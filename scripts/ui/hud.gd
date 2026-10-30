@@ -65,6 +65,8 @@ const TECLA_A_ACCION: Dictionary = {"E": &"interactuar", "Q": &"cambiar_modo", "
 @onready var barca: Label = $Info/Lista/Barca
 @onready var cana: Label = $Info/Lista/Cana
 @onready var cebo: Label = $Info/Lista/Cebo
+@onready var cosecha: Label = get_node_or_null("Info/Lista/Cosecha")
+@onready var restaurante: Label = get_node_or_null("Info/Lista/Restaurante")
 @onready var reloj: Label = get_node_or_null("Info/Lista/Reloj")
 @onready var prompt: Control = $Prompt
 @onready var teclas: Control = $Prompt/Teclas
@@ -147,6 +149,7 @@ func _process(delta: float) -> void:
 	cebo.visible = not Juego.cebo.is_empty()
 	if cebo.visible:
 		cebo.text = "Cebo: %d pescas" % int(Juego.cebo.pescas)
+	_info_villa()
 	_mostrar_acciones(dt)
 	_icono_interactuar(dt)
 	if resultado.visible:
@@ -289,6 +292,23 @@ func _icono_interactuar(dt: float) -> void:
 	var pantalla: Vector2 = popups.get_global_transform().affine_inverse() * camara.unproject_position(p)
 	var bote: float = sin(_t_icono * 4.0) * bote_icono
 	icono_interactuar.position = pantalla - icono_interactuar.size * 0.5 + Vector2(0.0, bote)
+
+
+## Lo cosechado que llevas y la despensa del restaurante (solo si existen).
+func _info_villa() -> void:
+	if cosecha:
+		cosecha.visible = Juego.total_cosecha() > 0
+		if cosecha.visible:
+			var partes: Array[String] = []
+			for id: String in Juego.cosecha:
+				var c: CultivoData = Juego.cultivos.get(StringName(id))
+				partes.append("%d %s" % [Juego.cosecha[id], c.nombre.to_lower() if c else id])
+			cosecha.text = "Cosecha: " + " · ".join(partes)
+	if restaurante:
+		var r: Node = get_tree().get_first_node_in_group("restaurante")
+		restaurante.visible = r != null
+		if r:
+			restaurante.text = "O Mar: %d/%d raciones" % [r.raciones(), int(r.capacidad())]
 
 
 ## Punto del mundo donde va el botón de interactuar, o null si no hay nada.

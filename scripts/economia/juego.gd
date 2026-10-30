@@ -8,8 +8,9 @@ signal cebo_cambiado
 signal cubo_cambiado
 signal trabajadores_cambiados(cantidad: int)
 signal habilidades_cambiadas
+signal cosecha_cambiada
 
-const VERSION_SAVE := 6
+const VERSION_SAVE := 7
 const RUTA_SAVE := "user://partida.json"
 const RUTA_COPIA := "user://partida.anterior.json"
 ## Opciones del jugador (filtro, etc.): van aparte para que borrar la partida no las toque.
@@ -38,6 +39,8 @@ var stats: Dictionary = {
 	"peces_pescados": 0, "perfectos": 0, "escapados": 0, "legendarios": 0, "mejor_combo": 0, "tiempo_jugado": 0.0,
 	# Suma de la racha de cada pez (×2 si perfecto): mide lo bien que pescas. Lo usan algunas llegadas.
 	"puntos_pesca": 0.0,
+	# Restaurante: clientes servidos y visitas de turistas.
+	"clientes": 0, "visitas_turistas": 0,
 }
 ## id de pez -> mejor calidad conseguida
 var coleccion: Dictionary = {}
@@ -60,6 +63,15 @@ var cubo_capturas: Array[Dictionary] = []
 var cubo_en_mano: bool = false
 ## Hitos y cosas desbloqueadas (ej. "barco_comerciante": true)
 var flags: Dictionary = {}
+## Lo cosechado que llevas encima, para dárselo al restaurante: id de cultivo -> cantidad.
+var cosecha: Dictionary = {}
+## Despensa del restaurante: "raciones" (pescado que le manda la lonja), "valor" (lo que valen en total)
+## y lo que le has dado de cada cultivo (id -> cantidad).
+var despensa: Dictionary = {"raciones": 0.0, "valor": 0.0}
+## Cultivos que existen (data/cultivos), por id.
+var cultivos: Dictionary = {}
+## Artículos de tipo MEJORA (data/articulos): suman a los efectos según las veces comprados.
+var _mejoras: Array[ArticuloData] = []
 ## Árbol de habilidades: id de nodo -> nivel comprado.
 var habilidades: Dictionary = {}
 var arbol: ArbolData
@@ -83,6 +95,12 @@ func _ready() -> void:
 	cana_id = cana_inicial
 	if ResourceLoader.exists(RUTA_ARBOL):
 		arbol = load(RUTA_ARBOL)
+	_cargar_carpeta("res://data/cultivos", func(r: Resource) -> void:
+		if r is CultivoData:
+			cultivos[r.id] = r)
+	_cargar_carpeta("res://data/articulos", func(r: Resource) -> void:
+		if r is ArticuloData and r.tipo == ArticuloData.Tipo.MEJORA:
+			_mejoras.append(r))
 	stats_pesca = load(RUTA_STATS)
 	reloj_data = load(RUTA_RELOJ)
 	reloj = reloj_data.inicio if reloj_data else 0.0
@@ -288,6 +306,9 @@ func mejorar_habilidad(nodo: NodoArbolData) -> bool:
 
 func _recalcular_efectos() -> void:
 	_efectos.clear()
+	for m: ArticuloData in _mejoras:
+		if m.efecto != &"":
+			_efectos[m.efecto] = _efectos.get(m.efecto, 0.0) + m.valor_efecto * veces_comprado(m)
 	if arbol == null:
 		return
 	for n: NodoArbolData in arbol.nodos:
@@ -320,6 +341,37 @@ func mult_trabajadores() -> float:
 	if lloviendo:
 		m += efecto(&"trabajadores_lluvia")
 	return m
+
+
+# --- Cultivos y restaurante ---
+
+func sumar_cosecha(id: StringName, n: int) -> void:
+	cosecha[String(id)] = int(cosecha.get(String(id), 0)) + n
+	cosecha_cambiada.emit()
+
+
+func total_cosecha() -> int:
+	var t: int = 0
+	for k: String in cosecha:
+		t += int(cosecha[k])
+	return t
+
+
+## Pasa todo lo cosechado a la despensa del restaurante. Devuelve lo que se ha dado (id -> cantidad).
+func entregar_cosecha() -> Dictionary:
+	var dado: Dictionary = cosecha.duplicate()
+	for k: String in cosecha:
+		despensa[k] = int(despensa.get(k, 0)) + int(cosecha[k])
+	cosecha.clear()
+	cosecha_cambiada.emit()
+	return dado
+
+
+func _cargar_carpeta(carpeta: String, hacer: Callable) -> void:
+	for f: String in DirAccess.get_files_at(carpeta):
+		f = f.trim_suffix(".remap")
+		if f.ends_with(".tres"):
+			hacer.call(load(carpeta + "/" + f))
 
 
 # --- Puerto ---
@@ -421,6 +473,9 @@ func comprar(art: ArticuloData) -> bool:
 			cebo_cambiado.emit()
 		ArticuloData.Tipo.TRABAJADOR:
 			contratar_trabajador()
+		ArticuloData.Tipo.MEJORA:
+			_recalcular_efectos()
+			habilidades_cambiadas.emit()
 	return true
 
 
@@ -449,7 +504,7 @@ func guardar() -> void:
 		"capturas": capturas, "cana": String(cana_id), "cebo": cebo, "compras": compras,
 		"stats": stats, "coleccion": coleccion, "capturados": capturados, "flags": flags,
 		"trabajadores": trabajadores, "cubo": cubo_capturas, "cubo_en_mano": cubo_en_mano,
-		"habilidades": habilidades, "reloj": reloj,
+		"habilidades": habilidades, "reloj": reloj, "cosecha": cosecha, "despensa": despensa,
 		"fecha": Time.get_unix_time_from_system(),
 	}
 	# Primero a un temporal y luego se cambia por el bueno: si se corta a medias, el save anterior sigue vivo.
@@ -516,6 +571,19 @@ func cargar() -> void:
 	if h is Dictionary:
 		for k: String in h:
 			habilidades[k] = int(h[k])
+	# v6 no tenía restaurante ni cultivos.
+	cosecha.clear()
+	var co: Variant = datos.get("cosecha", {})
+	if co is Dictionary:
+		for k: String in co:
+			cosecha[k] = int(co[k])
+	despensa = {"raciones": 0.0, "valor": 0.0}
+	var de: Variant = datos.get("despensa", {})
+	if de is Dictionary:
+		for k: String in de:
+			despensa[k] = float(de[k]) if k in ["raciones", "valor"] else int(de[k])
+	for k: String in ["clientes", "visitas_turistas"]:
+		stats[k] = int(stats.get(k, 0))
 
 
 func borrar_partida() -> void:
@@ -539,6 +607,8 @@ func borrar_partida() -> void:
 	cubo_capturas.clear()
 	cubo_en_mano = false
 	habilidades.clear()
+	cosecha.clear()
+	despensa = {"raciones": 0.0, "valor": 0.0}
 	_recalcular_efectos()
 	habilidades_cambiadas.emit()
 	rublos_cambiados.emit(rublos)

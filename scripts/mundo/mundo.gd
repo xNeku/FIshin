@@ -216,6 +216,13 @@ func cumple(a: AparicionData) -> bool:
 			return Juego.stats.puntos_pesca >= a.valor
 		AparicionData.Condicion.PESCADORES:
 			return Juego.trabajadores >= a.valor
+		AparicionData.Condicion.CLIENTES:
+			return Juego.stats.clientes >= a.valor
+		AparicionData.Condicion.DIAS_TRAS_REQUISITO:
+			var desde: float = 0.0
+			for r: StringName in a.requiere:
+				desde = maxf(desde, float(Juego.flags.get("reloj_" + String(r), Juego.reloj)))
+			return Juego.reloj - desde >= a.valor * Juego.reloj_data.duracion_ciclo()
 	return false
 
 
@@ -227,6 +234,7 @@ func traer(a: AparicionData) -> void:
 	_ocupado = true
 	_llegando = a
 	Juego.flags["aparecido_" + String(a.id)] = true
+	Juego.flags["reloj_" + String(a.id)] = Juego.reloj
 	Juego.guardar()
 	var n: Node3D = _instanciar(a)
 	aparicion_empezada.emit(a)

@@ -1,0 +1,355 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/mundo/restaurante.gd" id="1_script"]
+[ext_resource type="Material" path="res://art/materiales/arena.tres" id="2_arena"]
+[ext_resource type="Material" path="res://art/materiales/tierra.tres" id="3_tierra"]
+[ext_resource type="Texture2D" path="res://art/mundo/restaurante.png" id="4_casa"]
+[ext_resource type="Texture2D" path="res://art/mundo/props/mesa_sombrilla.png" id="5_mesa"]
+[ext_resource type="Script" path="res://scripts/mundo/interactuable.gd" id="6_interactuable"]
+[ext_resource type="Script" path="res://scripts/datos/articulo_data.gd" id="7_articulo"]
+[ext_resource type="Resource" path="res://data/articulos/mejora_despensa.tres" id="8_despensa"]
+[ext_resource type="Resource" path="res://data/articulos/mejora_fogon.tres" id="9_fogon"]
+[ext_resource type="Resource" path="res://data/articulos/mejora_mesas.tres" id="10_mesas"]
+
+[sub_resource type="BoxMesh" id="b_arena"]
+material = ExtResource("2_arena")
+size = Vector3(2, 0.35, 2)
+
+[sub_resource type="BoxMesh" id="b_roca"]
+material = ExtResource("3_tierra")
+size = Vector3(2.05, 0.6, 2.05)
+
+[node name="Restaurante" type="Node3D" node_paths=PackedStringArray("casa")]
+script = ExtResource("1_script")
+casa = NodePath("Casa")
+
+[node name="Suelo" type="Node3D" parent="."]
+
+[node name="Casilla_7_7" type="Node3D" parent="Suelo"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, 4)
+
+[node name="Roca" type="MeshInstance3D" parent="Suelo/Casilla_7_7"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
+mesh = SubResource("b_roca")
+
+[node name="Arena" type="MeshInstance3D" parent="Suelo/Casilla_7_7"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+mesh = SubResource("b_arena")
+
+[node name="Casilla_7_8" type="Node3D" parent="Suelo"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, 2)
+
+[node name="Roca" type="MeshInstance3D" parent="Suelo/Casilla_7_8"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
+mesh = SubResource("b_roca")
+
+[node name="Arena" type="MeshInstance3D" parent="Suelo/Casilla_7_8"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+mesh = SubResource("b_arena")
+
+[node name="Casilla_7_9" type="Node3D" parent="Suelo"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, 0)
+
+[node name="Roca" type="MeshInstance3D" parent="Suelo/Casilla_7_9"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
+mesh = SubResource("b_roca")
+
+[node name="Arena" type="MeshInstance3D" parent="Suelo/Casilla_7_9"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+mesh = SubResource("b_arena")
+
+[node name="Casilla_7_10" type="Node3D" parent="Suelo"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, -2)
+
+[node name="Roca" type="MeshInstance3D" parent="Suelo/Casilla_7_10"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
+mesh = SubResource("b_roca")
+
+[node name="Arena" type="MeshInstance3D" parent="Suelo/Casilla_7_10"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+mesh = SubResource("b_arena")
+
+[node name="Casilla_7_11" type="Node3D" parent="Suelo"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, -4)
+
+[node name="Roca" type="MeshInstance3D" parent="Suelo/Casilla_7_11"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
+mesh = SubResource("b_roca")
+
+[node name="Arena" type="MeshInstance3D" parent="Suelo/Casilla_7_11"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+mesh = SubResource("b_arena")
+
+[node name="Casilla_8_7" type="Node3D" parent="Suelo"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 4)
+
+[node name="Roca" type="MeshInstance3D" parent="Suelo/Casilla_8_7"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
+mesh = SubResource("b_roca")
+
+[node name="Arena" type="MeshInstance3D" parent="Suelo/Casilla_8_7"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+mesh = SubResource("b_arena")
+
+[node name="Casilla_8_8" type="Node3D" parent="Suelo"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 2)
+
+[node name="Roca" type="MeshInstance3D" parent="Suelo/Casilla_8_8"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
+mesh = SubResource("b_roca")
+
+[node name="Arena" type="MeshInstance3D" parent="Suelo/Casilla_8_8"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+mesh = SubResource("b_arena")
+
+[node name="Casilla_8_9" type="Node3D" parent="Suelo"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 0)
+
+[node name="Roca" type="MeshInstance3D" parent="Suelo/Casilla_8_9"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
+mesh = SubResource("b_roca")
+
+[node name="Arena" type="MeshInstance3D" parent="Suelo/Casilla_8_9"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+mesh = SubResource("b_arena")
+
+[node name="Casilla_8_10" type="Node3D" parent="Suelo"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, -2)
+
+[node name="Roca" type="MeshInstance3D" parent="Suelo/Casilla_8_10"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
+mesh = SubResource("b_roca")
+
+[node name="Arena" type="MeshInstance3D" parent="Suelo/Casilla_8_10"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+mesh = SubResource("b_arena")
+
+[node name="Casilla_8_11" type="Node3D" parent="Suelo"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, -4)
+
+[node name="Roca" type="MeshInstance3D" parent="Suelo/Casilla_8_11"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
+mesh = SubResource("b_roca")
+
+[node name="Arena" type="MeshInstance3D" parent="Suelo/Casilla_8_11"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+mesh = SubResource("b_arena")
+
+[node name="Casilla_9_7" type="Node3D" parent="Suelo"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4)
+
+[node name="Roca" type="MeshInstance3D" parent="Suelo/Casilla_9_7"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
+mesh = SubResource("b_roca")
+
+[node name="Arena" type="MeshInstance3D" parent="Suelo/Casilla_9_7"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+mesh = SubResource("b_arena")
+
+[node name="Casilla_9_8" type="Node3D" parent="Suelo"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2)
+
+[node name="Roca" type="MeshInstance3D" parent="Suelo/Casilla_9_8"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
+mesh = SubResource("b_roca")
+
+[node name="Arena" type="MeshInstance3D" parent="Suelo/Casilla_9_8"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+mesh = SubResource("b_arena")
+
+[node name="Casilla_9_9" type="Node3D" parent="Suelo"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+
+[node name="Roca" type="MeshInstance3D" parent="Suelo/Casilla_9_9"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
+mesh = SubResource("b_roca")
+
+[node name="Arena" type="MeshInstance3D" parent="Suelo/Casilla_9_9"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+mesh = SubResource("b_arena")
+
+[node name="Casilla_9_10" type="Node3D" parent="Suelo"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2)
+
+[node name="Roca" type="MeshInstance3D" parent="Suelo/Casilla_9_10"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
+mesh = SubResource("b_roca")
+
+[node name="Arena" type="MeshInstance3D" parent="Suelo/Casilla_9_10"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+mesh = SubResource("b_arena")
+
+[node name="Casilla_9_11" type="Node3D" parent="Suelo"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -4)
+
+[node name="Roca" type="MeshInstance3D" parent="Suelo/Casilla_9_11"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
+mesh = SubResource("b_roca")
+
+[node name="Arena" type="MeshInstance3D" parent="Suelo/Casilla_9_11"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+mesh = SubResource("b_arena")
+
+[node name="Casilla_10_7" type="Node3D" parent="Suelo"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 4)
+
+[node name="Roca" type="MeshInstance3D" parent="Suelo/Casilla_10_7"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
+mesh = SubResource("b_roca")
+
+[node name="Arena" type="MeshInstance3D" parent="Suelo/Casilla_10_7"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+mesh = SubResource("b_arena")
+
+[node name="Casilla_10_8" type="Node3D" parent="Suelo"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 2)
+
+[node name="Roca" type="MeshInstance3D" parent="Suelo/Casilla_10_8"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
+mesh = SubResource("b_roca")
+
+[node name="Arena" type="MeshInstance3D" parent="Suelo/Casilla_10_8"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+mesh = SubResource("b_arena")
+
+[node name="Casilla_10_9" type="Node3D" parent="Suelo"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 0)
+
+[node name="Roca" type="MeshInstance3D" parent="Suelo/Casilla_10_9"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
+mesh = SubResource("b_roca")
+
+[node name="Arena" type="MeshInstance3D" parent="Suelo/Casilla_10_9"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+mesh = SubResource("b_arena")
+
+[node name="Casilla_10_10" type="Node3D" parent="Suelo"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, -2)
+
+[node name="Roca" type="MeshInstance3D" parent="Suelo/Casilla_10_10"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
+mesh = SubResource("b_roca")
+
+[node name="Arena" type="MeshInstance3D" parent="Suelo/Casilla_10_10"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+mesh = SubResource("b_arena")
+
+[node name="Casilla_10_11" type="Node3D" parent="Suelo"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, -4)
+
+[node name="Roca" type="MeshInstance3D" parent="Suelo/Casilla_10_11"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
+mesh = SubResource("b_roca")
+
+[node name="Arena" type="MeshInstance3D" parent="Suelo/Casilla_10_11"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+mesh = SubResource("b_arena")
+
+[node name="Casilla_11_7" type="Node3D" parent="Suelo"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 4)
+
+[node name="Roca" type="MeshInstance3D" parent="Suelo/Casilla_11_7"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
+mesh = SubResource("b_roca")
+
+[node name="Arena" type="MeshInstance3D" parent="Suelo/Casilla_11_7"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+mesh = SubResource("b_arena")
+
+[node name="Casilla_11_8" type="Node3D" parent="Suelo"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 2)
+
+[node name="Roca" type="MeshInstance3D" parent="Suelo/Casilla_11_8"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
+mesh = SubResource("b_roca")
+
+[node name="Arena" type="MeshInstance3D" parent="Suelo/Casilla_11_8"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+mesh = SubResource("b_arena")
+
+[node name="Casilla_11_9" type="Node3D" parent="Suelo"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 0)
+
+[node name="Roca" type="MeshInstance3D" parent="Suelo/Casilla_11_9"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
+mesh = SubResource("b_roca")
+
+[node name="Arena" type="MeshInstance3D" parent="Suelo/Casilla_11_9"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+mesh = SubResource("b_arena")
+
+[node name="Casilla_11_10" type="Node3D" parent="Suelo"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, -2)
+
+[node name="Roca" type="MeshInstance3D" parent="Suelo/Casilla_11_10"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
+mesh = SubResource("b_roca")
+
+[node name="Arena" type="MeshInstance3D" parent="Suelo/Casilla_11_10"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+mesh = SubResource("b_arena")
+
+[node name="Casilla_11_11" type="Node3D" parent="Suelo"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, -4)
+
+[node name="Roca" type="MeshInstance3D" parent="Suelo/Casilla_11_11"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
+mesh = SubResource("b_roca")
+
+[node name="Arena" type="MeshInstance3D" parent="Suelo/Casilla_11_11"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+mesh = SubResource("b_arena")
+
+[node name="Casa" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.65, -1.2)
+billboard = 2
+alpha_cut = 1
+texture_filter = 0
+pixel_size = 0.05
+texture = ExtResource("4_casa")
+
+[node name="Mesas" type="Node3D" parent="."]
+
+[node name="Mesa1" type="Sprite3D" parent="Mesas"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.2, 0.8, 2.4)
+billboard = 2
+alpha_cut = 1
+texture_filter = 0
+pixel_size = 0.05
+texture = ExtResource("5_mesa")
+
+[node name="Mesa2" type="Sprite3D" parent="Mesas"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.2, 0.8, 2.4)
+billboard = 2
+alpha_cut = 1
+texture_filter = 0
+pixel_size = 0.05
+texture = ExtResource("5_mesa")
+
+[node name="Mesa3" type="Sprite3D" parent="Mesas"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.6, 0.8, -1.0)
+billboard = 2
+alpha_cut = 1
+texture_filter = 0
+pixel_size = 0.05
+texture = ExtResource("5_mesa")
+
+[node name="Mesa4" type="Sprite3D" parent="Mesas"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.6, 0.8, -1.2)
+billboard = 2
+alpha_cut = 1
+texture_filter = 0
+pixel_size = 0.05
+texture = ExtResource("5_mesa")
+
+[node name="Interaccion" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.0)
+script = ExtResource("6_interactuable")
+texto_accion = "Hablar"
+radio = 2.4
+prioridad = 1
+altura_icono = 1.7
+nombre = "O Mar"
+articulos = Array[ExtResource("7_articulo")]([ExtResource("8_despensa"), ExtResource("9_fogon"), ExtResource("10_mesas")])
+saludos = Array[String](["¡Bienvenido a O Mar! Lo que vendes en la lonja, aquí se cocina.", "Si me traes pimientos o algas, los platos salen mejores.", "Hoy hay caldeirada. Mañana también. Siempre hay caldeirada."])
+recibe_cosecha = true

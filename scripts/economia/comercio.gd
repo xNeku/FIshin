@@ -3,6 +3,8 @@ extends Node
 ## Puedes moverte mientras: las piezas te siguen.
 
 signal venta_terminada(total: float)
+## Peces que se acaban de vender (el restaurante se queda una parte gratis, vía la lonja).
+signal peces_vendidos(capturas: Array[Dictionary])
 
 @export var jugador: Node3D
 ## El náufrago cuando está pescando en la barca.
@@ -81,6 +83,7 @@ func vender_cubo_con_barco() -> float:
 		return 0.0
 	var capturas: Array[Dictionary] = Juego.vaciar_cubo()
 	var total: float = _precio(capturas)
+	peces_vendidos.emit(capturas)
 	Juego.dinero_en_camino += total
 	await Vuelos.enviar_peces(cubo, barco, capturas)
 	var lonja: Node3D = barco.mundo.get_node_or_null(String(id_lonja)) if Juego.lonja_abierta() else null
@@ -98,6 +101,7 @@ func _vender(capturas: Array[Dictionary], desde: Node3D, comprador: Node3D) -> f
 	if capturas.is_empty():
 		return 0.0
 	var total: float = _precio(capturas)
+	peces_vendidos.emit(capturas)
 	Juego.dinero_en_camino += total
 	await Vuelos.enviar_peces(desde, comprador, capturas)
 	Juego.dinero_en_camino -= total

@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="CultivoData" format=3]
+
+[ext_resource type="Script" path="res://scripts/datos/cultivo_data.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://art/cultivos/icono_pimiento.png" id="2_icono"]
+[ext_resource type="Texture2D" path="res://art/cultivos/pimiento_0.png" id="3_f0"]
+[ext_resource type="Texture2D" path="res://art/cultivos/pimiento_1.png" id="4_f1"]
+[ext_resource type="Texture2D" path="res://art/cultivos/pimiento_2.png" id="5_f2"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"pimiento"
+nombre = "Pimientos de Padrón"
+icono = ExtResource("2_icono")
+fases = Array[Texture2D]([ExtResource("3_f0"), ExtResource("4_f1"), ExtResource("5_f2")])
+segundos_crecer = 120.0
+por_planta = 3
+uso = 0
+valor = 0.4
