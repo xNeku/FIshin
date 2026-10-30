@@ -37,7 +37,7 @@ Marcas: [DECIDIDO] lo decidió el diseñador · [PROPUESTA] sugerencia de Claude
 - [DECIDIDO] **Camino de madera** (concepto permanente): conector entre islotes y edificios que irá creciendo; su forma es la estructura del juego y el diseñador la retoca en la carta. Primer tramo a los 20 min de juego: T desde el donut hacia arriba, de (0,2) a (0,6) y de (−2,6) a (2,6).
 - [DECIDIDO] **Puerto pesquero** (5 casillas en (2..4, 0) y (3..4, −1)): aparece al hacer un combo x10. Pantalán de madera roto con un pescador en (4,−1), primo del mercader, que trabaja para ti.
 - Nota: el combo x10 solo es posible con la Sabia caña (rota: hasta 5, decente: hasta 9). El puerto queda para después del viejo.
-- [DECIDIDO] **Lonja** (3×3 en x −1..1, y 7..9, al final del camino): edificio principal de venta. Al interactuar se vende de golpe todo lo que llevas (barca y cubo). Emerge del fondo del mar. Casa blanca medio moruna con toldo azul y blanco, bandera con un pez pocho y flotadores rojos y blancos.
+- [DECIDIDO] **Lonja** (3×3 en x −1..1, y 7..9, al final del camino): centro de venta conceptual. No se va a ella a vender: desde que aparece, todo lo que vendas (también al comerciante) vale ×1,3. Con el porteador, el comerciante le lleva el cubo navegando. Con los restaurantes será el centro neurálgico del pescado: se verá cómo lanza el pescado a cada destino. Emerge del fondo del mar. Casa blanca medio moruna con toldo azul y blanco, bandera con un pez pocho y flotadores rojos y blancos.
 - [PROPUESTA] La lonja aparece cuando ya existe el camino y has ganado 1.500 ₽ en total. La fila de la casa (y = 9) no se pisa.
 
 ## 4. Modos de juego
@@ -91,7 +91,7 @@ Marcas: [DECIDIDO] lo decidió el diseñador · [PROPUESTA] sugerencia de Claude
 
 ## 7. Automatización y villa
 - [DECIDIDO] Fábricas y trabajadores pescan y venden en automático.
-- [DECIDIDO] Puerto: los trabajadores pescan solos y meten la pesca en un cubo en (2,0). Coges el cubo con E y lo llevas a cualquier mercader o a la lonja, que te paga con la misma animación. Más adelante, con el árbol, un trabajador lo hará solo. El pantalán crecerá en tamaño, calidad y trabajadores.
+- [DECIDIDO] Puerto: los trabajadores pescan solos y meten la pesca en un cubo en (2,0). Coges el cubo con E y lo llevas a cualquier mercader, que te paga con la misma animación. Con la mejora Porteador del árbol, los pescadores le dan el cubo al comerciante y este, de vez en cuando, hace un viaje rápido por el agua hasta la lonja a venderlo. El pantalán crecerá en tamaño, calidad y trabajadores.
 - [DECIDIDO] El primer pescador está en la base, junto al cubo. Los demás se colocan al azar en bordes con agua delante, cerca de un compañero, y nunca obstruyen el paso (no tienen colisión). Algunos se sientan al borde de los tablones.
 - [DECIDIDO] De primeras solo pescan el pez más barato. Cada uno coge 10, va andando al cubo y lo deja.
 - [PROPUESTA] Tras venderlo, el cubo vuelve volando solo. Mientras lo llevas, los pescadores esperan junto a la base. Con el cubo en la mano no puedes volver a pescar.

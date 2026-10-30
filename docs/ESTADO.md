@@ -32,7 +32,7 @@ Parada para valorar rumbo (29 oct). Hay un tramo jugable de principio a fin de l
 - `scenes/efectos/vuelos.tscn` (autoload Vuelos): piezas que vuelan en parábola persiguiendo a quien recibe. `enviar`, `enviar_peces`, `enviar_dinero` (suma rublos al llegar cada pieza), `repartir` (monedas/billetes/fajos/sacos).
 - `scripts/economia/comercio.gd` (nodo Comercio en main): `vender_barca(comprador)` y `vender_cubo(comprador)` con animación. La Tienda lo usa al pulsar "Vender todo".
 - Puerto: `scripts/mundo/puerto.gd` (raíz de puerto_pesquero.tscn, hereda de Isla) contrata pescadores según Juego.trabajadores y elige puestos (Mundo.puestos_de_pesca, cerca de compañeros). `trabajador.gd` + `scenes/mundo/trabajador.tscn`: puesto → pescar el pez más barato → cubo (Mundo.ruta con saltos). `cubo.gd`. Juego guarda trabajadores, cubo_capturas y cubo_en_mano (save v3).
-- Interactuable accion VENTA: Comercio.vender_todo (barca + cubo en mano), sin menú (la lonja).
+- Interactuable accion VENTA: Comercio.vender_todo (barca + cubo en mano), sin menú. La lonja ya no la usa: es un sitio conceptual (ver sesión 1 nov, noche).
 - Interactuable tiene `prioridad` (cubo 2, comerciante 1, charla 0). El barco comerciante tiene su Interactuable para cuando vas andando.
 - `scenes/main.tscn`: lo monta todo.
 - Pixelado: `scripts/efectos/pixelador.gd` + `scenes/efectos/pixelador.tscn` (en main, grupo "pixelador"). Copia la cámara del juego a una SubViewport a 1/4 y la escala sin suavizar.
@@ -43,13 +43,13 @@ Parada para valorar rumbo (29 oct). Hay un tramo jugable de principio a fin de l
 - Interfaz pixel: todo sale del tema `art/tema.tres` (fuente `art/fuentes/FishinPixel.ttf`, piezas 9-slice en `art/ui/`). Variaciones: Titulo (gris), Pequeno, Grande, Dinero (amarillo), PanelSeleccion, BarraNaranja. Tamaños de letra en múltiplos de 10 (1 píxel de fuente = tamaño/10). La fuente sale de Pixelify Sans (OFL, licencia en `art/fuentes/FishinPixel-OFL.txt`) ajustada a rejilla; el 2 y el 5 están redibujados.
 - Iconos de teclas: pack CC0 de Xelu (vía addon Controller Icons), pixelados a 24 px con contorno blanco y versión _pulsada, en `art/ui/teclas/<teclado|xbox|ps>_<accion>[_pulsada].png` (créditos en CREDITOS.txt). El HUD elige según el último dispositivo tocado; el tipo de mando sale de su nombre (Input.get_joy_name) y, si no se reconoce, `HUD.mando_por_defecto` (ps).
 - Animación de entrada: `scenes/ui/animacion_entrada.tscn` como hija de una ventana o popup; se lanza sola al aparecer. Estilos LINEA (raya que se abre a saltos), CAIDA, PARPADEO, FUNDIDO; duración, pasos y sonido (`art/sfx/abrir.wav`) por instancia. Puesta en menú, tienda, bestiario, diálogo, banner del pez, caja de acciones y aviso de barca llena.
-- Caja de acciones (abajo a la derecha, nodo Accion del HUD): junta `Jugador.acciones()` y hablar con el comerciante; si hay varias, alterna cada `HUD.cambio_acciones` (2 s). En el donut siempre está la Q en cuanto hay tierra.
+- Caja de acciones (abajo a la derecha, nodo Accion del HUD): junta `Jugador.acciones()` y hablar con el comerciante; si hay varias, alterna cada `HUD.cambio_acciones` (2 s). Bajar del donut o sentarse ya no salen ahí: el botón (Q / L1) sale encima del náufrago cuando pisa el donut (`Jugador.puede_sentarse`, `HUD.altura_icono_sentarse`).
 - Filtro CRT: `scenes/efectos/crt.tscn` (capa 100, valores en el material de Filtro). Se guarda en las opciones (`Juego.opcion` / `poner_opcion`, `user://opciones.cfg`, aparte del save para que borrar partida no lo toque); botón en Opciones.
 - Guardado: se escribe a `partida.json.tmp` y se cambia por el bueno; el anterior queda en `partida.anterior.json` y se carga si el principal está roto. El dinero que va volando en una venta (`Juego.dinero_en_camino`) se guarda como si hubiera llegado.
 - Llegada por mar: `Mundo._lado_de_llegada` (punto cardinal del centro de la isla vista desde la barca).
 - Árbol de habilidades: datos en `data/arbol/` (`arbol.tres` con ramas y nodos; RamaArbolData, NodoArbolData). Juego guarda `habilidades` (id → nivel, save v4) y da `Juego.efecto(nombre)`, `mejorar_habilidad`, `motivo_no_mejorar`, `mult_venta`, `mult_trabajadores`, `de_chill` (segundos sin tocar nada). Pantalla: `scenes/ui/arbol.tscn` (arbol.gd), con cada nodo como instancia de `nodo_arbol.tscn` colocada a mano en Lienzo/Nodos; los caminos (`conexion_arbol.tscn`, shader `agua_camino`) se trazan solos por los requisitos. Se abre con el viejo (Interactuable accion ARBOL), que tiene botón a su tienda. Iconos 12×12 en `art/ui/arbol/iconos/` (blancos, se tiñen con el color de la rama).
 - `scripts/ui/iconos_input.gd` (IconosInput): dibujos de teclas según el dispositivo; lo usan HUD, árbol y las pistas de los menús (`scenes/ui/pista_accion.tscn`).
-- Mando: R2/RT interactuar (E en teclado; la Cruz ya no, que es del minijuego), Select/Share/View enseña u oculta el panel de estado (I en teclado; `HUD.info_siempre_visible`), Cruz/A aceptar en menús, Círculo/B cancelar, L1/R1 pestañas o ramas (L1 en juego = bajar/subir al donut), Triángulo/Y acción extra (vender todo, tienda del viejo), Start menú.
+- Mando: R2/RT interactuar (E en teclado; la Cruz ya no, que es del minijuego), Select/Share/View enseña u oculta el panel de estado (I en teclado; `HUD.info_siempre_visible`), Cruz/A aceptar en menús, Círculo/B cancelar, L1/R1 pestañas o ramas (L1 en juego = bajar/subir al donut; el botón sale encima del náufrago), Triángulo/Y acción extra (vender todo, tienda del viejo), Start menú.
 - Peces: `data/peces/*.tres` (PezData, 201 especies), generados desde `docs/datos/peces_fuente.csv` con `docs/herramientas/importar_peces.py`. Iconos placeholder en `art/peces/` (generados por forma, sustituibles). La Pesca carga la carpeta entera (`Pesca.carpeta_peces`).
 
 ## Herramientas de diseño (artefactos)
@@ -120,7 +120,7 @@ Parada para valorar rumbo (29 oct). Hay un tramo jugable de principio a fin de l
 ## Sesión 1 nov: más ágil (juego de ~10 h)
 - Espera de 5-15 s (`StatsPesca.espera_min/max`). Cuanto más tarda en picar, más larga suele ser la cadena (`cadena_por_espera` 0,7; `CanaData.tirar_largo_cadena` admite sesgo < 1).
 - Cadenas de las cañas: Rota 1-6, Decente 2-10, Sabia 3-16, menos sesgadas a cortas.
-- Lonja ×1,3 (`Interactuable.mult_precio`).
+- Lonja ×1,3 (luego pasó a ser global: ver sesión 1 nov, noche).
 - Contratar pescadores:
   - Se hace hablando con el primero (`ArticuloData.Tipo.TRABAJADOR`, `precios` fijos y luego ×1,5, máximo 19 compras: 20 en total).
   - La primera vez cuenta su historia (`Interactuable.lineas_primera_vez` / `clave_primera_vez`).
@@ -128,6 +128,16 @@ Parada para valorar rumbo (29 oct). Hay un tramo jugable de principio a fin de l
 - Pescadores más rápidos: 14 s por pez, 8 por viaje (~23 ₽/min).
 - Llegadas más juntas: viejo a 58 peces, camino a 600 puntos, puerto a 800, Sabia a 6.800 ₽, lonja a 11.000 ₽ totales.
 - Mando: interactuar con R2 y panel de estado con Select. HUD de cristal (`PanelCristal` + `art/ui/cristal.tres`). Luna que cruza la noche.
+
+## Sesión 1 nov (noche): lonja conceptual y arreglos
+- Lonja conceptual [DECIDIDO]: ya no se va a ella a vender. Desde que aparece, **todas** las ventas valen ×1,3, también al comerciante del principio (`Juego.mult_venta()`, `Juego.lonja_abierta()`, `Comercio.bonus_lonja`). Fuera el nodo Venta de `lonja.tscn` y `Interactuable.mult_precio`.
+- Porteador (mejora de los pescadores): cada `Puerto.espera_porteador` (90 s), si el cubo tiene `peces_para_porteador` (15), los pescadores se lo dan al comerciante. Si ya hay lonja, él navega hasta ella (rapidillo, `BarcoComerciante.velocidad_viaje` 9 m/s), descarga y vuelve; el dinero vuela al náufrago (`Comercio.vender_cubo_con_barco`).
+  - Camino por el agua: `BarcoComerciante._camino` hace BFS por casillas de agua (todo lo aparecido + el donut es tierra), hasta la casilla de agua más cercana al destino, y lo endereza en líneas rectas. `radio_busqueda` 24 casillas. Mientras viaja no se puede hablar con él.
+- Menú de Start con el cristal del HUD (`menu.tscn`: Panel con `cristal.tres` + `PanelCristal`; fondo menos oscuro).
+- Fuera "[Q] Bajar a tierra" / "[Q] Volver a pescar" de la caja: el botón sale encima del náufrago.
+- Caña a las 5 (de frente en diagonal, `Barca.punto_corcho` (1, 0, 2)); al lanzar, el corcho se echa atrás por la espalda (`lanzado_desde`, `duracion_atras`) y sale de latigazo.
+- Luna: la estela se inclinaba con la pendiente de la ola en su centro y, al medir ~10 m, las puntas subían por encima de islas y casas. Ahora va plana y la recorta el shader `shaders/reflejo_luna.gdshader` (`art/mundo/luna/reflejo.tres`) con la misma máscara de tierra del mar (`Agua.textura_tierra`): solo se ve sobre agua.
+- Lluvia: el sonido se rearranca cada frame si llueve y se ha parado; suena también con el juego en pausa (`SfxLluvia` process_mode Always) y se importa sin comprimir (la compresión QOA podía cortar el bucle).
 
 ## Siguiente paso
 Sesión de progresión con el diseñador hasta el midgame (economía y orden de desbloqueos), partiendo de `docs/PROGRESION.md` (borrador v1) y `docs/INCREMENTAL.md`.

@@ -138,7 +138,7 @@ Lo que ya está hecho cubre **T0 y T1** (comerciante, primera isla, viejo, camin
 | Trabajador | Edificio | Qué hace |
 |------------|----------|----------|
 | Pescador | Puerto | Pesca el pez más barato y lo lleva al cubo [hecho] |
-| Porteador | Puerto / lonja | Lleva el cubo a vender solo [DECIDIDO, para cuando haya árbol] |
+| Porteador | Puerto / lonja | Los pescadores le dan el cubo al comerciante, que navega a la lonja a venderlo [hecho] |
 | Agricultor | Huertos | Recolecta solo |
 | Cocinero / camarero | Sushi | Cocina más rápido / sirve a más turistas |
 | Operario | Taladro | Más coral |
@@ -470,7 +470,7 @@ Simulado con un jugador normal, espera de 5-15 s y lonja ×1,3. El bueno llega u
 | 26 | Puerto (primer pescador) | Camino + **800 puntos de pesca** | 1 pescador (~23 ₽/min) |
 | 35 | Sabia caña | **6.800 ₽** | ×2 (~490 ₽/min) |
 | 38-90 | Pescadores 2 a 5 | Hablando con el primero: 1.000, 5.000, 10.000, 15.000 ₽ (luego ×1,5; máximo 20) | +23 ₽/min cada uno |
-| 45 | Lonja | Camino + **11.000 ₽ totales** | Paga ×1,3 (antes igual que el comerciante) |
+| 45 | Lonja | Camino + **11.000 ₽ totales** | Todas las ventas ×1,3, vendas donde vendas (no hace falta ir) |
 
 **Premiar al que pesca bien** [DECIDIDO: hay que premiarlo, que acabe antes]:
 - **Puntos de pesca** (`Juego.stats.puntos_pesca`): cada pez suma la racha de su cadena, ×2 si es perfecto. El camino y el puerto llegan por puntos, no por minutos ni por un solo combo.
