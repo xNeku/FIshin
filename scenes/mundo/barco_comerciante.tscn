@@ -6,13 +6,15 @@
 [ext_resource type="Script" path="res://scripts/mundo/interactuable.gd" id="8_interactuable"]
 [ext_resource type="Resource" path="res://data/articulos/cana_decente.tres" id="5_cana"]
 [ext_resource type="Resource" path="res://data/articulos/cebo_gusano.tres" id="6_cebo"]
+[ext_resource type="Resource" path="res://data/articulos/cana_fibra.tres" id="7_fibra"]
+[ext_resource type="Resource" path="res://data/articulos/cana_carbono.tres" id="7_carbono"]
 [ext_resource type="Texture2D" path="res://art/mundo/barco_fondo.png" id="9_fondo"]
 [ext_resource type="Texture2D" path="res://art/mundo/barco_delante.png" id="10_delante"]
 [ext_resource type="Texture2D" path="res://art/mundo/sombra.png" id="11_sombra"]
 
 [node name="BarcoComerciante" type="Node3D"]
 script = ExtResource("1_script")
-articulos = Array[ExtResource("4_articulo")]([ExtResource("5_cana"), ExtResource("6_cebo")])
+articulos = Array[ExtResource("4_articulo")]([ExtResource("5_cana"), ExtResource("7_fibra"), ExtResource("7_carbono"), ExtResource("6_cebo")])
 
 [node name="Sombra" type="Sprite3D" parent="."]
 top_level = true

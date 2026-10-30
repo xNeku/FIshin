@@ -50,8 +50,8 @@ extends Resource
 ## Cada botón acertado paga una parte del pez; desde el botón racha_desde[i], cada botón paga racha_mult[i] veces.
 ## Así una cadena larga rinde más por segundo que muchas cortas (ver docs/INCREMENTAL.md).
 ## Pez perfecto de x5 = ×1,05 de media; x20 = ×1,36; x50 = ×1,9; x100 = ×2,6; x200 = ×3,6.
-@export var racha_desde: Array[int] = [5, 10, 20, 35, 50, 75, 100, 150, 200]
-@export var racha_mult: Array[float] = [1.25, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 5.0, 6.0]
+@export var racha_desde: Array[int] = [5, 10, 15, 20, 25, 35, 50, 75, 100, 150, 200]
+@export var racha_mult: Array[float] = [1.25, 1.5, 1.75, 2.0, 2.25, 2.5, 3.0, 3.5, 4.0, 5.0, 6.0]
 
 @export_group("Maestría (bestiario)")
 ## Al pescar X ejemplares de una especie, esa especie vale más para siempre (hitos tipo AdVenture Capitalist).

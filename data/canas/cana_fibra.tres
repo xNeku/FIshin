@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="CanaData" format=3]
+
+[ext_resource type="Script" path="res://scripts/datos/cana_data.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"cana_fibra"
+nombre = "Caña de fibra"
+descripcion = "Fibra de vidrio de verdad. Llega más hondo y aguanta cadenas largas."
+profundidad = 4
+cadena_min = 4
+cadena_max = 19
+sesgo_cadena = 0.9
+mult_tiempo = 1.0
+mult_espera = 0.62
+mult_rareza = 1.9
+auto_primer_boton = true

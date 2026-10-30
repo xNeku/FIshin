@@ -23,9 +23,9 @@ CATS = ["Común", "Poco Común", "Raro", "Épico", "Legendario", "Mítico"]
 TIER_V = [1.0, 2.0, 5.0, 12.0, 40.0, 120.0]
 TIER_P = [10.0, 5.0, 2.0, 0.7, 0.2, 0.06]
 TIER_FRAC = [0.0, 0.25, 0.5, 0.8, 1.0, 1.0]
-TIER_EXTRA = [1.0, 1.0, 1.0, 1.0, 1.3, 2.0]   # perfect de legendarios y míticos por encima del rango
+TIER_EXTRA = [1.0, 1.0, 1.0, 1.15, 1.3, 2.0]   # perfect de legendarios y míticos por encima del rango
 TIER_DIF = [0.0, 0.0, 0.02, 0.04, 0.06, 0.08]
-PERFECT = {1: (5, 7), 2: (6, 9), 3: (8, 10), 4: (9, 12), 5: (10, 14), 6: (12, 18), 7: (14, 22), 8: (16, 25),
+PERFECT = {1: (5, 7), 2: (6, 10), 3: (9, 14), 4: (13, 18), 5: (15, 21), 6: (16, 23), 7: (17, 25), 8: (18, 27),
            9: (20, 30), 10: (25, 38), 11: (30, 45), 12: (40, 80)}
 ZONAS = {"Galicia": (1, 6), "Mundo": (7, 12)}
 # Dónde cae cada legendario/mítico (por orden de peso).

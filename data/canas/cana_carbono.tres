@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="CanaData" format=3]
+
+[ext_resource type="Script" path="res://scripts/datos/cana_data.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"cana_carbono"
+nombre = "Caña de carbono"
+descripcion = "Ligera como una pluma. Con ella los combos de 25 son posibles."
+profundidad = 5
+cadena_min = 6
+cadena_max = 21
+sesgo_cadena = 0.7
+mult_tiempo = 1.0
+mult_espera = 0.55
+mult_rareza = 2.2
+auto_primer_boton = true

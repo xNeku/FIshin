@@ -40,7 +40,7 @@ extends CanvasLayer
 @export var color_numeros: Color = Color("ff9a3c")
 @export var color_perfecto: Color = Color("ffd84a")
 ## Color del contador de combo según el tramo de racha (StatsPesca.racha_desde): 0 = sin tramo.
-@export var colores_racha: Array[Color] = [Color("e8e8e8"), Color("8fe3ff"), Color("4fa3ff"), Color("7dff8a"), Color("ffd84a"), Color("ff9a3c"), Color("ff5a5a"), Color("ff6bd8"), Color("b56bff"), Color("ffffff")]
+@export var colores_racha: Array[Color] = [Color("e8e8e8"), Color("8fe3ff"), Color("4fa3ff"), Color("5fd0c0"), Color("7dff8a"), Color("c8f04a"), Color("ffd84a"), Color("ff9a3c"), Color("ff5a5a"), Color("ff6bd8"), Color("b56bff"), Color("ffffff")]
 ## Común, poco común, raro, épico, legendario, mítico.
 @export var colores_rareza: Array[Color] = [Color("e8e8e8"), Color("7dff8a"), Color("4fa3ff"), Color("b56bff"), Color("ffb02e"), Color("ff5a7a")]
 ## Frase de cada acierto según cuántos botones llevas: la palabra i sale desde el botón umbrales_palabras[i].
@@ -93,6 +93,7 @@ var _rublos_mostrados: float = 0.0
 var _intensidad_objetivo: float = 0.0
 var _intensidad: float = 0.0
 var _destello: float = 0.0
+var _color_destello: Color = Color.WHITE
 var _pos_prompt: Vector2
 var _mat: ShaderMaterial
 var _ultima_x: int = -1000
@@ -176,6 +177,9 @@ func _process(delta: float) -> void:
 	if _mat:
 		_mat.set_shader_parameter("intensidad", _intensidad)
 		_mat.set_shader_parameter("destello", _destello)
+		_mat.set_shader_parameter("color_destello", _color_destello)
+		if _destello < 0.01:
+			_color_destello = Color.WHITE
 
 
 func _on_estado(e: Pesca.Estado) -> void:
@@ -193,9 +197,15 @@ func _on_estado(e: Pesca.Estado) -> void:
 				cola_box.visible = false
 
 
-func _on_pica(_pez: PezData) -> void:
+func _on_pica(pez: PezData) -> void:
 	resultado.visible = false
-	_destello = destello_picada
+	# Un pez raro se anuncia: el destello de la picada sale de su color y más fuerte.
+	if pez and pez.rareza >= PezData.Rareza.RARO:
+		_color_destello = colores_rareza[mini(pez.rareza, colores_rareza.size() - 1)]
+		_destello = destello_picada * (2.0 + pez.rareza - PezData.Rareza.RARO)
+	else:
+		_color_destello = Color.WHITE
+		_destello = destello_picada
 
 
 func _on_paso(p: Pesca.Paso, _i: int) -> void:

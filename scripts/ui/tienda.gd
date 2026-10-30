@@ -86,6 +86,8 @@ func _refrescar() -> void:
 	for n: Node in lista.get_children():
 		n.queue_free()
 	for art: ArticuloData in _vendedor.articulos:
+		if not art.a_la_venta():
+			continue
 		var f: Node = escena_fila.instantiate()
 		lista.add_child(f)
 		f.mostrar(art)

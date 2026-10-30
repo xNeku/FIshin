@@ -19,6 +19,8 @@ enum Tipo { CANA, CEBO, HUECO, TRABAJADOR, MEJORA }
 @export var precios: Array[float] = []
 ## Veces que se puede comprar. 0 = sin límite.
 @export var max_compras: int = 1
+## Solo sale en la tienda si existe este flag (ej. "aparecido_lonja": el comerciante trae género nuevo).
+@export var requiere_flag: String = ""
 
 @export_group("Caña")
 @export var cana: CanaData
@@ -36,6 +38,10 @@ enum Tipo { CANA, CEBO, HUECO, TRABAJADOR, MEJORA }
 ## Nombre del efecto que sube (ej. "despensa", "precio_plato", "mesas").
 @export var efecto: StringName
 @export var valor_efecto: float = 1.0
+
+
+func a_la_venta() -> bool:
+	return requiere_flag == "" or Juego.flags.get(requiere_flag, false)
 
 
 func precio_actual(compras: int) -> float:
