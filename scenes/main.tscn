@@ -184,10 +184,11 @@ mesh = SubResource("malla_zona")
 pesca = NodePath("../Pesca")
 agua = NodePath("../Agua")
 
-[node name="BarcoComerciante" parent="." node_paths=PackedStringArray("tienda", "agua") instance=ExtResource("2_barco")]
+[node name="BarcoComerciante" parent="." node_paths=PackedStringArray("tienda", "agua", "mundo") instance=ExtResource("2_barco")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 2)
 tienda = NodePath("../Tienda")
 agua = NodePath("../Agua")
+mundo = NodePath("../Mundo")
 
 [node name="Camara" type="Camera3D" parent="." node_paths=PackedStringArray("pesca", "objetivo")]
 transform = Transform3D(1, 0, 0, 0, 0.766044, 0.642788, 0, -0.642788, 0.766044, 0, 7, 8.5)

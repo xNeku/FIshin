@@ -20,9 +20,12 @@ extends Isla
 @export var contenedor: Node3D
 ## Porteador (árbol, Carisma): con cuántos peces en el cubo lo vende solo.
 @export var peces_para_porteador: int = 15
+## Segundos mínimos entre dos viajes del comerciante a por el cubo.
+@export var espera_porteador: float = 90.0
 
 var trabajadores: Array[Trabajador] = []
 var _porteando: bool = false
+var _t_porteo: float = 0.0
 var _pez_barato: PezData
 
 
@@ -42,30 +45,19 @@ func _ready() -> void:
 			_poblar())
 
 
-func _process(_delta: float) -> void:
-	if _porteando or Juego.efecto(&"porteador") <= 0.0 or Juego.cubo_en_mano \
+func _process(delta: float) -> void:
+	_t_porteo += delta
+	if _porteando or _t_porteo < espera_porteador or Juego.efecto(&"porteador") <= 0.0 or Juego.cubo_en_mano \
 			or Juego.cubo_capturas.size() < peces_para_porteador:
 		return
 	var comercio: Node = get_tree().get_first_node_in_group("comercio")
-	var comprador: Node3D = _comprador_cercano()
-	if comercio and comprador:
-		_porteando = true
-		await comercio.vender_cubo_solo(comprador)
-		_porteando = false
-
-
-## La lonja si existe; si no, el comerciante.
-func _comprador_cercano() -> Node3D:
-	var otro: Node3D = null
-	for n: Node in get_tree().get_nodes_in_group("interactuables"):
-		var i: Interactuable = n as Interactuable
-		if i == null or not i.is_visible_in_tree():
-			continue
-		if i.accion == Interactuable.Accion.VENTA:
-			return i
-		if i.compra_peces and otro == null:
-			otro = i
-	return otro
+	if comercio == null:
+		return
+	# Con la mejora, los pescadores le dan el cubo al comerciante: viene navegando, lo carga y vuelve.
+	_porteando = true
+	await comercio.vender_cubo_con_barco()
+	_t_porteo = 0.0
+	_porteando = false
 
 
 ## Punto junto al cubo donde se para quien va a dejar peces.

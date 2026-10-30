@@ -186,7 +186,7 @@ if __name__ == "__main__":
 # Condiciones de llegada (las de data/apariciones y data/articulos). Cámbialas aquí para probar.
 COND = dict(comerciante_peces=3, isla_totales=400, cana_decente=300, viejo_peces=58, camino_puntos=600,
             sabia=6800, lonja_totales=11000, puerto_puntos=800)
-LONJA = 1.3   # Interactuable.mult_precio de la lonja
+LONJA = 1.3   # Comercio.bonus_lonja: todas las ventas desde que llega la lonja
 
 
 def precio_pescador(comprados):

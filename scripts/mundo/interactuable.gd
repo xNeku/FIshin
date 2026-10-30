@@ -14,9 +14,6 @@ enum Accion { TIENDA, BESTIARIO, DIALOGO, CUBO, VENTA, ARBOL }
 ## Altura sobre este nodo a la que sale el botón de interactuar cuando estás cerca (su cabeza).
 @export var altura_icono: float = 2.0
 
-## Al venderle peces (lonja, comerciante): multiplica lo que paga.
-@export var mult_precio: float = 1.0
-
 @export_group("Tienda")
 @export var nombre: String = ""
 @export var articulos: Array[ArticuloData] = []

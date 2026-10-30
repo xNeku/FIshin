@@ -8,10 +8,15 @@ signal venta_terminada(total: float)
 ## El náufrago cuando está pescando en la barca.
 @export var barca_origen: Node3D
 @export var textura_cubo: Texture2D
+## Desde que llega la lonja, todas las ventas valen esto más (sea a quien sea).
+@export var bonus_lonja: float = 1.3
+## Aparición a la que lleva el comerciante los cubos del porteador.
+@export var id_lonja: StringName = &"lonja"
 
 
 func _ready() -> void:
 	add_to_group("comercio")
+	Juego.bonus_lonja = bonus_lonja
 
 
 ## Quién entrega y recibe: el náufrago andando o el de la barca.
@@ -48,14 +53,6 @@ func vender_cubo(comprador: Node3D) -> float:
 	return total
 
 
-## Vende el cubo sin el náufrago (el porteador del árbol): los peces salen del cubo y el dinero vuelve a él.
-func vender_cubo_solo(comprador: Node3D) -> float:
-	var cubo: Node3D = get_tree().get_first_node_in_group("cubo")
-	if cubo == null or Juego.cubo_capturas.is_empty():
-		return 0.0
-	return await _vender(Juego.vaciar_cubo(), cubo, comprador)
-
-
 func _devolver_cubo() -> void:
 	var cubo: Node3D = get_tree().get_first_node_in_group("cubo")
 	if cubo and textura_cubo:
@@ -64,18 +61,41 @@ func _devolver_cubo() -> void:
 	Juego.soltar_cubo()
 
 
-func _vender(capturas: Array[Dictionary], desde: Node3D, comprador: Node3D) -> float:
-	if capturas.is_empty():
-		return 0.0
-	# Carisma (y la lonja) suben el precio; el dado trucado (Suerte) a veces paga doble un pez.
-	var en_lonja: bool = comprador is Interactuable and (comprador as Interactuable).accion == Interactuable.Accion.VENTA
+## Lo que pagan por estas capturas: Carisma y la lonja suben el precio; el dado trucado (Suerte) a veces
+## paga doble un pez.
+func _precio(capturas: Array[Dictionary]) -> float:
 	var total: float = 0.0
 	for c: Dictionary in capturas:
 		total += c.valor * (2.0 if randf() < Juego.efecto(&"venta_doble") else 1.0)
-	total *= Juego.mult_venta(en_lonja)
-	# La lonja paga más que el comerciante (Interactuable.mult_precio).
-	if comprador is Interactuable:
-		total *= (comprador as Interactuable).mult_precio
+	return total * Juego.mult_venta()
+
+
+## Porteador (árbol): los pescadores le dan el cubo al comerciante. Si ya hay lonja, él navega hasta
+## ella a venderlo y vuelve; el dinero llega al náufrago. Devuelve lo ganado (0 si no pudo).
+func vender_cubo_con_barco() -> float:
+	var barco: Node3D = get_tree().get_first_node_in_group("barco_comerciante")
+	var cubo: Node3D = get_tree().get_first_node_in_group("cubo")
+	if barco == null or cubo == null or not barco.listo or Juego.cubo_capturas.is_empty() \
+			or not await barco.ir_a(cubo.global_position):
+		return 0.0
+	var capturas: Array[Dictionary] = Juego.vaciar_cubo()
+	var total: float = _precio(capturas)
+	Juego.dinero_en_camino += total
+	await Vuelos.enviar_peces(cubo, barco, capturas)
+	var lonja: Node3D = barco.mundo.get_node_or_null(String(id_lonja)) if Juego.lonja_abierta() else null
+	if lonja and await barco.ir_a(lonja.global_position):
+		await Vuelos.enviar_peces(barco, lonja, capturas)
+	await barco.volver()
+	Juego.dinero_en_camino -= total
+	await Vuelos.enviar_dinero(barco, origen(), total)
+	venta_terminada.emit(total)
+	return total
+
+
+func _vender(capturas: Array[Dictionary], desde: Node3D, comprador: Node3D) -> float:
+	if capturas.is_empty():
+		return 0.0
+	var total: float = _precio(capturas)
 	Juego.dinero_en_camino += total
 	await Vuelos.enviar_peces(desde, comprador, capturas)
 	Juego.dinero_en_camino -= total

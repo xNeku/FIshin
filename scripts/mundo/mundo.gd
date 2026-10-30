@@ -105,6 +105,15 @@ func es_tablon(c: Vector2i) -> bool:
 	return false
 
 
+## Todas las casillas con algo encima (pisables o no). Para lo que navega: por aquí no se pasa.
+func celdas_ocupadas() -> Array[Vector2i]:
+	var r: Array[Vector2i] = []
+	for a: AparicionData in apariciones:
+		if ya_aparecio(a):
+			r.append_array(a.celdas)
+	return r
+
+
 ## Bordes desde los que se puede pescar: {celda, dir} con agua libre enfrente. La barca no cuenta.
 func puestos_de_pesca() -> Array[Dictionary]:
 	var pisables: Array[Vector2i] = celdas_pisables()

@@ -317,9 +317,20 @@ func _recalcular_efectos() -> void:
 			_efectos[n.efecto] = _efectos.get(n.efecto, 0.0) + n.valor_por_nivel * nv
 
 
-## Multiplicador de venta: Carisma (y la lonja si vende allí).
-func mult_venta(en_lonja: bool) -> float:
-	return 1.0 + efecto(&"precio_venta") + (efecto(&"precio_lonja") if en_lonja else 0.0)
+## La lonja es el centro de venta: desde que llega, todo lo que vendes vale más, lo vendas donde lo vendas.
+## (Lo pone el nodo Comercio de main.tscn, que es donde se ajusta.)
+var bonus_lonja: float = 1.3
+
+
+func lonja_abierta() -> bool:
+	return flags.get("aparecido_lonja", false)
+
+
+## Multiplicador de venta: Carisma, y la lonja (y su rama del árbol) en cuanto existe.
+func mult_venta() -> float:
+	if not lonja_abierta():
+		return 1.0 + efecto(&"precio_venta")
+	return (1.0 + efecto(&"precio_venta") + efecto(&"precio_lonja")) * bonus_lonja
 
 
 ## Multiplicador de velocidad de los trabajadores (Carisma, y Chill si no tocas nada o llueve).
@@ -379,7 +390,7 @@ func sacar_capturas() -> Array[Dictionary]:
 
 ## Vende todo el inventario de la barca de golpe, sin animación. Devuelve lo ganado.
 func vender_todo() -> float:
-	var total: float = valor_inventario() * mult_venta(false)
+	var total: float = valor_inventario() * mult_venta()
 	capturas.clear()
 	sumar_rublos(total)
 	inventario_cambiado.emit()
