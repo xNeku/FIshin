@@ -3,6 +3,7 @@ extends Resource
 ## Algo que se compra en una tienda. Cada .tres en data/articulos/ es uno.
 
 ## TRABAJADOR: contrata un pescador más para el puerto (lo vende el primer pescador).
+## HUECO ya no se usa (la barca no tiene huecos); se queda para no mover los números de los .tres.
 enum Tipo { CANA, CEBO, HUECO, TRABAJADOR }
 
 @export var id: StringName
@@ -28,9 +29,6 @@ enum Tipo { CANA, CEBO, HUECO, TRABAJADOR }
 @export var cebo_mult_tiempo: float = 1.3
 ## Multiplica la espera hasta que pica mientras dura.
 @export var cebo_mult_espera: float = 1.0
-
-@export_group("Hueco")
-@export var huecos: int = 1
 
 
 func precio_actual(compras: int) -> float:

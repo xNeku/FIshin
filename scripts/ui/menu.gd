@@ -151,14 +151,12 @@ func _refrescar_barca() -> void:
 	var especies: Array[String] = Juego.especies()
 	if not _seleccion in especies:
 		_seleccion = especies[0] if not especies.is_empty() else ""
-	for i in Juego.huecos:
+	# Sin huecos: una pila por especie, tantas como haya.
+	for id: String in especies:
 		var h: Node = escena_hueco.instantiate()
 		rejilla.add_child(h)
-		if i < especies.size():
-			h.mostrar(especies[i], Juego.pez_data(especies[i]), Juego.capturas_de(especies[i]).size())
-			h.elegido.connect(_elegir)
-		else:
-			h.mostrar_vacio()
+		h.mostrar(id, Juego.pez_data(id), Juego.capturas_de(id).size())
+		h.elegido.connect(_elegir)
 	_refrescar_detalle()
 
 

@@ -71,16 +71,6 @@ theme_type_variation = &"Pequeno"
 theme_override_colors/font_color = Color(0.55, 0.95, 0.45, 1)
 text = "Cebo: 5 pescas"
 
-[node name="Estado" type="Label" parent="."]
-anchors_preset = 10
-anchor_right = 1.0
-offset_top = 40.0
-offset_bottom = 100.0
-grow_horizontal = 2
-theme_override_constants/outline_size = 12
-text = "¡Barca llena! Ve a vender"
-horizontal_alignment = 1
-
 [node name="Prompt" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 8
@@ -383,10 +373,4 @@ sonar = false
 estilo = 2
 duracion = 0.24
 pasos = 6
-sonar = false
-
-[node name="Entrada" parent="Estado" instance=ExtResource("anim_entrada")]
-estilo = 2
-duracion = 0.4
-pasos = 8
 sonar = false

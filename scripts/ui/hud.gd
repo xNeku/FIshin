@@ -66,7 +66,6 @@ const TECLA_A_ACCION: Dictionary = {"E": &"interactuar", "Q": &"cambiar_modo", "
 @onready var cana: Label = $Info/Lista/Cana
 @onready var cebo: Label = $Info/Lista/Cebo
 @onready var reloj: Label = get_node_or_null("Info/Lista/Reloj")
-@onready var estado: Label = $Estado
 @onready var prompt: Control = $Prompt
 @onready var teclas: Control = $Prompt/Teclas
 @onready var tecla1: TextureRect = $Prompt/Teclas/Tecla1
@@ -115,7 +114,6 @@ func _ready() -> void:
 	prompt.visible = false
 	resultado.visible = false
 	combo.visible = false
-	estado.visible = false
 	if pesca:
 		pesca.estado_cambiado.connect(_on_estado)
 		pesca.pez_pica.connect(_on_pica)
@@ -126,8 +124,6 @@ func _ready() -> void:
 		pesca.machacar_fallido.connect(_on_machacar_fallido)
 		pesca.pez_capturado.connect(_on_capturado)
 		pesca.pez_escapado.connect(_on_escapado)
-		pesca.barca_llena.connect(_on_barca_llena)
-		pesca.bloqueo_barca_llena.connect(_on_bloqueo_barca_llena)
 		pesca.intensidad_cambiada.connect(func(i: float) -> void: _intensidad_objetivo = i)
 		pesca.racha_subida.connect(_on_racha)
 		_on_estado(pesca.estado)
@@ -143,7 +139,7 @@ func _process(delta: float) -> void:
 	if absf(_rublos_mostrados - Juego.rublos) < 0.05:
 		_rublos_mostrados = Juego.rublos
 	rublos.text = Formato.dinero(_rublos_mostrados)
-	barca.text = "Barca: %d/%d huecos · %d peces (%s)" % [Juego.huecos_usados(), Juego.huecos, Juego.capturas.size(), Formato.dinero(Juego.valor_inventario())]
+	barca.text = "Barca: %d peces (%s)" % [Juego.capturas.size(), Formato.dinero(Juego.valor_inventario())]
 	cana.text = Juego.cana().nombre
 	var rd: RelojData = Juego.reloj_data
 	if reloj and rd:
@@ -409,17 +405,6 @@ func _on_capturado(c: Dictionary, pez: PezData) -> void:
 
 func _on_escapado(pez: PezData) -> void:
 	_equis(1.4 if pez.rareza >= PezData.Rareza.RARO else 1.0)
-
-
-func _on_barca_llena(_pez: PezData) -> void:
-	_equis()
-
-
-func _on_bloqueo_barca_llena(llena: bool) -> void:
-	# Único texto arriba: avisa de que hay que vender para seguir pescando.
-	estado.visible = llena
-	if llena:
-		estado.text = "¡Barca llena! Ve a vender"
 
 
 ## Texto rápido en pantalla (trucos, avisos).

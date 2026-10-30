@@ -21,17 +21,14 @@ const RUTA_STATS := "res://data/stats_pesca.tres"
 const RUTA_RELOJ := "res://data/reloj.tres"
 
 @export var segundos_autoguardado: float = 20.0
-@export var huecos_iniciales: int = 6
 @export var cana_inicial: StringName = &"cana_rota"
 ## Segundos sin tocar nada para que cuente como "de chill" (rama Chill).
 @export var segundos_para_chill: float = 8.0
 
 var rublos: float = 0.0
 var rublos_totales: float = 0.0
-## Inventario de la barca: [{id, peso, calidad, perfecto, valor}]. Se apila por especie (id).
+## Inventario de la barca: [{id, peso, calidad, perfecto, valor}]. Se apila por especie (id). Sin límite.
 var capturas: Array[Dictionary] = []
-## Huecos de la barca: cada especie distinta ocupa uno.
-var huecos: int = 6
 var cana_id: StringName = &"cana_rota"
 ## Cebo activo: {pescas, mult_tiempo, mult_espera}. Vacío = sin cebo.
 var cebo: Dictionary = {}
@@ -83,7 +80,6 @@ var _t_sin_tocar: float = 0.0
 
 
 func _ready() -> void:
-	huecos = huecos_iniciales
 	cana_id = cana_inicial
 	if ResourceLoader.exists(RUTA_ARBOL):
 		arbol = load(RUTA_ARBOL)
@@ -170,19 +166,6 @@ func especies() -> Array[String]:
 	return lista
 
 
-## Todos los huecos ocupados: no se puede seguir pescando hasta vender.
-func barca_llena() -> bool:
-	return huecos_usados() >= huecos
-
-
-func huecos_usados() -> int:
-	return especies().size()
-
-
-func cabe(id_pez: String) -> bool:
-	return id_pez in especies() or huecos_usados() < huecos
-
-
 func capturas_de(id_pez: String) -> Array[Dictionary]:
 	var lista: Array[Dictionary] = []
 	for c: Dictionary in capturas:
@@ -191,10 +174,7 @@ func capturas_de(id_pez: String) -> Array[Dictionary]:
 	return lista
 
 
-## Devuelve false si no hay hueco para una especie nueva.
-func anadir_captura(captura: Dictionary, pez: PezData) -> bool:
-	if not cabe(captura.id):
-		return false
+func anadir_captura(captura: Dictionary, pez: PezData) -> void:
 	capturas.append(captura)
 	stats.peces_pescados += 1
 	if captura.perfecto:
@@ -204,7 +184,6 @@ func anadir_captura(captura: Dictionary, pez: PezData) -> bool:
 	coleccion[String(pez.id)] = maxf(coleccion.get(String(pez.id), 0.0), captura.calidad)
 	capturados[String(pez.id)] = int(capturados.get(String(pez.id), 0)) + 1
 	inventario_cambiado.emit()
-	return true
 
 
 ## Si el pez puede picar ahora (estación y hora de su ficha).
@@ -440,9 +419,6 @@ func comprar(art: ArticuloData) -> bool:
 		ArticuloData.Tipo.CEBO:
 			cebo = {"pescas": art.cebo_pescas, "mult_tiempo": art.cebo_mult_tiempo, "mult_espera": art.cebo_mult_espera}
 			cebo_cambiado.emit()
-		ArticuloData.Tipo.HUECO:
-			huecos += art.huecos
-			inventario_cambiado.emit()
 		ArticuloData.Tipo.TRABAJADOR:
 			contratar_trabajador()
 	return true
@@ -470,7 +446,7 @@ func poner_opcion(clave: String, valor: Variant) -> void:
 func guardar() -> void:
 	var datos: Dictionary = {
 		"version": VERSION_SAVE, "rublos": rublos + dinero_en_camino, "rublos_totales": rublos_totales + dinero_en_camino,
-		"capturas": capturas, "huecos": huecos, "cana": String(cana_id), "cebo": cebo, "compras": compras,
+		"capturas": capturas, "cana": String(cana_id), "cebo": cebo, "compras": compras,
 		"stats": stats, "coleccion": coleccion, "capturados": capturados, "flags": flags,
 		"trabajadores": trabajadores, "cubo": cubo_capturas, "cubo_en_mano": cubo_en_mano,
 		"habilidades": habilidades, "reloj": reloj,
@@ -503,13 +479,12 @@ func cargar() -> void:
 		if datos.is_empty():
 			return
 		push_warning("Save roto, se carga la copia anterior")
-	# v1 no tenía huecos, caña, cebo ni compras: se quedan los valores por defecto.
+	# v1 no tenía caña, cebo ni compras: se quedan los valores por defecto.
 	rublos = datos.get("rublos", 0.0)
 	rublos_totales = datos.get("rublos_totales", 0.0)
 	capturas.clear()
 	for c: Variant in datos.get("capturas", []):
 		capturas.append(c)
-	huecos = int(datos.get("huecos", huecos_iniciales))
 	cana_id = StringName(datos.get("cana", String(cana_inicial)))
 	if not ResourceLoader.exists(RUTA_CANAS % cana_id):
 		cana_id = cana_inicial
@@ -551,7 +526,6 @@ func borrar_partida() -> void:
 	rublos = 0.0
 	rublos_totales = 0.0
 	capturas.clear()
-	huecos = huecos_iniciales
 	cana_id = cana_inicial
 	cebo.clear()
 	compras.clear()

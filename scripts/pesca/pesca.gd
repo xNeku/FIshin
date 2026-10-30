@@ -14,10 +14,6 @@ signal machacar_fallido(escapa: bool)
 signal intensidad_cambiada(intensidad: float)
 signal pez_capturado(captura: Dictionary, pez: PezData)
 signal pez_escapado(pez: PezData)
-## Pez capturado pero sin hueco en la barca: se suelta.
-signal barca_llena(pez: PezData)
-## La barca está llena y no se pesca hasta vender (true) o ya hay sitio otra vez (false).
-signal bloqueo_barca_llena(llena: bool)
 ## La suerte dio un pez de más (rama Suerte).
 signal captura_doble(pez: PezData)
 ## El corcho tiembla mientras esperas. aviso = true: es el de justo antes de picar.
@@ -62,7 +58,6 @@ var golpes: int = 0
 var _pulsadas: Array[StringName] = []
 var _contador: float = 0.0
 var _bloqueo: float = 0.0
-var _llena: bool = false
 ## Esta picada llega tras un rato de chill (rama Chill: Meditación y Ron de coco).
 var _tras_chill: bool = false
 ## Se ha pulsado algo del minijuego en esta picada.
@@ -90,12 +85,6 @@ func _process(delta: float) -> void:
 			return
 	match estado:
 		Estado.ESPERANDO:
-			var llena: bool = Juego.barca_llena()
-			if llena != _llena:
-				_llena = llena
-				bloqueo_barca_llena.emit(llena)
-			if llena:
-				return
 			# De chill pican antes (rama Chill).
 			_contador -= delta * (1.0 + (Juego.efecto(&"espera_chill") if Juego.de_chill() else 0.0))
 			_picotear(delta)
@@ -394,14 +383,13 @@ func _capturar() -> void:
 	var captura: Dictionary = {
 		"id": String(pez.id), "peso": peso, "calidad": ratio, "perfecto": perfecto, "valor": valor,
 	}
-	if Juego.anadir_captura(captura, pez):
-		Juego.sumar_puntos_pesca(stats.suma_racha(aciertos) * (stats.mult_perfecto if perfecto else 1.0))
-		pez_capturado.emit(captura, pez)
-		# Pesca doble (rama Suerte): sale otro igual.
-		if randf() < Juego.efecto(&"pesca_doble") and Juego.anadir_captura(captura.duplicate(), pez):
-			captura_doble.emit(pez)
-	else:
-		barca_llena.emit(pez)
+	Juego.anadir_captura(captura, pez)
+	Juego.sumar_puntos_pesca(stats.suma_racha(aciertos) * (stats.mult_perfecto if perfecto else 1.0))
+	pez_capturado.emit(captura, pez)
+	# Pesca doble (rama Suerte): sale otro igual.
+	if randf() < Juego.efecto(&"pesca_doble"):
+		Juego.anadir_captura(captura.duplicate(), pez)
+		captura_doble.emit(pez)
 	_terminar()
 
 

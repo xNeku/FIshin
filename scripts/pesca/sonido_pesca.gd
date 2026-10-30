@@ -38,7 +38,6 @@ func _ready() -> void:
 	pesca.pez_capturado.connect(func(c: Dictionary, _p: PezData) -> void:
 		(perfecto if c.perfecto else captura).play())
 	pesca.pez_escapado.connect(func(_p: PezData) -> void: escapa.play())
-	pesca.barca_llena.connect(func(_p: PezData) -> void: escapa.play())
 	pesca.intensidad_cambiada.connect(func(i: float) -> void: _intensidad = i)
 	if racha:
 		pesca.racha_subida.connect(func(tramo: int) -> void:
