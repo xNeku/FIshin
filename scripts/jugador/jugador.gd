@@ -164,12 +164,13 @@ func acciones() -> Array[String]:
 	if andando:
 		if Juego.cubo_en_mano and (cercano == null or not cercano.compra_peces):
 			lista.append("Lleva el cubo a un comerciante")
-		if en_barca() and not Juego.cubo_en_mano:
-			lista.append("[Q] Volver a pescar")
-	elif mundo.celdas_pisables().size() > 1:
-		# En el donut siempre se ve la Q en cuanto hay tierra a la que bajar.
-		lista.append("[Q] Bajar a tierra")
+	# Bajar y volver a pescar no van aquí: el botón sale encima del náufrago cuando pisa el donut (HUD).
 	return lista
+
+
+## Andando encima del donut, sin cubo: se puede sentar a pescar con "cambiar_modo".
+func puede_sentarse() -> bool:
+	return andando and not saltando and en_barca() and not Juego.cubo_en_mano
 
 
 func _process(delta: float) -> void:

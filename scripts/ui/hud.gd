@@ -31,6 +31,8 @@ extends CanvasLayer
 ## Botón de interactuar sobre la cabeza: cuánto bota (píxeles) y cada cuánto se aprieta solo (segundos).
 @export var bote_icono: float = 6.0
 @export var ritmo_icono: float = 0.7
+## Altura del botón de sentarse sobre el náufrago cuando pisa el donut.
+@export var altura_icono_sentarse: float = 2.0
 ## Al machacar, cada cuánto se aprieta sola la tecla dibujada (segundos).
 @export var ritmo_machacar: float = 0.12
 ## Cuánto salta de sitio el botón al tope de intensidad (píxeles).
@@ -99,6 +101,7 @@ var _acciones: Array[String] = []
 var _t_accion: float = 0.0
 var _i_accion: int = 0
 var _dispositivo: String = ""
+var _accion_icono: StringName = &"interactuar"
 var _t_icono: float = 0.0
 var _t_carta: float = 0.0
 
@@ -286,18 +289,23 @@ func _icono_interactuar(dt: float) -> void:
 		return
 	_t_icono += dt
 	var pulsada: bool = fmod(_t_icono, ritmo_icono * 2.0) >= ritmo_icono * 1.6
-	icono_interactuar.texture = IconosInput.icono(&"interactuar", pulsada)
+	icono_interactuar.texture = IconosInput.icono(_accion_icono, pulsada)
 	var pantalla: Vector2 = popups.get_global_transform().affine_inverse() * camara.unproject_position(p)
 	var bote: float = sin(_t_icono * 4.0) * bote_icono
 	icono_interactuar.position = pantalla - icono_interactuar.size * 0.5 + Vector2(0.0, bote)
 
 
 ## Punto del mundo donde va el botón de interactuar, o null si no hay nada.
+## Deja en `_accion_icono` qué botón dibujar.
 func _punto_interaccion() -> Variant:
+	_accion_icono = &"interactuar"
 	if jugador and jugador.has_method("objetivo_interaccion"):
 		var i: Interactuable = jugador.objetivo_interaccion()
 		if i:
 			return i.global_position + Vector3.UP * i.altura_icono
+		if jugador.puede_sentarse() and not get_tree().paused:
+			_accion_icono = &"cambiar_modo"
+			return jugador.global_position + Vector3.UP * altura_icono_sentarse
 	if barco and barco.puede_hablar() and not (celebracion and celebracion.celebrando) and not (pesca and pesca.en_curso()) \
 			and not get_tree().paused:
 		return barco.global_position + Vector3.UP * barco.altura_icono
