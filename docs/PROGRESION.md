@@ -289,7 +289,8 @@ El diseñador pasó dos listas: **100 de Galicia y 100 del mundo** (`docs/datos/
 
 | Recurso | Tramo | De dónde sale | Para qué sirve [PROPUESTA] |
 |---------|-------|---------------|---------------------------|
-| Algas | T2 | Huerto de algas | Sushi (alga nori + pescado), primeras mejoras |
+| Pimientos de Padrón | T1–T2 | Cultivos (columnas de fuera) | Guarnición en O Mar [hecho] |
+| Algas | T1–T2 | Cultivos (huecos de agua) | Mejoran los platos de O Mar [hecho]; sushi más adelante |
 | Coral | T2 | Taladro marino | Decorar y ampliar la pecera, mejoras de edificios |
 | Bambú | T3 | Bambuzal | Construir (cabañas, hotel, ampliaciones del pantalán) |
 | Perlas | T3 | Centro de buceo | Mejoras de lujo, souvenirs caros |
@@ -312,6 +313,27 @@ Nota: en tiendas de móvil la marihuana sube la clasificación por edad. Se acep
 ---
 
 ## 7. Turismo y villa (la capa final)
+
+**Hecho (1 nov), valores de partida para jugar y retocar:**
+- O Mar (`scripts/mundo/restaurante.gd`): la lonja le manda el 30 % de los peces vendidos (`parte_lonja`), con 120 raciones de despensa (`capacidad_despensa`). Cobra ×1,25 lo que vale la ración (`mult_plato`). Si quedan, cada plato lleva pimientos (+40 % de la ración) y algas (×1,5). Gente del pueblo: 0,6 por minuto + 0,15 por pescador.
+- Mejoras en O Mar (`data/articulos/mejora_*.tres`, 5 niveles cada una):
+  - Despensa: +60 raciones; 6.000 ₽, ×2.
+  - Fogón: +25 % el plato; 9.000 ₽, ×2,2.
+  - Mesas: +6 turistas por visita; 7.500 ₽, ×2.
+- Cultivos (`data/cultivos/*.tres`):
+  - Pimiento: 120 s de crecer y 3 por planta, 18 plantas.
+  - Alga: 180 s y 2 por planta, 8 plantas.
+- Turistas (nodo Turistas de main):
+  - Vienen un 50 % de los días y nunca pasan más de 2 días seguidos sin visita.
+  - Llegan a mitad del día y se van a mitad de la noche: 10 min de juego.
+  - Cuántos: raciones ÷ 2, entre 3 y 16 (+ mesas). Se dibujan 40 como mucho.
+  - El nivel 2 se abre con 300 clientes servidos.
+- Calendario aproximado (jugador normal):
+  - Camino 2 y O Mar hacia el minuto 50 (tercer pescador).
+  - Entrada de turistas hacia el 90.
+  - Cultivos hacia el 95-100 (50 clientes).
+  - Turistas de nivel 2 hacia las 3 h.
+- Cuenta a ojo: O Mar suma un 15-20 % al ingreso al empezar (más en los ratos de visita) y sube con mejoras y cosecha. Falta meterlo en el simulador.
 
 - [DECIDIDO] La villa recibe turistas que compran, comen en restaurantes, etc. El dinero sigue subiendo y todo se vuelve loco.
 - [PROPUESTA] Una sola cifra que lo resume: **Atractivo** = suma de edificios, niveles, pecera y decoración.

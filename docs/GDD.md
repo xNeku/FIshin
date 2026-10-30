@@ -39,6 +39,10 @@ Marcas: [DECIDIDO] lo decidió el diseñador · [PROPUESTA] sugerencia de Claude
 - Nota: el combo x10 solo es posible con la Sabia caña (rota: hasta 5, decente: hasta 9). El puerto queda para después del viejo.
 - [DECIDIDO] **Lonja** (3×3 en x −1..1, y 7..9, al final del camino): centro de venta conceptual. No se va a ella a vender: desde que aparece, todo lo que vendas (también al comerciante) vale ×1,3. Con el porteador, el comerciante le lleva el cubo navegando. Con los restaurantes será el centro neurálgico del pescado: se verá cómo lanza el pescado a cada destino. Emerge del fondo del mar. Casa blanca medio moruna con toldo azul y blanco, bandera con un pez pocho y flotadores rojos y blancos.
 - [PROPUESTA] La lonja aparece cuando ya existe el camino y has ganado 1.500 ₽ en total. La fila de la casa (y = 9) no se pisa.
+- [DECIDIDO] **Camino 2** (32 casillas): anillo alrededor de la lonja con plaza arriba, ramal a la izquierda y ramal al restaurante. Llega al tener el tercer pescador. Con él el comerciante ya no llega navegando a la lonja: aparca y va andando.
+- [DECIDIDO] **Restaurante O Mar** (parcela 5×5 en x 7..11, y 7..11): chiringuito de madera austero y con carisma en el centro (2×2), que se irá mejorando. Llega justo después del camino 2. La lonja le manda gratis una parte de lo que vendes (tú cobras lo mismo); con eso hace platos para la gente del pueblo y los turistas, y te paga lo que cobra. Ahí le das lo cosechado y le compras mejoras.
+- [DECIDIDO] **Entrada de turistas** (11 casillas en x 4..7, y 3..6): plataforma cutre de tablones rotos con una escalera al camino. Llega tras 2 días enteros con el restaurante abierto.
+- [DECIDIDO] **Cultivos** (anillo de 28 casillas en x −9..−6, y −4..4): pimientos de Padrón en las columnas de fuera y algas en los huecos de agua del medio. Llega cuando el restaurante ha servido a 50 personas.
 
 ## 4. Modos de juego
 - [DECIDIDO] **Modo pesca** (en el donut). Es la única acción manual de pesca; todo lo demás lo automatizan fábricas y trabajadores.
@@ -95,6 +99,14 @@ Marcas: [DECIDIDO] lo decidió el diseñador · [PROPUESTA] sugerencia de Claude
 - [DECIDIDO] El primer pescador está en la base, junto al cubo. Los demás se colocan al azar en bordes con agua delante, cerca de un compañero, y nunca obstruyen el paso (no tienen colisión). Algunos se sientan al borde de los tablones.
 - [DECIDIDO] De primeras solo pescan el pez más barato. Cada uno coge 10, va andando al cubo y lo deja.
 - [PROPUESTA] Tras venderlo, el cubo vuelve volando solo. Mientras lo llevas, los pescadores esperan junto a la base. Con el cubo en la mano no puedes volver a pescar.
+- [DECIDIDO] Restaurantes: ingreso extra sin perder nada. La lonja les manda el pescado gratis; tú no cobras más por el pescado, ganas por lo que venden los restaurantes.
+- [DECIDIDO] Cultivos: crecen solos. Con R2 cerca pegas un hozazo giratorio y lo cosechado vuela hacia ti (lo llevas encima). Se lo das al restaurante: los pimientos se venden como guarnición y las algas mejoran los platos. No habrá muchos cultivos ni mucho farmeo fuera de la pesca: pimientos de Padrón, algas, coral, perlas, marihuana y algo para hacer cerveza.
+- [DECIDIDO] Turistas: no vienen todos los días, pero cuando vienen es en masa. Llegan en la segunda mitad del día y se quedan hasta la mitad de la noche. Cuanta más comida puede dar el restaurante, más vienen (más producto que vender = más turistas). Al principio son pocos.
+- [DECIDIDO] Tipos de turista, acumulativos (al desbloquear uno, los que vienen se reparten entre todos los tipos):
+  - Nivel 1: náufragos, pescadores, gente del pueblo; hombres y mujeres variados. Llegan en barca.
+  - Nivel 2: gente normal de distintas nacionalidades (asiáticos, marroquíes...). Llegan en velero y en barcos turísticos pequeños (catamarán).
+  - [ABIERTO] Nivel 3 y siguientes (el diseñador lo dejó a medias).
+  - Irán teniendo un toque gracioso según avanza el juego.
 - [ABIERTO] Lista de edificios, qué hace cada uno y sus hitos.
 
 ## 8. Progresión: árbol de habilidades

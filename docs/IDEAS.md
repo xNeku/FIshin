@@ -14,3 +14,5 @@
 - Peces según el clima (lluvia, tormenta): el Excel no lo trae; habría que añadir una columna.
 - [DECIDIDO] Con los restaurantes, la lonja es el centro neurálgico del pescado: se ve cómo lanza el pescado a cada destino (sushi, etc.).
 - [DECIDIDO] Al abrir el restaurante empiezan a llegar turistas: primero en barca, luego en velero y luego en yate.
+- [DECIDIDO] Más adelante: extracción de coral, perlas, marihuana y algo para hacer cerveza. Pocos cultivos y poco farmeo fuera de la pesca.
+- Turistas de nivel 3+ (pendiente de que el diseñador lo cuente) y el toque gracioso que irán cogiendo.

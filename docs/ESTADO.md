@@ -145,6 +145,23 @@ Parada para valorar rumbo (29 oct). Hay un tramo jugable de principio a fin de l
 - Rutas a pie con Dijkstra (`Mundo._recorrer_a_pie`): un salto cuesta `Mundo.coste_salto` (2,5) pasos, así que nadie salta en diagonal si puede andar. Afecta también a los pescadores. `Mundo.distancias_a_pie(desde)`.
 - Camino 2 de la carta (`data/apariciones/camino_2.tres`, 32 casillas, se construye): rodea la lonja. Condición nueva PESCADORES (`Juego.trabajadores`), valor 3, y requiere camino y lonja.
 
+## Sesión 1 nov (tarde): restaurante, cultivos y turistas
+- Arte provisional generado por script (`docs/herramientas/generar_arte_villa.py`): 20 turistas (niveles 1 y 2), barca, velero, catamarán, chiringuito O Mar, mesa con sombrilla, pimientos y algas por fases, iconos, hoz y escalera. Se cambia por el arte final con los mismos nombres de PNG.
+- Restaurante O Mar (`scripts/mundo/restaurante.gd`, `scenes/mundo/islas/restaurante.tscn`):
+  - `Comercio.peces_vendidos` le pasa cada venta; se queda `parte_lonja` y la lonja se los lanza volando.
+  - `servir()` gasta una ración (más pimiento y alga si hay), cobra a la caja y suma `Juego.stats.clientes`. Cada `cada_cobro` s el dinero te llega volando.
+  - Despensa en `Juego.despensa` (save v7). Tienda con mejoras (`ArticuloData.Tipo.MEJORA` con `efecto` y `valor_efecto`; Juego las suma a `efecto()`). Al hablarle, primero le das la cosecha (`Interactuable.recibe_cosecha`).
+- Cultivos (`scenes/mundo/islas/cultivos.tscn`, `scenes/mundo/planta.tscn`, `planta.gd`, `CultivoData`):
+  - Cada planta crece por fases y, lista, enseña el botón de interactuar (`Interactuable.Accion.COSECHAR`).
+  - Hozazo (`Jugador._hozazo`, nodos Hoz y SfxHozazo en jugador.tscn): siega todo lo listo en `radio_hozazo` (3,6 m) y lo cosechado vuela a ti (`Juego.cosecha`).
+  - El crecimiento no se guarda: al cargar, las plantas van por la mitad o más.
+- Turistas (nodo Turistas en main, `turistas.gd`, `turista.tscn`, `barco_turistas.tscn`, `data/turistas/nivel_*.tres` con `NivelTuristasData`):
+  - Cada día decide si vienen (`prob_visita`, `max_dias_sin_visita`). La ventana va de `llegan_en_dia` a `se_van_en_noche`.
+  - Llegan por el este en barcos escalonados hasta los muelles de la entrada, bajan, van al restaurante, pasean y comen. Al acabar, el barco vuelve a por ellos.
+  - Lo que se guarda: `flags.turistas_*`. Si cierras a mitad de una visita, esa visita se pierde.
+- Condiciones nuevas de aparición: CLIENTES y DIAS_TRAS_REQUISITO (`flags.reloj_<id>` guarda cuándo llegó cada cosa).
+- HUD: "Cosecha: …" y "O Mar: raciones/capacidad" en el panel de estado.
+
 ## Siguiente paso
 Sesión de progresión con el diseñador hasta el midgame (economía y orden de desbloqueos), partiendo de `docs/PROGRESION.md` (borrador v1) y `docs/INCREMENTAL.md`.
 
