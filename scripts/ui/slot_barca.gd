@@ -24,11 +24,3 @@ func mostrar(id: String, pez: PezData, n: int) -> void:
 	icono.texture = pez.icono
 	nombre.text = pez.nombre
 	cantidad.text = "x%d" % n
-
-
-func mostrar_vacio() -> void:
-	id_pez = ""
-	disabled = true
-	icono.texture = null
-	nombre.text = "vacío"
-	cantidad.text = ""

@@ -80,12 +80,6 @@ func _decidir_dia(dia: int) -> void:
 	Juego.flags["turistas_sin_visita"] = 0 if vienen else sin + 1
 
 
-## Hoy hay visita y es la hora (aunque aún no hayan llegado).
-func hay_visita() -> bool:
-	var rd: RelojData = Juego.reloj_data
-	return Juego.flags.get("turistas_vienen", false) and rd != null and _en_ventana(rd)
-
-
 func _en_ventana(rd: RelojData) -> bool:
 	var m: float = rd.momento(Juego.reloj)
 	return m >= rd.duracion_dia * llegan_en_dia and m < rd.duracion_dia + rd.duracion_noche * se_van_en_noche

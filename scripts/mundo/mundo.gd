@@ -54,6 +54,7 @@ signal aparicion_terminada(datos: AparicionData)
 var _ocupado: bool = false
 var _pisables: Array[Vector2i] = []
 var _firma_pisables: int = -1
+var _frame_pisables: int = -1
 var _llegando: AparicionData
 var _alturas: Dictionary = {}
 var _rampas: Dictionary = {}
@@ -86,7 +87,12 @@ func ocupado() -> bool:
 
 ## Casillas por las que se puede andar: la barca y todo lo que ya ha llegado.
 func celdas_pisables() -> Array[Vector2i]:
-	# Se pregunta muchas veces por fotograma (HUD, jugador, pescadores): se guarda hasta que algo llega.
+	# Se pregunta miles de veces por fotograma (alturas, rutas, turistas): la firma se calcula una vez por
+	# fotograma y la lista se guarda hasta que algo llega.
+	var frame: int = Engine.get_process_frames()
+	if frame == _frame_pisables:
+		return _pisables
+	_frame_pisables = frame
 	var firma: int = hash([Juego.flags, _llegando])
 	if firma == _firma_pisables:
 		return _pisables
