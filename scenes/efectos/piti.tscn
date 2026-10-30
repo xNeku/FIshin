@@ -1,0 +1,66 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/efectos/piti.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://art/efectos/halo.png" id="2_halo"]
+
+[sub_resource type="StandardMaterial3D" id="m_halo"]
+transparency = 1
+blend_mode = 1
+no_depth_test = true
+shading_mode = 0
+albedo_texture = ExtResource("2_halo")
+billboard_mode = 1
+
+[sub_resource type="QuadMesh" id="q_halo"]
+material = SubResource("m_halo")
+size = Vector2(0.55, 0.55)
+
+[sub_resource type="StandardMaterial3D" id="m_humo"]
+transparency = 1
+shading_mode = 0
+vertex_color_use_as_albedo = true
+billboard_mode = 3
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="QuadMesh" id="q_humo"]
+material = SubResource("m_humo")
+size = Vector2(0.09, 0.09)
+
+[sub_resource type="Curve" id="c_tam"]
+_data = [Vector2(0, 0.6), 0.0, 0.0, 0, 0, Vector2(1, 2.6), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Gradient" id="g_humo"]
+offsets = PackedFloat32Array(0, 0.15, 1)
+colors = PackedColorArray(0.85, 0.85, 0.88, 0, 0.82, 0.82, 0.86, 0.75, 0.7, 0.72, 0.78, 0)
+
+[node name="Piti" type="Node3D"]
+script = ExtResource("1_script")
+
+[node name="Brasa" type="OmniLight3D" parent="."]
+light_color = Color(1, 0.5, 0.2, 1)
+light_energy = 2.2
+omni_range = 1.7
+omni_attenuation = 1.2
+
+[node name="Humo" type="CPUParticles3D" parent="."]
+emitting = false
+amount = 14
+lifetime = 2.6
+local_coords = false
+mesh = SubResource("q_humo")
+direction = Vector3(0.3, 1, 0)
+spread = 12.0
+gravity = Vector3(0.12, 0.18, 0)
+initial_velocity_min = 0.12
+initial_velocity_max = 0.22
+damping_min = 0.05
+damping_max = 0.1
+scale_amount_curve = SubResource("c_tam")
+color_ramp = SubResource("g_humo")
+
+[node name="Halo" type="MeshInstance3D" parent="."]
+cast_shadow = 0
+mesh = SubResource("q_halo")

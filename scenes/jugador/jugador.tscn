@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" path="res://art/articulos/cubo.png" id="4_cubo"]
 [ext_resource type="Texture2D" path="res://art/cultivos/hoz.png" id="5_hoz"]
 [ext_resource type="AudioStream" path="res://art/sfx/hozazo.wav" id="6_hozazo"]
+[ext_resource type="PackedScene" path="res://scenes/efectos/piti.tscn" id="piti"]
 
 [sub_resource type="StandardMaterial3D" id="mat_sombra"]
 transparency = 1
@@ -60,3 +61,8 @@ texture = ExtResource("5_hoz")
 [node name="SfxHozazo" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("6_hozazo")
 volume_db = -4.0
+
+[node name="Piti" parent="." node_paths=PackedStringArray("sprite") instance=ExtResource("piti")]
+sprite = NodePath("../Sprite")
+pixel = Vector2i(17, 12)
+texturas = Array[Texture2D]([ExtResource("2_naufrago")])

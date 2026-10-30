@@ -10,6 +10,7 @@
 [ext_resource type="Texture2D" path="res://art/personajes/donut_frente.png" id="8_frente"]
 [ext_resource type="Texture2D" path="res://art/personajes/naufrago_piernas.png" id="9_piernas"]
 [ext_resource type="Texture2D" path="res://art/mundo/sombra.png" id="10_sombra"]
+[ext_resource type="PackedScene" path="res://scenes/efectos/piti.tscn" id="piti"]
 
 [sub_resource type="StandardMaterial3D" id="m_sedal"]
 shading_mode = 0
@@ -180,3 +181,8 @@ initial_velocity_min = 0.2
 initial_velocity_max = 0.8
 scale_amount_min = 0.5
 scale_amount_max = 1.2
+
+[node name="Piti" parent="." node_paths=PackedStringArray("sprite") instance=ExtResource("piti")]
+sprite = NodePath("../Protagonista")
+pixel = Vector2i(37, 24)
+texturas = Array[Texture2D]([ExtResource("2_chill"), ExtResource("3_tira")])
