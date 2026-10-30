@@ -265,7 +265,8 @@ TUR = dict(prob=0.5, max_sin=2, platos=2.0, min=3, max=16, ventana=(0.5, 0.5))
 CULT = dict(pim_plantas=18, pim_n=3, pim_t=120, pim_valor=0.4, alga_plantas=8, alga_n=2, alga_t=180, alga_valor=0.5,
             cada_visita=360, andar=25, chaval=75)
 RELOJ = dict(dia=720.0, noche=480.0, inicio=0.0)
-NIVELES_TUR = [0, 120, 250]
+NIVELES_TUR = [0, 120, 400]
+GASTO_TUR = [1.0, 1.6, 3.0]   # NivelTuristasData.mult_gasto: los de más nivel pagan más por plato
 # Lo que no se ve en los datos: el jugador pasa por el huerto cada ~6 min y por el viejo/tiendas al vender.
 MEJORAS_OMAR = ["mejora_despensa", "mejora_fogon", "mejora_mesas"]
 
@@ -397,7 +398,8 @@ def partida(jugador=1.0, semilla=1, horas=4.0, informe=False):
                     visita["comidos"] += ritmo_v * dt
                     while visita["comidos"] >= 1:
                         visita["comidos"] -= 1
-                        g = servir() * (1 + E.get("propinas", 0))
+                        abiertos = [g for c, g in zip(NIVELES_TUR, GASTO_TUR) if clientes >= c]
+                        g = servir() * (1 + E.get("propinas", 0)) * sum(abiertos) / len(abiertos)
                         rublos += g; totales += g; fuentes["restaurante"] += g
         # Cultivos: el jugador pasa cada ~6 min (o el chaval, si lo tiene).
         if "cultivos" in hitos:

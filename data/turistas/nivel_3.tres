@@ -21,5 +21,6 @@ nombre = "Pijos en yate"
 personas = Array[Texture2D]([ExtResource("p0"), ExtResource("p1"), ExtResource("p2"), ExtResource("p3"), ExtResource("p4"), ExtResource("p5"), ExtResource("p6"), ExtResource("p7"), ExtResource("p8"), ExtResource("p9"), ExtResource("p10")])
 barcos = Array[Texture2D]([ExtResource("b0")])
 plazas = Array[int]([12])
-clientes_para_desbloquear = 250
+clientes_para_desbloquear = 400
 alturas_cubierta = Array[float]([0.75])
+mult_gasto = 3.0

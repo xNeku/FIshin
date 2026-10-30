@@ -35,6 +35,8 @@ var _t: float = 0.0
 var _t_pausa: float = 0.0
 var _t_comer: float = 0.0
 var _cada_comer: float = INF
+## Lo que gasta por plato (según su nivel de turista).
+var gasto: float = 1.0
 
 
 func preparar(textura: Texture2D, mundo: Node, restaurante: Node, paseo: Array[Vector2i]) -> void:
@@ -104,7 +106,7 @@ func _comer(delta: float) -> void:
 	if _t_comer < _cada_comer or _restaurante == null:
 		return
 	_t_comer = 0.0
-	if _restaurante.servir(true):
+	if _restaurante.servir(true, gasto):
 		# Saltito de contento.
 		var tw := create_tween()
 		tw.tween_property(cuerpo, "position:y", 0.25, 0.12).set_ease(Tween.EASE_OUT)

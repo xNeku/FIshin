@@ -26,3 +26,4 @@ barcos = Array[Texture2D]([ExtResource("b0"), ExtResource("b1")])
 plazas = Array[int]([5, 8])
 clientes_para_desbloquear = 120
 alturas_cubierta = Array[float]([-0.05, 0.1])
+mult_gasto = 1.6

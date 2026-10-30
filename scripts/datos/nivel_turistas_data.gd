@@ -12,5 +12,7 @@ extends Resource
 @export var plazas: Array[int] = []
 ## Altura a la que van de pie los pasajeros en cada barco (mismo orden; si falta, en el fondo).
 @export var alturas_cubierta: Array[float] = []
+## Lo que gastan por plato respecto a un turista de nivel 1 (los pijos del yate dejan mucho más).
+@export var mult_gasto: float = 1.0
 ## Clientes servidos en total por el restaurante para que empiecen a venir.
 @export var clientes_para_desbloquear: int = 0

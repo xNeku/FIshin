@@ -162,6 +162,7 @@ func _traer(datos: Dictionary, muelle: Dictionary, cada_comer: float, retraso: f
 		var t: Turista = escena_turista.instantiate()
 		add_child(t)
 		t.preparar(datos.nivel.personas.pick_random(), mundo, _restaurante(), paseo)
+		t.gasto = datos.nivel.mult_gasto
 		t.montar(barco, s)
 		grupo.turistas.append(t)
 	await barco.navegar_a(punto)
@@ -217,7 +218,11 @@ func _comer_invisibles(delta: float) -> void:
 		return
 	var r: Node = _restaurante()
 	if r:
-		r.servir(true)
+		var abiertos: Array[NivelTuristasData] = niveles_abiertos()
+		var gasto: float = 0.0
+		for n: NivelTuristasData in abiertos:
+			gasto += n.mult_gasto / abiertos.size()
+		r.servir(true, maxf(1.0, gasto))
 	var rd: RelojData = Juego.reloj_data
 	_t_invisibles = _segundos_restantes(rd) / maxf(1.0, _invisibles * platos_por_turista) if rd else 30.0
 

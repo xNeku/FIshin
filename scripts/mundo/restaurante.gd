@@ -67,8 +67,8 @@ func raciones() -> int:
 
 
 ## Sirve un plato si queda pescado: lo cobra (a la caja) y gasta una ración y, si hay, cosecha.
-## Los turistas dejan propina (Turista despistado, rama Suerte).
-func servir(turista: bool = false) -> bool:
+## Los turistas pagan según su nivel (`gasto`) y dejan propina (Turista despistado, rama Suerte).
+func servir(turista: bool = false, gasto: float = 1.0) -> bool:
 	var d: Dictionary = Juego.despensa
 	if d.raciones < 1.0:
 		return false
@@ -90,7 +90,7 @@ func servir(turista: bool = false) -> bool:
 			guarnicion += medio * v
 		else:
 			mejora *= 1.0 + v
-	_caja += (precio + guarnicion) * mejora * (1.0 + (Juego.efecto(&"propinas") if turista else 0.0))
+	_caja += (precio + guarnicion) * mejora * (gasto * (1.0 + Juego.efecto(&"propinas")) if turista else 1.0)
 	Juego.stats.clientes += 1
 	return true
 
