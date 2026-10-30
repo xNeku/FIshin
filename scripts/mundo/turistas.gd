@@ -88,7 +88,8 @@ func _segundos_restantes(rd: RelojData) -> float:
 
 
 func cuantos() -> int:
-	var tope: int = max_turistas + int(Juego.efecto(&"mesas"))
+	# Relaciones públicas (Carisma): vienen más, si hay comida para ellos.
+	var tope: int = roundi((max_turistas + Juego.efecto(&"mesas")) * (1.0 + Juego.efecto(&"turistas")))
 	return clampi(int(Juego.despensa.raciones / platos_por_turista), min_turistas, tope)
 
 
@@ -201,7 +202,7 @@ func _comer_invisibles(delta: float) -> void:
 		return
 	var r: Node = _restaurante()
 	if r:
-		r.servir()
+		r.servir(true)
 	var rd: RelojData = Juego.reloj_data
 	_t_invisibles = _segundos_restantes(rd) / maxf(1.0, _invisibles * platos_por_turista) if rd else 30.0
 

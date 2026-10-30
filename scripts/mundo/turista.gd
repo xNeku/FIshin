@@ -104,7 +104,7 @@ func _comer(delta: float) -> void:
 	if _t_comer < _cada_comer or _restaurante == null:
 		return
 	_t_comer = 0.0
-	if _restaurante.servir():
+	if _restaurante.servir(true):
 		# Saltito de contento.
 		var tw := create_tween()
 		tw.tween_property(cuerpo, "position:y", 0.25, 0.12).set_ease(Tween.EASE_OUT)
