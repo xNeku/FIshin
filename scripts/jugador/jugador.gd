@@ -36,6 +36,13 @@ signal modo_cambiado(andando: bool)
 @export var duracion_salto: float = 0.5
 @export var altura_salto: float = 1.3
 
+@export_group("Hozazo")
+## Metros alrededor del náufrago que siega de una pasada.
+@export var radio_hozazo: float = 3.6
+@export var duracion_hozazo: float = 0.32
+## Distancia de la hoz al cuerpo mientras gira.
+@export var giro_hoz: float = 1.0
+
 @export_group("Andar")
 @export var bote: float = 0.06
 @export var frecuencia_bote: float = 12.0
@@ -44,6 +51,10 @@ signal modo_cambiado(andando: bool)
 @onready var sfx_salto: AudioStreamPlayer = $SfxSalto
 @onready var cubo_mano: Sprite3D = $CuboMano
 @onready var sombra: Node3D = $Sombra
+@onready var hoz: Sprite3D = get_node_or_null("Hoz")
+@onready var sfx_hozazo: AudioStreamPlayer = get_node_or_null("SfxHozazo")
+
+var _segando: bool = false
 
 var andando: bool = false
 var saltando: bool = false
@@ -139,6 +150,51 @@ func interactuar(i: Interactuable) -> void:
 		Interactuable.Accion.CUBO:
 			if not Juego.cubo_en_mano:
 				Juego.coger_cubo()
+		Interactuable.Accion.COSECHAR:
+			_hozazo()
+
+
+## Giro con la hoz: siega todo lo listo en `radio_hozazo` y lo cosechado vuela hacia ti.
+func _hozazo() -> void:
+	if _segando:
+		return
+	_segando = true
+	if sfx_hozazo:
+		sfx_hozazo.play()
+	var segadas: Array[Planta] = []
+	for n: Node in get_tree().get_nodes_in_group("plantas"):
+		var p := n as Planta
+		if p and p.lista() and Vector2(p.global_position.x - position.x, p.global_position.z - position.z).length() <= radio_hozazo:
+			segadas.append(p)
+	if hoz:
+		hoz.visible = true
+		var tw := create_tween()
+		tw.tween_method(func(a: float) -> void:
+			hoz.position = Vector3(cos(a) * giro_hoz, 0.7, sin(a) * giro_hoz * 0.6)
+			hoz.rotation.z = -a * 2.0
+			sprite.flip_h = cos(a) < 0.0, 0.0, TAU, duracion_hozazo)
+		# Las plantas caen a medida que pasa la hoz.
+		for p: Planta in segadas:
+			_segar_en(p)
+		await tw.finished
+		hoz.visible = false
+	else:
+		for p: Planta in segadas:
+			_segar_en(p)
+	_segando = false
+
+
+func _segar_en(p: Planta) -> void:
+	var lado: float = atan2(p.global_position.z - position.z, p.global_position.x - position.x)
+	await get_tree().create_timer(fposmod(lado, TAU) / TAU * duracion_hozazo, false).timeout
+	var n: int = p.cosechar()
+	if n <= 0 or p.cultivo == null:
+		return
+	var texturas: Array[Texture2D] = []
+	for k in n:
+		texturas.append(p.cultivo.icono)
+	var id: StringName = p.cultivo.id
+	Vuelos.enviar(p, self, texturas, func(_i: int) -> void: Juego.sumar_cosecha(id, 1), Vuelos.sfx_pez, 1.3)
 
 
 ## Lo cosechado sale volando de ti hacia quien lo recibe (un icono por unidad, hasta un tope).

@@ -3,7 +3,8 @@ extends Node3D
 ## Algo con lo que el náufrago puede interactuar (E) al estar cerca: un vendedor, el bestiario...
 
 ## VENTA: vende de golpe todo lo que llevas (barca y cubo), sin menú.
-enum Accion { TIENDA, BESTIARIO, DIALOGO, CUBO, VENTA, ARBOL }
+## COSECHAR: una planta lista; el náufrago pega un hozazo y siega todo lo listo a su alrededor.
+enum Accion { TIENDA, BESTIARIO, DIALOGO, CUBO, VENTA, ARBOL, COSECHAR }
 
 @export var accion: Accion = Accion.TIENDA
 ## Texto de la ayuda: "[E] <texto>".

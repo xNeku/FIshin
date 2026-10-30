@@ -1,0 +1,441 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/mundo/isla.gd" id="1_script"]
+[ext_resource type="Material" path="res://art/materiales/tierra.tres" id="2_tierra"]
+[ext_resource type="Material" path="res://art/materiales/hierba.tres" id="3_hierba"]
+[ext_resource type="PackedScene" path="res://scenes/mundo/planta.tscn" id="4_planta"]
+[ext_resource type="Resource" path="res://data/cultivos/pimiento.tres" id="5_pimiento"]
+[ext_resource type="Resource" path="res://data/cultivos/alga.tres" id="6_alga"]
+
+[sub_resource type="BoxMesh" id="b_bancal"]
+material = ExtResource("2_tierra")
+size = Vector3(2, 0.35, 2)
+
+[sub_resource type="BoxMesh" id="b_senda"]
+material = ExtResource("3_hierba")
+size = Vector3(2, 0.3, 2)
+
+[sub_resource type="BoxMesh" id="b_base"]
+material = ExtResource("2_tierra")
+size = Vector3(2.05, 0.7, 2.05)
+
+[node name="Cultivos" type="Node3D"]
+script = ExtResource("1_script")
+
+[node name="Suelo" type="Node3D" parent="."]
+
+[node name="Casilla_m9_m4" type="Node3D" parent="Suelo"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, 8)
+
+[node name="Base" type="MeshInstance3D" parent="Suelo/Casilla_m9_m4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
+mesh = SubResource("b_base")
+
+[node name="Bancal" type="MeshInstance3D" parent="Suelo/Casilla_m9_m4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+mesh = SubResource("b_bancal")
+
+[node name="Casilla_m9_m3" type="Node3D" parent="Suelo"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, 6)
+
+[node name="Base" type="MeshInstance3D" parent="Suelo/Casilla_m9_m3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
+mesh = SubResource("b_base")
+
+[node name="Bancal" type="MeshInstance3D" parent="Suelo/Casilla_m9_m3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+mesh = SubResource("b_bancal")
+
+[node name="Casilla_m9_m2" type="Node3D" parent="Suelo"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, 4)
+
+[node name="Base" type="MeshInstance3D" parent="Suelo/Casilla_m9_m2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
+mesh = SubResource("b_base")
+
+[node name="Bancal" type="MeshInstance3D" parent="Suelo/Casilla_m9_m2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+mesh = SubResource("b_bancal")
+
+[node name="Casilla_m9_m1" type="Node3D" parent="Suelo"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, 2)
+
+[node name="Base" type="MeshInstance3D" parent="Suelo/Casilla_m9_m1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
+mesh = SubResource("b_base")
+
+[node name="Bancal" type="MeshInstance3D" parent="Suelo/Casilla_m9_m1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+mesh = SubResource("b_bancal")
+
+[node name="Casilla_m9_0" type="Node3D" parent="Suelo"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, 0)
+
+[node name="Base" type="MeshInstance3D" parent="Suelo/Casilla_m9_0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
+mesh = SubResource("b_base")
+
+[node name="Bancal" type="MeshInstance3D" parent="Suelo/Casilla_m9_0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+mesh = SubResource("b_bancal")
+
+[node name="Casilla_m9_1" type="Node3D" parent="Suelo"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, -2)
+
+[node name="Base" type="MeshInstance3D" parent="Suelo/Casilla_m9_1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
+mesh = SubResource("b_base")
+
+[node name="Bancal" type="MeshInstance3D" parent="Suelo/Casilla_m9_1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+mesh = SubResource("b_bancal")
+
+[node name="Casilla_m9_2" type="Node3D" parent="Suelo"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, -4)
+
+[node name="Base" type="MeshInstance3D" parent="Suelo/Casilla_m9_2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
+mesh = SubResource("b_base")
+
+[node name="Bancal" type="MeshInstance3D" parent="Suelo/Casilla_m9_2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+mesh = SubResource("b_bancal")
+
+[node name="Casilla_m9_3" type="Node3D" parent="Suelo"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, -6)
+
+[node name="Base" type="MeshInstance3D" parent="Suelo/Casilla_m9_3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
+mesh = SubResource("b_base")
+
+[node name="Bancal" type="MeshInstance3D" parent="Suelo/Casilla_m9_3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+mesh = SubResource("b_bancal")
+
+[node name="Casilla_m9_4" type="Node3D" parent="Suelo"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, -8)
+
+[node name="Base" type="MeshInstance3D" parent="Suelo/Casilla_m9_4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
+mesh = SubResource("b_base")
+
+[node name="Bancal" type="MeshInstance3D" parent="Suelo/Casilla_m9_4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+mesh = SubResource("b_bancal")
+
+[node name="Casilla_m6_m4" type="Node3D" parent="Suelo"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 8)
+
+[node name="Base" type="MeshInstance3D" parent="Suelo/Casilla_m6_m4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
+mesh = SubResource("b_base")
+
+[node name="Bancal" type="MeshInstance3D" parent="Suelo/Casilla_m6_m4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+mesh = SubResource("b_bancal")
+
+[node name="Casilla_m6_m3" type="Node3D" parent="Suelo"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 6)
+
+[node name="Base" type="MeshInstance3D" parent="Suelo/Casilla_m6_m3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
+mesh = SubResource("b_base")
+
+[node name="Bancal" type="MeshInstance3D" parent="Suelo/Casilla_m6_m3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+mesh = SubResource("b_bancal")
+
+[node name="Casilla_m6_m2" type="Node3D" parent="Suelo"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 4)
+
+[node name="Base" type="MeshInstance3D" parent="Suelo/Casilla_m6_m2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
+mesh = SubResource("b_base")
+
+[node name="Bancal" type="MeshInstance3D" parent="Suelo/Casilla_m6_m2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+mesh = SubResource("b_bancal")
+
+[node name="Casilla_m6_m1" type="Node3D" parent="Suelo"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 2)
+
+[node name="Base" type="MeshInstance3D" parent="Suelo/Casilla_m6_m1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
+mesh = SubResource("b_base")
+
+[node name="Bancal" type="MeshInstance3D" parent="Suelo/Casilla_m6_m1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+mesh = SubResource("b_bancal")
+
+[node name="Casilla_m6_0" type="Node3D" parent="Suelo"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 0)
+
+[node name="Base" type="MeshInstance3D" parent="Suelo/Casilla_m6_0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
+mesh = SubResource("b_base")
+
+[node name="Bancal" type="MeshInstance3D" parent="Suelo/Casilla_m6_0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+mesh = SubResource("b_bancal")
+
+[node name="Casilla_m6_1" type="Node3D" parent="Suelo"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, -2)
+
+[node name="Base" type="MeshInstance3D" parent="Suelo/Casilla_m6_1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
+mesh = SubResource("b_base")
+
+[node name="Bancal" type="MeshInstance3D" parent="Suelo/Casilla_m6_1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+mesh = SubResource("b_bancal")
+
+[node name="Casilla_m6_2" type="Node3D" parent="Suelo"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, -4)
+
+[node name="Base" type="MeshInstance3D" parent="Suelo/Casilla_m6_2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
+mesh = SubResource("b_base")
+
+[node name="Bancal" type="MeshInstance3D" parent="Suelo/Casilla_m6_2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+mesh = SubResource("b_bancal")
+
+[node name="Casilla_m6_3" type="Node3D" parent="Suelo"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, -6)
+
+[node name="Base" type="MeshInstance3D" parent="Suelo/Casilla_m6_3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
+mesh = SubResource("b_base")
+
+[node name="Bancal" type="MeshInstance3D" parent="Suelo/Casilla_m6_3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+mesh = SubResource("b_bancal")
+
+[node name="Casilla_m6_4" type="Node3D" parent="Suelo"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, -8)
+
+[node name="Base" type="MeshInstance3D" parent="Suelo/Casilla_m6_4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
+mesh = SubResource("b_base")
+
+[node name="Bancal" type="MeshInstance3D" parent="Suelo/Casilla_m6_4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+mesh = SubResource("b_bancal")
+
+[node name="Casilla_m8_m4" type="Node3D" parent="Suelo"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 8)
+
+[node name="Base" type="MeshInstance3D" parent="Suelo/Casilla_m8_m4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
+mesh = SubResource("b_base")
+
+[node name="Senda" type="MeshInstance3D" parent="Suelo/Casilla_m8_m4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+mesh = SubResource("b_senda")
+
+[node name="Casilla_m8_m2" type="Node3D" parent="Suelo"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 4)
+
+[node name="Base" type="MeshInstance3D" parent="Suelo/Casilla_m8_m2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
+mesh = SubResource("b_base")
+
+[node name="Senda" type="MeshInstance3D" parent="Suelo/Casilla_m8_m2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+mesh = SubResource("b_senda")
+
+[node name="Casilla_m8_0" type="Node3D" parent="Suelo"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 0)
+
+[node name="Base" type="MeshInstance3D" parent="Suelo/Casilla_m8_0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
+mesh = SubResource("b_base")
+
+[node name="Senda" type="MeshInstance3D" parent="Suelo/Casilla_m8_0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+mesh = SubResource("b_senda")
+
+[node name="Casilla_m8_2" type="Node3D" parent="Suelo"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, -4)
+
+[node name="Base" type="MeshInstance3D" parent="Suelo/Casilla_m8_2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
+mesh = SubResource("b_base")
+
+[node name="Senda" type="MeshInstance3D" parent="Suelo/Casilla_m8_2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+mesh = SubResource("b_senda")
+
+[node name="Casilla_m8_4" type="Node3D" parent="Suelo"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, -8)
+
+[node name="Base" type="MeshInstance3D" parent="Suelo/Casilla_m8_4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
+mesh = SubResource("b_base")
+
+[node name="Senda" type="MeshInstance3D" parent="Suelo/Casilla_m8_4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+mesh = SubResource("b_senda")
+
+[node name="Casilla_m7_m4" type="Node3D" parent="Suelo"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 8)
+
+[node name="Base" type="MeshInstance3D" parent="Suelo/Casilla_m7_m4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
+mesh = SubResource("b_base")
+
+[node name="Senda" type="MeshInstance3D" parent="Suelo/Casilla_m7_m4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+mesh = SubResource("b_senda")
+
+[node name="Casilla_m7_m2" type="Node3D" parent="Suelo"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4)
+
+[node name="Base" type="MeshInstance3D" parent="Suelo/Casilla_m7_m2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
+mesh = SubResource("b_base")
+
+[node name="Senda" type="MeshInstance3D" parent="Suelo/Casilla_m7_m2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+mesh = SubResource("b_senda")
+
+[node name="Casilla_m7_0" type="Node3D" parent="Suelo"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+
+[node name="Base" type="MeshInstance3D" parent="Suelo/Casilla_m7_0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
+mesh = SubResource("b_base")
+
+[node name="Senda" type="MeshInstance3D" parent="Suelo/Casilla_m7_0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+mesh = SubResource("b_senda")
+
+[node name="Casilla_m7_2" type="Node3D" parent="Suelo"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -4)
+
+[node name="Base" type="MeshInstance3D" parent="Suelo/Casilla_m7_2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
+mesh = SubResource("b_base")
+
+[node name="Senda" type="MeshInstance3D" parent="Suelo/Casilla_m7_2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+mesh = SubResource("b_senda")
+
+[node name="Casilla_m7_4" type="Node3D" parent="Suelo"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -8)
+
+[node name="Base" type="MeshInstance3D" parent="Suelo/Casilla_m7_4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
+mesh = SubResource("b_base")
+
+[node name="Senda" type="MeshInstance3D" parent="Suelo/Casilla_m7_4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+mesh = SubResource("b_senda")
+
+[node name="Pimientos" type="Node3D" parent="."]
+
+[node name="Pimiento1" parent="Pimientos" instance=ExtResource("4_planta")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0.27, 8)
+cultivo = ExtResource("5_pimiento")
+
+[node name="Pimiento2" parent="Pimientos" instance=ExtResource("4_planta")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0.27, 6)
+cultivo = ExtResource("5_pimiento")
+
+[node name="Pimiento3" parent="Pimientos" instance=ExtResource("4_planta")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0.27, 4)
+cultivo = ExtResource("5_pimiento")
+
+[node name="Pimiento4" parent="Pimientos" instance=ExtResource("4_planta")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0.27, 2)
+cultivo = ExtResource("5_pimiento")
+
+[node name="Pimiento5" parent="Pimientos" instance=ExtResource("4_planta")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0.27, 0)
+cultivo = ExtResource("5_pimiento")
+
+[node name="Pimiento6" parent="Pimientos" instance=ExtResource("4_planta")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0.27, -2)
+cultivo = ExtResource("5_pimiento")
+
+[node name="Pimiento7" parent="Pimientos" instance=ExtResource("4_planta")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0.27, -4)
+cultivo = ExtResource("5_pimiento")
+
+[node name="Pimiento8" parent="Pimientos" instance=ExtResource("4_planta")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0.27, -6)
+cultivo = ExtResource("5_pimiento")
+
+[node name="Pimiento9" parent="Pimientos" instance=ExtResource("4_planta")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0.27, -8)
+cultivo = ExtResource("5_pimiento")
+
+[node name="Pimiento10" parent="Pimientos" instance=ExtResource("4_planta")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0.27, 8)
+cultivo = ExtResource("5_pimiento")
+
+[node name="Pimiento11" parent="Pimientos" instance=ExtResource("4_planta")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0.27, 6)
+cultivo = ExtResource("5_pimiento")
+
+[node name="Pimiento12" parent="Pimientos" instance=ExtResource("4_planta")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0.27, 4)
+cultivo = ExtResource("5_pimiento")
+
+[node name="Pimiento13" parent="Pimientos" instance=ExtResource("4_planta")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0.27, 2)
+cultivo = ExtResource("5_pimiento")
+
+[node name="Pimiento14" parent="Pimientos" instance=ExtResource("4_planta")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0.27, 0)
+cultivo = ExtResource("5_pimiento")
+
+[node name="Pimiento15" parent="Pimientos" instance=ExtResource("4_planta")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0.27, -2)
+cultivo = ExtResource("5_pimiento")
+
+[node name="Pimiento16" parent="Pimientos" instance=ExtResource("4_planta")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0.27, -4)
+cultivo = ExtResource("5_pimiento")
+
+[node name="Pimiento17" parent="Pimientos" instance=ExtResource("4_planta")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0.27, -6)
+cultivo = ExtResource("5_pimiento")
+
+[node name="Pimiento18" parent="Pimientos" instance=ExtResource("4_planta")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0.27, -8)
+cultivo = ExtResource("5_pimiento")
+
+[node name="Algas" type="Node3D" parent="."]
+
+[node name="Alga1" parent="Algas" instance=ExtResource("4_planta")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, -0.05, 6)
+cultivo = ExtResource("6_alga")
+
+[node name="Alga2" parent="Algas" instance=ExtResource("4_planta")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, -0.05, 2)
+cultivo = ExtResource("6_alga")
+
+[node name="Alga3" parent="Algas" instance=ExtResource("4_planta")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, -0.05, -2)
+cultivo = ExtResource("6_alga")
+
+[node name="Alga4" parent="Algas" instance=ExtResource("4_planta")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, -0.05, -6)
+cultivo = ExtResource("6_alga")
+
+[node name="Alga5" parent="Algas" instance=ExtResource("4_planta")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.05, 6)
+cultivo = ExtResource("6_alga")
+
+[node name="Alga6" parent="Algas" instance=ExtResource("4_planta")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.05, 2)
+cultivo = ExtResource("6_alga")
+
+[node name="Alga7" parent="Algas" instance=ExtResource("4_planta")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.05, -2)
+cultivo = ExtResource("6_alga")
+
+[node name="Alga8" parent="Algas" instance=ExtResource("4_planta")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.05, -6)
+cultivo = ExtResource("6_alga")
