@@ -476,6 +476,33 @@ Simulador: `docs/herramientas/simular_economia.py`. Juega con los peces, cañas 
 4. No se pueden contratar pescadores (solo el primero, gratis): el puerto no crece.
 5. Lo pasivo es pequeño (~27 ₽/min por pescador, un 10 % de lo que ganas a mano). Bien según la regla, pero no hay forma de subirlo.
 
+### Orientación v5: early game completo (simulador v4, 2 nov) [vigente]
+Jugador normal, 8 partidas de 4 h. El bueno llega a la caña de carbono ~15 min antes y el flojo ~20 min después.
+
+| Min | Llegada | Condición | ₽/min |
+|-----|---------|-----------|-------|
+| 5 | Caña decente | 300 ₽ | ~200 |
+| 15 | Viejo y árbol | 58 peces | ~230 |
+| 19 | Camino | 600 puntos de pesca | ~240 |
+| 24 | Puerto | camino + 800 puntos | ~270 |
+| 31 | Pescador 2 | 1.000 ₽ | ~300 |
+| 38 | Sabia caña y lonja | 6.800 ₽ / 11.000 ₽ totales | ~600 |
+| 67 | Camino 2 y O Mar | 3 pescadores | ~1.000 |
+| 69 | Caña de fibra (prof. 4) | 22.000 ₽, con la lonja | ~1.900 |
+| 107 | Entrada de turistas, primera visita | 2 días con O Mar | ~4.000 |
+| 112 | Cultivos | 50 clientes | ~3.300 |
+| 153 | Caña de carbono (prof. 5) | 90.000 ₽, con la entrada | ~4.300 |
+| 184 | Turistas nivel 2 | 120 clientes | ~6.600 |
+| ~215 | Turistas nivel 3 (fin del early game) | 250 clientes | ~8.000-13.000 |
+
+Combos (medidos en el motor con 3.000 picadas):
+
+| Caña | Combo medio | Lo que más se ve |
+|---|---|---|
+| Sabia | 7,7 | hasta 13 |
+| Fibra | 10 | hasta 20 |
+| Carbono | 13 | la mitad pasa de 15 (flow); tope 25 con el Sedal |
+
 ### Orientación v3 (espera de 8-20 s, andar para vender, maestría)
 [PROPUESTA] Guía de ritmo: manda la carta. Simulado con un jugador normal (media de 20 partidas, `docs/herramientas/simular_economia.py`). Cuenta el rato que se pierde andando para vender: 8 s por venta en el donut y 35 s cuando ya hay camino.
 

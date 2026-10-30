@@ -188,17 +188,61 @@ Parada para valorar rumbo (29 oct). Hay un tramo jugable de principio a fin de l
   - Broca de diamante (`coral`) y Pulmones de acero (`perlas`): bloqueados hasta que existan el taladro y el centro de buceo.
 - Se compra desde que aparecen los cultivos.
 
+## Repaso y balance del early game (2 nov)
+El early game son las primeras ~4 h: termina con los turistas de nivel 3 (yate). Lo ha cuadrado Claude con el simulador v4 y con pruebas en el motor, sin partida del diseñador.
+
+- **Simulador v4** (`docs/herramientas/simular_economia.py`):
+  - Lee peces, cañas, árbol, apariciones y artículos de los `.tres`.
+  - Juega una partida entera: el jugador compra cañas, pescadores, nodos del árbol (los baratos primero) y mejoras de O Mar.
+  - Modela la lonja global, O Mar con su despensa, los días y horas de turistas, los cultivos y el chaval.
+  - Jugador calibrado con la prueba del diseñador ("apenas fallé combos": 94 % de acierto a 0,4 s).
+- **Pesca más pro:**
+  - Cañas nuevas que vende el comerciante cuando toca (`ArticuloData.requiere_flag`):
+    - Caña de fibra: profundidad 4, cadena 4-19, desde la lonja, 22.000 ₽.
+    - Caña de carbono: profundidad 5, cadena 6-21, desde la entrada de turistas, 90.000 ₽.
+  - Con el Sedal de segunda mano (+4) el tope es 25.
+  - Perfect más largos en profundidad 2-8 y épicos ×1,15 (`importar_peces.py 22 1,35`, tabla `PERFECT`).
+  - Medido en el motor: con la Sabia, media 7,7; con fibra, 10; con carbono, 13 (la mitad llega a 15, que es el flow; el máximo es 23-25).
+  - Racha: tramos nuevos en 15 (×1,75) y 25 (×2,25), con arpegio y destello.
+  - La picada de un pez raro destella con el color de su rareza (`color_destello` en `efecto_pantalla.gdshader`).
+- **Línea de tiempo simulada (jugador normal):**
+
+  | Minuto | Llegada |
+  |---|---|
+  | 24 | Puerto |
+  | 38 | Sabia caña y lonja |
+  | 67 | Camino 2 y O Mar |
+  | 69 | Caña de fibra |
+  | 107 | Entrada de turistas |
+  | 112 | Cultivos |
+  | 153 | Caña de carbono |
+  | 184 | Turistas de nivel 2 (120 clientes) |
+  | ~215 | Turistas de nivel 3 (250 clientes) |
+
+  - ₽/min: ~300 a la media hora, ~1.000 a la hora, ~4.000 a las 2 h y 8.000-13.000 a las 4 h.
+  - O Mar pasa del 5 % al ~25 % de los ingresos.
+- **Árbol:** Relaciones públicas (+10 % de turistas) y Turista despistado (+8 % de propina) ya funcionan y se compran desde la entrada de turistas. Los de sushi, casino, taladro, buceo, plantación y mirador siguen bloqueados hasta que exista su contenido (son lo siguiente).
+- **Villa:**
+  - Bocina al llegar los turistas y "· ¡turistas!" en el panel.
+  - Las plantas guardan su crecimiento (`Juego.plantas`).
+  - Una visita a medias se retoma al cargar.
+- **Pruebas en el motor:**
+  - Todas las llegadas seguidas con alturas y piezas, sin errores.
+  - El comerciante sube andando al puerto alto.
+  - Las cadenas, medidas con 3.000 picadas por caña.
+  - El guardado de plantas y visitas.
+
 ## Siguiente paso
-Sesión de progresión con el diseñador hasta el midgame (economía y orden de desbloqueos), partiendo de `docs/PROGRESION.md` (borrador v1) y `docs/INCREMENTAL.md`.
-
-Ahora: el diseñador prueba el árbol de habilidades (60 nodos de propuesta) y revisa nodos, costes y efectos. Siguiente gran bloque: T2 (huerto de algas, sushi con suministro, taladro de coral) según `docs/PROGRESION.md`.
-
-Por decidir con el diseñador en la charla de rumbo. Candidatos:
-1. Probar en la tablet (rendimiento de pixelado + SSR + lluvia + CRT) y una partida larga de principio a fin para ajustar el ritmo de los primeros 30 min.
-2. Árbol de habilidades (datos + interfaz del viejo) cuando el diseñador lo rellene.
-3. Contenido: Excel de peces (día/noche, estación) y decidir cómo pasa el tiempo.
-4. Rehacer el cebo (probabilidades + duración en segundos).
-5. Música y sonido de verdad.
+1. **Partida del diseñador del minuto 30 al 240:** lo único que el simulador no mide es si es divertido.
+2. Mid game, en este orden (propuesta):
+   1. Mejora de edificios: un sistema común (nivel por edificio, `ArticuloData.Tipo.MEJORA`) que sirva para el pantalán, O Mar, la lonja…
+   2. Taladro de coral (material para mejorar edificios y las cañas del mid game).
+   3. Sushi (segundo restaurante, usa algas y pescado de la lonja).
+   4. Cañas rápida y pesada.
+   5. Plantación de marihuana.
+   6. Decoración.
+3. Pendiente técnico: rendimiento en la tablet con 40 turistas, luces y las dos alturas; música.
+4. Riesgo pequeño: con la barca sin límite, se pueden guardar los peces hasta que llegue la lonja para cobrar ×1,3. Retrasa todo lo demás (la lonja llega por ₽ ganados), así que no compensa.
 
 ## Decisiones recientes
 - 2.5D, Forward+, juego de PC. Moneda: rublos (₽). Fuente pixel propia Fishin Pixel (tiene ₽ y flechas).
