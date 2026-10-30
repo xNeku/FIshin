@@ -12,6 +12,8 @@ extends MeshInstance3D
 var tiempo: float = 0.0
 var _material: ShaderMaterial
 var _mascara: Image
+## La máscara como textura, para otros shaders que no deben pintar sobre tierra (reflejo de la luna).
+var textura_tierra: ImageTexture
 
 
 func _ready() -> void:
@@ -45,7 +47,8 @@ func actualizar_tierra() -> void:
 			var px: Vector2i = Vector2i(c.x + radio_mascara, -c.y + radio_mascara)
 			if px.x >= 0 and px.y >= 0 and px.x < n and px.y < n:
 				_mascara.set_pixelv(px, Color.WHITE)
-	_material.set_shader_parameter("mascara_tierra", ImageTexture.create_from_image(_mascara))
+	textura_tierra = ImageTexture.create_from_image(_mascara)
+	_material.set_shader_parameter("mascara_tierra", textura_tierra)
 	_material.set_shader_parameter("radio_mascara", float(radio_mascara))
 	_material.set_shader_parameter("tamano_celda", float(mundo.tamano_celda))
 

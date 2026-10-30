@@ -39,11 +39,17 @@ func _process(delta: float) -> void:
 	var dir: Vector3 = -camara.global_transform.basis.z
 	var suelo: Vector3 = o + dir * (-o.y / minf(-0.01, dir.y))
 	var punto: Vector3 = suelo + Vector3(lerpf(x_salida, x_puesta, p), 0.0, lerpf(z_horizonte, z_medianoche, sin(p * PI)))
-	if agua:
-		agua.pegar(self, punto, 0.04)
-	else:
-		global_position = Vector3(punto.x, 0.04, punto.z)
-		rotation_degrees.x = -90.0
+	# Plano, sin inclinarse con la ola: una estela tan larga inclinada levantaba las puntas por encima
+	# de islas y casas. El material la recorta para que solo se vea sobre el agua.
+	var y: float = agua.altura(punto) if agua else 0.0
+	global_transform = Transform3D(Basis(Vector3.RIGHT, -PI * 0.5) * Basis.from_scale(scale), Vector3(punto.x, y + 0.04, punto.z))
+	var m: ShaderMaterial = material_override as ShaderMaterial
+	if m:
+		m.set_shader_parameter("textura", texture)
+		m.set_shader_parameter("tinte", modulate)
+		if agua and agua.textura_tierra:
+			m.set_shader_parameter("mascara_tierra", agua.textura_tierra)
+			m.set_shader_parameter("radio_mascara", float(agua.radio_mascara))
 
 
 func _textura(fase: int, fotograma: int) -> Texture2D:

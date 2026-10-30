@@ -1,0 +1,11 @@
+[gd_resource type="ShaderMaterial" format=3]
+
+[ext_resource type="Shader" path="res://shaders/reflejo_luna.gdshader" id="1_shader"]
+
+[resource]
+render_priority = -10
+shader = ExtResource("1_shader")
+shader_parameter/tinte = Color(1, 1, 1, 1)
+shader_parameter/radio_mascara = 24.0
+shader_parameter/tamano_celda = 2.0
+shader_parameter/margen_costa = 0.2
