@@ -3,7 +3,7 @@
 ## Dónde estamos
 Parada para valorar rumbo (29 oct). Hay un tramo jugable de principio a fin de lo diseñado:
 - **Pesca**: minijuego completo (cadena de largo variable, dobles desde el 5º botón, machacar, intensidad que crece hasta 50 botones, celebración del pez gordo) con teclas y botones dibujados (teclado, PlayStation, Xbox).
-- **Economía**: barca con 6 huecos apilados, comerciante (caña, cebo, huecos, vender todo), dinero y peces que vuelan, bestiario.
+- **Economía**: barca sin límite (pilas por especie), comerciante (caña, cebo, vender todo), dinero y peces que vuelan, bestiario.
 - **Mundo**: llegan por datos de la carta el comerciante, la primera isla, el viejo, el camino, el puerto con pescadores automáticos y cubo, y la lonja. Se anda, se salta y se interactúa.
 - **Arte**: estilo B pixelado, mar con olas, reflejos y 4 climas; prota en donut que flota sobre la ola; todo en sprite; interfaz estilo Animal Well con filtro retro y animaciones de entrada.
 - **Falta**: el árbol de habilidades (espera al diseñador), contenido (solo 6 peces y 3 cañas), rehacer el cebo, balance, música y probar en la tablet el rendimiento de la pasada de arte.
@@ -12,9 +12,9 @@ Parada para valorar rumbo (29 oct). Hay un tramo jugable de principio a fin de l
 - `scripts/pesca/pesca.gd` (Pesca): lógica del minijuego, solo señales. Las stats van en `data/stats_pesca.tres`.
 - `scripts/pesca/camara_pesca.gd`: zoom, shake y congelado. `sonido_pesca.gd`: sfx y latido.
 - `scripts/economia/juego.gd` (autoload Juego): rublos, capturas, stats, colección, flags, save `user://partida.json`.
-- `scripts/ui/hud.gd` + `scenes/ui/hud.tscn`: panel de dinero (Info), teclas del minijuego (Prompt), banner del pez (Resultado), caja de acciones (Accion), aviso de barca llena (Estado). Popups desde `popup_texto.tscn` (solo "+X ₽" y trucos) y la X roja desde `popup_icono.tscn`.
+- `scripts/ui/hud.gd` + `scenes/ui/hud.tscn`: panel de dinero (Info), teclas del minijuego (Prompt), banner del pez (Resultado), caja de acciones (Accion). Popups desde `popup_texto.tscn` (solo "+X ₽" y trucos) y la X roja desde `popup_icono.tscn`.
 - `scenes/mundo/barca.tscn` (barca.gd), `scenes/mundo/barco_comerciante.tscn`.
-- `scripts/ui/menu.gd` + `scenes/ui/menu.tscn` (huecos desde `hueco_barca.tscn`, variantes desde `fila_variante.tscn`).
+- `scripts/ui/menu.gd` + `scenes/ui/menu.tscn` (una pila por especie desde `hueco_barca.tscn`, variantes desde `fila_variante.tscn`).
 - `scripts/ui/tienda.gd` + `scenes/ui/tienda.tscn` (filas desde `fila_tienda.tscn`). Los artículos del comerciante se asignan en `barco_comerciante.tscn`.
 - Datos: `data/canas/*.tres` (CanaData, se carga por id), `data/articulos/*.tres` (ArticuloData: CANA, CEBO, HUECO).
 - Menú y tienda pausan el árbol (`process_mode = Always` en ellos).
@@ -139,6 +139,12 @@ Parada para valorar rumbo (29 oct). Hay un tramo jugable de principio a fin de l
 - Luna: la estela se inclinaba con la pendiente de la ola en su centro y, al medir ~10 m, las puntas subían por encima de islas y casas. Ahora va plana y la recorta el shader `shaders/reflejo_luna.gdshader` (`art/mundo/luna/reflejo.tres`) con la misma máscara de tierra del mar (`Agua.textura_tierra`): solo se ve sobre agua.
 - Lluvia: el sonido se rearranca cada frame si llueve y se ha parado; suena también con el juego en pausa (`SfxLluvia` process_mode Always) y se importa sin comprimir (la compresión QOA podía cortar el bucle).
 
+## Sesión 1 nov (madrugada): barca sin huecos, comerciante a pie, camino 2
+- [DECIDIDO] Fuera los huecos de la barca: sin límite, sin aviso de barca llena y el comerciante ya no vende "+1 hueco" (borrado `data/articulos/hueco_extra.tres`; `ArticuloData.Tipo.HUECO` se queda en el enum para no mover los números).
+- [DECIDIDO] El comerciante, si el camino le cierra el paso, aparca y sigue andando: `BarcoComerciante.ir_a_pie(destino)` elige dónde aparcar (navegar + andar × `coste_paso`), baja de un salto, anda con `Mundo.ruta` y `volver_a_pie()` le sube otra vez. Valores: `velocidad_andar`, `altura_suelo`, `duracion_salto`, `altura_salto`, `coste_paso`.
+- Rutas a pie con Dijkstra (`Mundo._recorrer_a_pie`): un salto cuesta `Mundo.coste_salto` (2,5) pasos, así que nadie salta en diagonal si puede andar. Afecta también a los pescadores. `Mundo.distancias_a_pie(desde)`.
+- Camino 2 de la carta (`data/apariciones/camino_2.tres`, 32 casillas, se construye): rodea la lonja. Condición nueva PESCADORES (`Juego.trabajadores`), valor 3, y requiere camino y lonja.
+
 ## Siguiente paso
 Sesión de progresión con el diseñador hasta el midgame (economía y orden de desbloqueos), partiendo de `docs/PROGRESION.md` (borrador v1) y `docs/INCREMENTAL.md`.
 
@@ -155,10 +161,10 @@ Por decidir con el diseñador en la charla de rumbo. Candidatos:
 - 2.5D, Forward+, juego de PC. Moneda: rublos (₽). Fuente pixel propia Fishin Pixel (tiene ₽ y flechas).
 - La intensidad visual va por botones seguidos (no por % del pez); el máximo llega con combos de 50 (final de juego). Las dobles salen desde el 5º botón.
 - Largo de cadena aleatorio por picada (CanaData.tirar_largo_cadena), sesgado a corto.
-- Barca llena (todos los huecos): no pica nada hasta vender. Sin progreso offline.
+- La barca no tiene huecos ni límite (decidido 1 nov): se apila por especie. Sin progreso offline.
 - Machacar fallido: los extraños y legendarios se escapan, los demás pierden valor.
 - Niebla del clima activa (Forward+); en Compatibility lo dejaba todo gris.
-- Sin frases en el HUD: fuera llegadas, ¡PICA!, calidad y estado de arriba (solo queda "¡Barca llena! Ve a vender"). Fallo/escape = X roja (`scenes/ui/popup_icono.tscn`, `art/ui/x_roja.png`). `AparicionData.texto_llegada` ya no se usa.
+- Sin frases en el HUD: fuera llegadas, ¡PICA!, calidad y estado de arriba (ya no queda ninguno). Fallo/escape = X roja (`scenes/ui/popup_icono.tscn`, `art/ui/x_roja.png`). `AparicionData.texto_llegada` ya no se usa.
 - Nada de textos flotantes en el mundo (ni carteles, ni contadores encima de pescadores o cubo). Las frases de acierto del minijuego están comentadas en hud.gd (_on_acierto) para retomarlas más adelante.
 - Interfaz estilo Animal Well (paneles negros, borde blanco, selección amarilla) con filtro retro de tubo y animaciones de entrada. Teclas dibujadas del pack CC0 de Xelu; mando PlayStation por defecto, también Xbox. Acción posible abajo a la derecha, alternando cada 2 s si hay varias.
 - El náufrago no pesca solo (fuera el piloto). Lo pasivo nunca sustituye a pescar a mano.

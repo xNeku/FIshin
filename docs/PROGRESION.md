@@ -107,7 +107,7 @@ Lo que ya está hecho cubre **T0 y T1** (comerciante, primera isla, viejo, camin
 
 | Orden | Edificio | Tipo | Tramo | Se desbloquea con | Qué hace | Se mejora en |
 |-------|----------|------|-------|-------------------|----------|--------------|
-| 1 | Barco comerciante | Comprador | T0 | 3 capturas [hecho] | Compra peces, vende cañas, cebo, huecos | Más artículos, mejores precios |
+| 1 | Barco comerciante | Comprador | T0 | 3 capturas [hecho] | Compra peces, vende cañas y cebo | Más artículos, mejores precios |
 | 2 | Primera isla (bestiario) | — | T0 | 200 ₽ totales [hecho] | Colección de peces | — |
 | 3 | Viejo (árbol) | — | T1 | 100 peces [hecho] | Árbol de habilidades, Sabia caña | Bonsáis crecen con el árbol |
 | 4 | Camino de madera | — | T1 | 20 min [hecho] | Conecta todo; crece con cada edificio | — |
@@ -226,7 +226,7 @@ Las especies profundas tienen más valor base, aunque sean de la misma rareza. A
 - **Carrete**: machacar más fácil.
 - **Sedal**: menos escapes.
 - **Cebos**: efectos temporales de probabilidad (pendiente de la lista del diseñador).
-- **Cajones**: más huecos en la barca [hecho].
+- ~~**Cajones**: más huecos en la barca~~ (quitado: la barca no tiene límite).
 
 ---
 

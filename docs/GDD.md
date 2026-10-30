@@ -78,12 +78,12 @@ Marcas: [DECIDIDO] lo decidió el diseñador · [PROPUESTA] sugerencia de Claude
 ## 6. Economía
 - [DECIDIDO] Una sola moneda que lo es todo: dinero, experiencia y economía. Rublos (₽).
 - [DECIDIDO] Además hay materiales (algas, coral, bambú, perlas, marihuana) que se gastan en mejoras junto con los rublos, para que no se pueda pasar de ninguna línea. Detalle en `docs/PROGRESION.md`.
-- [DECIDIDO] Al poco de empezar aparece un barco comerciante: le vendes peces y le compras cosas. Vende la siguiente caña, cebo y +1 hueco.
+- [DECIDIDO] Al poco de empezar aparece un barco comerciante: le vendes peces y le compras cosas. Vende la siguiente caña y cebo.
 - [PROPUESTA] Precios: caña decente 150 ₽, cebo 15 ₽, cajón 60 ₽ (×1.8 por compra, máximo 4).
 - [DECIDIDO] El cebo da X probabilidad de X cosas (más probabilidad de cierto pez o rareza, pesca duplicada...) y su efecto dura un tiempo.
 - [ABIERTO] Lista concreta de cebos, efectos y duración (pendiente del diseñador).
 - Nota: el cebo actual (5 pescas, +30 % de tiempo de reacción) es provisional y hay que rehacerlo con duración en segundos y efectos de probabilidad.
-- [DECIDIDO] La barca (lo que llevas encima) tiene inventario por huecos: empiezas con 6. Cada especie ocupa un hueco y se apila con todas sus variantes y pesos; al pulsar el hueco se despliegan. Los huecos son solo para lo que pescas.
+- [DECIDIDO] La barca (lo que llevas encima) no tiene huecos ni límite (cambiado el 1 nov). Cada especie se apila con todas sus variantes y pesos; al pulsar la pila se despliegan.
 - [DECIDIDO] Si la barca se llena, el juego avisa y no deja pescar hasta que vendas.
 - [DECIDIDO] **Dinero y peces visuales y gustosos**: cuando alguien deposita dinero o peces, salen volando uno a uno en parábola hacia quien los recibe. Al vender, primero van tus peces y después vuelve el dinero. Puedes moverte mientras: las piezas te siguen.
 - [PROPUESTA] El dinero vuela en monedas de 10; si es mucho, en billetes (100), fajos (1.000) o sacos (10.000), como mucho 25 piezas. El contador sube con cada pieza.
