@@ -162,6 +162,19 @@ Parada para valorar rumbo (29 oct). Hay un tramo jugable de principio a fin de l
 - Condiciones nuevas de aparición: CLIENTES y DIAS_TRAS_REQUISITO (`flags.reloj_<id>` guarda cuándo llegó cada cosa).
 - HUD: "Cosecha: …" y "O Mar: raciones/capacidad" en el panel de estado.
 
+## Sesión 1 nov (noche): dos alturas, piti y turistas de nivel 3
+- Alturas (`AparicionData`: `altura`, `alturas_celda`, `rampas`, `pieza_rampa`, `pieza_bajo_celda`):
+  - `Mundo` da `altura_celda`, `altura_en(p)` (en las escaleras sube poco a poco), `paso_valido` (misma altura o por la escalera, de frente) y `salto_valido` (misma altura, sin escaleras).
+  - Las rutas a pie y los puestos de pesca (solo abajo) lo respetan.
+  - El náufrago, los pescadores, los turistas y el comerciante pisan a la altura del suelo.
+  - Piezas: `escalera.tscn` (sube 1,2 m hacia su −Z) y `pilotes.tscn`. Los tablones llevan pilotes que bajan al agua.
+  - Los flotadores de la lonja se quedan en el agua (`Flotadores` a −1,2 en `lonja.tscn`).
+- Piti (`scenes/efectos/piti.tscn`, `piti.gd`): de noche, humo, brasa (OmniLight) y halo aditivo en el píxel del cigarro; caladas cada 5-11 s. Va en `barca.tscn` (dibujos chill y tira) y en `jugador.tscn`.
+- Turistas:
+  - Nivel 2 rehecho, con 13 nacionalidades que se reconocen por la ropa.
+  - Nivel 3: 11 pijos en yate (12 plazas), que se abre con 1.500 clientes.
+  - `NivelTuristasData.alturas_cubierta`: los del yate van de pie en cubierta. Los barcos grandes paran más lejos del muelle.
+
 ## Siguiente paso
 Sesión de progresión con el diseñador hasta el midgame (economía y orden de desbloqueos), partiendo de `docs/PROGRESION.md` (borrador v1) y `docs/INCREMENTAL.md`.
 

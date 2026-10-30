@@ -39,6 +39,8 @@ Marcas: [DECIDIDO] lo decidió el diseñador · [PROPUESTA] sugerencia de Claude
 - Nota: el combo x10 solo es posible con la Sabia caña (rota: hasta 5, decente: hasta 9). El puerto queda para después del viejo.
 - [DECIDIDO] **Lonja** (3×3 en x −1..1, y 7..9, al final del camino): centro de venta conceptual. No se va a ella a vender: desde que aparece, todo lo que vendas (también al comerciante) vale ×1,3. Con el porteador, el comerciante le lleva el cubo navegando. Con los restaurantes será el centro neurálgico del pescado: se verá cómo lanza el pescado a cada destino. Emerge del fondo del mar. Casa blanca medio moruna con toldo azul y blanco, bandera con un pez pocho y flotadores rojos y blancos.
 - [PROPUESTA] La lonja aparece cuando ya existe el camino y has ganado 1.500 ₽ en total. La fila de la casa (y = 9) no se pisa.
+- [DECIDIDO] **Dos alturas**: la zona de la lonja, el camino 2 y los restaurantes es un puerto alto sobre pilotes de madera (1,2 m). El camino 1 tiene una escalera en (0,4). La entrada de turistas queda abajo, a la altura de pesca, con su escalera en (4,5) hasta el camino 2 (se añadió el rellano (4,4)). Solo se cambia de altura por las escaleras. Se pesca desde abajo.
+- [DECIDIDO] De noche el náufrago fuma: sale humo y la brasa ilumina un poco.
 - [DECIDIDO] **Camino 2** (32 casillas): anillo alrededor de la lonja con plaza arriba, ramal a la izquierda y ramal al restaurante. Llega al tener el tercer pescador. Con él el comerciante ya no llega navegando a la lonja: aparca y va andando.
 - [DECIDIDO] **Restaurante O Mar** (parcela 5×5 en x 7..11, y 7..11): chiringuito de madera austero y con carisma en el centro (2×2), que se irá mejorando. Llega justo después del camino 2. La lonja le manda gratis una parte de lo que vendes (tú cobras lo mismo); con eso hace platos para la gente del pueblo y los turistas, y te paga lo que cobra. Ahí le das lo cosechado y le compras mejoras.
 - [DECIDIDO] **Entrada de turistas** (11 casillas en x 4..7, y 3..6): plataforma cutre de tablones rotos con una escalera al camino. Llega tras 2 días enteros con el restaurante abierto.
@@ -105,8 +107,9 @@ Marcas: [DECIDIDO] lo decidió el diseñador · [PROPUESTA] sugerencia de Claude
 - [DECIDIDO] Tipos de turista, acumulativos (al desbloquear uno, los que vienen se reparten entre todos los tipos):
   - Nivel 1: náufragos, pescadores, gente del pueblo; hombres y mujeres variados. Llegan en barca.
   - Nivel 2: gente normal de distintas nacionalidades (asiáticos, marroquíes...). Llegan en velero y en barcos turísticos pequeños (catamarán).
-  - [ABIERTO] Nivel 3 y siguientes (el diseñador lo dejó a medias).
-  - Irán teniendo un toque gracioso según avanza el juego.
+  - Nivel 3: yates con muchísima gente pija de distintas nacionalidades.
+  - [DECIDIDO] Las nacionalidades tienen que ser graciosas y que se note de dónde son: se reconocen por la ropa y lo que llevan en la mano (sin caricaturizar caras).
+  - [PROPUESTA] El nivel 3 se abre con 1.500 clientes servidos.
 - [ABIERTO] Lista de edificios, qué hace cada uno y sus hitos.
 
 ## 8. Progresión: árbol de habilidades
