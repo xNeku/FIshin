@@ -164,7 +164,7 @@ func _hozazo() -> void:
 	var segadas: Array[Planta] = []
 	for n: Node in get_tree().get_nodes_in_group("plantas"):
 		var p := n as Planta
-		if p and p.lista() and Vector2(p.global_position.x - position.x, p.global_position.z - position.z).length() <= radio_hozazo:
+		if p and p.lista() and Vector2(p.global_position.x - position.x, p.global_position.z - position.z).length() <= radio_hozazo * (1.0 + Juego.efecto(&"radio_hozazo")):
 			segadas.append(p)
 	if hoz:
 		hoz.visible = true
@@ -190,6 +190,8 @@ func _segar_en(p: Planta) -> void:
 	var n: int = p.cosechar()
 	if n <= 0 or p.cultivo == null:
 		return
+	if randf() < Juego.efecto(&"cosecha_doble"):
+		n *= 2
 	var texturas: Array[Texture2D] = []
 	for k in n:
 		texturas.append(p.cultivo.icono)

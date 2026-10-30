@@ -430,6 +430,7 @@ Nota: en tiendas de móvil la marihuana sube la clasificación por edad. Se acep
 | raros / legendarios / raros_tormenta | más no comunes / legendarios / en tormenta | Pesca |
 | segunda_oportunidad | a veces no se escapa al fallar el primero | Pesca |
 | pesca_doble | a veces sale otro igual | Pesca |
+| radio_hozazo / cultivos / por_planta / valor_cosecha / cosecha_doble / cosechador / cosechador_ritmo | rama Cosecha (hoz, crecer, cosecha, chaval que cosecha solo) | Jugador, Planta, Restaurante, Cultivos |
 | precio_venta / precio_lonja | se vende más caro (todo / en la lonja) | Comercio |
 | venta_doble | un pez se cobra doble | Comercio |
 | descuento | tiendas más baratas | Juego.precio |

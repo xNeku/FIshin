@@ -240,7 +240,12 @@ func _trazar_caminos() -> void:
 			if p:
 				padres.append(p.centro())
 		if padres.is_empty():
-			padres.append(origen_centro())
+			var o: Vector2 = origen_centro()
+			var d: Vector2 = na.centro() - o
+			# Rama en diagonal (entre otras dos): sale de la esquina del bonsái para no cruzarlas.
+			if absf(d.x) > origen.size.x and absf(d.y) > origen.size.y:
+				o += Vector2(signf(d.x), signf(d.y)) * origen.size * 0.5
+			padres.append(o)
 		for desde: Vector2 in padres:
 			var c: ConexionArbol = escena_conexion.instantiate()
 			conexiones.add_child(c)

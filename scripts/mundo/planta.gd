@@ -27,7 +27,8 @@ func _process(delta: float) -> void:
 		return
 	_t += delta
 	if progreso < 1.0:
-		progreso = minf(1.0, progreso + delta / maxf(1.0, cultivo.segundos_crecer))
+		# Huerto zen (rama Cosecha): crecen más rápido.
+		progreso = minf(1.0, progreso + delta * (1.0 + Juego.efecto(&"cultivos")) / maxf(1.0, cultivo.segundos_crecer))
 	_pintar()
 	if lista():
 		# Lista: se mece un poco para llamar la atención.
@@ -48,7 +49,7 @@ func cosechar() -> int:
 	var tw := create_tween()
 	dibujo.scale = Vector3(1.4, 0.6, 1.0)
 	tw.tween_property(dibujo, "scale", Vector3.ONE, 0.25).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
-	return cultivo.por_planta
+	return cultivo.por_planta + int(Juego.efecto(&"por_planta"))
 
 
 func _pintar() -> void:

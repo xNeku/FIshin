@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="NodoArbolData" format=3]
+
+[ext_resource type="Script" path="res://scripts/datos/nodo_arbol_data.gd" id="1_script"]
+[ext_resource type="Resource" path="res://data/arbol/ramas/cosecha.tres" id="2_rama"]
+[ext_resource type="Texture2D" path="res://art/ui/arbol/iconos/pimiento.png" id="3_icono"]
+[ext_resource type="Resource" path="res://data/arbol/nodos/ch_huerto.tres" id="r0"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"co_padron"
+nombre = "Unos pican y otros no"
+descripcion = "Lo cosechado vale un {v} más en el restaurante (llevas {total})."
+rama = ExtResource("2_rama")
+icono = ExtResource("3_icono")
+clave = false
+niveles = 5
+coste_base = 8000.0
+crecimiento = 1.9
+efecto = &"valor_cosecha"
+valor_por_nivel = 0.15
+formato = 0
+requisitos = Array[Resource]([ExtResource("r0")])
+requiere_flag = "aparecido_cultivos"
+texto_bloqueo = "Llega con los cultivos"

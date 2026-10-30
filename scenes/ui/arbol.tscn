@@ -81,6 +81,15 @@
 [ext_resource type="Resource" path="res://data/arbol/nodos/ch_hierba.tres" id="d_ch_hierba"]
 [ext_resource type="Resource" path="res://data/arbol/nodos/ch_nirvana.tres" id="d_ch_nirvana"]
 [ext_resource type="PackedScene" path="res://scenes/ui/pista_accion.tscn" id="pista"]
+[ext_resource type="Resource" path="res://data/arbol/ramas/cosecha.tres" id="rama_cosecha"]
+[ext_resource type="Resource" path="res://data/arbol/nodos/co_hoz.tres" id="d_co_hoz"]
+[ext_resource type="Resource" path="res://data/arbol/nodos/co_manojo.tres" id="d_co_manojo"]
+[ext_resource type="Resource" path="res://data/arbol/nodos/co_padron.tres" id="d_co_padron"]
+[ext_resource type="Resource" path="res://data/arbol/nodos/co_doble.tres" id="d_co_doble"]
+[ext_resource type="Resource" path="res://data/arbol/nodos/co_chaval.tres" id="d_co_chaval"]
+[ext_resource type="Resource" path="res://data/arbol/nodos/co_carretilla.tres" id="d_co_carretilla"]
+[ext_resource type="Resource" path="res://data/arbol/nodos/co_taladro.tres" id="d_co_taladro"]
+[ext_resource type="Resource" path="res://data/arbol/nodos/co_perlas.tres" id="d_co_perlas"]
 
 [sub_resource type="ShaderMaterial" id="mat_fondo"]
 shader = ExtResource("fondo")
@@ -639,10 +648,10 @@ datos = ExtResource("d_ch_mirador")
 
 [node name="ch_huerto" parent="Raiz/Vista/Lienzo/Nodos" instance=ExtResource("nodo")]
 custom_minimum_size = Vector2(72.0, 72.0)
-offset_left = -168.0
-offset_top = 624.0
-offset_right = -96.0
-offset_bottom = 696.0
+offset_left = 492.0
+offset_top = 360.0
+offset_right = 564.0
+offset_bottom = 432.0
 datos = ExtResource("d_ch_huerto")
 
 [node name="ch_hierba" parent="Raiz/Vista/Lienzo/Nodos" instance=ExtResource("nodo")]
@@ -660,6 +669,70 @@ offset_top = 744.0
 offset_right = 48.0
 offset_bottom = 840.0
 datos = ExtResource("d_ch_nirvana")
+
+[node name="co_hoz" parent="Raiz/Vista/Lienzo/Nodos" instance=ExtResource("nodo")]
+custom_minimum_size = Vector2(72.0, 72.0)
+offset_left = 360.0
+offset_top = 360.0
+offset_right = 432.0
+offset_bottom = 432.0
+datos = ExtResource("d_co_hoz")
+
+[node name="co_manojo" parent="Raiz/Vista/Lienzo/Nodos" instance=ExtResource("nodo")]
+custom_minimum_size = Vector2(72.0, 72.0)
+offset_left = 360.0
+offset_top = 492.0
+offset_right = 432.0
+offset_bottom = 564.0
+datos = ExtResource("d_co_manojo")
+
+[node name="co_padron" parent="Raiz/Vista/Lienzo/Nodos" instance=ExtResource("nodo")]
+custom_minimum_size = Vector2(72.0, 72.0)
+offset_left = 624.0
+offset_top = 360.0
+offset_right = 696.0
+offset_bottom = 432.0
+datos = ExtResource("d_co_padron")
+
+[node name="co_doble" parent="Raiz/Vista/Lienzo/Nodos" instance=ExtResource("nodo")]
+custom_minimum_size = Vector2(72.0, 72.0)
+offset_left = 492.0
+offset_top = 492.0
+offset_right = 564.0
+offset_bottom = 564.0
+datos = ExtResource("d_co_doble")
+
+[node name="co_chaval" parent="Raiz/Vista/Lienzo/Nodos" instance=ExtResource("nodo")]
+custom_minimum_size = Vector2(96.0, 96.0)
+offset_left = 612.0
+offset_top = 480.0
+offset_right = 708.0
+offset_bottom = 576.0
+datos = ExtResource("d_co_chaval")
+
+[node name="co_carretilla" parent="Raiz/Vista/Lienzo/Nodos" instance=ExtResource("nodo")]
+custom_minimum_size = Vector2(72.0, 72.0)
+offset_left = 756.0
+offset_top = 492.0
+offset_right = 828.0
+offset_bottom = 564.0
+datos = ExtResource("d_co_carretilla")
+
+[node name="co_taladro" parent="Raiz/Vista/Lienzo/Nodos" instance=ExtResource("nodo")]
+custom_minimum_size = Vector2(72.0, 72.0)
+offset_left = 624.0
+offset_top = 624.0
+offset_right = 696.0
+offset_bottom = 696.0
+datos = ExtResource("d_co_taladro")
+
+[node name="co_perlas" parent="Raiz/Vista/Lienzo/Nodos" instance=ExtResource("nodo")]
+custom_minimum_size = Vector2(72.0, 72.0)
+offset_left = 756.0
+offset_top = 624.0
+offset_right = 828.0
+offset_bottom = 696.0
+datos = ExtResource("d_co_perlas")
 
 [node name="p_leer" parent="Raiz/Vista/Lienzo/Nodos" instance=ExtResource("nodo")]
 custom_minimum_size = Vector2(96.0, 96.0)
@@ -739,6 +812,10 @@ rama = ExtResource("rama_suerte")
 [node name="Chip_chill" parent="Raiz/Cabecera/Filas/Ramas" instance=ExtResource("chip")]
 layout_mode = 2
 rama = ExtResource("rama_chill")
+
+[node name="Chip_cosecha" parent="Raiz/Cabecera/Filas/Ramas" instance=ExtResource("chip")]
+layout_mode = 2
+rama = ExtResource("rama_cosecha")
 
 [node name="Ficha" type="PanelContainer" parent="Raiz"]
 visible = false

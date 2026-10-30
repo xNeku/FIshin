@@ -175,6 +175,19 @@ Parada para valorar rumbo (29 oct). Hay un tramo jugable de principio a fin de l
   - Nivel 3: 11 pijos en yate (12 plazas), que se abre con 1.500 clientes.
   - `NivelTuristasData.alturas_cubierta`: los del yate van de pie en cubierta. Los barcos grandes paran más lejos del muelle.
 
+## Rama Cosecha (1 nov, noche)
+- Quinta rama del árbol (`data/arbol/ramas/cosecha.tres`, verde), en diagonal abajo a la derecha. Su primer camino sale de la esquina del bonsái (`arbol.gd`) para no cruzar Carisma ni Chill.
+- Nodos y efectos:
+  - Hoz afilada (`radio_hozazo`).
+  - Huerto zen (`cultivos`; viene de Chill).
+  - Manojo generoso (`por_planta`).
+  - Unos pican y otros no (`valor_cosecha`).
+  - Doble cosecha (`cosecha_doble`).
+  - Chaval del huerto (clave, `cosechador`): `scripts/mundo/cultivos.gd` siega cada 75 s lo listo y lo manda a la despensa de O Mar.
+  - Carretilla (`cosechador_ritmo`).
+  - Broca de diamante (`coral`) y Pulmones de acero (`perlas`): bloqueados hasta que existan el taladro y el centro de buceo.
+- Se compra desde que aparecen los cultivos.
+
 ## Siguiente paso
 Sesión de progresión con el diseñador hasta el midgame (economía y orden de desbloqueos), partiendo de `docs/PROGRESION.md` (borrador v1) y `docs/INCREMENTAL.md`.
 

@@ -83,10 +83,12 @@ func servir() -> bool:
 		if n <= 0:
 			continue
 		d[String(id)] = n - 1
+		# Unos pican y otros no (rama Cosecha): lo cosechado vale más.
+		var v: float = c.valor * (1.0 + Juego.efecto(&"valor_cosecha"))
 		if c.uso == CultivoData.Uso.GUARNICION:
-			guarnicion += medio * c.valor
+			guarnicion += medio * v
 		else:
-			mejora *= 1.0 + c.valor
+			mejora *= 1.0 + v
 	_caja += (precio + guarnicion) * mejora
 	Juego.stats.clientes += 1
 	return true
