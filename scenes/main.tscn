@@ -352,6 +352,7 @@ sfx_lluvia = NodePath("SfxLluvia")
 sfx_trueno = NodePath("SfxTrueno")
 
 [node name="SfxLluvia" type="AudioStreamPlayer" parent="Clima"]
+process_mode = 3
 stream = ExtResource("41_sfx_lluvia")
 
 [node name="SfxTrueno" type="AudioStreamPlayer" parent="Clima"]

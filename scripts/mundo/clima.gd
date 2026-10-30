@@ -62,7 +62,19 @@ func _process(delta: float) -> void:
 		_aplicar(_valores)
 	if lluvia and camara:
 		lluvia.global_position = camara.global_position + Vector3(0, 6, -6)
+	_sonido_lluvia()
 	_relampagos(delta)
+
+
+## Cada frame: si llueve y el sonido se ha parado (pausa, foco de la app, fin del bucle), vuelve a sonar.
+func _sonido_lluvia() -> void:
+	if sfx_lluvia == null or _valores.is_empty():
+		return
+	var llueve: bool = _valores.lluvia > 0.02
+	if llueve and not sfx_lluvia.playing:
+		sfx_lluvia.play()
+	elif not llueve and sfx_lluvia.playing:
+		sfx_lluvia.stop()
 
 
 ## Pasa a un clima concreto (también lo usa el truco F6).
@@ -147,11 +159,8 @@ func _aplicar(v: Dictionary) -> void:
 		lluvia.emitting = v.lluvia > 0.02
 		lluvia.amount_ratio = clampf(v.lluvia, 0.0, 1.0)
 	if sfx_lluvia:
-		if v.lluvia > 0.02 and not sfx_lluvia.playing:
-			sfx_lluvia.play()
-		elif v.lluvia <= 0.02 and sfx_lluvia.playing:
-			sfx_lluvia.stop()
 		sfx_lluvia.volume_db = linear_to_db(maxf(0.001, v.lluvia)) - 4.0
+	_sonido_lluvia()
 
 
 func _relampagos(delta: float) -> void:
