@@ -18,6 +18,8 @@ signal aparicion_terminada(datos: AparicionData)
 @export var sfx_impacto: AudioStreamPlayer
 @export var sfx_pieza: AudioStreamPlayer
 @export var tamano_celda: float = 2.0
+## Para buscar caminos a pie: cuánto "cuesta" un salto sobre el agua comparado con un paso.
+@export var coste_salto: float = 2.5
 ## Agua donde los pescadores no se ponen a pescar (la zona de la barca, el barco comerciante...).
 @export var celdas_no_pesca: Array[Vector2i] = [Vector2i(-1, -1), Vector2i(0, -1), Vector2i(1, -1), Vector2i(-1, 0), Vector2i(1, 0), Vector2i(-1, 1), Vector2i(0, 1), Vector2i(1, 1), Vector2i(2, -1)]
 
@@ -130,22 +132,7 @@ func puestos_de_pesca() -> Array[Dictionary]:
 
 ## Camino por casillas pisables, saltando una casilla de agua como el náufrago. No incluye el origen.
 func ruta(desde: Vector2i, hasta: Vector2i) -> Array[Vector2i]:
-	var pisables: Array[Vector2i] = celdas_pisables()
-	var previo: Dictionary = {desde: desde}
-	var cola: Array[Vector2i] = [desde]
-	while not cola.is_empty():
-		var c: Vector2i = cola.pop_front()
-		if c == hasta:
-			break
-		for d: Vector2i in [Vector2i.RIGHT, Vector2i.LEFT, Vector2i.UP, Vector2i.DOWN]:
-			var vecinas: Array[Vector2i] = [c + d]
-			if not (c + d) in pisables:
-				var perp := Vector2i(d.y, d.x)
-				vecinas = [c + d * 2, c + d * 2 + perp, c + d * 2 - perp]
-			for n: Vector2i in vecinas:
-				if n in pisables and not previo.has(n):
-					previo[n] = c
-					cola.append(n)
+	var previo: Dictionary = _recorrer_a_pie(desde, hasta)
 	var r: Array[Vector2i] = []
 	if not previo.has(hasta):
 		return r
@@ -154,6 +141,54 @@ func ruta(desde: Vector2i, hasta: Vector2i) -> Array[Vector2i]:
 		r.push_front(p)
 		p = previo[p]
 	return r
+
+
+## Coste a pie (con saltos) desde `desde` hasta cada casilla pisable a la que se llega: {celda: coste}.
+## Un paso cuesta 1 y un salto `coste_salto`.
+func distancias_a_pie(desde: Vector2i) -> Dictionary:
+	var coste: Dictionary = {}
+	_recorrer_a_pie(desde, Vector2i(1 << 20, 0), coste)
+	return coste
+
+
+## Dijkstra a pie desde `desde` (se para al llegar a `hasta`): mejor andar que saltar. Devuelve
+## {celda: celda anterior}; si se pasa `coste`, lo rellena con el coste de cada casilla.
+func _recorrer_a_pie(desde: Vector2i, hasta: Vector2i, coste: Dictionary = {}) -> Dictionary:
+	var pisables: Dictionary = {}
+	for c: Vector2i in celdas_pisables():
+		pisables[c] = true
+	var previo: Dictionary = {desde: desde}
+	coste[desde] = 0.0
+	var abiertas: Array[Vector2i] = [desde]
+	var cerradas: Dictionary = {}
+	while not abiertas.is_empty():
+		var i_min: int = 0
+		for i: int in abiertas.size():
+			if coste[abiertas[i]] < coste[abiertas[i_min]]:
+				i_min = i
+		var c: Vector2i = abiertas[i_min]
+		abiertas.remove_at(i_min)
+		if cerradas.has(c):
+			continue
+		cerradas[c] = true
+		if c == hasta:
+			break
+		for d: Vector2i in [Vector2i.RIGHT, Vector2i.LEFT, Vector2i.UP, Vector2i.DOWN]:
+			var vecinas: Array[Vector2i] = [c + d]
+			var paso: float = 1.0
+			if not pisables.has(c + d):
+				var perp := Vector2i(d.y, d.x)
+				vecinas = [c + d * 2, c + d * 2 + perp, c + d * 2 - perp]
+				paso = coste_salto
+			for n: Vector2i in vecinas:
+				if not pisables.has(n) or cerradas.has(n):
+					continue
+				var k: float = coste[c] + paso
+				if k < coste.get(n, INF):
+					coste[n] = k
+					previo[n] = c
+					abiertas.append(n)
+	return previo
 
 
 func mundo_a_celda(p: Vector3) -> Vector2i:

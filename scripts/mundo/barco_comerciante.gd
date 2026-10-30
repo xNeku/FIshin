@@ -26,9 +26,17 @@ var compra_peces: bool = true
 @export var velocidad_viaje: float = 9.0
 ## Casillas como mucho que se aleja de su sitio buscando camino.
 @export var radio_busqueda: int = 24
+## Cuando no llega navegando (el camino cierra el paso), aparca y sigue a pie.
+@export var velocidad_andar: float = 3.5
+@export var altura_suelo: float = 0.25
+@export var duracion_salto: float = 0.4
+@export var altura_salto: float = 1.0
+## Un paso andando cuenta como estos metros navegando al elegir dónde aparcar (andar cansa más).
+@export var coste_paso: float = 2.0
 @export_group("")
 
 @onready var sombra: Node3D = get_node_or_null("Sombra")
+@onready var comerciante: Sprite3D = get_node_or_null("Comerciante")
 
 
 var presente: bool = false
@@ -38,6 +46,9 @@ var _y_base: float
 var _casa: Vector3
 var _ruta: Array[Vector3] = []
 var _mira_derecha: bool = false
+var _a_pie: bool = false
+var _bajada: Vector2i
+var _pos_comerciante: Vector3
 
 signal _ruta_hecha
 
@@ -51,6 +62,8 @@ func _ready() -> void:
 	visible = false
 	_y_base = position.y
 	_casa = position
+	if comerciante:
+		_pos_comerciante = comerciante.position
 	if Juego.flags.get("barco_comerciante", false):
 		_aparecer(true)
 	else:
@@ -113,6 +126,105 @@ func ir_a(destino: Vector3) -> bool:
 	return true
 
 
+## Lleva algo a pie hasta `destino` (la lonja): navega hasta donde mejor pueda aparcar, baja, anda
+## (saltando una casilla de agua como todos) y se queda allí. `await` hasta que llega; false si no hay
+## forma. Después hay que llamar a `volver_a_pie()`.
+func ir_a_pie(destino: Vector3) -> bool:
+	if mundo == null:
+		return false
+	var pisables: Array[Vector2i] = mundo.celdas_pisables()
+	var meta: Vector2i = mundo.mundo_a_celda(destino)
+	if not meta in pisables:
+		var mejor: float = INF
+		for c: Vector2i in pisables:
+			var d: float = Vector2(c - meta).length()
+			if c != Vector2i.ZERO and d < mejor:
+				mejor = d
+				meta = c
+	var a_pie: Dictionary = mundo.distancias_a_pie(meta)
+	var tierra: Dictionary = _tierra()
+	var mar: Dictionary = _mar_alcanzable(tierra)
+	var pasos_mar: Dictionary = {}
+	var aparcar: Vector2i
+	var bajada: Vector2i
+	var coste: float = INF
+	for w: Vector2i in mar:
+		var n: int = 0 if mar[w] == w else pasos_mar[mar[w]] + 1
+		pasos_mar[w] = n
+		for d: Vector2i in [Vector2i.RIGHT, Vector2i.LEFT, Vector2i.UP, Vector2i.DOWN]:
+			var t: Vector2i = w + d
+			if t == Vector2i.ZERO or not a_pie.has(t):
+				continue
+			var k: float = n * mundo.tamano_celda + a_pie[t] * mundo.tamano_celda * coste_paso
+			if k < coste:
+				coste = k
+				aparcar = w
+				bajada = t
+	if coste == INF:
+		return false
+	listo = false
+	await _recorrer(_puntos_hasta(aparcar, mar, tierra))
+	_bajada = bajada
+	_a_pie = true
+	comerciante.top_level = true
+	# Del barco a tierra, de un salto.
+	_mirar_a_pie(bajada.x > aparcar.x)
+	await _saltar_a(mundo.celda_a_mundo(bajada) + Vector3.UP * (altura_suelo + _pies()), false)
+	await _andar(mundo.ruta(bajada, meta))
+	return true
+
+
+## Vuelve andando al barco aparcado y sube. Luego, `volver()` para navegar a casa.
+func volver_a_pie() -> void:
+	if not _a_pie:
+		return
+	var celdas: Array[Vector2i] = mundo.ruta(mundo.mundo_a_celda(comerciante.global_position), _bajada)
+	await _andar(celdas)
+	await _saltar_a(global_position + _pos_comerciante, true)
+	comerciante.top_level = false
+	comerciante.position = _pos_comerciante * Vector3(-1.0 if _mira_derecha else 1.0, 1.0, 1.0)
+	comerciante.flip_h = _mira_derecha
+	_a_pie = false
+
+
+func _andar(celdas: Array[Vector2i]) -> void:
+	for c: Vector2i in celdas:
+		var obj: Vector3 = mundo.celda_a_mundo(c) + Vector3.UP * (altura_suelo + _pies())
+		var actual: Vector3 = comerciante.global_position
+		var plano := Vector2(obj.x - actual.x, obj.z - actual.z)
+		if absf(plano.x) > 0.05:
+			_mirar_a_pie(plano.x > 0.0)
+		if plano.length() > mundo.tamano_celda * 1.2 or absf(obj.y - actual.y) > 0.3:
+			await _saltar_a(obj, false)
+			continue
+		var tw := create_tween()
+		tw.tween_method(func(k: float) -> void:
+			comerciante.global_position = actual.lerp(obj, k) + Vector3.UP * absf(sin(k * PI * 2.0)) * 0.06,
+			0.0, 1.0, plano.length() / velocidad_andar)
+		await tw.finished
+
+
+func _saltar_a(obj: Vector3, al_barco: bool) -> void:
+	var origen: Vector3 = comerciante.global_position
+	var tw := create_tween()
+	tw.tween_method(func(k: float) -> void:
+		var o: Vector3 = (global_position + _pos_comerciante) if al_barco else obj
+		comerciante.global_position = origen.lerp(o, k) + Vector3.UP * sin(k * PI) * altura_salto,
+		0.0, 1.0, duracion_salto)
+	await tw.finished
+
+
+## Alto entre el centro del dibujo y sus pies, para ponerlo de pie sobre el suelo.
+func _pies() -> float:
+	if comerciante.texture == null:
+		return 0.0
+	return (comerciante.texture.get_height() * 0.5 - comerciante.offset.y) * comerciante.pixel_size
+
+
+func _mirar_a_pie(derecha: bool) -> void:
+	comerciante.flip_h = derecha
+
+
 ## Vuelve a su sitio de siempre y queda listo para hablar.
 func volver() -> void:
 	var puntos: Array[Vector3] = _camino(_casa)
@@ -164,38 +276,57 @@ func _mirar(derecha: bool) -> void:
 			h.position.x = -h.position.x
 
 
-## Camino por casillas de agua (BFS) hasta la casilla de agua más cercana a `destino` (si empata, la
-## de camino más corto). Devuelve puntos del mundo ya simplificados en líneas rectas; vacío si ya está.
-func _camino(destino: Vector3) -> Array[Vector3]:
+## Casillas que cuentan como tierra para el barco: todo lo que ha llegado y el donut.
+func _tierra() -> Dictionary:
 	var tierra: Dictionary = {Vector2i.ZERO: true}
 	for c: Vector2i in mundo.celdas_ocupadas():
 		tierra[c] = true
+	return tierra
+
+
+## BFS por el agua desde donde está el barco: {celda: celda anterior} de todo el mar al que llega.
+func _mar_alcanzable(tierra: Dictionary) -> Dictionary:
 	var centro: Vector2i = mundo.mundo_a_celda(_casa)
 	var desde: Vector2i = mundo.mundo_a_celda(global_position)
-	var meta := Vector2(destino.x, destino.z)
 	var previo: Dictionary = {desde: desde}
 	var cola: Array[Vector2i] = [desde]
-	var fin: Vector2i = desde
-	var mejor: float = INF
 	while not cola.is_empty():
 		var c: Vector2i = cola.pop_front()
-		var p3: Vector3 = mundo.celda_a_mundo(c)
-		var dist: float = Vector2(p3.x, p3.z).distance_to(meta)
-		if dist < mejor - 0.01:
-			mejor = dist
-			fin = c
 		for d: Vector2i in [Vector2i.RIGHT, Vector2i.LEFT, Vector2i.UP, Vector2i.DOWN]:
 			var n: Vector2i = c + d
 			if previo.has(n) or tierra.has(n) or absi(n.x - centro.x) > radio_busqueda or absi(n.y - centro.y) > radio_busqueda:
 				continue
 			previo[n] = c
 			cola.append(n)
+	return previo
+
+
+## Camino navegando hasta la casilla de agua más cercana a `destino` (si empata, la de camino más
+## corto). Devuelve puntos del mundo en líneas rectas; vacío si ya está.
+func _camino(destino: Vector3) -> Array[Vector3]:
+	var tierra: Dictionary = _tierra()
+	var previo: Dictionary = _mar_alcanzable(tierra)
+	var meta := Vector2(destino.x, destino.z)
+	var fin: Vector2i = mundo.mundo_a_celda(global_position)
+	var mejor: float = INF
+	# El diccionario guarda el orden de la BFS: a igual distancia gana el que se alcanzó antes.
+	for c: Vector2i in previo:
+		var p3: Vector3 = mundo.celda_a_mundo(c)
+		var dist: float = Vector2(p3.x, p3.z).distance_to(meta)
+		if dist < mejor - 0.01:
+			mejor = dist
+			fin = c
+	return _puntos_hasta(fin, previo, tierra)
+
+
+## Del barco a `fin` siguiendo `previo`, enderezado en líneas rectas mientras no pise tierra.
+func _puntos_hasta(fin: Vector2i, previo: Dictionary, tierra: Dictionary) -> Array[Vector3]:
+	var desde: Vector2i = mundo.mundo_a_celda(global_position)
 	var celdas: Array[Vector2i] = []
 	var p: Vector2i = fin
 	while p != desde:
 		celdas.push_front(p)
 		p = previo[p]
-	# Línea recta mientras no pise tierra: no hace eses de casilla en casilla.
 	var r: Array[Vector3] = []
 	var desde_p: Vector3 = position
 	var i: int = 0

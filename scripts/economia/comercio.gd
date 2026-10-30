@@ -70,8 +70,9 @@ func _precio(capturas: Array[Dictionary]) -> float:
 	return total * Juego.mult_venta()
 
 
-## Porteador (árbol): los pescadores le dan el cubo al comerciante. Si ya hay lonja, él navega hasta
-## ella a venderlo y vuelve; el dinero llega al náufrago. Devuelve lo ganado (0 si no pudo).
+## Porteador (árbol): los pescadores le dan el cubo al comerciante. Si ya hay lonja, él la lleva allí:
+## navega hasta donde pueda aparcar y sigue a pie. Luego vuelve y el dinero llega al náufrago.
+## Devuelve lo ganado (0 si no pudo).
 func vender_cubo_con_barco() -> float:
 	var barco: Node3D = get_tree().get_first_node_in_group("barco_comerciante")
 	var cubo: Node3D = get_tree().get_first_node_in_group("cubo")
@@ -83,8 +84,9 @@ func vender_cubo_con_barco() -> float:
 	Juego.dinero_en_camino += total
 	await Vuelos.enviar_peces(cubo, barco, capturas)
 	var lonja: Node3D = barco.mundo.get_node_or_null(String(id_lonja)) if Juego.lonja_abierta() else null
-	if lonja and await barco.ir_a(lonja.global_position):
-		await Vuelos.enviar_peces(barco, lonja, capturas)
+	if lonja and await barco.ir_a_pie(lonja.global_position):
+		await Vuelos.enviar_peces(barco.comerciante, lonja, capturas)
+		await barco.volver_a_pie()
 	await barco.volver()
 	Juego.dinero_en_camino -= total
 	await Vuelos.enviar_dinero(barco, origen(), total)
