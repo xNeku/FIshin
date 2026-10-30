@@ -47,7 +47,7 @@ Regla: no se pasa de fase hasta que la actual sea jugable y divertida. Cada tare
 
 ## Fase 5 — Villa e incremental
 - [x] Primer trabajador automático: pescadores del puerto + cubo + venta animada
-- [x] Lonja: venta rápida de todo lo que llevas
+- [x] Lonja conceptual: ×1,3 a todas las ventas
 - [x] Restaurante O Mar (despensa, mejoras, cosecha), turistas en 3 niveles, cultivos con hozazo y chaval, porteador
 - [x] Dos alturas (puerto alto sobre pilotes y escaleras)
 - [x] Balance del early game con el simulador v4 (cañas de fibra y carbono, combos hasta 25)
@@ -55,7 +55,7 @@ Regla: no se pasa de fase hasta que la actual sea jugable y divertida. Cada tare
 - [ ] Taladro de coral, sushi, cañas rápida y pesada, marihuana (mid game)
 - [ ] Ingresos pasivos, stats por segundo
 - [ ] Progreso offline (si se decide)
-- [~] Balance de curvas: hecho hasta el puerto y la lonja (~70 min) con el simulador; falta el resto del T1 y el T2
+- [x] Balance de curvas del early game (~4 h) con el simulador v4; falta el mid game
 
 ## Fase 6 — Contenido
 - [x] Catálogo de peces del Excel del diseñador: 201 especies (Galicia + mundo), 6 rarezas, iconos placeholder
