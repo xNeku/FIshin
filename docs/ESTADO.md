@@ -232,6 +232,11 @@ El early game son las primeras ~4 h: termina con los turistas de nivel 3 (yate).
   - Las cadenas, medidas con 3.000 picadas por caña.
   - El guardado de plantas y visitas.
 
+## Ajustes tras el repaso (2 nov)
+- Turistas: los de más nivel gastan más por plato (`NivelTuristasData.mult_gasto`: ×1, ×1,6 y ×3; los que no se dibujan pagan la media). El yate (nivel 3) pasa al inicio del mid game: 400 clientes, hacia las 4 h 30 min. A las 5 h, O Mar es ~28 % de los ingresos.
+- Suelos: las texturas viejas (16×16 con ruido, tierra con piedras grises, tablones en filas de 4 px) se leían como Minecraft. Ahora son losetas de 32×32 con estilo propio (`docs/herramientas/generar_suelos.py`): hierba con matojos y flores, arena con ondas y conchas, tierra en vetas, tablones largos con veta y clavos. Los materiales van a `uv1_scale` 0,75 para que el píxel mida lo mismo. Siguen siendo placeholder hasta el arte del diseñador.
+- Pendiente de estilo: las islas siguen siendo cubos de 2 m. Con los bordes redondeados o la hierba sobresaliendo del borde se separarían del todo de lo "de bloques".
+
 ## Siguiente paso
 1. **Partida del diseñador del minuto 30 al 240:** lo único que el simulador no mide es si es divertido.
 2. Mid game, en este orden (propuesta):
