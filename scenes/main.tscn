@@ -66,6 +66,7 @@
 [ext_resource type="Script" path="res://scripts/datos/nivel_turistas_data.gd" id="tur_nivel"]
 [ext_resource type="Resource" path="res://data/turistas/nivel_1.tres" id="tur_n1"]
 [ext_resource type="Resource" path="res://data/turistas/nivel_2.tres" id="tur_n2"]
+[ext_resource type="Resource" path="res://data/turistas/nivel_3.tres" id="tur_n3"]
 
 [sub_resource type="FastNoiseLite" id="ruido_nubes"]
 noise_type = 3
@@ -208,7 +209,7 @@ mundo = NodePath("../Mundo")
 agua = NodePath("../Agua")
 escena_turista = ExtResource("tur_turista")
 escena_barco = ExtResource("tur_barco")
-niveles = Array[ExtResource("tur_nivel")]([ExtResource("tur_n1"), ExtResource("tur_n2")])
+niveles = Array[ExtResource("tur_nivel")]([ExtResource("tur_n1"), ExtResource("tur_n2"), ExtResource("tur_n3")])
 
 [node name="Camara" type="Camera3D" parent="." node_paths=PackedStringArray("pesca", "objetivo")]
 transform = Transform3D(1, 0, 0, 0, 0.766044, 0.642788, 0, -0.642788, 0.766044, 0, 7, 8.5)

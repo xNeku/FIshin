@@ -121,7 +121,8 @@ func _empezar(rd: RelojData) -> void:
 		while suyos > 0:
 			var b: int = randi() % nivel.barcos.size()
 			var plazas: int = mini(suyos, nivel.plazas[b])
-			barcos.append({"nivel": nivel, "barco": nivel.barcos[b], "plazas": plazas})
+			var cubierta: float = nivel.alturas_cubierta[b] if b < nivel.alturas_cubierta.size() else NAN
+			barcos.append({"nivel": nivel, "barco": nivel.barcos[b], "plazas": plazas, "cubierta": cubierta})
 			suyos -= plazas
 	barcos.shuffle()
 	_t_invisibles = restante / maxf(1.0, _invisibles * platos_por_turista)
@@ -137,10 +138,11 @@ func _traer(datos: Dictionary, muelle: Dictionary, cada_comer: float, retraso: f
 		return
 	var barco: BarcoTuristas = escena_barco.instantiate()
 	add_child(barco)
-	barco.preparar(datos.barco, agua)
-	var punto: Vector3 = muelle.punto
+	barco.preparar(datos.barco, agua, datos.cubierta)
+	# Los barcos grandes paran más lejos para no meterse encima del muelle.
+	var punto: Vector3 = muelle.punto + muelle.fuera * maxf(0.0, barco.ancho() * 0.5 - mundo.tamano_celda * 0.5) * absf(muelle.fuera.x)
 	barco.global_position = punto + Vector3(distancia_llegada, 0.0, 0.0)
-	var grupo: Dictionary = {"barco": barco, "turistas": [] as Array[Turista], "muelle": muelle, "nivel": datos.nivel}
+	var grupo: Dictionary = {"barco": barco, "turistas": [] as Array[Turista], "muelle": muelle, "nivel": datos.nivel, "punto": punto}
 	_grupos.append(grupo)
 	var sitios: Array[Vector3] = barco.asientos(datos.plazas)
 	var paseo: Array[Vector2i] = _celdas_paseo()
@@ -173,7 +175,7 @@ func _recoger(g: Dictionary) -> void:
 	for t: Turista in turistas:
 		t.irse(g.muelle.celda)
 	barco.visible = true
-	await barco.navegar_a(g.muelle.punto)
+	await barco.navegar_a(g.punto)
 	# Espera a que lleguen todos al muelle (o un rato como mucho).
 	var espera: float = 0.0
 	while espera < 40.0 and turistas.any(func(t: Turista) -> bool: return t.modo != Turista.Modo.ESPERANDO):
@@ -184,7 +186,7 @@ func _recoger(g: Dictionary) -> void:
 		turistas[i].subir(barco, sitios[i])
 		await get_tree().create_timer(0.2, false).timeout
 	await get_tree().create_timer(0.5, false).timeout
-	await barco.navegar_a(g.muelle.punto + Vector3(distancia_llegada, 0.0, 0.0))
+	await barco.navegar_a(g.punto + Vector3(distancia_llegada, 0.0, 0.0))
 	for t: Turista in turistas:
 		t.queue_free()
 	barco.queue_free()
@@ -247,5 +249,5 @@ func _muelles() -> Array[Dictionary]:
 					libre = false
 					break
 			if libre and not r.any(func(m: Dictionary) -> bool: return m.punto == mundo.celda_a_mundo(w)):
-				r.append({"celda": c, "punto": mundo.celda_a_mundo(w)})
+				r.append({"celda": c, "punto": mundo.celda_a_mundo(w), "fuera": Vector3(d.x, 0.0, -d.y)})
 	return r

@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="NivelTuristasData" format=3]
+
+[ext_resource type="Script" path="res://scripts/datos/nivel_turistas_data.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://art/personajes/turistas/n3_capitan_yate.png" id="p0"]
+[ext_resource type="Texture2D" path="res://art/personajes/turistas/n3_ejecutivo_golf.png" id="p1"]
+[ext_resource type="Texture2D" path="res://art/personajes/turistas/n3_francesa_chic.png" id="p2"]
+[ext_resource type="Texture2D" path="res://art/personajes/turistas/n3_heredera_italiana.png" id="p3"]
+[ext_resource type="Texture2D" path="res://art/personajes/turistas/n3_influencer.png" id="p4"]
+[ext_resource type="Texture2D" path="res://art/personajes/turistas/n3_jeque_del_movil.png" id="p5"]
+[ext_resource type="Texture2D" path="res://art/personajes/turistas/n3_lord_ingles.png" id="p6"]
+[ext_resource type="Texture2D" path="res://art/personajes/turistas/n3_magnate_ruso.png" id="p7"]
+[ext_resource type="Texture2D" path="res://art/personajes/turistas/n3_petrolero_tejano.png" id="p8"]
+[ext_resource type="Texture2D" path="res://art/personajes/turistas/n3_pijo_espanol.png" id="p9"]
+[ext_resource type="Texture2D" path="res://art/personajes/turistas/n3_senora_marbella.png" id="p10"]
+[ext_resource type="Texture2D" path="res://art/mundo/barcos/yate.png" id="b0"]
+
+[resource]
+script = ExtResource("1_script")
+nivel = 3
+nombre = "Pijos en yate"
+personas = Array[Texture2D]([ExtResource("p0"), ExtResource("p1"), ExtResource("p2"), ExtResource("p3"), ExtResource("p4"), ExtResource("p5"), ExtResource("p6"), ExtResource("p7"), ExtResource("p8"), ExtResource("p9"), ExtResource("p10")])
+barcos = Array[Texture2D]([ExtResource("b0")])
+plazas = Array[int]([12])
+clientes_para_desbloquear = 1500
+alturas_cubierta = Array[float]([0.75])

@@ -18,8 +18,10 @@ var _moviendo: bool = false
 var _t: float = 0.0
 
 
-func preparar(textura: Texture2D, mar: Node) -> void:
+func preparar(textura: Texture2D, mar: Node, cubierta: float = NAN) -> void:
 	agua = mar
+	if not is_nan(cubierta):
+		altura_asientos = cubierta
 	casco.texture = textura
 	# Que solo se hunda la quilla: la base del dibujo queda un poco bajo el agua.
 	casco.offset.y = textura.get_height() * 0.5 - 3.0
@@ -30,6 +32,11 @@ func navegar_a(p: Vector3) -> void:
 	_destino = p
 	_moviendo = true
 	await llegado
+
+
+## Lo ancho que es el barco (en metros).
+func ancho() -> float:
+	return casco.texture.get_width() * casco.pixel_size if casco.texture else 2.0
 
 
 ## Sitios para `n` pasajeros, repartidos a lo ancho (un poco por detrás del casco).
