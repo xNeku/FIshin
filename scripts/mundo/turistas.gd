@@ -28,7 +28,7 @@ extends Node3D
 @export var platos_por_turista: float = 2.0
 @export var min_turistas: int = 3
 ## Máximo por visita (la mejora "mesas" suma).
-@export var max_turistas: int = 12
+@export var max_turistas: int = 16
 ## Tope de turistas dibujados a la vez (rendimiento); los demás comen igual pero no se ven.
 @export var max_visibles: int = 40
 @export_group("Barcos")

@@ -17,8 +17,8 @@ extends Isla
 @export var mult_plato: float = 1.25
 @export_group("Clientes del pueblo")
 ## Gente del pueblo que come aquí cada minuto (sin turistas).
-@export var locales_por_minuto: float = 1.0
-@export var locales_por_pescador: float = 0.25
+@export var locales_por_minuto: float = 0.6
+@export var locales_por_pescador: float = 0.15
 @export_group("Cobro")
 ## Cada cuánto te manda lo que ha cobrado.
 @export var cada_cobro: float = 6.0
