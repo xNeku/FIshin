@@ -16,3 +16,5 @@
 - [DECIDIDO] Al abrir el restaurante empiezan a llegar turistas: primero en barca, luego en velero y luego en yate.
 - [DECIDIDO] Más adelante: extracción de coral, perlas, marihuana y algo para hacer cerveza. Pocos cultivos y poco farmeo fuera de la pesca.
 - Turistas de nivel 3+ (pendiente de que el diseñador lo cuente) y el toque gracioso que irán cogiendo.
+- Islas menos "de bloques": bordes redondeados o hierba que sobresale del borde.
+- Aviso de visita de turistas más visible (por ahora: bocina y "· ¡turistas!" en el panel).

@@ -477,6 +477,7 @@ Simulador: `docs/herramientas/simular_economia.py`. Juega con los peces, cañas 
 5. Lo pasivo es pequeño (~27 ₽/min por pescador, un 10 % de lo que ganas a mano). Bien según la regla, pero no hay forma de subirlo.
 
 ### Orientación v5: early game completo (simulador v4, 2 nov) [vigente]
+Cambios posteriores: los turistas pagan por nivel (×1, ×1,6, ×3) y el nivel 3 (yate) pasa a 400 clientes, hacia las 4 h 30 min (inicio del mid game). A las 5 h, O Mar es ~28 % de los ingresos (pesca 67 %, pescadores 5 %). Pre-midgame (propuesta): ayuntamiento hacia el min 150-165.
 Jugador normal, 8 partidas de 4 h. El bueno llega a la caña de carbono ~15 min antes y el flojo ~20 min después.
 
 | Min | Llegada | Condición | ₽/min |

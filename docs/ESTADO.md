@@ -1,12 +1,26 @@
 # ESTADO (traspaso entre sesiones)
 
-## Dónde estamos
-Parada para valorar rumbo (29 oct). Hay un tramo jugable de principio a fin de lo diseñado:
-- **Pesca**: minijuego completo (cadena de largo variable, dobles desde el 5º botón, machacar, intensidad que crece hasta 50 botones, celebración del pez gordo) con teclas y botones dibujados (teclado, PlayStation, Xbox).
-- **Economía**: barca sin límite (pilas por especie), comerciante (caña, cebo, vender todo), dinero y peces que vuelan, bestiario.
-- **Mundo**: llegan por datos de la carta el comerciante, la primera isla, el viejo, el camino, el puerto con pescadores automáticos y cubo, y la lonja. Se anda, se salta y se interactúa.
-- **Arte**: estilo B pixelado, mar con olas, reflejos y 4 climas; prota en donut que flota sobre la ola; todo en sprite; interfaz estilo Animal Well con filtro retro y animaciones de entrada.
-- **Falta**: el árbol de habilidades (espera al diseñador), contenido (solo 6 peces y 3 cañas), rehacer el cebo, balance, música y probar en la tablet el rendimiento de la pasada de arte.
+## Dónde estamos (2 nov)
+El **early game está completo y balanceado** con el simulador v4: unas 4 h, del donut al pueblo con turistas. Falta la partida de prueba del diseñador (min 30-240).
+- **Pesca:**
+  - 5 cañas: rota, decente, Sabia, fibra y carbono (profundidades 1 a 5).
+  - Combos hasta 25 en el early game; el flow entra desde el botón 15.
+  - Racha por tramos (5, 10, 15, 20, 25…), maestría por especie, 201 especies.
+  - Reloj con día y noche, estaciones, clima y luna.
+- **Economía:** barca sin límite y comerciante (se le llama desde el donut). La lonja hace ×1,3 a todas las ventas. Hay árbol de 5 ramas (Pesca, Carisma, Suerte, Chill, Cosecha), 69 nodos.
+- **Mundo (por datos de la carta):** comerciante, primera isla, viejo, camino, puerto con pescadores, lonja, camino 2, O Mar, entrada de turistas y cultivos. Dos alturas: un puerto alto sobre pilotes, con escaleras.
+- **Villa:**
+  - O Mar cocina el 30 % de lo vendido (despensa y mejoras).
+  - Turistas algunos días, que llegan según la comida que haya. Hay 3 niveles que pagan ×1, ×1,6 y ×3; el yate abre el mid game.
+  - Cultivos de pimientos y algas, que se recogen a hozazos o con el chaval.
+  - El porteador: el comerciante navega y anda hasta la lonja.
+- **Arte:** placeholder con estilo propio (suelos de 32×32 sin parecido a Minecraft, turistas por nacionalidad); el náufrago fuma de noche.
+- **Herramientas:**
+  - `simular_economia.py` (v4, partida completa).
+  - `importar_peces.py` (catálogo).
+  - `generar_arte_villa.py` y `generar_suelos.py` (placeholders).
+  - Artefactos Carta, Árbol y Llegadas.
+- **Falta:** mid game (ayuntamiento y mejora de edificios, taladro, sushi, cañas rápida y pesada, marihuana, decoración), música, rendimiento en la tablet y el arte final.
 
 ## Mapa rápido del código
 - `scripts/pesca/pesca.gd` (Pesca): lógica del minijuego, solo señales. Las stats van en `data/stats_pesca.tres`.
@@ -239,6 +253,7 @@ El early game son las primeras ~4 h: termina con los turistas de nivel 3 (yate).
 - Pendiente de estilo: las islas siguen siendo cubos de 2 m. Con los bordes redondeados o la hierba sobresaliendo del borde se separarían del todo de lo "de bloques".
 
 ## Siguiente paso
+0. **Ayuntamiento (pre-midgame, [DECIDIDO] que existe):** mejora todo lo inmueble y deja construir la tienda de decoración (toda decoración sube lo que pagan los turistas). Propuesta de Claude: hacia el min 150-165 (300.000 ₽ ganados), en la plaza de arriba del camino 2; primero las mejoras con un sistema común por edificio y después la decoración. [ABIERTO] ¿Las mejoras de O Mar pasan al ayuntamiento o O Mar conserva su tienda?
 1. **Partida del diseñador del minuto 30 al 240:** lo único que el simulador no mide es si es divertido.
 2. Mid game, en este orden (propuesta):
    1. Mejora de edificios: un sistema común (nivel por edificio, `ArticuloData.Tipo.MEJORA`) que sirva para el pantalán, O Mar, la lonja…
