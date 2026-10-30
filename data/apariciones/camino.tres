@@ -3,6 +3,7 @@
 [ext_resource type="Script" path="res://scripts/datos/aparicion_data.gd" id="1_script"]
 [ext_resource type="PackedScene" path="res://scenes/mundo/islas/camino.tscn" id="2_escena"]
 [ext_resource type="PackedScene" path="res://scenes/mundo/piezas/tablon.tscn" id="3_pieza"]
+[ext_resource type="PackedScene" path="res://scenes/mundo/piezas/escalera.tscn" id="9_escalera"]
 
 [resource]
 script = ExtResource("1_script")
@@ -16,3 +17,7 @@ orden = 6
 condicion = 4
 valor = 600.0
 llegada = 2
+altura = 1.2
+alturas_celda = Dictionary[Vector2i, float]({Vector2i(0, 2): 0.0, Vector2i(0, 3): 0.0})
+rampas = Dictionary[Vector2i, Vector2i]({Vector2i(0, 4): Vector2i(0, 1)})
+pieza_rampa = ExtResource("9_escalera")

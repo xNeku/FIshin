@@ -26,6 +26,19 @@ enum Llegada { MAR, CIELO, CONSTRUIR, EMERGER }
 ## Si dos se cumplen a la vez, llega antes la de orden menor.
 @export var orden: int = 1
 
+@export_group("Altura")
+## Metros por encima del nivel de pesca (0 = abajo, con el donut). El puerto alto va a `altura` 1,2.
+@export var altura: float = 0.0
+## Casillas con otra altura que el resto (en metros, absoluta). Ej.: el principio del camino 1, abajo.
+@export var alturas_celda: Dictionary[Vector2i, float] = {}
+## Escaleras: casilla -> hacia dónde sube (Vector2i.UP = hacia arriba en la carta). Une la altura de la
+## casilla de detrás con la de delante.
+@export var rampas: Dictionary[Vector2i, Vector2i] = {}
+## Pieza que se pone en las casillas de rampa (en lugar de pieza_por_celda).
+@export var pieza_rampa: PackedScene
+## Pieza que se pone debajo de cada casilla elevada (los pilotes de madera que la sujetan).
+@export var pieza_bajo_celda: PackedScene
+
 @export_group("Condición")
 @export var condicion: Condicion = Condicion.RUBLOS_TOTALES
 @export var valor: float = 100.0

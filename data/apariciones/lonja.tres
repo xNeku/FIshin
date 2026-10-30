@@ -18,3 +18,4 @@ condicion = 1
 valor = 11000.0
 requiere = Array[StringName]([&"camino"])
 llegada = 3
+altura = 1.2

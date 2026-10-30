@@ -1,0 +1,25 @@
+[gd_scene format=3]
+
+[ext_resource type="Material" path="res://art/materiales/tablones_rotos.tres" id="p_madera"]
+
+[sub_resource type="BoxMesh" id="b_poste"]
+material = ExtResource("p_madera")
+size = Vector3(0.22, 3, 0.22)
+
+[node name="Pilotes" type="Node3D"]
+
+[node name="Poste1" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.8, -1.8, -0.8)
+mesh = SubResource("b_poste")
+
+[node name="Poste2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.8, -1.8, -0.8)
+mesh = SubResource("b_poste")
+
+[node name="Poste3" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.8, -1.8, 0.8)
+mesh = SubResource("b_poste")
+
+[node name="Poste4" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.8, -1.8, 0.8)
+mesh = SubResource("b_poste")

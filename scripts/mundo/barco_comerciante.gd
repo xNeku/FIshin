@@ -169,7 +169,7 @@ func ir_a_pie(destino: Vector3) -> bool:
 	comerciante.top_level = true
 	# Del barco a tierra, de un salto.
 	_mirar_a_pie(bajada.x > aparcar.x)
-	await _saltar_a(mundo.celda_a_mundo(bajada) + Vector3.UP * (altura_suelo + _pies()), false)
+	await _saltar_a(mundo.celda_a_mundo(bajada) + Vector3.UP * (altura_suelo + mundo.altura_celda(bajada) + _pies()), false)
 	await _andar(mundo.ruta(bajada, meta))
 	return true
 
@@ -189,7 +189,7 @@ func volver_a_pie() -> void:
 
 func _andar(celdas: Array[Vector2i]) -> void:
 	for c: Vector2i in celdas:
-		var obj: Vector3 = mundo.celda_a_mundo(c) + Vector3.UP * (altura_suelo + _pies())
+		var obj: Vector3 = mundo.celda_a_mundo(c) + Vector3.UP * (altura_suelo + mundo.altura_celda(c) + _pies())
 		var actual: Vector3 = comerciante.global_position
 		var plano := Vector2(obj.x - actual.x, obj.z - actual.z)
 		if absf(plano.x) > 0.05:

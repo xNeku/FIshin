@@ -3,6 +3,7 @@
 [ext_resource type="Script" path="res://scripts/datos/aparicion_data.gd" id="1_script"]
 [ext_resource type="PackedScene" path="res://scenes/mundo/islas/entrada_turistas.tscn" id="2_escena"]
 [ext_resource type="PackedScene" path="res://scenes/mundo/piezas/tablon_roto.tscn" id="3_pieza"]
+[ext_resource type="PackedScene" path="res://scenes/mundo/piezas/escalera.tscn" id="9_escalera"]
 
 [resource]
 script = ExtResource("1_script")
@@ -10,10 +11,12 @@ id = &"entrada_turistas"
 nombre = "Entrada turistas"
 escena = ExtResource("2_escena")
 ancla = Vector2i(6, 4)
-celdas = Array[Vector2i]([Vector2i(4, 5), Vector2i(5, 3), Vector2i(5, 4), Vector2i(5, 5), Vector2i(5, 6), Vector2i(6, 3), Vector2i(6, 4), Vector2i(6, 5), Vector2i(7, 3), Vector2i(7, 4), Vector2i(7, 5)])
+celdas = Array[Vector2i]([Vector2i(4, 4), Vector2i(4, 5), Vector2i(5, 3), Vector2i(5, 4), Vector2i(5, 5), Vector2i(5, 6), Vector2i(6, 3), Vector2i(6, 4), Vector2i(6, 5), Vector2i(7, 3), Vector2i(7, 4), Vector2i(7, 5)])
 pieza_por_celda = ExtResource("3_pieza")
 orden = 10
 condicion = 7
 valor = 2.0
 requiere = Array[StringName]([&"restaurante"])
 llegada = 2
+rampas = Dictionary[Vector2i, Vector2i]({Vector2i(4, 5): Vector2i(0, 1)})
+pieza_rampa = ExtResource("9_escalera")

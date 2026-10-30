@@ -55,6 +55,8 @@ var _ocupado: bool = false
 var _pisables: Array[Vector2i] = []
 var _firma_pisables: int = -1
 var _llegando: AparicionData
+var _alturas: Dictionary = {}
+var _rampas: Dictionary = {}
 
 
 func _ready() -> void:
@@ -96,7 +98,70 @@ func celdas_pisables() -> Array[Vector2i]:
 					r.append(c)
 	_pisables = r
 	_firma_pisables = firma
+	_alturas.clear()
+	_rampas.clear()
+	for a: AparicionData in apariciones:
+		if ya_aparecio(a) and a != _llegando:
+			for c: Vector2i in a.celdas:
+				_alturas[c] = a.alturas_celda.get(c, a.altura)
+			for c: Vector2i in a.rampas:
+				_rampas[c] = a.rampas[c]
 	return r
+
+
+# --- Alturas (dos niveles: el de pesca y el puerto alto, unidos por escaleras) ---
+
+## Altura de una casilla sobre el nivel de pesca. Agua y donut = 0. En una escalera, la de su mitad.
+func altura_celda(c: Vector2i) -> float:
+	celdas_pisables()
+	if _rampas.has(c):
+		var d: Vector2i = _rampas[c]
+		return (_alturas.get(c - d, 0.0) + _alturas.get(c + d, 0.0)) * 0.5
+	return _alturas.get(c, 0.0)
+
+
+func es_rampa(c: Vector2i) -> bool:
+	celdas_pisables()
+	return _rampas.has(c)
+
+
+## Altura del suelo en un punto (en las escaleras sube poco a poco).
+func altura_en(p: Vector3) -> float:
+	var c: Vector2i = mundo_a_celda(p)
+	celdas_pisables()
+	if not _rampas.has(c):
+		return _alturas.get(c, 0.0)
+	var d: Vector2i = _rampas[c]
+	var centro: Vector3 = celda_a_mundo(c)
+	var k: float = clampf((p - centro).dot(Vector3(d.x, 0.0, -d.y)) / tamano_celda + 0.5, 0.0, 1.0)
+	return lerpf(_alturas.get(c - d, 0.0), _alturas.get(c + d, 0.0), k)
+
+
+## Altura del borde de `c` que da hacia `d`. INF si por ahí no se entra (el lateral de una escalera).
+func _altura_borde(c: Vector2i, d: Vector2i) -> float:
+	if not _rampas.has(c):
+		return _alturas.get(c, 0.0)
+	var r: Vector2i = _rampas[c]
+	if d == r:
+		return _alturas.get(c + r, 0.0)
+	if d == -r:
+		return _alturas.get(c - r, 0.0)
+	return INF
+
+
+## Se puede pasar andando de `a` a su vecina `b` (misma altura, o por la escalera).
+func paso_valido(a: Vector2i, b: Vector2i) -> bool:
+	celdas_pisables()
+	var d: Vector2i = b - a
+	var ha: float = _altura_borde(a, d)
+	var hb: float = _altura_borde(b, -d)
+	return ha != INF and hb != INF and absf(ha - hb) < 0.35
+
+
+## Se puede saltar de `a` a `b` por encima del agua: misma altura y ninguna es escalera.
+func salto_valido(a: Vector2i, b: Vector2i) -> bool:
+	celdas_pisables()
+	return not _rampas.has(a) and not _rampas.has(b) and absf(_alturas.get(a, 0.0) - _alturas.get(b, 0.0)) < 0.35
 
 
 ## Casillas hechas de tablones (caminos, pantalanes): ahí los pescadores se sientan al borde.
@@ -121,7 +186,8 @@ func puestos_de_pesca() -> Array[Dictionary]:
 	var pisables: Array[Vector2i] = celdas_pisables()
 	var r: Array[Dictionary] = []
 	for c: Vector2i in pisables:
-		if c == Vector2i.ZERO:
+		# Se pesca desde abajo: el puerto alto queda para pasear.
+		if c == Vector2i.ZERO or altura_celda(c) > 0.1 or es_rampa(c):
 			continue
 		for d: Vector2i in [Vector2i.RIGHT, Vector2i.LEFT, Vector2i.UP, Vector2i.DOWN]:
 			var n: Vector2i = c + d
@@ -176,12 +242,15 @@ func _recorrer_a_pie(desde: Vector2i, hasta: Vector2i, coste: Dictionary = {}) -
 		for d: Vector2i in [Vector2i.RIGHT, Vector2i.LEFT, Vector2i.UP, Vector2i.DOWN]:
 			var vecinas: Array[Vector2i] = [c + d]
 			var paso: float = 1.0
-			if not pisables.has(c + d):
+			var saltando: bool = not pisables.has(c + d)
+			if saltando:
 				var perp := Vector2i(d.y, d.x)
 				vecinas = [c + d * 2, c + d * 2 + perp, c + d * 2 - perp]
 				paso = coste_salto
 			for n: Vector2i in vecinas:
 				if not pisables.has(n) or cerradas.has(n):
+					continue
+				if not (salto_valido(c, n) if saltando else paso_valido(c, n)):
 					continue
 				var k: float = coste[c] + paso
 				if k < coste.get(n, INF):
@@ -256,8 +325,8 @@ func _instanciar(a: AparicionData) -> Node3D:
 	var n: Node3D = a.escena.instantiate()
 	n.name = String(a.id)
 	add_child(n)
-	n.position = celda_a_mundo(a.ancla)
-	if a.pieza_por_celda:
+	n.position = celda_a_mundo(a.ancla) + Vector3.UP * a.altura
+	if a.pieza_por_celda or a.pieza_rampa or a.pieza_bajo_celda:
 		_poner_piezas(n, a)
 	return n
 
@@ -268,15 +337,35 @@ func _poner_piezas(n: Node3D, a: AparicionData) -> void:
 	if destino == null:
 		destino = n
 	for c: Vector2i in a.celdas:
-		var p: Node3D = a.pieza_por_celda.instantiate()
-		p.name = "Pieza_%d_%d" % [c.x, c.y]
-		destino.add_child(p)
-		p.position = celda_a_mundo(c) - n.position
-		var horizontal: bool = (c + Vector2i.LEFT) in a.celdas or (c + Vector2i.RIGHT) in a.celdas
-		var vertical: bool = (c + Vector2i.UP) in a.celdas or (c + Vector2i.DOWN) in a.celdas
-		if vertical and not horizontal:
-			p.rotation_degrees.y = 90.0
-		p.add_to_group("piezas_" + String(a.id))
+		var h: float = a.alturas_celda.get(c, a.altura)
+		var base: Vector3 = celda_a_mundo(c) - n.position
+		if a.rampas.has(c) and a.pieza_rampa:
+			# Escalera: arranca a la altura de la casilla de detrás y mira hacia donde sube.
+			var r: Vector2i = a.rampas[c]
+			var p: Node3D = a.pieza_rampa.instantiate()
+			p.name = "Escalera_%d_%d" % [c.x, c.y]
+			destino.add_child(p)
+			var abajo: float = a.alturas_celda.get(c - r, a.altura) if (c - r) in a.celdas else 0.0
+			p.position = base + Vector3.UP * abajo
+			# La pieza sube hacia su -Z local: se gira para que suba hacia `r`.
+			p.rotation.y = atan2(-r.x, r.y)
+			p.add_to_group("piezas_" + String(a.id))
+			continue
+		if a.pieza_por_celda:
+			var p: Node3D = a.pieza_por_celda.instantiate()
+			p.name = "Pieza_%d_%d" % [c.x, c.y]
+			destino.add_child(p)
+			p.position = base + Vector3.UP * h
+			var horizontal: bool = (c + Vector2i.LEFT) in a.celdas or (c + Vector2i.RIGHT) in a.celdas
+			var vertical: bool = (c + Vector2i.UP) in a.celdas or (c + Vector2i.DOWN) in a.celdas
+			if vertical and not horizontal:
+				p.rotation_degrees.y = 90.0
+			p.add_to_group("piezas_" + String(a.id))
+		if a.pieza_bajo_celda and h > 0.1:
+			var s: Node3D = a.pieza_bajo_celda.instantiate()
+			s.name = "Pilotes_%d_%d" % [c.x, c.y]
+			destino.add_child(s)
+			s.position = base + Vector3.UP * h
 
 
 func _por_mar(n: Node3D, a: AparicionData) -> void:

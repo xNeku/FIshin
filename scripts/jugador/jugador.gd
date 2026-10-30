@@ -258,7 +258,7 @@ func _process(delta: float) -> void:
 		_empuje = 0.0
 		sprite.position.y = lerpf(sprite.position.y, _y_sprite, 1.0 - exp(-12.0 * delta))
 	var sobre_donut: bool = en_barca()
-	position.y = _y_barca() if sobre_donut else altura_tierra
+	position.y = _y_barca() if sobre_donut else altura_tierra + mundo.altura_en(position)
 	sombra.visible = not sobre_donut
 	_buscar_cercano()
 
@@ -275,7 +275,10 @@ func _mover(paso: Vector3, delta: float) -> void:
 		if eje == Vector3.ZERO:
 			continue
 		var nueva: Vector3 = position + eje
-		if _pisable(nueva + eje.normalized() * margen_borde, pisables):
+		var tanteo: Vector3 = nueva + eje.normalized() * margen_borde
+		# Sin escalones: solo se pasa a otra altura por las escaleras (subiendo de frente).
+		var mismo_nivel: bool = absf(mundo.altura_en(tanteo) - mundo.altura_en(position)) < 0.3
+		if _pisable(tanteo, pisables) and mismo_nivel:
 			position = nueva
 		else:
 			bloqueado = true
@@ -295,7 +298,7 @@ func _mover(paso: Vector3, delta: float) -> void:
 	# Suelo a dos casillas: justo enfrente o una casilla hacia un lado (la barca es solo 1x1).
 	var salto_a := Vector2i(999, 999)
 	for c: Vector2i in [celda + d * 2, celda + d * 2 + perp, celda + d * 2 - perp]:
-		if c in pisables:
+		if c in pisables and mundo.salto_valido(celda, c):
 			salto_a = c
 			break
 	if salto_a.x != 999 and not medio in pisables:
@@ -318,7 +321,7 @@ func _saltar(destino: Vector3, a_barca: bool) -> void:
 	cercano = null
 	sfx_salto.play()
 	var origen: Vector3 = position
-	destino.y = _y_barca() if a_barca else altura_tierra
+	destino.y = _y_barca() if a_barca else altura_tierra + mundo.altura_en(destino)
 	if a_barca:
 		destino.z = fondo_barca
 	var tw := create_tween()

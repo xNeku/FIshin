@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" path="res://scripts/datos/aparicion_data.gd" id="1_script"]
 [ext_resource type="PackedScene" path="res://scenes/mundo/islas/restaurante.tscn" id="2_escena"]
+[ext_resource type="PackedScene" path="res://scenes/mundo/piezas/pilotes.tscn" id="9_pilotes"]
 
 [resource]
 script = ExtResource("1_script")
@@ -16,3 +17,5 @@ condicion = 0
 valor = 0.0
 requiere = Array[StringName]([&"camino_2"])
 llegada = 1
+altura = 1.2
+pieza_bajo_celda = ExtResource("9_pilotes")

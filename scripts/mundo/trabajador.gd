@@ -55,7 +55,7 @@ func iniciar(mundo: Node, puerto: Node, pez: PezData, puesto_asignado: Dictionar
 	_pez = pez
 	puesto = puesto_asignado
 	sentado = sentarse
-	global_position = _mundo.celda_a_mundo(celda_inicial) + Vector3.UP * altura_suelo
+	global_position = _mundo.celda_a_mundo(celda_inicial) + Vector3.UP * (altura_suelo + _mundo.altura_celda(celda_inicial))
 	_ir_a(puesto.celda, _pos_puesto())
 	estado = Estado.YENDO_A_PUESTO
 
@@ -88,7 +88,7 @@ func _andar(delta: float) -> void:
 		var siguiente: Vector2i = _ruta[0]
 		var actual: Vector2i = _mundo.mundo_a_celda(global_position)
 		if (siguiente - actual).length_squared() > 1:
-			_saltar(_mundo.celda_a_mundo(siguiente) + Vector3.UP * altura_suelo)
+			_saltar(_mundo.celda_a_mundo(siguiente) + Vector3.UP * (altura_suelo + _mundo.altura_celda(siguiente)))
 			_ruta.pop_front()
 			return
 		objetivo = _mundo.celda_a_mundo(siguiente) + Vector3.UP * altura_suelo
@@ -96,13 +96,14 @@ func _andar(delta: float) -> void:
 	hacia.y = 0.0
 	var paso: float = velocidad * Juego.mult_trabajadores() * delta
 	if hacia.length() <= paso:
-		global_position = Vector3(objetivo.x, altura_suelo, objetivo.z)
+		global_position = Vector3(objetivo.x, altura_suelo + _mundo.altura_en(objetivo), objetivo.z)
 		if not _ruta.is_empty():
 			_ruta.pop_front()
 		else:
 			_llegar()
 		return
 	global_position += hacia.normalized() * paso
+	global_position.y = altura_suelo + _mundo.altura_en(global_position)
 	if absf(hacia.x) > 0.05:
 		sprite.flip_h = hacia.x < 0.0
 	sprite.position.y = _y_sprite + absf(sin(_t * 12.0)) * 0.05
@@ -179,7 +180,7 @@ func _pos_puesto() -> Vector3:
 	var c: Vector3 = _mundo.celda_a_mundo(puesto.celda)
 	var d := Vector3(puesto.dir.x, 0.0, -puesto.dir.y)
 	var lateral := Vector3(-d.z, 0.0, d.x) * randf_range(-0.4, 0.4)
-	return c + d * _mundo.tamano_celda * 0.5 * (borde_sentado if sentado else borde_pie) + lateral + Vector3.UP * altura_suelo
+	return c + d * _mundo.tamano_celda * 0.5 * (borde_sentado if sentado else borde_pie) + lateral + Vector3.UP * (altura_suelo + _mundo.altura_en(c))
 
 
 func _mostrar_pez() -> void:

@@ -157,7 +157,7 @@ func _andar(delta: float) -> void:
 		_saltos.pop_front()
 	else:
 		global_position += hacia.normalized() * paso
-		global_position.y = altura_suelo
+		global_position.y = altura_suelo + _mundo.altura_en(global_position)
 
 
 func _saltar(destino: Vector3) -> void:
@@ -172,4 +172,9 @@ func _saltar(destino: Vector3) -> void:
 
 func _punto(c: Vector2i) -> Vector3:
 	var p: Vector3 = _mundo.celda_a_mundo(c)
-	return Vector3(p.x + randf_range(-dispersion, dispersion), altura_suelo, p.z + randf_range(-dispersion, dispersion))
+	var q := Vector3(p.x + randf_range(-dispersion, dispersion), 0.0, p.z + randf_range(-dispersion, dispersion))
+	# En una escalera, sin apartarse a los lados (se caería).
+	if _mundo.es_rampa(c):
+		q = p
+	q.y = altura_suelo + _mundo.altura_en(q)
+	return q

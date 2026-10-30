@@ -1,5 +1,7 @@
 [gd_scene format=3]
 
+[ext_resource type="PackedScene" path="res://scenes/mundo/piezas/pilotes.tscn" id="2_pilotes"]
+
 [ext_resource type="Material" path="res://art/materiales/tablones_rotos.tres" id="1_tablones"]
 
 [sub_resource type="BoxMesh" id="b_bloque"]
@@ -11,3 +13,5 @@ size = Vector3(2, 0.5, 2)
 [node name="Bloque" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.01, 0)
 mesh = SubResource("b_bloque")
+
+[node name="Pilotes" parent="." instance=ExtResource("2_pilotes")]

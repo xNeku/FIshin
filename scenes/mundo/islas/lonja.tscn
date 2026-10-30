@@ -33,6 +33,7 @@ salpicadura = NodePath("Salpicadura")
 [node name="Piezas" type="Node3D" parent="."]
 
 [node name="Flotadores" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.2, 0)
 
 [node name="Flotador1" type="Sprite3D" parent="Flotadores"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.1, 0.05, -3.1)

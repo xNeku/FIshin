@@ -1,0 +1,63 @@
+[gd_scene format=3]
+
+[ext_resource type="Material" path="res://art/materiales/tablones.tres" id="1_tablones"]
+[ext_resource type="Material" path="res://art/materiales/tablones_rotos.tres" id="2_madera"]
+[ext_resource type="PackedScene" path="res://scenes/mundo/piezas/pilotes.tscn" id="3_pilotes"]
+
+[sub_resource type="BoxMesh" id="b_paso0"]
+material = ExtResource("1_tablones")
+size = Vector3(1.7, 0.740, 0.400)
+
+[sub_resource type="BoxMesh" id="b_paso1"]
+material = ExtResource("1_tablones")
+size = Vector3(1.7, 0.980, 0.400)
+
+[sub_resource type="BoxMesh" id="b_paso2"]
+material = ExtResource("1_tablones")
+size = Vector3(1.7, 1.220, 0.400)
+
+[sub_resource type="BoxMesh" id="b_paso3"]
+material = ExtResource("1_tablones")
+size = Vector3(1.7, 1.460, 0.400)
+
+[sub_resource type="BoxMesh" id="b_paso4"]
+material = ExtResource("1_tablones")
+size = Vector3(1.7, 1.700, 0.400)
+
+[sub_resource type="BoxMesh" id="b_zanca"]
+material = ExtResource("2_madera")
+size = Vector3(0.14, 0.3, 2.3)
+
+[node name="Escalera" type="Node3D"]
+
+[node name="Pasos" type="Node3D" parent="."]
+
+[node name="Paso1" type="MeshInstance3D" parent="Pasos"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.110, 0.800)
+mesh = SubResource("b_paso0")
+
+[node name="Paso2" type="MeshInstance3D" parent="Pasos"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.230, 0.400)
+mesh = SubResource("b_paso1")
+
+[node name="Paso3" type="MeshInstance3D" parent="Pasos"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.350, 0.000)
+mesh = SubResource("b_paso2")
+
+[node name="Paso4" type="MeshInstance3D" parent="Pasos"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.470, -0.400)
+mesh = SubResource("b_paso3")
+
+[node name="Paso5" type="MeshInstance3D" parent="Pasos"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.590, -0.800)
+mesh = SubResource("b_paso4")
+
+[node name="ZancaIzq" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.8575, 0.5145, 0, -0.5145, 0.8575, -0.9, 0.940, 0)
+mesh = SubResource("b_zanca")
+
+[node name="ZancaDer" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.8575, 0.5145, 0, -0.5145, 0.8575, 0.9, 0.940, 0)
+mesh = SubResource("b_zanca")
+
+[node name="Pilotes" parent="." instance=ExtResource("3_pilotes")]
