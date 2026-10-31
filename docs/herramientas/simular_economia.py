@@ -263,6 +263,7 @@ ARBOL = _leer_arbol()
 REST = dict(parte=0.3, capacidad=120, mult_plato=1.25, locales=0.6, locales_pesc=0.15)
 TUR = dict(prob=0.5, max_sin=2, platos=2.0, min=3, max=16, ventana=(0.5, 0.5))
 CULT = dict(pim_plantas=18, pim_n=3, pim_t=120, pim_valor=0.4, alga_plantas=8, alga_n=2, alga_t=180, alga_valor=0.5,
+            pim_precio=15.0, alga_precio=30.0,
             cada_visita=360, andar=25, chaval=75)
 RELOJ = dict(dia=720.0, noche=480.0, inicio=0.0)
 NIVELES_TUR = [0, 120, 400]
@@ -411,7 +412,10 @@ def partida(jugador=1.0, semilla=1, horas=4.0, informe=False):
                     listas_a = CULT["alga_plantas"] * min(1, chaval_t / (CULT["alga_t"] / (1 + E.get("cultivos", 0))))
                     pp = (CULT["pim_n"] + E.get("por_planta", 0)) * (1 + E.get("cosecha_doble", 0))
                     pa = (CULT["alga_n"] + E.get("por_planta", 0)) * (1 + E.get("cosecha_doble", 0))
-                    pim += int(listas_p * pp); alga += int(listas_a * pa)
+                    np_, na_ = int(listas_p * pp), int(listas_a * pa)
+                    g = (np_ * CULT["pim_precio"] + na_ * CULT["alga_precio"]) * (1 + E.get("valor_cosecha", 0)) * mv
+                    rublos += g; totales += g; fuentes["restaurante"] += g
+                    alga += na_
                     chaval_t = 0.0; plantas_t = 0.0
             elif t - ultima_huerto >= CULT["cada_visita"]:
                 ultima_huerto = t
@@ -419,7 +423,10 @@ def partida(jugador=1.0, semilla=1, horas=4.0, informe=False):
                 pa = (CULT["alga_n"] + E.get("por_planta", 0)) * (1 + E.get("cosecha_doble", 0))
                 listas_p = CULT["pim_plantas"] * min(1, plantas_t / (CULT["pim_t"] / (1 + E.get("cultivos", 0))))
                 listas_a = CULT["alga_plantas"] * min(1, plantas_t / (CULT["alga_t"] / (1 + E.get("cultivos", 0))))
-                pim += int(listas_p * pp); alga += int(listas_a * pa)
+                np_, na_ = int(listas_p * pp), int(listas_a * pa)
+                g = (np_ * CULT["pim_precio"] + na_ * CULT["alga_precio"]) * (1 + E.get("valor_cosecha", 0)) * mv
+                rublos += g; totales += g; fuentes["restaurante"] += g
+                alga += na_
                 plantas_t = 0.0
                 t += CULT["andar"]
         # Vender cada ~3 min (con la lonja da igual dónde: al comerciante desde el donut).

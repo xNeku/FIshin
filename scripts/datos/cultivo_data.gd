@@ -17,5 +17,9 @@ enum Uso { GUARNICION, MEJORA_PLATO }
 @export var segundos_crecer: float = 90.0
 ## Lo que se cosecha de cada planta.
 @export var por_planta: int = 3
+## Lo que paga O Mar por cada unidad al dársela (sube con la lonja, Carisma y la rama Cosecha).
+@export var precio: float = 15.0
+## Si además se queda en la despensa para usarla en los platos (las algas sí; los pimientos se venden).
+@export var a_la_despensa: bool = false
 @export var uso: Uso = Uso.GUARNICION
 @export var valor: float = 10.0

@@ -359,6 +359,9 @@ func _punto_interaccion() -> Variant:
 	_accion_icono = &"interactuar"
 	if jugador and jugador.has_method("objetivo_interaccion"):
 		var i: Interactuable = jugador.objetivo_interaccion()
+		# Cosechando, el botón va encima del náufrago (no saltando de planta en planta).
+		if i and i.accion == Interactuable.Accion.COSECHAR:
+			return jugador.global_position + Vector3.UP * altura_icono_sentarse
 		if i:
 			return i.global_position + Vector3.UP * i.altura_icono
 		if jugador.puede_sentarse() and not get_tree().paused:

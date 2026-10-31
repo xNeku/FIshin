@@ -22,6 +22,7 @@ func _process(delta: float) -> void:
 		return
 	_t = 0.0
 	var restaurante: Node3D = get_tree().get_first_node_in_group("restaurante")
+	var dinero: float = 0.0
 	for n: Node in get_tree().get_nodes_in_group("plantas"):
 		var p := n as Planta
 		if p == null or not is_ancestor_of(p) or not p.lista():
@@ -30,6 +31,15 @@ func _process(delta: float) -> void:
 		if randf() < Juego.efecto(&"cosecha_doble"):
 			k *= 2
 		var id: String = String(p.cultivo.id)
-		Juego.despensa[id] = int(Juego.despensa.get(id, 0)) + k
+		# O Mar se lo paga como si se lo dieras tú; las algas, además, a su despensa.
+		dinero += k * Juego.precio_cosecha(p.cultivo)
+		if p.cultivo.a_la_despensa:
+			Juego.despensa[id] = int(Juego.despensa.get(id, 0)) + k
 		if restaurante:
 			Vuelos.enviar(p, restaurante.casa if restaurante.casa else restaurante, [p.cultivo.icono] as Array[Texture2D], Callable(), null, 1.2)
+	if dinero > 0.0:
+		var comercio: Node = get_tree().get_first_node_in_group("comercio")
+		if comercio and restaurante:
+			Vuelos.enviar_dinero(restaurante.casa if restaurante.casa else restaurante, comercio.origen(), dinero)
+		else:
+			Juego.sumar_rublos(dinero)

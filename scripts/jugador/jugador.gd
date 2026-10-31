@@ -192,23 +192,27 @@ func _segar_en(p: Planta) -> void:
 		return
 	if randf() < Juego.efecto(&"cosecha_doble"):
 		n *= 2
-	var texturas: Array[Texture2D] = []
-	for k in n:
-		texturas.append(p.cultivo.icono)
+	camara.sacudir(0.03)
+	# Un solo icono por planta (más limpio): al llegar suma todo lo que da.
 	var id: StringName = p.cultivo.id
-	Vuelos.enviar(p, self, texturas, func(_i: int) -> void: Juego.sumar_cosecha(id, 1), Vuelos.sfx_pez, 1.3)
+	Vuelos.enviar(p, self, [p.cultivo.icono] as Array[Texture2D], func(_i: int) -> void: Juego.sumar_cosecha(id, n), Vuelos.sfx_pez, 1.4)
 
 
 ## Lo cosechado sale volando de ti hacia quien lo recibe (un icono por unidad, hasta un tope).
 func _entregar_cosecha(i: Interactuable) -> void:
 	var texturas: Array[Texture2D] = []
 	var dado: Dictionary = Juego.entregar_cosecha()
+	var dinero: float = dado.get("dinero", 0.0)
+	Juego.dinero_en_camino += dinero
 	for id: String in dado:
 		var c: CultivoData = Juego.cultivos.get(StringName(id))
 		if c and c.icono:
-			for k in mini(12, int(dado[id])):
+			for k in mini(8, ceili(int(dado[id]) / 4.0)):
 				texturas.append(c.icono)
 	await Vuelos.enviar(self, i, texturas, Callable(), null, 1.4)
+	# O Mar te lo paga al momento.
+	Juego.dinero_en_camino -= dinero
+	Vuelos.enviar_dinero(i, self, dinero)
 
 
 ## El cubo de la mano desaparece para salir volando hacia su sitio.

@@ -256,6 +256,8 @@ El early game son las primeras ~4 h: termina con los turistas de nivel 3 (yate).
 - La entrada de turistas llega 1 día después de O Mar (antes 2): hacia el min 87.
 - Lo que pagan los turistas se guarda durante la visita (`Restaurante.caja_turistas`; cuenta para el guardado vía `dinero_en_camino`) y llega de golpe al irse (`Turistas._cobrar`). Aviso de 5 s arriba, en el nodo `Visita` de hud.tscn (`HUD.duracion_aviso_visita`): turistas, platos vendidos y dinero. La gente del pueblo sigue pagando poco a poco.
 - Sabia caña: el perfect de profundidad 2-3 sube (tabla `PERFECT` 2: 7-11, 3: 11-16). Medido en el motor: combo medio 8,5, la mitad llega a 10 y máximo 14 (antes se quedaba en 9).
+- Cosecha pagada: O Mar te la compra al dársela. Precio por unidad: pimiento 15 ₽ y alga 30 ₽ (`CultivoData.precio`), multiplicado por "Unos pican y otros no" y por `mult_venta` (lonja y Carisma); lo calcula `Juego.precio_cosecha`. Los pimientos se venden enteros; las algas, además, van a la despensa y mejoran los platos (`a_la_despensa`). El chaval también cobra.
+- Cosecha más limpia: un icono por planta (suma todo al llegar), el botón R2 encima del náufrago y una sacudida suave de cámara por planta segada.
 - Opción "Iconos" (automáticos / Xbox-Switch / PlayStation / teclado) para mandos que llegan como teclas; 4, 3 y 2 también aceptan, vuelven y hacen la acción extra.
 
 ## Siguiente paso

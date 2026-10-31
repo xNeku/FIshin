@@ -362,14 +362,27 @@ func total_cosecha() -> int:
 	return t
 
 
-## Pasa todo lo cosechado a la despensa del restaurante. Devuelve lo que se ha dado (id -> cantidad).
+## Se lo das todo a O Mar: te lo paga (devuelve el dinero en "dinero") y lo que sirve para platos se queda en
+## su despensa. Devuelve id -> cantidad dada, más "dinero".
 func entregar_cosecha() -> Dictionary:
 	var dado: Dictionary = cosecha.duplicate()
+	var dinero: float = 0.0
 	for k: String in cosecha:
-		despensa[k] = int(despensa.get(k, 0)) + int(cosecha[k])
+		var c: CultivoData = cultivos.get(StringName(k))
+		if c == null:
+			continue
+		dinero += int(cosecha[k]) * precio_cosecha(c)
+		if c.a_la_despensa:
+			despensa[k] = int(despensa.get(k, 0)) + int(cosecha[k])
 	cosecha.clear()
 	cosecha_cambiada.emit()
+	dado["dinero"] = dinero
 	return dado
+
+
+## Lo que paga O Mar por una unidad de este cultivo.
+func precio_cosecha(c: CultivoData) -> float:
+	return c.precio * (1.0 + efecto(&"valor_cosecha")) * mult_venta()
 
 
 func _plantas_al_dia() -> Dictionary:

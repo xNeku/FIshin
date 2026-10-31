@@ -16,3 +16,5 @@ segundos_crecer = 180.0
 por_planta = 2
 uso = 1
 valor = 0.5
+precio = 30.0
+a_la_despensa = true
