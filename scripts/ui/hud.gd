@@ -134,6 +134,7 @@ func _ready() -> void:
 		_on_estado(pesca.estado)
 	if comercio:
 		comercio.venta_terminada.connect(_on_vendido)
+	_conectar_turistas.call_deferred()
 	if celebracion:
 		celebracion.empezada.connect(func(_pez: PezData) -> void: combo.visible = false)
 
@@ -304,6 +305,29 @@ func _icono_interactuar(dt: float) -> void:
 	var pantalla: Vector2 = popups.get_global_transform().affine_inverse() * camara.unproject_position(p)
 	var bote: float = sin(_t_icono * 4.0) * bote_icono
 	icono_interactuar.position = pantalla - icono_interactuar.size * 0.5 + Vector2(0.0, bote)
+
+
+## Duración del aviso de fin de visita de turistas.
+@export var duracion_aviso_visita: float = 5.0
+
+func _conectar_turistas() -> void:
+	var t: Node = get_tree().get_first_node_in_group("turistas")
+	if t and not t.visita_terminada.is_connected(_on_visita_terminada):
+		t.visita_terminada.connect(_on_visita_terminada)
+
+
+func _on_visita_terminada(turistas: int, platos: int, dinero: float) -> void:
+	var panel: Control = get_node_or_null("Visita")
+	if panel == null:
+		return
+	panel.get_node("Lista/Detalle").text = "%d turistas · %d platos vendidos" % [turistas, platos]
+	panel.get_node("Lista/Dinero").text = "+%s" % Formato.dinero(dinero)
+	panel.visible = true
+	panel.modulate.a = 1.0
+	var tw := create_tween()
+	tw.tween_interval(duracion_aviso_visita - 0.5)
+	tw.tween_property(panel, "modulate:a", 0.0, 0.5)
+	tw.tween_callback(func() -> void: panel.visible = false)
 
 
 ## Lo cosechado que llevas y la despensa del restaurante (solo si existen).

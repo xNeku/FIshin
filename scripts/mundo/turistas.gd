@@ -1,5 +1,8 @@
 class_name Turistas
 extends Node3D
+
+## Al irse los turistas: cuántos vinieron, platos vendidos y dinero (llega de golpe).
+signal visita_terminada(turistas: int, platos: int, dinero: float)
 ## Visitas de turistas. No vienen todos los días, pero cuando vienen es en masa: llegan en barcos a la
 ## entrada de turistas en la segunda mitad del día y se quedan hasta la mitad de la noche, comiendo en el
 ## restaurante. Cuanta más comida tiene el restaurante, más vienen. Los tipos se desbloquean y se suman:
@@ -45,6 +48,7 @@ var _t_invisibles: float = 0.0
 var _t_revisar: float = 0.0
 var _dia_visita: int = -1
 var _bocina_dada: bool = false
+var _vinieron: int = 0
 
 
 func _ready() -> void:
@@ -105,6 +109,7 @@ func niveles_abiertos() -> Array[NivelTuristasData]:
 
 func _empezar(rd: RelojData) -> void:
 	activa = true
+	_vinieron = 0
 	_bocina_dada = false
 	if int(Juego.flags.get("turistas_contada", -1)) != _dia_visita:
 		Juego.flags["turistas_contada"] = _dia_visita
@@ -115,6 +120,7 @@ func _empezar(rd: RelojData) -> void:
 		activa = false
 		return
 	var n: int = cuantos()
+	_vinieron = n
 	var visibles: int = mini(n, max_visibles)
 	_invisibles = n - visibles
 	var restante: float = _segundos_restantes(rd)
@@ -174,6 +180,7 @@ func _traer(datos: Dictionary, muelle: Dictionary, cada_comer: float, retraso: f
 func _terminar() -> void:
 	activa = false
 	Juego.flags["turistas_hecho"] = _dia_visita
+	_cobrar()
 	_invisibles = 0
 	for g: Dictionary in _grupos:
 		_recoger(g)
@@ -219,6 +226,22 @@ func _comer_invisibles(delta: float) -> void:
 		r.servir(true, maxf(1.0, gasto))
 	var rd: RelojData = Juego.reloj_data
 	_t_invisibles = _segundos_restantes(rd) / maxf(1.0, _invisibles * platos_por_turista) if rd else 30.0
+
+
+## Todo lo que han gastado llega de golpe desde O Mar, con su aviso.
+func _cobrar() -> void:
+	var r: Node = _restaurante()
+	if r == null:
+		return
+	var caja: Dictionary = r.cobrar_visita()
+	if caja.platos <= 0:
+		return
+	visita_terminada.emit(_vinieron, caja.platos, caja.dinero)
+	var comercio: Node = get_tree().get_first_node_in_group("comercio")
+	if comercio:
+		Vuelos.enviar_dinero(r.casa if r.casa else r, comercio.origen(), caja.dinero)
+	else:
+		Juego.sumar_rublos(caja.dinero)
 
 
 func _restaurante() -> Node:

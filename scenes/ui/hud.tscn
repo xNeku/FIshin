@@ -83,6 +83,42 @@ theme_type_variation = &"Pequeno"
 theme_override_colors/font_color = Color(0.95, 0.75, 0.5, 1)
 text = "O Mar: 34/120 raciones"
 
+[node name="Visita" type="PanelContainer" parent="."]
+visible = false
+material = ExtResource("cristal")
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -260.0
+offset_top = 40.0
+offset_right = 260.0
+offset_bottom = 180.0
+grow_horizontal = 2
+mouse_filter = 2
+theme_type_variation = &"PanelCristal"
+
+[node name="Lista" type="VBoxContainer" parent="Visita"]
+layout_mode = 2
+mouse_filter = 2
+alignment = 1
+
+[node name="Titulo" type="Label" parent="Visita/Lista"]
+layout_mode = 2
+theme_type_variation = &"Titulo"
+text = "Se van los turistas"
+horizontal_alignment = 1
+
+[node name="Detalle" type="Label" parent="Visita/Lista"]
+layout_mode = 2
+text = "12 turistas · 24 platos vendidos"
+horizontal_alignment = 1
+
+[node name="Dinero" type="Label" parent="Visita/Lista"]
+layout_mode = 2
+theme_type_variation = &"Dinero"
+text = "+1.20K ₽"
+horizontal_alignment = 1
+
 [node name="Prompt" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 8

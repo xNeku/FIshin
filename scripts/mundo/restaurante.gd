@@ -26,6 +26,9 @@ extends Isla
 var _resto_parte: float = 0.0
 var _t_locales: float = 0.0
 var _caja: float = 0.0
+## Lo que pagan los turistas se guarda hasta que se van (y entonces llega de golpe).
+var caja_turistas: float = 0.0
+var platos_turistas: int = 0
 var _t_cobro: float = 0.0
 
 
@@ -56,6 +59,15 @@ func _process(delta: float) -> void:
 			Vuelos.enviar_dinero(_origen(), comercio.origen(), total)
 		else:
 			Juego.sumar_rublos(total)
+
+
+## Cierra la caja de la visita: devuelve {platos, dinero} y la deja a cero.
+func cobrar_visita() -> Dictionary:
+	var r: Dictionary = {"platos": platos_turistas, "dinero": caja_turistas}
+	Juego.dinero_en_camino -= caja_turistas
+	caja_turistas = 0.0
+	platos_turistas = 0
+	return r
 
 
 func capacidad() -> float:
@@ -90,7 +102,15 @@ func servir(turista: bool = false, gasto: float = 1.0) -> bool:
 			guarnicion += medio * v
 		else:
 			mejora *= 1.0 + v
-	_caja += (precio + guarnicion) * mejora * (gasto * (1.0 + Juego.efecto(&"propinas")) if turista else 1.0)
+	var pago: float = (precio + guarnicion) * mejora
+	if turista:
+		pago *= gasto * (1.0 + Juego.efecto(&"propinas"))
+		caja_turistas += pago
+		platos_turistas += 1
+		# Se guarda con la partida aunque aún no haya llegado (si cierras a mitad de la visita, no se pierde).
+		Juego.dinero_en_camino += pago
+	else:
+		_caja += pago
 	Juego.stats.clientes += 1
 	return true
 

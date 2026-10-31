@@ -252,6 +252,12 @@ El early game son las primeras ~4 h: termina con los turistas de nivel 3 (yate).
 - Limpieza: fuera código sin uso (`Turistas.hay_visita`, `SlotBarca.mostrar_vacio`). `Mundo.celdas_pisables` calcula su firma una vez por fotograma (antes, miles de veces con las alturas y las rutas): ~0,7 ms por ruta. El HUD guarda el restaurante y los turistas en vez de buscarlos cada fotograma.
 - Pendiente de estilo: las islas siguen siendo cubos de 2 m. Con los bordes redondeados o la hierba sobresaliendo del borde se separarían del todo de lo "de bloques".
 
+## Ajustes (31 oct)
+- La entrada de turistas llega 1 día después de O Mar (antes 2): hacia el min 87.
+- Lo que pagan los turistas se guarda durante la visita (`Restaurante.caja_turistas`; cuenta para el guardado vía `dinero_en_camino`) y llega de golpe al irse (`Turistas._cobrar`). Aviso de 5 s arriba, en el nodo `Visita` de hud.tscn (`HUD.duracion_aviso_visita`): turistas, platos vendidos y dinero. La gente del pueblo sigue pagando poco a poco.
+- Sabia caña: el perfect de profundidad 2-3 sube (tabla `PERFECT` 2: 7-11, 3: 11-16). Medido en el motor: combo medio 8,5, la mitad llega a 10 y máximo 14 (antes se quedaba en 9).
+- Opción "Iconos" (automáticos / Xbox-Switch / PlayStation / teclado) para mandos que llegan como teclas; 4, 3 y 2 también aceptan, vuelven y hacen la acción extra.
+
 ## Siguiente paso
 0. **Ayuntamiento (pre-midgame, [DECIDIDO] que existe):** mejora todo lo inmueble y deja construir la tienda de decoración (toda decoración sube lo que pagan los turistas). Propuesta de Claude: hacia el min 150-165 (300.000 ₽ ganados), en la plaza de arriba del camino 2; primero las mejoras con un sistema común por edificio y después la decoración. [ABIERTO] ¿Las mejoras de O Mar pasan al ayuntamiento o O Mar conserva su tienda?
 1. **Partida del diseñador del minuto 30 al 240:** lo único que el simulador no mide es si es divertido.
