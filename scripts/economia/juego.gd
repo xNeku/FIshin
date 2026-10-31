@@ -108,6 +108,9 @@ func _ready() -> void:
 	reloj = reloj_data.inicio if reloj_data else 0.0
 	cargar()
 	_recalcular_efectos()
+	IconosInput.forzado = String(opcion("iconos", ""))
+	if IconosInput.forzado != "":
+		IconosInput.dispositivo = IconosInput.forzado
 
 
 func _process(delta: float) -> void:

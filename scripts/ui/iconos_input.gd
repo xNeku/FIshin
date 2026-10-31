@@ -8,6 +8,9 @@ static var dispositivo: String = "teclado"
 ## Dibujos para un mando que no se reconoce por su nombre.
 static var mando_por_defecto: String = "ps"
 static var _cache: Dictionary = {}
+## Si no está vacío, siempre se usan estos dibujos (opción "Iconos"): para mandos que llegan como teclas
+## (apps que traducen el mando a teclado) o por gusto.
+static var forzado: String = ""
 
 
 static func icono(accion: StringName, pulsada: bool = false) -> Texture2D:
@@ -19,6 +22,11 @@ static func icono(accion: StringName, pulsada: bool = false) -> Texture2D:
 
 ## Mira el evento y cambia de dispositivo si toca. Devuelve true si ha cambiado.
 static func detectar(event: InputEvent) -> bool:
+	if forzado != "":
+		if dispositivo == forzado:
+			return false
+		dispositivo = forzado
+		return true
 	var nuevo: String = dispositivo
 	if event is InputEventJoypadButton or (event is InputEventJoypadMotion and absf((event as InputEventJoypadMotion).axis_value) > 0.5):
 		nuevo = tipo_mando(event.device)

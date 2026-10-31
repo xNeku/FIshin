@@ -16,6 +16,7 @@ extends CanvasLayer
 @onready var boton_salir: Button = $Raiz/Panel/Margen/Pestanas/Opciones/Salir
 @onready var boton_filtro: Button = $Raiz/Panel/Margen/Pestanas/Opciones/Filtro
 @onready var boton_agua: Button = $Raiz/Panel/Margen/Pestanas/Opciones/Agua
+@onready var boton_iconos: Button = get_node_or_null("Raiz/Panel/Margen/Pestanas/Opciones/Iconos")
 @onready var boton_pixeles: Button = $Raiz/Panel/Margen/Pestanas/Opciones/Pixeles
 
 ## Tamaño de los píxeles del mundo: encogimiento del Pixelador y su nombre en el botón.
@@ -48,6 +49,14 @@ func _ready() -> void:
 			a.poner_bandas(si)
 		_refrescar_agua())
 	_refrescar_agua()
+	if boton_iconos:
+		boton_iconos.pressed.connect(func() -> void:
+			var i: int = (maxi(0, ICONOS.find(IconosInput.forzado)) + 1) % ICONOS.size()
+			IconosInput.forzado = ICONOS[i]
+			IconosInput.dispositivo = ICONOS[i] if ICONOS[i] != "" else "teclado"
+			Juego.poner_opcion("iconos", ICONOS[i])
+			_refrescar_iconos())
+		_refrescar_iconos()
 	boton_pixeles.pressed.connect(func() -> void:
 		var pix: Node = get_tree().get_first_node_in_group("pixelador")
 		var actual: int = pix.encogimiento if pix else 3
@@ -215,6 +224,14 @@ func _refrescar_pixeles() -> void:
 	var pix: Node = get_tree().get_first_node_in_group("pixelador")
 	var i: int = PIXELES.find(pix.encogimiento if pix else 3)
 	boton_pixeles.text = "Píxeles: %s" % (NOMBRES_PIXELES[i] if i >= 0 else str(pix.encogimiento))
+
+
+const ICONOS: Array[String] = ["", "xbox", "ps", "teclado"]
+const NOMBRES_ICONOS: Array[String] = ["automáticos", "Xbox / Switch", "PlayStation", "teclado"]
+
+
+func _refrescar_iconos() -> void:
+	boton_iconos.text = "Iconos: %s" % NOMBRES_ICONOS[maxi(0, ICONOS.find(IconosInput.forzado))]
 
 
 func _refrescar_agua() -> void:
