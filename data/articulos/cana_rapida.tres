@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="ArticuloData" format=3]
+
+[ext_resource type="Script" path="res://scripts/datos/articulo_data.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://art/articulos/cana.png" id="3_icono"]
+[ext_resource type="Resource" path="res://data/canas/cana_rapida.tres" id="2_cana"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"cana_rapida"
+icono = ExtResource("3_icono")
+nombre = "Caña rápida"
+descripcion = "Bancos enteros de comunes: cada nota del carril es un pez. Llega tan hondo como tu mejor caña."
+tipo = 0
+precio = 250000.0
+crecimiento_precio = 1.0
+max_compras = 1
+requiere_flag = "aparecido_taladro"
+coste_coral = 25.0
+cana = ExtResource("2_cana")

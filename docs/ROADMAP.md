@@ -52,7 +52,8 @@ Regla: no se pasa de fase hasta que la actual sea jugable y divertida. Cada tare
 - [x] Dos alturas (puerto alto sobre pilotes y escaleras)
 - [x] Balance del early game con el simulador v4 (cañas de fibra y carbono, combos hasta 25)
 - [ ] Ayuntamiento: mejora de edificios con un sistema común + tienda de decoración (pre-midgame)
-- [ ] Taladro de coral, sushi, cañas rápida y pesada, marihuana (mid game)
+- [x] Taladro de coral, sushi, cañas rápida y pesada (carril)
+- [ ] Marihuana y decoración (mid game)
 - [ ] Ingresos pasivos, stats por segundo
 - [ ] Progreso offline (si se decide)
 - [x] Balance de curvas del early game (~4 h) con el simulador v4; falta el mid game

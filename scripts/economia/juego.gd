@@ -31,6 +31,8 @@ var rublos_totales: float = 0.0
 ## Inventario de la barca: [{id, peso, calidad, perfecto, valor}]. Se apila por especie (id). Sin límite.
 var capturas: Array[Dictionary] = []
 var cana_id: StringName = &"cana_rota"
+## Cañas compradas (ids): la mejor normal y las especiales; en el menú eliges cuál llevas.
+var canas: Array[String] = []
 ## Cebo activo: {pescas, mult_tiempo, mult_espera}. Vacío = sin cebo.
 var cebo: Dictionary = {}
 ## id de artículo -> veces comprado
@@ -110,6 +112,8 @@ func _ready() -> void:
 	reloj_data = load(RUTA_RELOJ)
 	reloj = reloj_data.inicio if reloj_data else 0.0
 	cargar()
+	if canas.is_empty():
+		canas.append(String(cana_id))
 	_recalcular_efectos()
 	IconosInput.forzado = String(opcion("iconos", ""))
 	if IconosInput.forzado != "":
@@ -144,7 +148,28 @@ func cana() -> CanaData:
 	return _cana
 
 
+## Las cañas que puedes llevar: la mejor normal y las especiales que tengas.
+func canas_elegibles() -> Array[CanaData]:
+	var r: Array[CanaData] = [mejor_cana_normal()]
+	for id: String in canas:
+		var c: CanaData = load(RUTA_CANAS % id)
+		if c and c.modo != CanaData.Modo.NORMAL:
+			r.append(c)
+	return r
+
+
+func mejor_cana_normal() -> CanaData:
+	var mejor: CanaData = load(RUTA_CANAS % cana_inicial)
+	for id: String in canas:
+		var c: CanaData = load(RUTA_CANAS % id)
+		if c and c.modo == CanaData.Modo.NORMAL and c.profundidad > mejor.profundidad:
+			mejor = c
+	return mejor
+
+
 func cambiar_cana(nueva: CanaData) -> void:
+	if not String(nueva.id) in canas:
+		canas.append(String(nueva.id))
 	cana_id = nueva.id
 	_cana = nueva
 	cana_cambiada.emit(nueva)
@@ -496,8 +521,11 @@ func precio(art: ArticuloData) -> float:
 func motivo_no_comprar(art: ArticuloData) -> String:
 	if art.max_compras > 0 and veces_comprado(art) >= art.max_compras:
 		return "Agotado"
-	if art.tipo == ArticuloData.Tipo.CANA and art.cana and art.cana.profundidad <= cana().profundidad:
-		return "Ya tienes algo mejor"
+	if art.tipo == ArticuloData.Tipo.CANA and art.cana:
+		if String(art.cana.id) in canas:
+			return "Ya la tienes"
+		if art.cana.modo == CanaData.Modo.NORMAL and art.cana.profundidad <= mejor_cana_normal().profundidad:
+			return "Ya tienes algo mejor"
 	if art.tipo == ArticuloData.Tipo.CEBO and not cebo.is_empty():
 		return "Ya llevas cebo"
 	if art.tipo == ArticuloData.Tipo.TRABAJADOR and plazas_trabajadores <= 0:
@@ -551,7 +579,7 @@ func poner_opcion(clave: String, valor: Variant) -> void:
 func guardar() -> void:
 	var datos: Dictionary = {
 		"version": VERSION_SAVE, "rublos": rublos + dinero_en_camino, "rublos_totales": rublos_totales + dinero_en_camino,
-		"capturas": capturas, "cana": String(cana_id), "cebo": cebo, "compras": compras,
+		"capturas": capturas, "cana": String(cana_id), "canas": canas, "cebo": cebo, "compras": compras,
 		"stats": stats, "coleccion": coleccion, "capturados": capturados, "flags": flags,
 		"trabajadores": trabajadores, "cubo": cubo_capturas, "cubo_en_mano": cubo_en_mano,
 		"habilidades": habilidades, "reloj": reloj, "cosecha": cosecha, "despensas": despensas, "plantas": _plantas_al_dia(), "materiales": materiales,
@@ -593,6 +621,12 @@ func cargar() -> void:
 	cana_id = StringName(datos.get("cana", String(cana_inicial)))
 	if not ResourceLoader.exists(RUTA_CANAS % cana_id):
 		cana_id = cana_inicial
+	canas.clear()
+	for c: Variant in datos.get("canas", []):
+		if ResourceLoader.exists(RUTA_CANAS % String(c)):
+			canas.append(String(c))
+	if not String(cana_id) in canas:
+		canas.append(String(cana_id))
 	cebo = datos.get("cebo", {})
 	compras = datos.get("compras", {})
 	for k: String in datos.get("stats", {}):
@@ -661,6 +695,7 @@ func borrar_partida() -> void:
 	rublos_totales = 0.0
 	capturas.clear()
 	cana_id = cana_inicial
+	canas = [String(cana_inicial)]
 	cebo.clear()
 	compras.clear()
 	for k: String in stats:

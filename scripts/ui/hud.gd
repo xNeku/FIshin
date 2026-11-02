@@ -127,6 +127,7 @@ func _ready() -> void:
 		pesca.machacar_progreso.connect(_on_machacar_progreso)
 		pesca.machacar_fallido.connect(_on_machacar_fallido)
 		pesca.pez_capturado.connect(_on_capturado)
+		pesca.banco_capturado.connect(_on_banco)
 		pesca.pez_escapado.connect(_on_escapado)
 		pesca.intensidad_cambiada.connect(func(i: float) -> void: _intensidad_objetivo = i)
 		pesca.racha_subida.connect(_on_racha)
@@ -412,6 +413,9 @@ func _al_cambiar_dispositivo() -> void:
 func _on_acierto(indice: int, _total: int) -> void:
 	var k: float = clampf(float(indice) / float(maxi(1, pesca.stats.botones_intensidad_maxima)), 0.0, 1.0)
 	_destello = lerpf(destello_acierto_min, destello_acierto_max, k)
+	# En el carril (cañas rápida y tocha) el combo lo cuenta su propio panel.
+	if pesca.estado == Pesca.Estado.RITMO:
+		return
 	combo.visible = indice >= 2
 	combo.text = "x%d" % indice
 	if not colores_racha.is_empty():
@@ -468,6 +472,22 @@ func _on_capturado(c: Dictionary, pez: PezData) -> void:
 	rareza.modulate = col
 	detalle.text = "%s\n%s  ·  %s" % [Formato.calidad(c.calidad, c.perfecto), Formato.peso(c.peso), Formato.dinero(c.valor)]
 	_destello = destello_perfecto if c.perfecto else destello_captura
+
+
+## Caña rápida: un banco entero de la misma especie.
+func _on_banco(pez: PezData, cantidad: int, valor: float) -> void:
+	var col: Color = colores_rareza[mini(pez.rareza, colores_rareza.size() - 1)]
+	var es_nuevo: bool = Juego.capturas_especie(pez.id) <= cantidad
+	resultado.visible = true
+	_t_carta = duracion_carta_nueva if es_nuevo else duracion_carta
+	nuevo.visible = es_nuevo
+	icono.texture = pez.icono
+	nombre.text = "%s ×%d" % [pez.nombre, cantidad]
+	nombre.modulate = col
+	rareza.text = PezData.NOMBRES_RAREZA[pez.rareza]
+	rareza.modulate = col
+	detalle.text = "Un banco entero\n%s" % Formato.dinero(valor)
+	_destello = destello_captura * 1.5
 
 
 func _on_escapado(pez: PezData) -> void:

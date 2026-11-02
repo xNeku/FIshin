@@ -9,6 +9,8 @@ extends CanvasLayer
 @onready var rejilla: GridContainer = $Raiz/Panel/Margen/Pestanas/Barca/Huecos/Rejilla
 @onready var detalle_nombre: Label = $Raiz/Panel/Margen/Pestanas/Barca/Detalle/Nombre
 @onready var detalle_resumen: Label = $Raiz/Panel/Margen/Pestanas/Barca/Detalle/Resumen
+## Cambia la caña que llevas (la mejor normal, la rápida o la tocha). Solo sale si tienes alguna especial.
+@onready var boton_cana: Button = get_node_or_null("Raiz/Panel/Margen/Pestanas/Barca/Detalle/Cana")
 @onready var variantes: VBoxContainer = $Raiz/Panel/Margen/Pestanas/Barca/Detalle/Lista/Variantes
 @onready var stats_texto: Label = $Raiz/Panel/Margen/Pestanas/Stats/Texto
 @onready var boton_volver: Button = $Raiz/Panel/Margen/Pestanas/Opciones/Volver
@@ -69,6 +71,9 @@ func _ready() -> void:
 	boton_salir.pressed.connect(func() -> void:
 		Juego.guardar()
 		get_tree().quit())
+	if boton_cana:
+		boton_cana.pressed.connect(_siguiente_cana)
+		Juego.cana_cambiada.connect(func(_c: CanaData) -> void: _refrescar_cana())
 	Juego.inventario_cambiado.connect(func() -> void:
 		if abierto:
 			_refrescar_barca())
@@ -154,7 +159,24 @@ func cerrar() -> void:
 	get_tree().paused = false
 
 
+func _siguiente_cana() -> void:
+	var lista: Array[CanaData] = Juego.canas_elegibles()
+	var i: int = 0
+	for k in lista.size():
+		if lista[k].id == Juego.cana_id:
+			i = k
+	Juego.cambiar_cana(lista[(i + 1) % lista.size()])
+
+
+func _refrescar_cana() -> void:
+	if boton_cana == null:
+		return
+	boton_cana.visible = Juego.canas_elegibles().size() > 1
+	boton_cana.text = "Caña: %s  ⇄" % Juego.cana().nombre
+
+
 func _refrescar_barca() -> void:
+	_refrescar_cana()
 	for n: Node in rejilla.get_children():
 		n.queue_free()
 	var especies: Array[String] = Juego.especies()

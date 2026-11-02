@@ -3,6 +3,7 @@
 [ext_resource type="PackedScene" path="res://scenes/mundo/barca.tscn" id="1_barca"]
 [ext_resource type="PackedScene" path="res://scenes/mundo/barco_comerciante.tscn" id="2_barco"]
 [ext_resource type="PackedScene" path="res://scenes/ui/hud.tscn" id="3_hud"]
+[ext_resource type="PackedScene" path="res://scenes/ui/ritmo.tscn" id="ritmo_ui"]
 [ext_resource type="PackedScene" path="res://scenes/ui/menu.tscn" id="11_menu"]
 [ext_resource type="PackedScene" path="res://scenes/ui/tienda.tscn" id="12_tienda"]
 [ext_resource type="Script" path="res://scripts/pesca/celebracion.gd" id="13_celebracion"]
@@ -227,9 +228,12 @@ script = ExtResource("5_camara")
 pesca = NodePath("../Pesca")
 objetivo = NodePath("../Barca/Foco")
 
-[node name="Pesca" type="Node" parent="."]
+[node name="Pesca" type="Node" parent="." node_paths=PackedStringArray("ritmo")]
 script = ExtResource("4_pesca")
 stats = ExtResource("8_stats")
+ritmo = NodePath("../Ritmo")
+
+[node name="Ritmo" parent="." instance=ExtResource("ritmo_ui")]
 
 [node name="Celebracion" type="Node" parent="." node_paths=PackedStringArray("pesca", "camara", "protagonista", "pez_levantado", "luz", "brillos", "fanfarria", "ocultar")]
 script = ExtResource("13_celebracion")

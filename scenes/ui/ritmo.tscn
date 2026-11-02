@@ -1,0 +1,196 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/pesca/ritmo.gd" id="1_script"]
+[ext_resource type="PackedScene" path="res://scenes/ui/nota_ritmo.tscn" id="2_nota"]
+[ext_resource type="Material" path="res://art/ui/cristal.tres" id="3_cristal"]
+
+[node name="Ritmo" type="CanvasLayer"]
+layer = 2
+script = ExtResource("1_script")
+escena_nota = ExtResource("2_nota")
+
+[node name="Raiz" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Panel" type="PanelContainer" parent="Raiz"]
+material = ExtResource("3_cristal")
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -540.0
+offset_top = -400.0
+offset_right = 540.0
+offset_bottom = -60.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+theme_type_variation = &"PanelCristal"
+
+[node name="Lista" type="VBoxContainer" parent="Raiz/Panel"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 8
+
+[node name="Arriba" type="HBoxContainer" parent="Raiz/Panel/Lista"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 24
+
+[node name="Contador" type="Label" parent="Raiz/Panel/Lista/Arriba"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"Titulo"
+text = "Sardina ×0"
+
+[node name="Combo" type="Label" parent="Raiz/Panel/Lista/Arriba"]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+theme_type_variation = &"Dinero"
+text = "x0"
+horizontal_alignment = 2
+
+[node name="Tension" type="ProgressBar" parent="Raiz/Panel/Lista/Arriba"]
+custom_minimum_size = Vector2(320, 28)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+value = 100.0
+show_percentage = false
+
+[node name="Pista" type="Control" parent="Raiz/Panel/Lista"]
+clip_contents = true
+custom_minimum_size = Vector2(1040, 260)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Fondo" type="ColorRect" parent="Raiz/Panel/Lista/Pista"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.03, 0.12, 0.2, 0.55)
+
+[node name="Sedal1" type="ColorRect" parent="Raiz/Panel/Lista/Pista"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 32.0
+offset_bottom = 34.0
+grow_horizontal = 2
+mouse_filter = 2
+color = Color(0.85, 0.92, 1, 0.25)
+
+[node name="Sedal2" type="ColorRect" parent="Raiz/Panel/Lista/Pista"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 97.0
+offset_bottom = 99.0
+grow_horizontal = 2
+mouse_filter = 2
+color = Color(0.85, 0.92, 1, 0.25)
+
+[node name="Sedal3" type="ColorRect" parent="Raiz/Panel/Lista/Pista"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 162.0
+offset_bottom = 164.0
+grow_horizontal = 2
+mouse_filter = 2
+color = Color(0.85, 0.92, 1, 0.25)
+
+[node name="Sedal4" type="ColorRect" parent="Raiz/Panel/Lista/Pista"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 227.0
+offset_bottom = 229.0
+grow_horizontal = 2
+mouse_filter = 2
+color = Color(0.85, 0.92, 1, 0.25)
+
+[node name="LineaGolpe" type="ColorRect" parent="Raiz/Panel/Lista/Pista"]
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_left = 78.0
+offset_right = 82.0
+grow_vertical = 2
+mouse_filter = 2
+color = Color(1, 0.85, 0.35, 0.7)
+
+[node name="Notas" type="Control" parent="Raiz/Panel/Lista/Pista"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Golpe" type="Control" parent="Raiz/Panel/Lista/Pista"]
+layout_mode = 0
+offset_left = 80.0
+offset_right = 80.0
+mouse_filter = 2
+
+[node name="Boton1" type="TextureRect" parent="Raiz/Panel/Lista/Pista/Golpe"]
+modulate = Color(1, 1, 1, 0.8)
+texture_filter = 1
+layout_mode = 0
+offset_left = -30.0
+offset_top = 3.0
+offset_right = 30.0
+offset_bottom = 63.0
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Boton2" type="TextureRect" parent="Raiz/Panel/Lista/Pista/Golpe"]
+modulate = Color(1, 1, 1, 0.8)
+texture_filter = 1
+layout_mode = 0
+offset_left = -30.0
+offset_top = 68.0
+offset_right = 30.0
+offset_bottom = 128.0
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Boton3" type="TextureRect" parent="Raiz/Panel/Lista/Pista/Golpe"]
+modulate = Color(1, 1, 1, 0.8)
+texture_filter = 1
+layout_mode = 0
+offset_left = -30.0
+offset_top = 133.0
+offset_right = 30.0
+offset_bottom = 193.0
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Boton4" type="TextureRect" parent="Raiz/Panel/Lista/Pista/Golpe"]
+modulate = Color(1, 1, 1, 0.8)
+texture_filter = 1
+layout_mode = 0
+offset_left = -30.0
+offset_top = 198.0
+offset_right = 30.0
+offset_bottom = 258.0
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5

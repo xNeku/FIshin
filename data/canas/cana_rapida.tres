@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="CanaData" format=3]
+
+[ext_resource type="Script" path="res://scripts/datos/cana_data.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"cana_rapida"
+nombre = "Caña rápida"
+descripcion = "Muchos anzuelos en un sedal: pican bancos enteros de comunes y poco comunes. Minijuego de carril: cada nota es un pez."
+modo = 1
+profundidad = 5
+cadena_min = 12
+cadena_max = 30
+sesgo_cadena = 1.0
+mult_espera = 0.6

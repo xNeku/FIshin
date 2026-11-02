@@ -22,8 +22,11 @@ signal picoteo(aviso: bool)
 signal pez_se_va(pez: PezData)
 ## La cadena entra en un tramo de racha nuevo (StatsPesca.racha_desde). Para lo visual.
 signal racha_subida(tramo: int)
+## Caña rápida: un banco entero (n peces de una especie) de una tacada.
+signal banco_capturado(pez: PezData, cantidad: int, valor: float)
 
-enum Estado { INACTIVO, ESPERANDO, PASO, ENTRE_PASOS, RESULTADO }
+## RITMO: el minijuego de carril de las cañas rápida y tocha (lo lleva el nodo `ritmo`).
+enum Estado { INACTIVO, ESPERANDO, PASO, ENTRE_PASOS, RESULTADO, RITMO }
 enum Tipo { SIMPLE, DOBLE, MACHACAR }
 
 const NUMEROS: Array[StringName] = [&"pesca_1", &"pesca_2", &"pesca_3", &"pesca_4"]
@@ -46,6 +49,12 @@ class Paso:
 @export var pausa_entre_pasos: float = 0.12
 @export var duracion_resultado: float = 1.6
 
+## El minijuego de carril (cañas rápida y tocha).
+@export var ritmo: Node
+## Lo que vale cada pez del banco (caña rápida) respecto a su valor base (luego, por su tramo de racha).
+@export var mult_volumen: float = 0.18
+## Lo que vale el trofeo (caña tocha) respecto a su valor base.
+@export var mult_trofeo: float = 0.7
 var estado: Estado = Estado.INACTIVO
 var pez: PezData
 var cana: CanaData
@@ -168,7 +177,7 @@ func reanudar() -> void:
 
 ## True mientras hay un pez enganchado (botones en pantalla o entre botones).
 func en_curso() -> bool:
-	return estado == Estado.PASO or estado == Estado.ENTRE_PASOS
+	return estado == Estado.PASO or estado == Estado.ENTRE_PASOS or estado == Estado.RITMO
 
 
 func intensidad() -> float:
@@ -223,6 +232,11 @@ func _picar() -> void:
 	indice = 0
 	aciertos = 0
 	machacar_fallados = 0
+	if cana.modo != CanaData.Modo.NORMAL and ritmo:
+		pez_pica.emit(pez)
+		_cambiar_estado(Estado.RITMO)
+		ritmo.empezar(self, pez, cana)
+		return
 	_generar_pasos()
 	pez_pica.emit(pez)
 	_iniciar_paso()
@@ -233,6 +247,9 @@ func _tirar_pez() -> PezData:
 	var pesos: Array[float] = []
 	var total: float = 0.0
 	var hondo: int = cana.profundidad + int(Juego.efecto(&"profundidad"))
+	# Las cañas especiales llegan tan hondo como la mejor caña normal que tengas.
+	if cana.modo != CanaData.Modo.NORMAL:
+		hondo = maxi(hondo, Juego.mejor_cana_normal().profundidad + int(Juego.efecto(&"profundidad")))
 	var suerte: float = 1.0 + Juego.efecto(&"raros") + (Juego.efecto(&"raros_tormenta") if Juego.lloviendo else 0.0) \
 		+ (Juego.efecto(&"raros_tras_chill") if _tras_chill else 0.0)
 	# Solo los de esta estación y hora (si no queda ninguno, se ignora el reloj para que siempre pique algo).
@@ -241,6 +258,11 @@ func _tirar_pez() -> PezData:
 		lista = peces
 	for p: PezData in lista:
 		if p.profundidad > hondo:
+			continue
+		# Caña rápida: bancos de comunes y poco comunes. Caña tocha: solo raros o mejores.
+		if cana.modo == CanaData.Modo.VOLUMEN and p.rareza > PezData.Rareza.POCO_COMUN:
+			continue
+		if cana.modo == CanaData.Modo.TROFEO and p.rareza < PezData.Rareza.RARO:
 			continue
 		# Cuanto más hondo pescas, menos salen los peces de arriba (siguen saliendo, pero menos).
 		var w: float = p.probabilidad * pow(stats.peso_por_nivel_arriba, hondo - p.profundidad)
@@ -390,6 +412,45 @@ func _capturar() -> void:
 	if randf() < Juego.efecto(&"pesca_doble"):
 		Juego.anadir_captura(captura.duplicate(), pez)
 		captura_doble.emit(pez)
+	_terminar()
+
+
+## Lo llama el minijuego de carril al acabar. acertadas = notas acertadas, total = notas,
+## suma = lo que suman los multiplicadores de racha de cada nota acertada (los fallos cortan la racha).
+func terminar_ritmo(acertadas: int, total: int, escapado: bool, suma: float = -1.0) -> void:
+	if suma < 0.0:
+		suma = stats.suma_racha(acertadas)
+	aciertos = acertadas
+	if escapado or acertadas <= 0:
+		_escapar()
+		return
+	var maest: float = stats.mult_maestria(Juego.capturas_especie(pez.id) + 1)
+	if cana.modo == CanaData.Modo.VOLUMEN:
+		# Cada nota acertada es un pez del banco; vale poco cada uno, pero con su tramo de racha.
+		var total_valor: float = 0.0
+		var mult: float = suma / float(acertadas)
+		for i in acertadas:
+			var peso: float = randf_range(pez.peso_min, pez.peso_max) * (1.0 + Juego.efecto(&"peso"))
+			var v: float = pez.valor_base * mult_volumen * mult * maest * (peso / ((pez.peso_min + pez.peso_max) * 0.5))
+			total_valor += v
+			Juego.anadir_captura({"id": String(pez.id), "peso": peso, "calidad": 0.5, "perfecto": false, "valor": v}, pez)
+		Juego.registrar_combo(acertadas)
+		Juego.sumar_puntos_pesca(suma)
+		banco_capturado.emit(pez, acertadas, total_valor)
+		_terminar()
+		return
+	# Trofeo: un pez gordo; la pelea entera es su "cadena".
+	var perfecto: bool = acertadas >= total
+	var peso2: float = randf_range(pez.peso_min, pez.peso_max) * (1.0 + Juego.efecto(&"peso"))
+	var mult2: float = maxf(stats.mult_calidad_min, suma / float(total) + Juego.efecto(&"calidad"))
+	if perfecto:
+		mult2 *= stats.mult_perfecto
+	var valor: float = pez.valor_base * mult_trofeo * mult2 * maest * (peso2 / ((pez.peso_min + pez.peso_max) * 0.5))
+	var captura: Dictionary = {"id": String(pez.id), "peso": peso2, "calidad": float(acertadas) / total, "perfecto": perfecto, "valor": valor}
+	Juego.anadir_captura(captura, pez)
+	Juego.registrar_combo(acertadas)
+	Juego.sumar_puntos_pesca(suma * (stats.mult_perfecto if perfecto else 1.0))
+	pez_capturado.emit(captura, pez)
 	_terminar()
 
 

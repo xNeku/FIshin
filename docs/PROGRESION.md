@@ -390,6 +390,7 @@ Nota: en tiendas de móvil la marihuana sube la clasificación por edad. Se acep
   - **Caña de trofeo**: pesca muy poco y solo está atenta a peces de más de X valor (o de X peso). Tarda en picar, no siempre sale algo gordo (para eso está la Suerte) y pide un combo larguísimo.
 - [DECIDIDO] Todo encadenado: lo que vendes en la lonja (cuánto y de qué calidad) alimenta a los negocios. Cuanto más y mejor vendas, mejores platos y más producción sacan.
 - [DECIDIDO] Las cañas especiales son más difíciles de conseguir y van bien metidas en el flujo del juego (no se compran sin más).
+- [PROPUESTA] Implementado (2 nov) con un minijuego de carril común (ver ESTADO): **rápida** = volumen y **tocha** = trofeo. Se compran al comerciante con ₽ y coral, y solo cuando ha llegado el taladro (la rápida, 250K + 25 coral) o el sushi (la tocha, 600K + 60 coral). El coral es lo que las hace "difíciles de conseguir". Cada una rinde ~1,25× la caña normal de su época, cada una a su manera: la rápida da muchos peces baratos, que llenan las despensas; la tocha, pocos y gordos. Las dos llegan tan hondo como tu mejor caña normal.
 - [PROPUESTA] Las cañas con modo propio son las especiales del 12 + 3. La de volumen encaja con el bambú (material barato) y la de trofeo, con la perla o el coral.
 
 ## Modo flow

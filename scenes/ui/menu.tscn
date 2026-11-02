@@ -72,6 +72,12 @@ size_flags_horizontal = 3
 mouse_filter = 2
 theme_override_constants/separation = 12
 
+[node name="Cana" type="Button" parent="Raiz/Panel/Margen/Pestanas/Barca/Detalle"]
+visible = false
+custom_minimum_size = Vector2(0, 70)
+layout_mode = 2
+text = "Caña: Caña rápida  ⇄"
+
 [node name="Nombre" type="Label" parent="Raiz/Panel/Margen/Pestanas/Barca/Detalle"]
 layout_mode = 2
 mouse_filter = 2

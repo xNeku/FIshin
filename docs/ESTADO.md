@@ -20,7 +20,7 @@ El **early game está completo y balanceado** con el simulador v4: unas 4 h, del
   - `importar_peces.py` (catálogo).
   - `generar_arte_villa.py` y `generar_suelos.py` (placeholders).
   - Artefactos Carta, Árbol y Llegadas.
-- **Falta:** mid game (ayuntamiento y mejora de edificios, taladro, sushi, cañas rápida y pesada, marihuana, decoración), música, rendimiento en la tablet y el arte final.
+- **Falta:** mid game (marihuana y decoración; ya están ayuntamiento, taladro, sushi y cañas rápida y tocha), música, rendimiento en la tablet y el arte final.
 
 ## Mapa rápido del código
 - `scripts/pesca/pesca.gd` (Pesca): lógica del minijuego, solo señales. Las stats van en `data/stats_pesca.tres`.
@@ -295,7 +295,7 @@ A las 6-7 h los restaurantes son ~50 % de los ingresos.
   - Las algas van a la despensa de quien las recibe.
 - **Cañas:** de coral (prof. 6) y de altura (prof. 7), vendidas por el comerciante, con ₽ y coral.
 - **Pendiente:**
-  - Cañas rápida (volumen) y pesada (trofeo): necesitan tener varias cañas y elegir cuál llevas.
+  - ~~Cañas rápida y pesada~~ (hechas: ver abajo).
   - Decoración v1.
   - Plantación de marihuana.
 
@@ -334,3 +334,20 @@ A las 6-7 h los restaurantes son ~50 % de los ingresos.
 4. Seguir rellenando la carta (siguientes islas y edificios).
 5. Decidir cómo pasa el tiempo (día/noche, estaciones) para los peces del Excel.
 6. Probar en la tablet y decir si va fluido.
+
+## Cañas rápida y tocha: minijuego de carril (2 nov)
+- **Carril** (`scripts/pesca/ritmo.gd` + `scenes/ui/ritmo.tscn`, notas desde `scenes/ui/nota_ritmo.tscn`): tipo Guitar Hero de lado. 4 carriles, uno por botón de símbolo (pesca_1..4, sin flechas). Las notas vienen de derecha a izquierda por el sedal hasta la línea de golpe. Ventanas: perfecta 0,07 s, buena 0,15 s. La racha de siempre multiplica cada acierto; fallar la corta.
+- **Caña rápida** (`modo = VOLUMEN`): pica un banco de comunes o poco comunes de una especie. Cada nota acertada es un pez (12-30 notas). El ritmo acelera desde 120 bpm, con corcheas desde la nota 5 y un hueco mínimo de 0,18 s. Fallar solo pierde ese pez. Carta "Especie ×N". Cada pez vale `Pesca.mult_volumen` (0,18) de su precio por la racha.
+- **Caña tocha** (`modo = TROFEO`): solo raros o mejores, y tardan en picar (`mult_espera` 1,6). Pelea de 20-60 notas (perfect×2) a 96 bpm, con notas largas que hay que mantener y acordes en épicos o mejores. Hay una barra de tensión: cada fallo resta 0,14 y cada acierto suma 0,025; si se vacía, el pez se escapa. Sin fallos, perfecto ×2. Vale `Pesca.mult_trofeo` (0,7) del pez.
+- Las dos llegan **tan hondo como tu mejor caña normal**: no se quedan viejas al comprar la de altura.
+- **Cañas en propiedad:** `Juego.canas` (save) guarda las que has comprado. En el menú, pestaña Barca, el botón "Caña: …" alterna entre la mejor normal, la rápida y la tocha (`Juego.canas_elegibles`). Solo sale si tienes alguna especial.
+- **Compra:** el comerciante. La rápida cuesta 250K ₽ + 25 coral y sale con el taladro; la tocha, 600K ₽ + 60 coral, con el sushi.
+- **Balance** (`docs/herramientas/simular_carril.py`), jugador normal:
+  - Rápida: ~1,25× la caña normal de su época.
+  - Tocha: ~1,25× la de coral y ~1,1× la de altura.
+  - El jugador flojo gana más con ellas (×1,5), porque el carril perdona más que los combos.
+  - El bueno, algo menos (×1,1-1,2).
+- **Ajustable:**
+  - En `Ritmo` (main.tscn, nodo Ritmo): antelación, ventanas, bpm, aceleración, probabilidad de notas largas y acordes, daño y cura de tensión.
+  - En `Pesca`: `mult_volumen` y `mult_trofeo`.
+  - En los .tres de las cañas: `cadena_min/max` (largo del banco) y `mult_espera`.

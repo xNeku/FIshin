@@ -10,13 +10,15 @@
 [ext_resource type="Resource" path="res://data/articulos/cana_carbono.tres" id="7_carbono"]
 [ext_resource type="Resource" path="res://data/articulos/cana_coral.tres" id="7_coral"]
 [ext_resource type="Resource" path="res://data/articulos/cana_altura.tres" id="7_altura"]
+[ext_resource type="Resource" path="res://data/articulos/cana_rapida.tres" id="7_rapida"]
+[ext_resource type="Resource" path="res://data/articulos/cana_tocha.tres" id="7_tocha"]
 [ext_resource type="Texture2D" path="res://art/mundo/barco_fondo.png" id="9_fondo"]
 [ext_resource type="Texture2D" path="res://art/mundo/barco_delante.png" id="10_delante"]
 [ext_resource type="Texture2D" path="res://art/mundo/sombra.png" id="11_sombra"]
 
 [node name="BarcoComerciante" type="Node3D"]
 script = ExtResource("1_script")
-articulos = Array[ExtResource("4_articulo")]([ExtResource("5_cana"), ExtResource("7_fibra"), ExtResource("7_carbono"), ExtResource("7_coral"), ExtResource("7_altura"), ExtResource("6_cebo")])
+articulos = Array[ExtResource("4_articulo")]([ExtResource("5_cana"), ExtResource("7_fibra"), ExtResource("7_carbono"), ExtResource("7_coral"), ExtResource("7_altura"), ExtResource("7_rapida"), ExtResource("7_tocha"), ExtResource("6_cebo")])
 
 [node name="Sombra" type="Sprite3D" parent="."]
 top_level = true
