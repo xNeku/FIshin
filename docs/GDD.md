@@ -149,6 +149,6 @@ Marcas: [DECIDIDO] lo decidió el diseñador · [PROPUESTA] sugerencia de Claude
 ## 12. Mid game (orden decidido el 2 nov)
 - [DECIDIDO] **Ayuntamiento:** edificio que permite mejorar todo lo inmueble (pantalán, O Mar, lonja, entrada…) y construir una tienda para decorar al gusto. Toda decoración sube lo que pagan los turistas. Llega pre-midgame.
   - [PROPUESTA] Hacia el min 150-165 (300.000 ₽ ganados), en la plaza de arriba del camino 2. Un sistema común de nivel por edificio; la decoración, después. Lo que pagan los turistas sale de una sola cifra, el "atractivo" (nivel de turista × decoración × propinas).
-  - [ABIERTO] Si las mejoras de O Mar (despensa, fogón, mesas) se mueven al ayuntamiento.
+  - [DECIDIDO] Las mejoras de O Mar se mueven al ayuntamiento (hecho). Sitios (los eligió Claude; el diseñador puede moverlos en la carta): ayuntamiento en la plaza alta, taladro al sur del puerto, sushi al final del ramal izquierdo.
 - [DECIDIDO] Después, en este orden: taladro de coral, sushi (segundo restaurante, con algas), cañas rápida y pesada, marihuana y decoración.
 - [DECIDIDO] El yate (turistas de nivel 3) abre el mid game. Los turistas de más nivel pagan más.

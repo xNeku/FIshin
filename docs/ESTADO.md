@@ -260,8 +260,47 @@ El early game son las primeras ~4 h: termina con los turistas de nivel 3 (yate).
 - Cosecha más limpia: un icono por planta (suma todo al llegar), el botón R2 encima del náufrago y una sacudida suave de cámara por planta segada.
 - Opción "Iconos" (automáticos / Xbox-Switch / PlayStation / teclado) para mandos que llegan como teclas; 4, 3 y 2 también aceptan, vuelven y hacen la acción extra.
 
+## Mid game, primera tanda (2 nov)
+Simulador v4 ampliado (jugador normal):
+
+| Llegada | Cuándo | Condición |
+|---|---|---|
+| Ayuntamiento | min ~165 | 300K ₽ ganados |
+| Taladro | ~4 h 20 min | 1,2M |
+| Yate | ~4 h 35 min | 400 clientes |
+| Sushi | ~4 h 55 min | 1,8M |
+| Caña de coral | ~4 h 55 min | — |
+| Caña de altura | ~7 h 15 min | — |
+
+A las 6-7 h los restaurantes son ~50 % de los ingresos.
+- **Ayuntamiento** (`data/apariciones/ayuntamiento.tres`, plaza alta (-1..1, 15..17)):
+  - Tienda con todas las mejoras de edificios. Son artículos `MEJORA` con `requiere_flag`; solo salen las de lo que existe y se ve el nivel.
+  - O Mar ya no tiene tienda: es charla y recibe la cosecha.
+  - Mejoras:
+    - O Mar: despensa, fogón y mesas.
+    - Pantalán: cebo (los pescadores pescan un pez mejor, `pez_trabajadores`) y redes.
+    - Lonja: cámara de hielo.
+    - Entrada: muelle nuevo (`muelle`).
+    - Cultivos: bancales.
+    - Con coral: terraza de O Mar y faro de la entrada (`atractivo`), motor del taladro.
+    - Sushi: barra y cuchillos.
+- **Atractivo** (`Juego.atractivo()`): un multiplicador único de lo que pagan los turistas; ahora lo suben la terraza y el faro. La decoración se sumará aquí.
+- **Coral:**
+  - `Juego.materiales` (se guarda). Lo gastan las mejoras y las cañas: `ArticuloData.coste_coral` crece como el precio, y la tienda enseña "₽ + coral".
+  - Taladro (`taladro.gd`, islote (4..6, -4..-3)): 3 coral/min hasta 60 y se recoge con R2 (`Interactuable.Accion.RECOGER`).
+- **Sushi** (`sushi.tscn` con `restaurante.gd`, alto en (-10..-7, 8..10)):
+  - Cada restaurante tiene su despensa (`Juego.despensa_de(id)`, save `despensas`) y sus efectos (`prefijo_efectos`: `sushi_despensa`, `sushi_precio_plato`, `sushi_clientes`).
+  - El sushi necesita 1 alga por plato (`requiere_alga`) y cobra ×2.
+  - La lonja manda pescado a los dos. Los turistas se reparten por barco y el dinero de la visita llega de golpe desde cada uno.
+  - Las algas van a la despensa de quien las recibe.
+- **Cañas:** de coral (prof. 6) y de altura (prof. 7), vendidas por el comerciante, con ₽ y coral.
+- **Pendiente:**
+  - Cañas rápida (volumen) y pesada (trofeo): necesitan tener varias cañas y elegir cuál llevas.
+  - Decoración v1.
+  - Plantación de marihuana.
+
 ## Siguiente paso
-0. **Ayuntamiento (pre-midgame, [DECIDIDO] que existe):** mejora todo lo inmueble y deja construir la tienda de decoración (toda decoración sube lo que pagan los turistas). Propuesta de Claude: hacia el min 150-165 (300.000 ₽ ganados), en la plaza de arriba del camino 2; primero las mejoras con un sistema común por edificio y después la decoración. [ABIERTO] ¿Las mejoras de O Mar pasan al ayuntamiento o O Mar conserva su tienda?
+0. ~~Ayuntamiento~~ hecho. Lo siguiente: cañas rápida y pesada (con selector de caña), decoración v1, marihuana. Notas viejas del ayuntamiento: mejora todo lo inmueble y deja construir la tienda de decoración (toda decoración sube lo que pagan los turistas). Propuesta de Claude: hacia el min 150-165 (300.000 ₽ ganados), en la plaza de arriba del camino 2; primero las mejoras con un sistema común por edificio y después la decoración. [ABIERTO] ¿Las mejoras de O Mar pasan al ayuntamiento o O Mar conserva su tienda?
 1. **Partida del diseñador del minuto 30 al 240:** lo único que el simulador no mide es si es divertido.
 2. Mid game, en este orden (propuesta):
    1. Mejora de edificios: un sistema común (nivel por edificio, `ArticuloData.Tipo.MEJORA`) que sirva para el pantalán, O Mar, la lonja…
