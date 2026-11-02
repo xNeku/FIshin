@@ -68,6 +68,9 @@ var cosecha: Dictionary = {}
 ## Despensa del restaurante: "raciones" (pescado que le manda la lonja), "valor" (lo que valen en total)
 ## y lo que le has dado de cada cultivo (id -> cantidad).
 var despensa: Dictionary = {"raciones": 0.0, "valor": 0.0}
+## Materiales que no son dinero (coral...): id -> cantidad.
+var materiales: Dictionary = {}
+signal materiales_cambiados
 ## Crecimiento de cada planta (ruta -> 0..1). Lo mantienen las plantas y se guarda.
 var plantas: Dictionary = {}
 ## Cultivos que existen (data/cultivos), por id.
@@ -380,6 +383,18 @@ func entregar_cosecha() -> Dictionary:
 	return dado
 
 
+func sumar_material(id: String, n: float) -> void:
+	if n == 0.0:
+		return
+	materiales[id] = float(materiales.get(id, 0.0)) + n
+	materiales_cambiados.emit()
+
+
+## Cuánto atrae la villa: multiplica lo que pagan los turistas (decoración, mejoras...). Una sola cifra.
+func atractivo() -> float:
+	return 1.0 + efecto(&"atractivo")
+
+
 ## Lo que paga O Mar por una unidad de este cultivo.
 func precio_cosecha(c: CultivoData) -> float:
 	return c.precio * (1.0 + efecto(&"valor_cosecha")) * mult_venta()
@@ -481,6 +496,8 @@ func motivo_no_comprar(art: ArticuloData) -> String:
 		return "No caben más"
 	if rublos < precio(art):
 		return "Faltan rublos"
+	if float(materiales.get("coral", 0.0)) < art.coral_actual(veces_comprado(art)):
+		return "Falta coral"
 	return ""
 
 
@@ -488,6 +505,7 @@ func comprar(art: ArticuloData) -> bool:
 	if motivo_no_comprar(art) != "":
 		return false
 	sumar_rublos(-precio(art))
+	sumar_material("coral", -art.coral_actual(veces_comprado(art)))
 	compras[String(art.id)] = veces_comprado(art) + 1
 	match art.tipo:
 		ArticuloData.Tipo.CANA:
@@ -528,7 +546,7 @@ func guardar() -> void:
 		"capturas": capturas, "cana": String(cana_id), "cebo": cebo, "compras": compras,
 		"stats": stats, "coleccion": coleccion, "capturados": capturados, "flags": flags,
 		"trabajadores": trabajadores, "cubo": cubo_capturas, "cubo_en_mano": cubo_en_mano,
-		"habilidades": habilidades, "reloj": reloj, "cosecha": cosecha, "despensa": despensa, "plantas": _plantas_al_dia(),
+		"habilidades": habilidades, "reloj": reloj, "cosecha": cosecha, "despensa": despensa, "plantas": _plantas_al_dia(), "materiales": materiales,
 		"fecha": Time.get_unix_time_from_system(),
 	}
 	# Primero a un temporal y luego se cambia por el bueno: si se corta a medias, el save anterior sigue vivo.
@@ -606,6 +624,11 @@ func cargar() -> void:
 	if de is Dictionary:
 		for k: String in de:
 			despensa[k] = float(de[k]) if k in ["raciones", "valor"] else int(de[k])
+	materiales.clear()
+	var ma: Variant = datos.get("materiales", {})
+	if ma is Dictionary:
+		for k: String in ma:
+			materiales[k] = float(ma[k])
 	plantas.clear()
 	var pl: Variant = datos.get("plantas", {})
 	if pl is Dictionary:
@@ -638,6 +661,7 @@ func borrar_partida() -> void:
 	habilidades.clear()
 	cosecha.clear()
 	plantas.clear()
+	materiales.clear()
 	despensa = {"raciones": 0.0, "valor": 0.0}
 	_recalcular_efectos()
 	habilidades_cambiadas.emit()

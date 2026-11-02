@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="ArticuloData" format=3]
+
+[ext_resource type="Script" path="res://scripts/datos/articulo_data.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://art/mundo/props/escalera.png" id="2_icono"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"mejora_entrada_muelle"
+nombre = "Entrada · Muelle nuevo"
+descripcion = "Caben 4 turistas más por visita."
+icono = ExtResource("2_icono")
+tipo = 4
+precio = 20000.0
+crecimiento_precio = 2.0
+max_compras = 5
+requiere_flag = "aparecido_entrada_turistas"
+efecto = &"muelle"
+valor_efecto = 4.0
+coste_coral = 0.0

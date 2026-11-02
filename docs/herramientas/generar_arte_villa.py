@@ -387,6 +387,43 @@ def restaurante():
     return contorno(im)
 
 
+def ayuntamiento():
+    """Casa consistorial gallega: piedra, soportales, balcón, reloj y bandera."""
+    im = Image.new("RGBA", (76, 72), (0, 0, 0, 0))
+    d = ImageDraw.Draw(im)
+    piedra, piedra2, junta = (206, 200, 186), (188, 182, 168), (150, 144, 132)
+    rect(d, 4, 22, 71, 69, piedra)
+    for y in range(26, 69, 6):
+        rect(d, 4, y, 71, y, junta)
+        for x in range(4 + (y // 6 % 2) * 6, 71, 12):
+            rect(d, x, y - 5, x, y, junta)
+    # Tejado de teja.
+    d.polygon([(0, 24), (75, 24), (68, 14), (7, 14)], fill=(176, 84, 60, 255))
+    for x in range(8, 68, 5):
+        rect(d, x, 15, x, 23, (150, 66, 48))
+    # Torre del reloj.
+    rect(d, 29, 2, 46, 16, piedra2)
+    d.polygon([(27, 3), (48, 3), (43, -3), (32, -3)], fill=(176, 84, 60, 255))
+    d.ellipse([32, 5, 43, 15], fill=(246, 240, 220, 255), outline=(60, 50, 40, 255))
+    rect(d, 37, 7, 37, 10, (40, 30, 24)); rect(d, 38, 10, 40, 10, (40, 30, 24))
+    # Bandera.
+    rect(d, 52, 0, 52, 14, (120, 120, 128))
+    rect(d, 53, 1, 63, 6, (240, 240, 236)); d.line([(53, 6), (63, 1)], fill=(60, 110, 200, 255))
+    # Balcón con ventanas.
+    for x in (10, 28, 46):
+        rect(d, x, 28, x + 16, 38, (70, 110, 150)); rect(d, x + 7, 28, x + 8, 38, piedra2)
+    rect(d, 6, 40, 69, 41, (80, 60, 44))
+    for x in range(8, 69, 3):
+        rect(d, x, 36, x, 40, (80, 60, 44))
+    # Soportales (arcos) abajo.
+    for x in (8, 26, 44, 60):
+        d.rectangle([x, 50, x + 12, 69], fill=(70, 62, 56, 255))
+        d.ellipse([x, 44, x + 12, 56], fill=(70, 62, 56, 255))
+    # Escudo.
+    rect(d, 35, 42, 40, 47, (220, 180, 70))
+    return contorno(im)
+
+
 def mesa():
     im = Image.new("RGBA", (20, 22), (0, 0, 0, 0))
     d = ImageDraw.Draw(im)
@@ -493,6 +530,7 @@ if __name__ == "__main__":
     guardar(velero(), "art/mundo/barcos/velero.png")
     guardar(catamaran(), "art/mundo/barcos/catamaran.png")
     guardar(restaurante(), "art/mundo/restaurante.png")
+    guardar(ayuntamiento(), "art/mundo/ayuntamiento.png")
     guardar(mesa(), "art/mundo/props/mesa_sombrilla.png")
     for i, im in enumerate(pimiento_fases()):
         guardar(im, f"art/cultivos/pimiento_{i}.png")

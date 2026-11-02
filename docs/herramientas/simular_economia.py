@@ -187,7 +187,8 @@ def ritmo(cana, jugador=1.0, n=20000):
 def trabajador(E=None):
     """₽/min y peces/min de un pescador (el pez más barato)."""
     E = E or {}
-    sard = min((p for p in PECES if p[2] == 1 and p[1] == 0), key=lambda p: p[3])
+    baratos = sorted((p for p in PECES if p[2] == 1 and p[1] == 0 and p[0] not in ("bota_vieja",)), key=lambda p: p[3])
+    sard = baratos[min(int(E.get("pez_trabajadores", 0)), len(baratos) - 1)]
     v = sard[3] * TRAB["mult_valor"]
     cap = TRAB["capacidad"] + E.get("trabajador_capacidad", 0)
     ciclo = (cap * TRAB["t_pez"] + TRAB["viaje"]) / (1 + E.get("trabajador_velocidad", 0))
@@ -254,6 +255,7 @@ def _leer_arbol():
 
 def _leer_articulo(i):
     d = _leer_tres(os.path.join(_RAIZ, "data", "articulos", i + ".tres"))
+    _EF_MEJORA[i] = d.get("efecto", "")
     return float(d.get("precio", 0)), float(d.get("crecimiento_precio", 1)), int(d.get("max_compras", 1)), float(d.get("valor_efecto", 0))
 
 
@@ -269,7 +271,12 @@ RELOJ = dict(dia=720.0, noche=480.0, inicio=0.0)
 NIVELES_TUR = [0, 120, 400]
 GASTO_TUR = [1.0, 1.6, 3.0]   # NivelTuristasData.mult_gasto: los de más nivel pagan más por plato
 # Lo que no se ve en los datos: el jugador pasa por el huerto cada ~6 min y por el viejo/tiendas al vender.
-MEJORAS_OMAR = ["mejora_despensa", "mejora_fogon", "mejora_mesas"]
+# Mejoras de edificios: se compran en el ayuntamiento (data/articulos/mejora_*.tres).
+MEJORAS = ["mejora_despensa", "mejora_fogon", "mejora_mesas", "mejora_pantalan_cebo", "mejora_pantalan_redes",
+           "mejora_lonja_hielo", "mejora_entrada_muelle", "mejora_cultivos_bancales"]
+_REQ_MEJORA = {"mejora_despensa": "restaurante", "mejora_fogon": "restaurante", "mejora_mesas": "restaurante",
+               "mejora_pantalan_cebo": "puerto", "mejora_pantalan_redes": "puerto", "mejora_lonja_hielo": "lonja",
+               "mejora_entrada_muelle": "entrada turistas", "mejora_cultivos_bancales": "cultivos"}
 
 
 def _efectos(niv, mejoras):
@@ -278,11 +285,12 @@ def _efectos(niv, mejoras):
         nd = ARBOL[i]
         E[nd["efecto"]] = E.get(nd["efecto"], 0) + nd["v"] * n
     for i, n in mejoras.items():
-        E[_EF_MEJORA[i]] = E.get(_EF_MEJORA[i], 0) + _leer_articulo(i)[3] * n
+        v = _leer_articulo(i)[3]
+        E[_EF_MEJORA[i]] = E.get(_EF_MEJORA[i], 0) + v * n
     return E
 
 
-_EF_MEJORA = {"mejora_despensa": "despensa", "mejora_fogon": "precio_plato", "mejora_mesas": "mesas"}
+_EF_MEJORA = {}
 
 
 def partida(jugador=1.0, semilla=1, horas=4.0, informe=False):
@@ -387,7 +395,7 @@ def partida(jugador=1.0, semilla=1, horas=4.0, informe=False):
                     hoy = vienen
                     if vienen:
                         ini = RELOJ["dia"] * TUR["ventana"][0]; fin = RELOJ["dia"] + RELOJ["noche"] * TUR["ventana"][1]
-                        tope = round((TUR["max"] + E.get("mesas", 0)) * (1 + E.get("turistas", 0)))
+                        tope = round((TUR["max"] + E.get("mesas", 0) + E.get("muelle", 0)) * (1 + E.get("turistas", 0)))
                         visita = dict(ini=dia * ciclo + ini, fin=dia * ciclo + fin, n=None, tope=tope, comidos=0.0)
                 if visita and visita["ini"] <= t < visita["fin"]:
                     if visita["n"] is None:
@@ -439,7 +447,8 @@ def partida(jugador=1.0, semilla=1, horas=4.0, informe=False):
         if peces >= 3: hito("comerciante")
         for ap, nombre in [("primera_isla", "primera isla"), ("isla_skilltree", "viejo y árbol"), ("camino", "camino"),
                            ("puerto_pesquero", "puerto"), ("lonja", "lonja"), ("camino_2", "camino 2"),
-                           ("restaurante", "restaurante"), ("entrada_turistas", "entrada turistas"), ("cultivos", "cultivos")]:
+                           ("restaurante", "restaurante"), ("entrada_turistas", "entrada turistas"), ("cultivos", "cultivos"),
+                           ("ayuntamiento", "ayuntamiento")]:
             if nombre not in hitos and cumple(ap):
                 hito(nombre)
                 if nombre == "puerto":
@@ -483,8 +492,10 @@ def partida(jugador=1.0, semilla=1, horas=4.0, informe=False):
                     hito("árbol: " + mejor[0])
                 else:
                     break
-        if "restaurante" in hitos:
-            for i in MEJORAS_OMAR:
+        if "ayuntamiento" in hitos:
+            for i in MEJORAS:
+                if _REQ_MEJORA[i] not in hitos:
+                    continue
                 pr, cr, mx, _ = _leer_articulo(i)
                 nv = mejoras.get(i, 0)
                 coste = pr * cr ** nv * desc

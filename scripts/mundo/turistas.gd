@@ -95,7 +95,7 @@ func _segundos_restantes(rd: RelojData) -> float:
 
 func cuantos() -> int:
 	# Relaciones públicas (Carisma): vienen más, si hay comida para ellos.
-	var tope: int = roundi((max_turistas + Juego.efecto(&"mesas")) * (1.0 + Juego.efecto(&"turistas")))
+	var tope: int = roundi((max_turistas + Juego.efecto(&"mesas") + Juego.efecto(&"muelle")) * (1.0 + Juego.efecto(&"turistas")))
 	return clampi(int(Juego.despensa.raciones / platos_por_turista), min_turistas, tope)
 
 

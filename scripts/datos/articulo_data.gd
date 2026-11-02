@@ -34,10 +34,17 @@ enum Tipo { CANA, CEBO, HUECO, TRABAJADOR, MEJORA }
 @export var cebo_mult_espera: float = 1.0
 
 
+## Coral que cuesta además de los rublos (mid game). Crece igual que el precio.
+@export var coste_coral: float = 0.0
+
 @export_group("Mejora")
 ## Nombre del efecto que sube (ej. "despensa", "precio_plato", "mesas").
 @export var efecto: StringName
 @export var valor_efecto: float = 1.0
+
+
+func coral_actual(compras: int) -> float:
+	return coste_coral * pow(crecimiento_precio, compras) if coste_coral > 0.0 else 0.0
 
 
 func a_la_venta() -> bool:

@@ -6,10 +6,6 @@
 [ext_resource type="Texture2D" path="res://art/mundo/restaurante.png" id="4_casa"]
 [ext_resource type="Texture2D" path="res://art/mundo/props/mesa_sombrilla.png" id="5_mesa"]
 [ext_resource type="Script" path="res://scripts/mundo/interactuable.gd" id="6_interactuable"]
-[ext_resource type="Script" path="res://scripts/datos/articulo_data.gd" id="7_articulo"]
-[ext_resource type="Resource" path="res://data/articulos/mejora_despensa.tres" id="8_despensa"]
-[ext_resource type="Resource" path="res://data/articulos/mejora_fogon.tres" id="9_fogon"]
-[ext_resource type="Resource" path="res://data/articulos/mejora_mesas.tres" id="10_mesas"]
 
 [sub_resource type="BoxMesh" id="b_arena"]
 material = ExtResource("2_arena")
@@ -345,11 +341,11 @@ texture = ExtResource("5_mesa")
 [node name="Interaccion" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.0)
 script = ExtResource("6_interactuable")
+accion = 2
 texto_accion = "Hablar"
 radio = 2.4
 prioridad = 1
 altura_icono = 1.7
 nombre = "O Mar"
-articulos = Array[ExtResource("7_articulo")]([ExtResource("8_despensa"), ExtResource("9_fogon"), ExtResource("10_mesas")])
-saludos = Array[String](["¡Bienvenido a O Mar! Lo que vendes en la lonja, aquí se cocina.", "Si me traes pimientos o algas, los platos salen mejores.", "Hoy hay caldeirada. Mañana también. Siempre hay caldeirada."])
+lineas = Array[String](["¡Bienvenido a O Mar! Lo que vendes en la lonja, aquí se cocina.", "Tráeme pimientos y algas, que te los pago. Las algas me mejoran los platos.", "Hoy hay caldeirada. Mañana también. Las mejoras del local, en el ayuntamiento."])
 recibe_cosecha = true

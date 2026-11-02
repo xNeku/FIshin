@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="AparicionData" format=3]
+
+[ext_resource type="Script" path="res://scripts/datos/aparicion_data.gd" id="1_script"]
+[ext_resource type="PackedScene" path="res://scenes/mundo/islas/ayuntamiento.tscn" id="2_escena"]
+[ext_resource type="PackedScene" path="res://scenes/mundo/piezas/tablon.tscn" id="3_pieza"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"ayuntamiento"
+nombre = "Ayuntamiento"
+escena = ExtResource("2_escena")
+ancla = Vector2i(0, 16)
+celdas = Array[Vector2i]([Vector2i(-1, 15), Vector2i(-1, 16), Vector2i(-1, 17), Vector2i(0, 15), Vector2i(0, 16), Vector2i(0, 17), Vector2i(1, 15), Vector2i(1, 16), Vector2i(1, 17)])
+pieza_por_celda = ExtResource("3_pieza")
+celdas_bloqueadas = Array[Vector2i]([Vector2i(-1, 17), Vector2i(0, 17), Vector2i(1, 17)])
+orden = 12
+condicion = 1
+valor = 300000.0
+requiere = Array[StringName]([&"camino_2"])
+llegada = 2
+altura = 1.2

@@ -104,7 +104,7 @@ func servir(turista: bool = false, gasto: float = 1.0) -> bool:
 			mejora *= 1.0 + v
 	var pago: float = (precio + guarnicion) * mejora
 	if turista:
-		pago *= gasto * (1.0 + Juego.efecto(&"propinas"))
+		pago *= gasto * Juego.atractivo() * (1.0 + Juego.efecto(&"propinas"))
 		caja_turistas += pago
 		platos_turistas += 1
 		# Se guarda con la partida aunque aún no haya llegado (si cierras a mitad de la visita, no se pierde).

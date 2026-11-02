@@ -24,6 +24,11 @@ func mostrar(art: ArticuloData) -> void:
 	nombre.text = art.nombre
 	descripcion.text = art.descripcion
 	precio.text = Formato.dinero(Juego.precio(art))
+	var coral: float = art.coral_actual(Juego.veces_comprado(art))
+	if coral > 0.0:
+		precio.text += " + %d coral" % int(coral)
+	if art.max_compras > 1:
+		nombre.text = "%s (nv. %d/%d)" % [art.nombre, Juego.veces_comprado(art), art.max_compras]
 	var motivo: String = Juego.motivo_no_comprar(art)
 	boton.disabled = motivo != ""
 	boton.text = _texto_boton if motivo == "" else motivo

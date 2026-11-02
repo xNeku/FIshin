@@ -6,7 +6,7 @@
 [resource]
 script = ExtResource("1_script")
 id = &"mejora_despensa"
-nombre = "Despensa más grande"
+nombre = "O Mar · Despensa más grande"
 descripcion = "Caben 60 raciones más de pescado. Más comida, más turistas."
 icono = ExtResource("2_icono")
 tipo = 4
@@ -15,3 +15,4 @@ crecimiento_precio = 2.0
 max_compras = 5
 efecto = &"despensa"
 valor_efecto = 60.0
+requiere_flag = "aparecido_restaurante"

@@ -6,7 +6,7 @@
 [resource]
 script = ExtResource("1_script")
 id = &"mejora_mesas"
-nombre = "Más mesas"
+nombre = "O Mar · Más mesas"
 descripcion = "Caben 6 turistas más por visita."
 icono = ExtResource("2_icono")
 tipo = 4
@@ -15,3 +15,4 @@ crecimiento_precio = 2.0
 max_compras = 5
 efecto = &"mesas"
 valor_efecto = 6.0
+requiere_flag = "aparecido_restaurante"

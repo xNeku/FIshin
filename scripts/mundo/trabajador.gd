@@ -49,6 +49,11 @@ func _ready() -> void:
 	_actualizar_cuenta()
 
 
+func cambiar_pez(pez: PezData) -> void:
+	if pez:
+		_pez = pez
+
+
 func iniciar(mundo: Node, puerto: Node, pez: PezData, puesto_asignado: Dictionary, sentarse: bool, celda_inicial: Vector2i) -> void:
 	_mundo = mundo
 	_puerto = puerto

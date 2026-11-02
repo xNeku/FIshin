@@ -135,10 +135,11 @@ func interactuar(i: Interactuable) -> void:
 	if Juego.cubo_en_mano and i.compra_peces:
 		comercio.vender_cubo(i)
 		return
+	if i.recibe_cosecha and Juego.total_cosecha() > 0:
+		await _entregar_cosecha(i)
+		return
 	match i.accion:
 		Interactuable.Accion.TIENDA:
-			if i.recibe_cosecha and Juego.total_cosecha() > 0:
-				await _entregar_cosecha(i)
 			tienda.abrir(i)
 		Interactuable.Accion.BESTIARIO:
 			bestiario.abrir()

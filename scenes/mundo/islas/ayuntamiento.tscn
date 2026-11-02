@@ -1,0 +1,47 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/mundo/isla.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://art/mundo/ayuntamiento.png" id="2_casa"]
+[ext_resource type="Script" path="res://scripts/mundo/interactuable.gd" id="3_interactuable"]
+[ext_resource type="Script" path="res://scripts/datos/articulo_data.gd" id="4_articulo"]
+[ext_resource type="Texture2D" path="res://art/mundo/props/barril.png" id="5_barril"]
+[ext_resource type="Resource" path="res://data/articulos/mejora_despensa.tres" id="a0"]
+[ext_resource type="Resource" path="res://data/articulos/mejora_fogon.tres" id="a1"]
+[ext_resource type="Resource" path="res://data/articulos/mejora_mesas.tres" id="a2"]
+[ext_resource type="Resource" path="res://data/articulos/mejora_pantalan_cebo.tres" id="a3"]
+[ext_resource type="Resource" path="res://data/articulos/mejora_pantalan_redes.tres" id="a4"]
+[ext_resource type="Resource" path="res://data/articulos/mejora_lonja_hielo.tres" id="a5"]
+[ext_resource type="Resource" path="res://data/articulos/mejora_entrada_muelle.tres" id="a6"]
+[ext_resource type="Resource" path="res://data/articulos/mejora_cultivos_bancales.tres" id="a7"]
+
+[node name="Ayuntamiento" type="Node3D"]
+script = ExtResource("1_script")
+
+[node name="Piezas" type="Node3D" parent="."]
+
+[node name="Casa" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.05, -1.6)
+billboard = 2
+alpha_cut = 1
+texture_filter = 0
+pixel_size = 0.05
+texture = ExtResource("2_casa")
+
+[node name="Barril" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.3, 0.45, 0.6)
+billboard = 2
+alpha_cut = 1
+texture_filter = 0
+pixel_size = 0.05
+texture = ExtResource("5_barril")
+
+[node name="Interaccion" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.6)
+script = ExtResource("3_interactuable")
+texto_accion = "Hablar"
+radio = 2.4
+prioridad = 1
+altura_icono = 1.9
+nombre = "Ayuntamiento"
+articulos = Array[ExtResource("4_articulo")]([ExtResource("a0"), ExtResource("a1"), ExtResource("a2"), ExtResource("a3"), ExtResource("a4"), ExtResource("a5"), ExtResource("a6"), ExtResource("a7")])
+saludos = Array[String](["Bienvenido, alcalde. Aquí se mejora todo lo que es del pueblo.", "Más pantalán, más lonja, más mesas... El pueblo crece si tú quieres.", "Firme aquí, aquí y aquí. Y aquí."])

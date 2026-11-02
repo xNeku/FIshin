@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="ArticuloData" format=3]
+
+[ext_resource type="Script" path="res://scripts/datos/articulo_data.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://art/articulos/cebo.png" id="2_icono"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"mejora_pantalan_cebo"
+nombre = "Pantalán · Cebo para los pescadores"
+descripcion = "Los pescadores pescan un pez mejor (el siguiente más caro)."
+icono = ExtResource("2_icono")
+tipo = 4
+precio = 15000.0
+crecimiento_precio = 3.0
+max_compras = 3
+requiere_flag = "aparecido_puerto_pesquero"
+efecto = &"pez_trabajadores"
+valor_efecto = 1.0
+coste_coral = 0.0

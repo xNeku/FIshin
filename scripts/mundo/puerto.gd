@@ -26,7 +26,7 @@ extends Isla
 var trabajadores: Array[Trabajador] = []
 var _porteando: bool = false
 var _t_porteo: float = 0.0
-var _pez_barato: PezData
+var _peces_baratos: Array[PezData] = []
 
 
 func llegar() -> void:
@@ -40,6 +40,12 @@ func colocada() -> void:
 
 
 func _ready() -> void:
+	# Una mejora (cebo para los pescadores) cambia el pez que pescan todos.
+	Juego.habilidades_cambiadas.connect(func() -> void:
+		var pez: PezData = _pez_mas_barato()
+		for t: Trabajador in trabajadores:
+			if is_instance_valid(t):
+				t.cambiar_pez(pez))
 	Juego.trabajadores_cambiados.connect(func(_n: int) -> void:
 		if is_inside_tree() and visible:
 			_poblar())
@@ -142,15 +148,16 @@ func _elegir_puesto(m: Node) -> Dictionary:
 
 
 func _pez_mas_barato() -> PezData:
-	if _pez_barato:
-		return _pez_barato
-	for f: String in DirAccess.get_files_at("res://data/peces"):
-		var limpio: String = f.trim_suffix(".remap")
-		if limpio.ends_with(".tres"):
-			var p: PezData = load("res://data/peces/" + limpio)
-			# Solo peces de verdad y de la primera profundidad (nada de latas ni bichos del fondo).
-			if p.tipo != PezData.Tipo.PEZ or p.profundidad > 1:
-				continue
-			if _pez_barato == null or p.valor_base < _pez_barato.valor_base:
-				_pez_barato = p
-	return _pez_barato
+	# Los peces de verdad de la primera profundidad, de más barato a más caro. Con la mejora
+	# "Cebo para los pescadores" (ayuntamiento) pescan uno mejor.
+	if _peces_baratos.is_empty():
+		for f: String in DirAccess.get_files_at("res://data/peces"):
+			var limpio: String = f.trim_suffix(".remap")
+			if limpio.ends_with(".tres"):
+				var p: PezData = load("res://data/peces/" + limpio)
+				if p.tipo == PezData.Tipo.PEZ and p.profundidad == 1 and p.rareza == PezData.Rareza.COMUN:
+					_peces_baratos.append(p)
+		_peces_baratos.sort_custom(func(x: PezData, y: PezData) -> bool: return x.valor_base < y.valor_base)
+	if _peces_baratos.is_empty():
+		return null
+	return _peces_baratos[mini(int(Juego.efecto(&"pez_trabajadores")), _peces_baratos.size() - 1)]
