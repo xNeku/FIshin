@@ -333,13 +333,16 @@ func _on_visita_terminada(turistas: int, platos: int, dinero: float) -> void:
 ## Lo cosechado que llevas y la despensa del restaurante (solo si existen).
 func _info_villa() -> void:
 	if cosecha:
-		cosecha.visible = Juego.total_cosecha() > 0
+		var coral: int = int(float(Juego.materiales.get("coral", 0.0)))
+		cosecha.visible = Juego.total_cosecha() > 0 or coral > 0
 		if cosecha.visible:
 			var partes: Array[String] = []
 			for id: String in Juego.cosecha:
 				var c: CultivoData = Juego.cultivos.get(StringName(id))
 				partes.append("%d %s" % [Juego.cosecha[id], c.nombre.to_lower() if c else id])
-			cosecha.text = "Cosecha: " + " · ".join(partes)
+			if coral > 0:
+				partes.append("%d coral" % coral)
+			cosecha.text = "Llevas: " + " · ".join(partes)
 	if restaurante:
 		if not is_instance_valid(_restaurante):
 			_restaurante = get_tree().get_first_node_in_group("restaurante")

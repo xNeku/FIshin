@@ -273,10 +273,13 @@ GASTO_TUR = [1.0, 1.6, 3.0]   # NivelTuristasData.mult_gasto: los de más nivel 
 # Lo que no se ve en los datos: el jugador pasa por el huerto cada ~6 min y por el viejo/tiendas al vender.
 # Mejoras de edificios: se compran en el ayuntamiento (data/articulos/mejora_*.tres).
 MEJORAS = ["mejora_despensa", "mejora_fogon", "mejora_mesas", "mejora_pantalan_cebo", "mejora_pantalan_redes",
-           "mejora_lonja_hielo", "mejora_entrada_muelle", "mejora_cultivos_bancales"]
+           "mejora_lonja_hielo", "mejora_entrada_muelle", "mejora_cultivos_bancales",
+           "mejora_taladro_motor", "mejora_omar_terraza", "mejora_entrada_faro"]
+TALADRO = dict(por_minuto=3.0, tope=60.0)
 _REQ_MEJORA = {"mejora_despensa": "restaurante", "mejora_fogon": "restaurante", "mejora_mesas": "restaurante",
                "mejora_pantalan_cebo": "puerto", "mejora_pantalan_redes": "puerto", "mejora_lonja_hielo": "lonja",
-               "mejora_entrada_muelle": "entrada turistas", "mejora_cultivos_bancales": "cultivos"}
+               "mejora_entrada_muelle": "entrada turistas", "mejora_cultivos_bancales": "cultivos",
+               "mejora_taladro_motor": "taladro", "mejora_omar_terraza": "taladro", "mejora_entrada_faro": "taladro"}
 
 
 def _efectos(niv, mejoras):
@@ -363,6 +366,7 @@ def partida(jugador=1.0, semilla=1, horas=4.0, informe=False):
         return (precio + g) * m
 
     vendidos = []
+    coral = coral_taladro = ultima_coral = 0.0
     while t < 3600 * horas:
         E = _efectos(niv, mejoras)
         mv = (1 + E.get("precio_venta", 0) + (E.get("precio_lonja", 0) if "lonja" in hitos else 0)) * (LONJA if "lonja" in hitos else 1)
@@ -408,7 +412,7 @@ def partida(jugador=1.0, semilla=1, horas=4.0, informe=False):
                     while visita["comidos"] >= 1:
                         visita["comidos"] -= 1
                         abiertos = [g for c, g in zip(NIVELES_TUR, GASTO_TUR) if clientes >= c]
-                        g = servir() * (1 + E.get("propinas", 0)) * sum(abiertos) / len(abiertos)
+                        g = servir() * (1 + E.get("propinas", 0)) * sum(abiertos) / len(abiertos) * (1 + E.get("atractivo", 0))
                         rublos += g; totales += g; fuentes["restaurante"] += g
         # Cultivos: el jugador pasa cada ~6 min (o el chaval, si lo tiene).
         if "cultivos" in hitos:
@@ -437,6 +441,10 @@ def partida(jugador=1.0, semilla=1, horas=4.0, informe=False):
                 alga += na_
                 plantas_t = 0.0
                 t += CULT["andar"]
+        if "taladro" in hitos:
+            coral_taladro = min(TALADRO["tope"], coral_taladro + TALADRO["por_minuto"] * (1 + E.get("coral", 0) + E.get("taladro_ritmo", 0)) * dt / 60)
+            if t - ultima_coral >= 360:
+                coral += int(coral_taladro); coral_taladro -= int(coral_taladro); ultima_coral = t
         # Vender cada ~3 min (con la lonja da igual dónde: al comerciante desde el donut).
         if t - ultima_venta > 180 and pend > 0:
             g = pend * mv
@@ -448,7 +456,7 @@ def partida(jugador=1.0, semilla=1, horas=4.0, informe=False):
         for ap, nombre in [("primera_isla", "primera isla"), ("isla_skilltree", "viejo y árbol"), ("camino", "camino"),
                            ("puerto_pesquero", "puerto"), ("lonja", "lonja"), ("camino_2", "camino 2"),
                            ("restaurante", "restaurante"), ("entrada_turistas", "entrada turistas"), ("cultivos", "cultivos"),
-                           ("ayuntamiento", "ayuntamiento")]:
+                           ("ayuntamiento", "ayuntamiento"), ("taladro", "taladro")]:
             if nombre not in hitos and cumple(ap):
                 hito(nombre)
                 if nombre == "puerto":
@@ -499,8 +507,9 @@ def partida(jugador=1.0, semilla=1, horas=4.0, informe=False):
                 pr, cr, mx, _ = _leer_articulo(i)
                 nv = mejoras.get(i, 0)
                 coste = pr * cr ** nv * desc
-                if nv < mx and coste <= libre * 0.4:
-                    rublos -= coste; libre -= coste; mejoras[i] = nv + 1; hito(f"{i} {nv + 1}")
+                cc = float(_leer_tres(os.path.join(_RAIZ, "data", "articulos", i + ".tres")).get("coste_coral", 0)) * cr ** nv
+                if nv < mx and coste <= libre * 0.4 and coral >= cc:
+                    rublos -= coste; libre -= coste; coral -= cc; mejoras[i] = nv + 1; hito(f"{i} {nv + 1}")
         if informe and t >= prox_informe:
             serie.append((t / 60, rublos, totales, dict(fuentes), cana, trab, clientes, int(raciones)))
             prox_informe += 600

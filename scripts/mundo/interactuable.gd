@@ -4,7 +4,8 @@ extends Node3D
 
 ## VENTA: vende de golpe todo lo que llevas (barca y cubo), sin menú.
 ## COSECHAR: una planta lista; el náufrago pega un hozazo y siega todo lo listo a su alrededor.
-enum Accion { TIENDA, BESTIARIO, DIALOGO, CUBO, VENTA, ARBOL, COSECHAR }
+## RECOGER: lo que ha juntado una máquina (el coral del taladro): su padre tiene recoger(quien).
+enum Accion { TIENDA, BESTIARIO, DIALOGO, CUBO, VENTA, ARBOL, COSECHAR, RECOGER }
 
 @export var accion: Accion = Accion.TIENDA
 ## Texto de la ayuda: "[E] <texto>".

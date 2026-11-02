@@ -1,0 +1,78 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/mundo/taladro.gd" id="1_script"]
+[ext_resource type="Material" path="res://art/materiales/tablones_rotos.tres" id="2_tierra"]
+[ext_resource type="Texture2D" path="res://art/mundo/taladro.png" id="3_taladro"]
+[ext_resource type="Texture2D" path="res://art/articulos/coral.png" id="4_coral"]
+[ext_resource type="Script" path="res://scripts/mundo/interactuable.gd" id="5_interactuable"]
+[ext_resource type="Texture2D" path="res://art/mundo/props/roca.png" id="6_roca"]
+
+[sub_resource type="BoxMesh" id="b_roca"]
+material = ExtResource("2_tierra")
+size = Vector3(2.05, 0.9, 2.05)
+
+[node name="Taladro" type="Node3D" node_paths=PackedStringArray("maquina", "monton", "interaccion")]
+script = ExtResource("1_script")
+maquina = NodePath("Maquina")
+monton = NodePath("Monton")
+interaccion = NodePath("Interaccion")
+coral_textura = ExtResource("4_coral")
+
+[node name="Suelo" type="Node3D" parent="."]
+
+[node name="Casilla_4_m4" type="MeshInstance3D" parent="Suelo"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, -0.2, 2)
+mesh = SubResource("b_roca")
+
+[node name="Casilla_4_m3" type="MeshInstance3D" parent="Suelo"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, -0.2, 0)
+mesh = SubResource("b_roca")
+
+[node name="Casilla_5_m4" type="MeshInstance3D" parent="Suelo"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.2, 2)
+mesh = SubResource("b_roca")
+
+[node name="Casilla_5_m3" type="MeshInstance3D" parent="Suelo"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.2, 0)
+mesh = SubResource("b_roca")
+
+[node name="Casilla_6_m4" type="MeshInstance3D" parent="Suelo"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, -0.2, 2)
+mesh = SubResource("b_roca")
+
+[node name="Casilla_6_m3" type="MeshInstance3D" parent="Suelo"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, -0.2, 0)
+mesh = SubResource("b_roca")
+
+[node name="Maquina" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.85, -0.6)
+billboard = 2
+alpha_cut = 1
+texture_filter = 0
+pixel_size = 0.05
+texture = ExtResource("3_taladro")
+
+[node name="Monton" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.6, 0.5, 0.5)
+billboard = 2
+alpha_cut = 1
+texture_filter = 0
+pixel_size = 0.06
+texture = ExtResource("4_coral")
+
+[node name="Roca" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.4, 0.45, 0.7)
+billboard = 2
+alpha_cut = 1
+texture_filter = 0
+pixel_size = 0.05
+texture = ExtResource("6_roca")
+
+[node name="Interaccion" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.6, 0, 0.5)
+script = ExtResource("5_interactuable")
+accion = 7
+texto_accion = "Recoger coral"
+radio = 2.2
+prioridad = 1
+altura_icono = 1.2

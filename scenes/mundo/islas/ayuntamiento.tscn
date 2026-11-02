@@ -13,6 +13,9 @@
 [ext_resource type="Resource" path="res://data/articulos/mejora_lonja_hielo.tres" id="a5"]
 [ext_resource type="Resource" path="res://data/articulos/mejora_entrada_muelle.tres" id="a6"]
 [ext_resource type="Resource" path="res://data/articulos/mejora_cultivos_bancales.tres" id="a7"]
+[ext_resource type="Resource" path="res://data/articulos/mejora_taladro_motor.tres" id="b0"]
+[ext_resource type="Resource" path="res://data/articulos/mejora_omar_terraza.tres" id="b1"]
+[ext_resource type="Resource" path="res://data/articulos/mejora_entrada_faro.tres" id="b2"]
 
 [node name="Ayuntamiento" type="Node3D"]
 script = ExtResource("1_script")
@@ -43,5 +46,5 @@ radio = 2.4
 prioridad = 1
 altura_icono = 1.9
 nombre = "Ayuntamiento"
-articulos = Array[ExtResource("4_articulo")]([ExtResource("a0"), ExtResource("a1"), ExtResource("a2"), ExtResource("a3"), ExtResource("a4"), ExtResource("a5"), ExtResource("a6"), ExtResource("a7")])
+articulos = Array[ExtResource("4_articulo")]([ExtResource("a0"), ExtResource("a1"), ExtResource("a2"), ExtResource("a3"), ExtResource("a4"), ExtResource("a5"), ExtResource("a6"), ExtResource("a7"), ExtResource("b0"), ExtResource("b1"), ExtResource("b2")])
 saludos = Array[String](["Bienvenido, alcalde. Aquí se mejora todo lo que es del pueblo.", "Más pantalán, más lonja, más mesas... El pueblo crece si tú quieres.", "Firme aquí, aquí y aquí. Y aquí."])

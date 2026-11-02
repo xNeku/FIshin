@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="AparicionData" format=3]
+
+[ext_resource type="Script" path="res://scripts/datos/aparicion_data.gd" id="1_script"]
+[ext_resource type="PackedScene" path="res://scenes/mundo/islas/taladro.tscn" id="2_escena"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"taladro"
+nombre = "Taladro de coral"
+escena = ExtResource("2_escena")
+ancla = Vector2i(5, -3)
+celdas = Array[Vector2i]([Vector2i(4, -4), Vector2i(4, -3), Vector2i(5, -4), Vector2i(5, -3), Vector2i(6, -4), Vector2i(6, -3)])
+orden = 13
+condicion = 1
+valor = 1200000.0
+requiere = Array[StringName]([&"ayuntamiento"])
+llegada = 0

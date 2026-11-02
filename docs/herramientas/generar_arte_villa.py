@@ -424,6 +424,34 @@ def ayuntamiento():
     return contorno(im)
 
 
+def taladro():
+    """Torre de perforación pequeña sobre una roca: estructura de hierro, motor y broca."""
+    im = Image.new("RGBA", (48, 64), (0, 0, 0, 0))
+    d = ImageDraw.Draw(im)
+    hierro, hierro2, motor = (120, 126, 136), (90, 96, 106), (200, 90, 50)
+    # Patas de la torre (triángulo) y travesaños.
+    d.line([(8, 60), (22, 6)], fill=hierro + (255,), width=2)
+    d.line([(40, 60), (26, 6)], fill=hierro + (255,), width=2)
+    for y in (20, 34, 48):
+        d.line([(11 + (60 - y) // 4, y), (37 - (60 - y) // 4, y)], fill=hierro2 + (255,), width=1)
+    d.line([(14, 48), (30, 20)], fill=hierro2 + (255,)); d.line([(34, 48), (18, 20)], fill=hierro2 + (255,))
+    rect(d, 18, 2, 30, 7, hierro2)
+    # Motor y broca.
+    rect(d, 16, 36, 32, 46, motor); rect(d, 18, 38, 24, 41, (240, 200, 80))
+    rect(d, 23, 46, 25, 62, (210, 210, 220)); rect(d, 22, 58, 26, 62, (160, 160, 170))
+    return contorno(im)
+
+
+def coral(tam=10):
+    im = Image.new("RGBA", (tam, tam), (0, 0, 0, 0))
+    c, c2 = (255, 110, 120), (230, 80, 100)
+    for (x0, y0, x1, y1) in ((4, 9, 4, 3), (4, 5, 1, 2), (4, 6, 7, 2), (4, 4, 6, 1)):
+        d = ImageDraw.Draw(im)
+        d.line([(x0, y0), (x1, y1)], fill=c + (255,))
+    im.putpixel((3, 9), c2 + (255,)); im.putpixel((5, 9), c2 + (255,))
+    return contorno(im)
+
+
 def mesa():
     im = Image.new("RGBA", (20, 22), (0, 0, 0, 0))
     d = ImageDraw.Draw(im)
@@ -531,6 +559,8 @@ if __name__ == "__main__":
     guardar(catamaran(), "art/mundo/barcos/catamaran.png")
     guardar(restaurante(), "art/mundo/restaurante.png")
     guardar(ayuntamiento(), "art/mundo/ayuntamiento.png")
+    guardar(taladro(), "art/mundo/taladro.png")
+    guardar(coral(), "art/articulos/coral.png")
     guardar(mesa(), "art/mundo/props/mesa_sombrilla.png")
     for i, im in enumerate(pimiento_fases()):
         guardar(im, f"art/cultivos/pimiento_{i}.png")

@@ -153,6 +153,9 @@ func interactuar(i: Interactuable) -> void:
 				Juego.coger_cubo()
 		Interactuable.Accion.COSECHAR:
 			_hozazo()
+		Interactuable.Accion.RECOGER:
+			if i.get_parent().has_method("recoger"):
+				i.get_parent().recoger(self)
 
 
 ## Giro con la hoz: siega todo lo listo en `radio_hozazo` y lo cosechado vuela hacia ti.
