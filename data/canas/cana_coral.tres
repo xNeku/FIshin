@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="CanaData" format=3]
+
+[ext_resource type="Script" path="res://scripts/datos/cana_data.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"cana_coral"
+nombre = "Caña de coral"
+descripcion = "Puntera de coral: llega a la profundidad 6, donde viven los gordos de Galicia."
+profundidad = 6
+cadena_min = 7
+cadena_max = 24
+sesgo_cadena = 0.7
+mult_tiempo = 1.0
+mult_espera = 0.5
+mult_rareza = 2.5
+auto_primer_boton = true

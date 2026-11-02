@@ -68,7 +68,8 @@ def _leer_canas():
 CANAS = _leer_canas()
 # Orden en que se compran: (id de caña, precio del artículo, lo que tiene que haber llegado).
 COMPRA_CANAS = [("cana_buena", 300, None), ("cana_pro", 6800, "viejo y árbol"),
-                ("cana_fibra", None, "lonja"), ("cana_carbono", None, "entrada turistas")]
+                ("cana_fibra", None, "lonja"), ("cana_carbono", None, "entrada turistas"),
+                ("cana_coral", None, "taladro"), ("cana_altura", None, "sushi")]
 # --- scenes/mundo/trabajador.tscn ---
 TRAB = dict(t_pez=14.0, capacidad=8, viaje=15.0, mult_valor=0.4)
 
@@ -495,7 +496,10 @@ def partida(jugador=1.0, semilla=1, horas=4.0, informe=False):
                     objetivo = (cid, precio)
                 break
         desc = max(0.3, 1 - E.get("descuento", 0))
-        if objetivo and rublos >= objetivo[1] * desc:
+        _art = os.path.join(_RAIZ, "data", "articulos", objetivo[0] + ".tres") if objetivo else ""
+        coral_cana = float(_leer_tres(_art).get("coste_coral", 0)) if objetivo and os.path.exists(_art) else 0.0
+        if objetivo and rublos >= objetivo[1] * desc and coral >= coral_cana:
+            coral -= coral_cana
             rublos -= objetivo[1] * desc; cana = objetivo[0]; hito(CANAS[cana]["nombre"]); objetivo = None
         reserva = objetivo[1] * desc if objetivo else 0.0
         libre = rublos - reserva * 0.7

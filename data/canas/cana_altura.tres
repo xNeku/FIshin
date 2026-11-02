@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="CanaData" format=3]
+
+[ext_resource type="Script" path="res://scripts/datos/cana_data.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"cana_altura"
+nombre = "Caña de altura"
+descripcion = "Para mar abierto: llega a la profundidad 7, con los peces del resto del mundo."
+profundidad = 7
+cadena_min = 8
+cadena_max = 28
+sesgo_cadena = 0.65
+mult_tiempo = 1.0
+mult_espera = 0.45
+mult_rareza = 2.8
+auto_primer_boton = true
