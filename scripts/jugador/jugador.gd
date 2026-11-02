@@ -205,7 +205,9 @@ func _segar_en(p: Planta) -> void:
 ## Lo cosechado sale volando de ti hacia quien lo recibe (un icono por unidad, hasta un tope).
 func _entregar_cosecha(i: Interactuable) -> void:
 	var texturas: Array[Texture2D] = []
-	var dado: Dictionary = Juego.entregar_cosecha()
+	# Las algas se quedan en la despensa de quien las recibe (O Mar o el sushi).
+	var duenyo: Node = i.get_parent()
+	var dado: Dictionary = Juego.entregar_cosecha(String(duenyo.name) if duenyo is Restaurante else "restaurante")
 	var dinero: float = dado.get("dinero", 0.0)
 	Juego.dinero_en_camino += dinero
 	for id: String in dado:

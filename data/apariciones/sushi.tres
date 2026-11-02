@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="AparicionData" format=3]
+
+[ext_resource type="Script" path="res://scripts/datos/aparicion_data.gd" id="1_script"]
+[ext_resource type="PackedScene" path="res://scenes/mundo/islas/sushi.tscn" id="2_escena"]
+[ext_resource type="PackedScene" path="res://scenes/mundo/piezas/tablon.tscn" id="3_pieza"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"sushi"
+nombre = "Sushi"
+escena = ExtResource("2_escena")
+ancla = Vector2i(-8, 9)
+celdas = Array[Vector2i]([Vector2i(-10, 8), Vector2i(-10, 9), Vector2i(-10, 10), Vector2i(-9, 8), Vector2i(-9, 9), Vector2i(-9, 10), Vector2i(-8, 8), Vector2i(-8, 9), Vector2i(-8, 10), Vector2i(-7, 8), Vector2i(-7, 9), Vector2i(-7, 10)])
+pieza_por_celda = ExtResource("3_pieza")
+celdas_bloqueadas = Array[Vector2i]([Vector2i(-10, 10), Vector2i(-9, 10), Vector2i(-8, 10)])
+orden = 14
+condicion = 1
+valor = 1800000.0
+requiere = Array[StringName]([&"cultivos", &"camino_2"])
+llegada = 2
+altura = 1.2

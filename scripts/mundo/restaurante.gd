@@ -4,6 +4,12 @@ extends Isla
 ## esa es su despensa. Cocina y vende platos a la gente del pueblo poco a poco y, los días de turistas,
 ## a montones. Lo que le das de la cosecha mejora los platos. El dinero te llega volando.
 
+## Su despensa y sus efectos: O Mar usa "despensa", "precio_plato"...; el sushi, "sushi_despensa"...
+@export var prefijo_efectos: String = ""
+## Cómo sale en el panel de estado.
+@export var nombre_corto: String = "O Mar"
+## Si cada plato necesita una alga de su despensa (el sushi: sin nori no hay sushi).
+@export var requiere_alga: bool = false
 ## Donde aterrizan los peces y de donde sale el dinero.
 @export var casa: Node3D
 @export_group("Lonja")
@@ -45,7 +51,8 @@ func _conectar() -> void:
 
 
 func _process(delta: float) -> void:
-	_t_locales += delta * (locales_por_minuto + locales_por_pescador * Juego.trabajadores) / 60.0
+	_t_locales += delta * (locales_por_minuto + locales_por_pescador * Juego.trabajadores) \
+		* (1.0 + Juego.efecto(StringName(prefijo_efectos + "clientes"))) / 60.0
 	while _t_locales >= 1.0:
 		_t_locales -= 1.0
 		servir()
@@ -71,23 +78,23 @@ func cobrar_visita() -> Dictionary:
 
 
 func capacidad() -> float:
-	return capacidad_despensa + Juego.efecto(&"despensa")
+	return capacidad_despensa + Juego.efecto(StringName(prefijo_efectos + "despensa"))
 
 
 func raciones() -> int:
-	return int(Juego.despensa.raciones)
+	return int(_despensa().raciones)
 
 
 ## Sirve un plato si queda pescado: lo cobra (a la caja) y gasta una ración y, si hay, cosecha.
 ## Los turistas pagan según su nivel (`gasto`) y dejan propina (Turista despistado, rama Suerte).
 func servir(turista: bool = false, gasto: float = 1.0) -> bool:
-	var d: Dictionary = Juego.despensa
-	if d.raciones < 1.0:
+	var d: Dictionary = _despensa()
+	if d.raciones < 1.0 or (requiere_alga and int(d.get("alga", 0)) <= 0):
 		return false
 	var medio: float = d.valor / d.raciones
 	d.raciones -= 1.0
 	d.valor = maxf(0.0, d.valor - medio)
-	var precio: float = medio * (mult_plato + Juego.efecto(&"precio_plato"))
+	var precio: float = medio * (mult_plato + Juego.efecto(StringName(prefijo_efectos + "precio_plato")))
 	var guarnicion: float = 0.0
 	var mejora: float = 1.0
 	for id: StringName in Juego.cultivos:
@@ -120,18 +127,22 @@ func _recibir_de_lonja(capturas: Array[Dictionary]) -> void:
 	var n: float = capturas.size() * parte_lonja + _resto_parte
 	var k: int = floori(n)
 	_resto_parte = n - k
-	k = mini(k, floori(capacidad() - Juego.despensa.raciones))
+	k = mini(k, floori(capacidad() - _despensa().raciones))
 	if k <= 0:
 		return
 	var elegidas: Array[Dictionary] = capturas.duplicate()
 	elegidas.shuffle()
 	elegidas.resize(k)
 	for c: Dictionary in elegidas:
-		Juego.despensa.raciones += 1.0
-		Juego.despensa.valor += c.valor
+		_despensa().raciones += 1.0
+		_despensa().valor += c.valor
 	var lonja: Node3D = get_parent().get_node_or_null(String(id_lonja))
 	if lonja:
 		Vuelos.enviar_peces(lonja, _origen(), elegidas)
+
+
+func _despensa() -> Dictionary:
+	return Juego.despensa_de(String(name))
 
 
 func _origen() -> Node3D:

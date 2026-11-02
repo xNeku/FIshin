@@ -34,7 +34,8 @@ func _process(delta: float) -> void:
 		# O Mar se lo paga como si se lo dieras tú; las algas, además, a su despensa.
 		dinero += k * Juego.precio_cosecha(p.cultivo)
 		if p.cultivo.a_la_despensa:
-			Juego.despensa[id] = int(Juego.despensa.get(id, 0)) + k
+			var d: Dictionary = Juego.despensa_de("restaurante")
+			d[id] = int(d.get(id, 0)) + k
 		if restaurante:
 			Vuelos.enviar(p, restaurante.casa if restaurante.casa else restaurante, [p.cultivo.icono] as Array[Texture2D], Callable(), null, 1.2)
 	if dinero > 0.0:

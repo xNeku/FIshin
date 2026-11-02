@@ -67,7 +67,7 @@ var flags: Dictionary = {}
 var cosecha: Dictionary = {}
 ## Despensa del restaurante: "raciones" (pescado que le manda la lonja), "valor" (lo que valen en total)
 ## y lo que le has dado de cada cultivo (id -> cantidad).
-var despensa: Dictionary = {"raciones": 0.0, "valor": 0.0}
+var despensas: Dictionary = {}
 ## Materiales que no son dinero (coral...): id -> cantidad.
 var materiales: Dictionary = {}
 signal materiales_cambiados
@@ -367,7 +367,7 @@ func total_cosecha() -> int:
 
 ## Se lo das todo a O Mar: te lo paga (devuelve el dinero en "dinero") y lo que sirve para platos se queda en
 ## su despensa. Devuelve id -> cantidad dada, más "dinero".
-func entregar_cosecha() -> Dictionary:
+func entregar_cosecha(para: String = "restaurante") -> Dictionary:
 	var dado: Dictionary = cosecha.duplicate()
 	var dinero: float = 0.0
 	for k: String in cosecha:
@@ -376,11 +376,19 @@ func entregar_cosecha() -> Dictionary:
 			continue
 		dinero += int(cosecha[k]) * precio_cosecha(c)
 		if c.a_la_despensa:
-			despensa[k] = int(despensa.get(k, 0)) + int(cosecha[k])
+			var d: Dictionary = despensa_de(para)
+			d[k] = int(d.get(k, 0)) + int(cosecha[k])
 	cosecha.clear()
 	cosecha_cambiada.emit()
 	dado["dinero"] = dinero
 	return dado
+
+
+## La despensa de un restaurante (id de su aparición): raciones, valor y cultivos.
+func despensa_de(id: String) -> Dictionary:
+	if not despensas.has(id):
+		despensas[id] = {"raciones": 0.0, "valor": 0.0}
+	return despensas[id]
 
 
 func sumar_material(id: String, n: float) -> void:
@@ -546,7 +554,7 @@ func guardar() -> void:
 		"capturas": capturas, "cana": String(cana_id), "cebo": cebo, "compras": compras,
 		"stats": stats, "coleccion": coleccion, "capturados": capturados, "flags": flags,
 		"trabajadores": trabajadores, "cubo": cubo_capturas, "cubo_en_mano": cubo_en_mano,
-		"habilidades": habilidades, "reloj": reloj, "cosecha": cosecha, "despensa": despensa, "plantas": _plantas_al_dia(), "materiales": materiales,
+		"habilidades": habilidades, "reloj": reloj, "cosecha": cosecha, "despensas": despensas, "plantas": _plantas_al_dia(), "materiales": materiales,
 		"fecha": Time.get_unix_time_from_system(),
 	}
 	# Primero a un temporal y luego se cambia por el bueno: si se corta a medias, el save anterior sigue vivo.
@@ -619,11 +627,17 @@ func cargar() -> void:
 	if co is Dictionary:
 		for k: String in co:
 			cosecha[k] = int(co[k])
-	despensa = {"raciones": 0.0, "valor": 0.0}
-	var de: Variant = datos.get("despensa", {})
-	if de is Dictionary:
-		for k: String in de:
-			despensa[k] = float(de[k]) if k in ["raciones", "valor"] else int(de[k])
+	despensas.clear()
+	var ds: Variant = datos.get("despensas", {})
+	# v7 antiguo: una sola despensa (la de O Mar).
+	if not (ds is Dictionary) or (ds as Dictionary).is_empty():
+		ds = {"restaurante": datos.get("despensa", {})}
+	for id: String in ds:
+		var d: Dictionary = despensa_de(id)
+		var de: Variant = ds[id]
+		if de is Dictionary:
+			for k: String in de:
+				d[k] = float(de[k]) if k in ["raciones", "valor"] else int(de[k])
 	materiales.clear()
 	var ma: Variant = datos.get("materiales", {})
 	if ma is Dictionary:
@@ -662,7 +676,7 @@ func borrar_partida() -> void:
 	cosecha.clear()
 	plantas.clear()
 	materiales.clear()
-	despensa = {"raciones": 0.0, "valor": 0.0}
+	despensas.clear()
 	_recalcular_efectos()
 	habilidades_cambiadas.emit()
 	rublos_cambiados.emit(rublos)

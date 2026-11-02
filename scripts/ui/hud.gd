@@ -94,7 +94,6 @@ var _intensidad_objetivo: float = 0.0
 var _intensidad: float = 0.0
 var _destello: float = 0.0
 var _color_destello: Color = Color.WHITE
-var _restaurante: Node
 var _turistas: Node
 var _pos_prompt: Vector2
 var _mat: ShaderMaterial
@@ -344,16 +343,16 @@ func _info_villa() -> void:
 				partes.append("%d coral" % coral)
 			cosecha.text = "Llevas: " + " · ".join(partes)
 	if restaurante:
-		if not is_instance_valid(_restaurante):
-			_restaurante = get_tree().get_first_node_in_group("restaurante")
-		var r: Node = _restaurante
-		restaurante.visible = r != null
-		if r:
+		var lista: Array[Node] = get_tree().get_nodes_in_group("restaurante")
+		restaurante.visible = not lista.is_empty()
+		if not lista.is_empty():
 			if _turistas == null:
 				_turistas = get_tree().get_first_node_in_group("turistas")
-			var tur: Node = _turistas
-			var hay: bool = tur != null and tur.activa
-			restaurante.text = "O Mar: %d/%d raciones%s" % [r.raciones(), int(r.capacidad()), " · ¡turistas!" if hay else ""]
+			var hay: bool = _turistas != null and _turistas.activa
+			var partes: Array[String] = []
+			for r: Node in lista:
+				partes.append("%s %d/%d" % [r.nombre_corto, r.raciones(), int(r.capacidad())])
+			restaurante.text = " · ".join(partes) + (" · ¡turistas!" if hay else "")
 
 
 ## Punto del mundo donde va el botón de interactuar, o null si no hay nada.

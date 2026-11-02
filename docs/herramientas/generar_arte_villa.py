@@ -452,6 +452,32 @@ def coral(tam=10):
     return contorno(im)
 
 
+def sushi():
+    """Puesto de sushi: madera clara, tejadillo oscuro, cortinas noren y farolillo rojo."""
+    im = Image.new("RGBA", (56, 52), (0, 0, 0, 0))
+    d = ImageDraw.Draw(im)
+    madera, madera2, techo = (214, 182, 132), (190, 158, 110), (60, 56, 66)
+    rect(d, 6, 18, 49, 49, madera)
+    for x in range(6, 50, 6):
+        rect(d, x, 18, x, 49, madera2)
+    d.polygon([(0, 19), (55, 19), (49, 9), (6, 9)], fill=techo + (255,))
+    rect(d, 4, 18, 51, 19, (40, 36, 44))
+    # Cortinas noren (azules con un círculo blanco).
+    for x in (10, 22, 34):
+        rect(d, x, 20, x + 10, 30, (40, 70, 140))
+        rect(d, x + 4, 23, x + 6, 25, (240, 240, 236))
+    # Barra.
+    rect(d, 8, 34, 47, 37, (150, 110, 70))
+    for x in (14, 24, 34):
+        rect(d, x, 31, x + 4, 33, (240, 240, 236)); rect(d, x + 1, 32, x + 3, 32, (240, 110, 90))
+    # Letrero y farolillo.
+    rect(d, 18, 2, 37, 8, (246, 236, 200))
+    for (x0, x1) in ((20, 22), (24, 26), (28, 30), (32, 34)):
+        rect(d, x0, 4, x1, 6, (200, 50, 50))
+    d.ellipse([46, 22, 53, 31], fill=(220, 50, 40, 255)); rect(d, 49, 20, 50, 22, (40, 36, 44))
+    return contorno(im)
+
+
 def mesa():
     im = Image.new("RGBA", (20, 22), (0, 0, 0, 0))
     d = ImageDraw.Draw(im)
@@ -559,6 +585,7 @@ if __name__ == "__main__":
     guardar(catamaran(), "art/mundo/barcos/catamaran.png")
     guardar(restaurante(), "art/mundo/restaurante.png")
     guardar(ayuntamiento(), "art/mundo/ayuntamiento.png")
+    guardar(sushi(), "art/mundo/sushi.png")
     guardar(taladro(), "art/mundo/taladro.png")
     guardar(coral(), "art/articulos/coral.png")
     guardar(mesa(), "art/mundo/props/mesa_sombrilla.png")

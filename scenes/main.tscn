@@ -70,6 +70,7 @@
 [ext_resource type="AudioStream" path="res://art/sfx/bocina.wav" id="tur_bocina"]
 [ext_resource type="Resource" path="res://data/apariciones/ayuntamiento.tres" id="ap_ayto"]
 [ext_resource type="Resource" path="res://data/apariciones/taladro.tres" id="ap_taladro"]
+[ext_resource type="Resource" path="res://data/apariciones/sushi.tres" id="ap_sushi"]
 
 [sub_resource type="FastNoiseLite" id="ruido_nubes"]
 noise_type = 3
@@ -286,7 +287,7 @@ stream = ExtResource("sfx_latido")
 
 [node name="Mundo" type="Node3D" parent="." node_paths=PackedStringArray("pesca", "camara", "celebracion", "sombra", "sfx_mar", "sfx_caida", "sfx_impacto", "sfx_pieza")]
 script = ExtResource("16_mundo")
-apariciones = Array[ExtResource("17_aparicion")]([ExtResource("18_primera_isla"), ExtResource("19_isla_skilltree"), ExtResource("26_puerto"), ExtResource("27_camino"), ExtResource("32_lonja"), ExtResource("camino_2"), ExtResource("ap_restaurante"), ExtResource("ap_entrada"), ExtResource("ap_cultivos"), ExtResource("ap_ayto"), ExtResource("ap_taladro")])
+apariciones = Array[ExtResource("17_aparicion")]([ExtResource("18_primera_isla"), ExtResource("19_isla_skilltree"), ExtResource("26_puerto"), ExtResource("27_camino"), ExtResource("32_lonja"), ExtResource("camino_2"), ExtResource("ap_restaurante"), ExtResource("ap_entrada"), ExtResource("ap_cultivos"), ExtResource("ap_ayto"), ExtResource("ap_taladro"), ExtResource("ap_sushi")])
 pesca = NodePath("../Pesca")
 camara = NodePath("../Camara")
 celebracion = NodePath("../Celebracion")

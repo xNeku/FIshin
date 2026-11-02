@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="ArticuloData" format=3]
+
+[ext_resource type="Script" path="res://scripts/datos/articulo_data.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://art/mundo/props/barril.png" id="2_icono"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"mejora_sushi_barra"
+nombre = "Sushi · Barra más larga"
+descripcion = "Caben 50 raciones más de pescado."
+icono = ExtResource("2_icono")
+tipo = 4
+precio = 60000.0
+crecimiento_precio = 2.0
+max_compras = 5
+requiere_flag = "aparecido_sushi"
+efecto = &"sushi_despensa"
+valor_efecto = 50.0
+coste_coral = 10.0

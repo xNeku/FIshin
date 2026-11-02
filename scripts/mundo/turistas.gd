@@ -49,6 +49,7 @@ var _t_revisar: float = 0.0
 var _dia_visita: int = -1
 var _bocina_dada: bool = false
 var _vinieron: int = 0
+var _barcos_traidos: int = 0
 
 
 func _ready() -> void:
@@ -96,7 +97,10 @@ func _segundos_restantes(rd: RelojData) -> float:
 func cuantos() -> int:
 	# Relaciones públicas (Carisma): vienen más, si hay comida para ellos.
 	var tope: int = roundi((max_turistas + Juego.efecto(&"mesas") + Juego.efecto(&"muelle")) * (1.0 + Juego.efecto(&"turistas")))
-	return clampi(int(Juego.despensa.raciones / platos_por_turista), min_turistas, tope)
+	var raciones: float = 0.0
+	for r: Node in _restaurantes():
+		raciones += r.raciones()
+	return clampi(int(raciones / platos_por_turista), min_turistas, tope)
 
 
 func niveles_abiertos() -> Array[NivelTuristasData]:
@@ -157,11 +161,15 @@ func _traer(datos: Dictionary, muelle: Dictionary, cada_comer: float, retraso: f
 	var grupo: Dictionary = {"barco": barco, "turistas": [] as Array[Turista], "muelle": muelle, "nivel": datos.nivel, "punto": punto}
 	_grupos.append(grupo)
 	var sitios: Array[Vector3] = barco.asientos(datos.plazas)
-	var paseo: Array[Vector2i] = _celdas_paseo()
+	# Cada barco va a un restaurante (se reparten entre todos los que hay).
+	var restaurantes: Array[Node] = _restaurantes()
+	var suyo: Node = restaurantes[_barcos_traidos % restaurantes.size()] if not restaurantes.is_empty() else null
+	_barcos_traidos += 1
+	var paseo: Array[Vector2i] = _celdas_paseo(suyo.name if suyo else id_restaurante)
 	for s: Vector3 in sitios:
 		var t: Turista = escena_turista.instantiate()
 		add_child(t)
-		t.preparar(datos.nivel.personas.pick_random(), mundo, _restaurante(), paseo)
+		t.preparar(datos.nivel.personas.pick_random(), mundo, suyo, paseo)
 		t.gasto = datos.nivel.mult_gasto
 		t.montar(barco, s)
 		grupo.turistas.append(t)
@@ -217,7 +225,8 @@ func _comer_invisibles(delta: float) -> void:
 	_t_invisibles -= delta
 	if _t_invisibles > 0.0:
 		return
-	var r: Node = _restaurante()
+	var lista: Array[Node] = _restaurantes()
+	var r: Node = lista.pick_random() if not lista.is_empty() else null
 	if r:
 		var abiertos: Array[NivelTuristasData] = niveles_abiertos()
 		var gasto: float = 0.0
@@ -230,18 +239,25 @@ func _comer_invisibles(delta: float) -> void:
 
 ## Todo lo que han gastado llega de golpe desde O Mar, con su aviso.
 func _cobrar() -> void:
-	var r: Node = _restaurante()
-	if r == null:
-		return
-	var caja: Dictionary = r.cobrar_visita()
-	if caja.platos <= 0:
-		return
-	visita_terminada.emit(_vinieron, caja.platos, caja.dinero)
+	var platos: int = 0
+	var dinero: float = 0.0
 	var comercio: Node = get_tree().get_first_node_in_group("comercio")
-	if comercio:
-		Vuelos.enviar_dinero(r.casa if r.casa else r, comercio.origen(), caja.dinero)
-	else:
-		Juego.sumar_rublos(caja.dinero)
+	for r: Node in _restaurantes():
+		var caja: Dictionary = r.cobrar_visita()
+		if caja.platos <= 0:
+			continue
+		platos += caja.platos
+		dinero += caja.dinero
+		if comercio:
+			Vuelos.enviar_dinero(r.casa if r.casa else r, comercio.origen(), caja.dinero)
+		else:
+			Juego.sumar_rublos(caja.dinero)
+	if platos > 0:
+		visita_terminada.emit(_vinieron, platos, dinero)
+
+
+func _restaurantes() -> Array[Node]:
+	return get_tree().get_nodes_in_group("restaurante")
 
 
 func _restaurante() -> Node:
@@ -256,8 +272,8 @@ func _aparicion(id: StringName) -> AparicionData:
 
 
 ## Donde se pasean: las casillas pisables del restaurante.
-func _celdas_paseo() -> Array[Vector2i]:
-	var a: AparicionData = _aparicion(id_restaurante)
+func _celdas_paseo(id: StringName) -> Array[Vector2i]:
+	var a: AparicionData = _aparicion(id)
 	var r: Array[Vector2i] = []
 	if a:
 		for c: Vector2i in a.celdas:

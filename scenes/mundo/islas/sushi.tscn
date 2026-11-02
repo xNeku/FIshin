@@ -1,0 +1,48 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/mundo/restaurante.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://art/mundo/sushi.png" id="2_casa"]
+[ext_resource type="Script" path="res://scripts/mundo/interactuable.gd" id="3_interactuable"]
+[ext_resource type="Texture2D" path="res://art/mundo/props/barril.png" id="4_barril"]
+
+[node name="Sushi" type="Node3D" node_paths=PackedStringArray("casa")]
+script = ExtResource("1_script")
+prefijo_efectos = "sushi_"
+nombre_corto = "Sushi"
+requiere_alga = true
+casa = NodePath("Casa")
+parte_lonja = 0.2
+capacidad_despensa = 80.0
+mult_plato = 2.0
+locales_por_minuto = 0.3
+locales_por_pescador = 0.05
+
+[node name="Piezas" type="Node3D" parent="."]
+
+[node name="Casa" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 1.55, -1.4)
+billboard = 2
+alpha_cut = 1
+texture_filter = 0
+pixel_size = 0.05
+texture = ExtResource("2_casa")
+
+[node name="Barril" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.8, 0.45, 0.4)
+billboard = 2
+alpha_cut = 1
+texture_filter = 0
+pixel_size = 0.05
+texture = ExtResource("4_barril")
+
+[node name="Interaccion" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, 0.8)
+script = ExtResource("3_interactuable")
+accion = 2
+texto_accion = "Hablar"
+radio = 2.4
+prioridad = 1
+altura_icono = 1.6
+nombre = "Sushi"
+lineas = Array[String](["Sin alga no hay sushi. Tráeme algas, que te las pago.", "El pescado me lo manda la lonja. El arroz, no preguntes.", "Las mejoras del puesto, en el ayuntamiento."])
+recibe_cosecha = true

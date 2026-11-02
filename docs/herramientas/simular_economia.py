@@ -276,10 +276,13 @@ MEJORAS = ["mejora_despensa", "mejora_fogon", "mejora_mesas", "mejora_pantalan_c
            "mejora_lonja_hielo", "mejora_entrada_muelle", "mejora_cultivos_bancales",
            "mejora_taladro_motor", "mejora_omar_terraza", "mejora_entrada_faro"]
 TALADRO = dict(por_minuto=3.0, tope=60.0)
+SUSHI = dict(parte=0.2, capacidad=80, mult_plato=2.0, locales=0.3)
+MEJORAS += ["mejora_sushi_barra", "mejora_sushi_cuchillos"]
 _REQ_MEJORA = {"mejora_despensa": "restaurante", "mejora_fogon": "restaurante", "mejora_mesas": "restaurante",
                "mejora_pantalan_cebo": "puerto", "mejora_pantalan_redes": "puerto", "mejora_lonja_hielo": "lonja",
                "mejora_entrada_muelle": "entrada turistas", "mejora_cultivos_bancales": "cultivos",
-               "mejora_taladro_motor": "taladro", "mejora_omar_terraza": "taladro", "mejora_entrada_faro": "taladro"}
+               "mejora_taladro_motor": "taladro", "mejora_omar_terraza": "taladro", "mejora_entrada_faro": "taladro",
+               "mejora_sushi_barra": "sushi", "mejora_sushi_cuchillos": "sushi"}
 
 
 def _efectos(niv, mejoras):
@@ -348,9 +351,27 @@ def partida(jugador=1.0, semilla=1, horas=4.0, informe=False):
             muestra = random.sample(precio_pez_lista, k)
             raciones += k
             valor_rac += sum(muestra)
+        if "sushi" in hitos:
+            ks = min(int(len(precio_pez_lista) * SUSHI["parte"]), int(SUSHI["capacidad"] + E.get("sushi_despensa", 0) - su["raciones"]))
+            if ks > 0:
+                m2 = random.sample(precio_pez_lista, min(ks, len(precio_pez_lista)))
+                su["raciones"] += len(m2); su["valor"] += sum(m2)
+
+    su = dict(raciones=0.0, valor=0.0, alga=0)
+
+    def servir_sushi():
+        nonlocal clientes
+        if su["raciones"] < 1 or su["alga"] <= 0:
+            return 0.0
+        medio = su["valor"] / su["raciones"]
+        su["raciones"] -= 1; su["valor"] -= medio; su["alga"] -= 1
+        clientes += 1
+        return medio * (SUSHI["mult_plato"] + E.get("sushi_precio_plato", 0))
 
     def servir():
         nonlocal raciones, valor_rac, pim, alga, clientes
+        if "sushi" in hitos and su["raciones"] >= 1 and su["alga"] > 0 and random.random() < 0.5:
+            return servir_sushi()
         if raciones < 1:
             return 0.0
         medio = valor_rac / raciones
@@ -384,7 +405,8 @@ def partida(jugador=1.0, semilla=1, horas=4.0, informe=False):
             vendidos.extend([sard_v] * int(random.random() < tr_rpm / 60 * dt / max(1e-6, sard_v)))
         # Restaurante: gente del pueblo + turistas.
         if "restaurante" in hitos:
-            locales_acum += dt * (REST["locales"] + REST["locales_pesc"] * trab) / 60
+            locales_acum += dt * (REST["locales"] + REST["locales_pesc"] * trab
+                                  + (SUSHI["locales"] * (1 + E.get("sushi_clientes", 0)) if "sushi" in hitos else 0)) / 60
             while locales_acum >= 1:
                 locales_acum -= 1
                 g = servir() * 1.0
@@ -438,6 +460,8 @@ def partida(jugador=1.0, semilla=1, horas=4.0, informe=False):
                 np_, na_ = int(listas_p * pp), int(listas_a * pa)
                 g = (np_ * CULT["pim_precio"] + na_ * CULT["alga_precio"]) * (1 + E.get("valor_cosecha", 0)) * mv
                 rublos += g; totales += g; fuentes["restaurante"] += g
+                if "sushi" in hitos:
+                    su["alga"] += na_ // 2; na_ -= na_ // 2
                 alga += na_
                 plantas_t = 0.0
                 t += CULT["andar"]
@@ -456,7 +480,7 @@ def partida(jugador=1.0, semilla=1, horas=4.0, informe=False):
         for ap, nombre in [("primera_isla", "primera isla"), ("isla_skilltree", "viejo y árbol"), ("camino", "camino"),
                            ("puerto_pesquero", "puerto"), ("lonja", "lonja"), ("camino_2", "camino 2"),
                            ("restaurante", "restaurante"), ("entrada_turistas", "entrada turistas"), ("cultivos", "cultivos"),
-                           ("ayuntamiento", "ayuntamiento"), ("taladro", "taladro")]:
+                           ("ayuntamiento", "ayuntamiento"), ("taladro", "taladro"), ("sushi", "sushi")]:
             if nombre not in hitos and cumple(ap):
                 hito(nombre)
                 if nombre == "puerto":
