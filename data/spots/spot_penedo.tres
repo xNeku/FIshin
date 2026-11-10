@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="SpotData" format=3]
+
+[ext_resource type="Script" path="res://scripts/datos/spot_data.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"spot_penedo"
+nombre = "O Penedo"
+descripcion = "Una piedra en mar abierto donde se arriman los buenos de aquí: poco comunes, raros y, si hay suerte, épicos. Minijuego de botones; a los tochos se les remata machacando. Lo que pica cambia con la hora y la estación."
+modo = 0
+orden = 1
+rareza_min = 1
+rareza_max = 3
+zona = 0
+mult_valor = 0.75
+mult_rareza = 2.0

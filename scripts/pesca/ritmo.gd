@@ -1,7 +1,7 @@
 class_name Ritmo
 extends CanvasLayer
 ## Minijuego de carril de los spots de banco y trofeo. Cuatro carriles, uno por botón de símbolo (pesca_1..4):
-## las notas viajan por el sedal hasta la zona de golpe y hay que pulsar su botón al llegar.
+## las notas caen por su carril (vertical) hasta la línea de golpe y hay que pulsar su botón al llegar.
 ## - Banco: cada nota acertada es un pez; el ritmo se acelera; fallar solo pierde ese pez.
 ## - Pelea (trofeo): canción larga con notas que hay que mantener (el pez tira); los fallos bajan la
 ##   tensión y, si se vacía, el pez se escapa.
@@ -10,7 +10,7 @@ extends CanvasLayer
 const ACCIONES: Array[StringName] = [&"pesca_1", &"pesca_2", &"pesca_3", &"pesca_4"]
 
 @export var escena_nota: PackedScene
-## Segundos que tarda una nota en cruzar la pista hasta la zona de golpe.
+## Segundos que tarda una nota en caer desde arriba hasta la línea de golpe.
 @export var antelacion: float = 1.8
 @export var ventana_perfecta: float = 0.07
 @export var ventana_buena: float = 0.15
@@ -37,7 +37,7 @@ const ACCIONES: Array[StringName] = [&"pesca_1", &"pesca_2", &"pesca_3", &"pesca
 @onready var pista: Control = $Raiz/Panel/Lista/Pista
 @onready var notas: Control = $Raiz/Panel/Lista/Pista/Notas
 @onready var golpe: Control = $Raiz/Panel/Lista/Pista/Golpe
-@onready var combo: Label = $Raiz/Panel/Lista/Arriba/Combo
+@onready var combo: Label = $Raiz/Panel/Lista/Combo
 @onready var contador: Label = $Raiz/Panel/Lista/Arriba/Contador
 @onready var tension: ProgressBar = $Raiz/Panel/Lista/Arriba/Tension
 
@@ -184,22 +184,24 @@ func _process(delta: float) -> void:
 	if not activo or get_tree().paused:
 		return
 	_t += delta
-	var largo: float = pista.size.x - golpe.position.x
-	var alto: float = pista.size.y / 4.0
+	# Vertical: las notas caen desde arriba hasta la línea de golpe (Golpe.position.y).
+	var largo: float = golpe.position.y
+	var ancho: float = pista.size.x / 4.0
 	for nota: Dictionary in _lista:
 		var nodo: Control = nota.get("nodo")
 		if nodo == null or not is_instance_valid(nodo):
 			continue
-		var x: float = golpe.position.x + (nota.t - _t) / antelacion * largo
-		nodo.position = Vector2(x - nodo.size.x * 0.5, (nota.carril + 0.5) * alto - nodo.size.y * 0.5)
-		nodo.visible = x < pista.size.x + 40.0
+		var y: float = golpe.position.y - (nota.t - _t) / antelacion * largo
+		if nota.estado == 1:
+			y = golpe.position.y
+		nodo.position = Vector2((nota.carril + 0.5) * ancho - nodo.size.x * 0.5, y - nodo.size.y * 0.5)
+		nodo.visible = y > -nodo.size.y
 		var cola: Control = nodo.get_node_or_null("Cola")
 		if cola:
 			cola.visible = nota.dur > 0.0
 			var fin: float = maxf(0.0, (nota.t + nota.dur - maxf(_t, nota.t)) / antelacion * largo)
-			cola.size.x = fin
-			if nota.estado == 1:
-				nodo.position.x = golpe.position.x - nodo.size.x * 0.5
+			cola.size = Vector2(cola.size.x, fin)
+			cola.position = Vector2((nodo.size.x - cola.size.x) * 0.5, nodo.size.y * 0.5 - fin)
 		# Se pasó sin pulsarla.
 		if nota.estado == 0 and _t > nota.t + ventana_buena:
 			nota.estado = 2
@@ -253,7 +255,7 @@ func _pintar_botones() -> void:
 	for k in ACCIONES.size():
 		var b: TextureRect = golpe.get_child(k)
 		b.texture = IconosInput.icono(ACCIONES[k])
-		b.position.y = (k + 0.5) * pista.size.y / 4.0 - b.size.y * 0.5
+		b.position = Vector2((k + 0.5) * pista.size.x / 4.0 - b.size.x * 0.5, -b.size.y * 0.5)
 
 
 func _refrescar_textos() -> void:

@@ -41,7 +41,7 @@ const NOMBRES_RAREZA: Array[String] = ["Común", "Poco común", "Raro", "Épico"
 @export var mult_tiempo: float = 1.0
 ## Probabilidad de que un paso sea doble (número + flecha).
 @export_range(0.0, 1.0) var prob_doble: float = 0.0
-## Cada cuántos pasos hay un tramo de machacar. 0 = nunca.
+## > 0 = pez tocho: si completas la cadena, el remate es machacar el botón principal (X / 1). 0 = sin remate.
 @export var machacar_cada: int = 0
 @export var pulsaciones_machacar: int = 10
 @export var tiempo_machacar: float = 2.0

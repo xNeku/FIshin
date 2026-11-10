@@ -1,10 +1,10 @@
 [gd_scene format=3]
 
 [ext_resource type="Script" path="res://scripts/mundo/spot.gd" id="1_script"]
-[ext_resource type="Resource" path="res://data/spots/spot_roca.tres" id="2_datos"]
+[ext_resource type="Resource" path="res://data/spots/spot_penedo.tres" id="2_datos"]
 [ext_resource type="Texture2D" path="res://art/mundo/props/roca.png" id="t_roca"]
 
-[node name="SpotRoca" type="Node3D" node_paths=PackedStringArray("punto_barca")]
+[node name="SpotPenedo" type="Node3D" node_paths=PackedStringArray("punto_barca")]
 script = ExtResource("1_script")
 datos = ExtResource("2_datos")
 punto_barca = NodePath("PuntoBarca")
@@ -37,10 +37,11 @@ pixel_size = 0.05
 texture = ExtResource("t_roca")
 
 [node name="Cartel" type="Label3D" parent="."]
+visibility_range_begin = 9.0
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7, -0.8)
 billboard = 1
 texture_filter = 0
 pixel_size = 0.012
 modulate = Color(1, 0.95, 0.75, 1)
 outline_size = 8
-text = "La roca"
+text = "O Penedo"

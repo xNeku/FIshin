@@ -19,5 +19,5 @@ efecto = &"tiempo_reaccion"
 valor_por_nivel = 0.03
 formato = 0
 requisitos = Array[Resource]([])
-requiere_flag = "aparecido_spot_roca"
-texto_bloqueo = "Llega con el primer spot de pesca."
+requiere_flag = "aparecido_spot_penedo"
+texto_bloqueo = "Llega con O Penedo (spot de pesca del mid game)."

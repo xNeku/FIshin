@@ -5,9 +5,8 @@
 [ext_resource type="PackedScene" path="res://scenes/ui/hud.tscn" id="3_hud"]
 [ext_resource type="PackedScene" path="res://scenes/ui/ritmo.tscn" id="ritmo_ui"]
 [ext_resource type="Script" path="res://scripts/pesca/viaje_spots.gd" id="viaje_spots"]
-[ext_resource type="Resource" path="res://data/apariciones/spot_roca.tres" id="ap_spot_roca"]
-[ext_resource type="Resource" path="res://data/apariciones/spot_banco.tres" id="ap_spot_banco"]
-[ext_resource type="Resource" path="res://data/apariciones/spot_fosa.tres" id="ap_spot_fosa"]
+[ext_resource type="Resource" path="res://data/apariciones/spot_penedo.tres" id="ap_spot_penedo"]
+[ext_resource type="Resource" path="res://data/apariciones/spot_fora.tres" id="ap_spot_fora"]
 [ext_resource type="PackedScene" path="res://scenes/ui/menu.tscn" id="11_menu"]
 [ext_resource type="PackedScene" path="res://scenes/ui/tienda.tscn" id="12_tienda"]
 [ext_resource type="Script" path="res://scripts/pesca/celebracion.gd" id="13_celebracion"]
@@ -303,7 +302,7 @@ stream = ExtResource("sfx_latido")
 
 [node name="Mundo" type="Node3D" parent="." node_paths=PackedStringArray("pesca", "camara", "celebracion", "sombra", "sfx_mar", "sfx_caida", "sfx_impacto", "sfx_pieza")]
 script = ExtResource("16_mundo")
-apariciones = Array[ExtResource("17_aparicion")]([ExtResource("18_primera_isla"), ExtResource("19_isla_skilltree"), ExtResource("26_puerto"), ExtResource("27_camino"), ExtResource("32_lonja"), ExtResource("camino_2"), ExtResource("ap_restaurante"), ExtResource("ap_entrada"), ExtResource("ap_cultivos"), ExtResource("ap_ayto"), ExtResource("ap_taladro"), ExtResource("ap_sushi"), ExtResource("ap_spot_roca"), ExtResource("ap_spot_banco"), ExtResource("ap_spot_fosa")])
+apariciones = Array[ExtResource("17_aparicion")]([ExtResource("18_primera_isla"), ExtResource("19_isla_skilltree"), ExtResource("26_puerto"), ExtResource("27_camino"), ExtResource("32_lonja"), ExtResource("camino_2"), ExtResource("ap_restaurante"), ExtResource("ap_entrada"), ExtResource("ap_cultivos"), ExtResource("ap_ayto"), ExtResource("ap_taladro"), ExtResource("ap_sushi"), ExtResource("ap_spot_penedo"), ExtResource("ap_spot_fora")])
 pesca = NodePath("../Pesca")
 camara = NodePath("../Camara")
 celebracion = NodePath("../Celebracion")

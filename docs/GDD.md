@@ -39,7 +39,7 @@ Marcas: [DECIDIDO] lo decidió el diseñador · [PROPUESTA] sugerencia de Claude
 - Nota: el combo x10 solo es posible con la Sabia caña (rota: hasta 5, decente: hasta 9). El puerto queda para después del viejo.
 - [DECIDIDO] **Lonja** (3×3 en x −1..1, y 7..9, al final del camino): centro de venta conceptual. No se va a ella a vender: desde que aparece, todo lo que vendas (también al comerciante) vale ×1,3. Con el porteador, el comerciante le lleva el cubo navegando. Con los restaurantes será el centro neurálgico del pescado: se verá cómo lanza el pescado a cada destino. Emerge del fondo del mar. Casa blanca medio moruna con toldo azul y blanco, bandera con un pez pocho y flotadores rojos y blancos.
 - [PROPUESTA] La lonja aparece cuando ya existe el camino y has ganado 1.500 ₽ en total. La fila de la casa (y = 9) no se pisa.
-- [PROPUESTA] Cañas del early game: Rota (1), Decente (2), Sabia (3), **Fibra** (4, la vende el comerciante desde la lonja) y **Carbono** (5, desde la entrada de turistas). [DECIDIDO] El early game tiene como tope un combo de 25. Las cañas rápida y pesada son del mid game. [DECIDIDO] Las dos usan el mismo minijuego, tipo Guitar Hero, solo con los botones de símbolo. (10 nov: ese carril pasa a los spots del banco y la fosa; las cañas especiales se quitan, ver §5.)
+- [PROPUESTA] Cañas del early game: Rota (1), Decente (2), Sabia (3), **Fibra** (4, la vende el comerciante desde la lonja) y **Carbono** (5, desde la entrada de turistas). [DECIDIDO] El early game tiene como tope un combo de 25. Las cañas rápida y pesada son del mid game. [DECIDIDO] Las dos usan el mismo minijuego, tipo Guitar Hero, solo con los botones de símbolo. (10 nov: ese carril pasa al spot Mar de Fóra; las cañas especiales se quitan, ver §5.)
 - [DECIDIDO] **Dos alturas**: la zona de la lonja, el camino 2 y los restaurantes es un puerto alto sobre pilotes de madera (1,2 m). El camino 1 tiene una escalera en (0,4). La entrada de turistas queda abajo, a la altura de pesca, con su escalera en (4,5) hasta el camino 2 (se añadió el rellano (4,4)). Solo se cambia de altura por las escaleras. Se pesca desde abajo.
 - [DECIDIDO] De noche el náufrago fuma: sale humo y la brasa ilumina un poco.
 - [DECIDIDO] **Camino 2** (32 casillas): anillo alrededor de la lonja con plaza arriba, ramal a la izquierda y ramal al restaurante. Llega al tener el tercer pescador. Con él el comerciante ya no llega navegando a la lonja: aparca y va andando.
@@ -69,15 +69,24 @@ Marcas: [DECIDIDO] lo decidió el diseñador · [PROPUESTA] sugerencia de Claude
   - Cada caña pone su `valor_pez`, y su `mult_rareza` sube las calidades buenas.
   - No cuentan para el bestiario.
 - [DECIDIDO] **Spots:** 2-3 sitios desbloqueables con pesca distinta, objetivos de coleccionismo y los minijuegos de siempre, con su animación de captura. Son los que cuentan para el bestiario.
-- [PROPUESTA] Spots hechos:
-  - **La roca:** minijuego clásico; llega tras 150 peces.
-  - **El banco:** carril, cada nota un pez; llega con 150K ₽.
-  - **La fosa:** pelea de trofeo, solo raros o mejores; se gana con un combo ×15 en la roca.
-- [PROPUESTA] Cómo se juegan los spots:
-  - Sentado, "acción extra" (R2) hace remar el donut al siguiente spot o de vuelta a la base.
-  - En un spot no te puedes levantar, y la pesca base se para.
-  - Lo pescado en los spots vale ×1,5, para que compense frente a quedarse en la base.
-- [PROPUESTA] Las cañas rápida y tocha desaparecen: su carril es ahora el de los spots del banco y la fosa.
+- [DECIDIDO] (10 nov, 2ª vuelta) **Solo 2 spots**:
+  - Uno de mid game para intentar épicos normales.
+  - Otro de late game con peces gigantes.
+- [DECIDIDO] En los spots no salen botas viejas ni cosas así.
+- [DECIDIDO] Cada spot va tematizado. Lo que pica cambia de día, de noche y con la estación, para que siempre haya un motivo para intentarlo.
+- [DECIDIDO] **Spot de mid game: el minijuego básico.** Luego se compra "Leer el agua" para ver lo que viene. Si es un pez tocho y completas la cadena, el remate es machacar muy rápido el mismo botón (X / 1).
+- [DECIDIDO] **Spot de gigantes: tipo Guitar Hero**, en vertical y con la estética de nuestra interfaz (cristal translúcido).
+- [PROPUESTA] **O Penedo** (mid game, llega con 500K ₽ y tras el ayuntamiento, hacia las 3 h 20):
+  - Peces de Galicia de poco comunes a épicos, sin objetos, flora ni equinodermos (52 especies).
+  - Raros y épicos, ×2.
+  - Usa la profundidad de tu caña: mejores cañas, más especies.
+- [PROPUESTA] **Mar de Fóra** (late game, 4M ₽ y tras el sushi, hacia las 6 h 40):
+  - Gigantes de más de 40 kg, raros o mejores, de aquí y de fuera (31 especies).
+  - Su propio fondo: profundidad 12.
+  - Carril vertical con tensión.
+- [PROPUESTA] Arriba, en el spot, se ve qué pica ahora y cuántas especies faltan por descubrir. Desde la base, el aviso dice "Ir a O Penedo (3 nuevas pican ahora)".
+- [PROPUESTA] Dinero: cada spot paga ~1,25-1,3× la pesca base de su época (O Penedo `mult_valor` 0,75; Mar de Fóra 0,09, porque los gigantes valen mucho de catálogo). Se va por coleccionar y por el reto, no porque sea obligatorio.
+- [PROPUESTA] Las cañas rápida y tocha desaparecen: su carril de trofeo es ahora el de Mar de Fóra (el modo banco queda en el código, sin spot).
 - Lo de abajo (cadenas, combos, dobles, machacar, celebración) es ahora el minijuego de los spots.
 
 - [DECIDIDO] En el donut el personaje espera a que pique. Cuando pica, sale un botón en pantalla.
@@ -92,7 +101,7 @@ Marcas: [DECIDIDO] lo decidió el diseñador · [PROPUESTA] sugerencia de Claude
 - [DECIDIDO] Futuro: modos de pesca según la caña (volumen y trofeo; ver `docs/PROGRESION.md`).
 - [DECIDIDO] Las dobles tardan en salir. [PROPUESTA] Desde el 5º botón (`dobles_desde_boton`).
 - [DECIDIDO] Pulsaciones dobles (tipo R2 + X). Teclado: números con la izquierda y flechas con la derecha; las dobles combinan una de cada.
-- [DECIDIDO] Peces pesados o especiales tienen tramos de machacar un botón para llenar una barra. Si no la llenas, los legendarios y extraños se escapan y los normales salen peores.
+- [DECIDIDO] Peces pesados o especiales tienen tramos de machacar un botón para llenar una barra. Si no la llenas, los legendarios y extraños se escapan y los normales salen peores. (10 nov: ya no va a mitad de cadena. Es el remate final de los tochos (`machacar_cada > 0`) cuando completas la cadena, siempre con el botón principal.)
 - [DECIDIDO] Celebración al sacar algo muy tocho: el náufrago levanta el pez (tumbado), luz encima, primer plano y musiquilla estilo Zelda. [PROPUESTA] Se celebra lo extraño o legendario, o cualquier pez de 15 kg o más.
 - [DECIDIDO] Si no pulsas el primer botón, el pez se escapa hasta que mejores la caña.
 - [DECIDIDO] Auto: más adelante, si no pulsas, consigues el pez igualmente (mejora desbloqueable).

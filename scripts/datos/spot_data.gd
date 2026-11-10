@@ -18,6 +18,14 @@ enum Modo { CLASICO, BANCO, TROFEO }
 @export_range(0, 5) var rareza_max: int = 5
 ## Profundidad de más sobre la de tu caña.
 @export var profundidad_extra: int = 0
+## Si es > 0, el spot tiene su propio fondo (ignora la caña): pican los peces hasta esta profundidad.
+@export var profundidad_propia: int = 0
+## -1 = de cualquier sitio; 0 = solo de Galicia; 1 = solo del resto del mundo (PezData.Zona).
+@export_range(-1, 1) var zona: int = -1
+## Solo especies que pueden pesar al menos esto (kg, su peso_max). 0 = todas.
+@export var peso_minimo_especie: float = 0.0
+## PezData.Tipo que no pican aquí (por defecto: objetos, flora y equinodermos; nada de botas viejas).
+@export var tipos_excluidos: Array[int] = [3, 6, 7]
 ## Multiplica el valor de todo lo que sale aquí.
 @export var mult_valor: float = 1.5
 ## Multiplica la probabilidad de raros o mejores.

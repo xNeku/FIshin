@@ -1,18 +1,18 @@
 [gd_resource type="Resource" script_class="AparicionData" format=3]
 
 [ext_resource type="Script" path="res://scripts/datos/aparicion_data.gd" id="1_script"]
-[ext_resource type="PackedScene" path="res://scenes/mundo/spots/spot_roca.tscn" id="2_escena"]
+[ext_resource type="PackedScene" path="res://scenes/mundo/spots/spot_penedo.tscn" id="2_escena"]
 
 [resource]
 script = ExtResource("1_script")
-id = &"spot_roca"
-nombre = "La roca"
+id = &"spot_penedo"
+nombre = "O Penedo"
 escena = ExtResource("2_escena")
 ancla = Vector2i(-3, -5)
 celdas = Array[Vector2i]([Vector2i(-3, -5)])
 celdas_bloqueadas = Array[Vector2i]([Vector2i(-3, -5)])
 orden = 21
-condicion = 0
-valor = 150.0
-requiere = Array[StringName]([&"isla_skilltree"])
+condicion = 1
+valor = 500000.0
+requiere = Array[StringName]([&"ayuntamiento"])
 llegada = 3

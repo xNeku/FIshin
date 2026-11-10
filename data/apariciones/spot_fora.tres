@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="AparicionData" format=3]
+
+[ext_resource type="Script" path="res://scripts/datos/aparicion_data.gd" id="1_script"]
+[ext_resource type="PackedScene" path="res://scenes/mundo/spots/spot_fora.tscn" id="2_escena"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"spot_fora"
+nombre = "Mar de Fóra"
+escena = ExtResource("2_escena")
+ancla = Vector2i(3, -8)
+celdas = Array[Vector2i]([Vector2i(3, -8)])
+celdas_bloqueadas = Array[Vector2i]([Vector2i(3, -8)])
+orden = 22
+condicion = 1
+valor = 4000000.0
+requiere = Array[StringName]([&"sushi"])
+llegada = 3

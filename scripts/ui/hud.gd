@@ -91,6 +91,8 @@ const TECLA_A_ACCION: Dictionary = {"E": &"interactuar", "Q": &"cambiar_modo", "
 
 ## Botón que salta encima de la cabeza cuando pica en la base (Popups/IconoPicar).
 @onready var icono_picar: TextureRect = get_node_or_null("Popups/IconoPicar")
+## En un spot: qué pica ahora y cuántas te faltan (SpotInfo).
+@onready var spot_info: Label = get_node_or_null("SpotInfo")
 ## Peces/min y ₽/min de la pesca base (Info/Lista/RitmoPesca).
 @onready var ritmo_pesca: Label = get_node_or_null("Info/Lista/RitmoPesca")
 ## Segundos que se miran para calcular el ritmo de pesca.
@@ -171,6 +173,7 @@ func _process(delta: float) -> void:
 	_icono_interactuar(dt)
 	_icono_picar(dt)
 	_ritmo_pesca(dt)
+	_info_spot()
 	if resultado.visible:
 		_t_carta -= dt
 		if _t_carta <= 0.0:
@@ -346,6 +349,21 @@ func _on_captura_base(c: Dictionary, p: PezData, manual: bool) -> void:
 	_popup_en("+" + Formato.dinero(c.valor), col, _sobre_la_cabeza() + Vector2(randf_range(-30, 30), -70), escala)
 	if p.rareza >= PezData.Rareza.EPICO:
 		_destello = maxf(_destello, destello_captura)
+
+
+func _info_spot() -> void:
+	if spot_info == null:
+		return
+	spot_info.visible = pesca != null and pesca.spot != null
+	if not spot_info.visible or Engine.get_process_frames() % 30 != 0:
+		return
+	var viaje: Node = get_tree().get_first_node_in_group("viaje_spots")
+	var r: Vector2i = viaje.resumen(pesca.spot) if viaje else Vector2i.ZERO
+	var rd: RelojData = Juego.reloj_data
+	var momento: String = ""
+	if rd:
+		momento = " · %s, %s" % [RelojData.ESTACIONES[rd.estacion(Juego.reloj)], "ocaso" if rd.es_ocaso(Juego.reloj) else ("noche" if rd.es_noche(Juego.reloj) else "día")]
+	spot_info.text = "%s%s · pican %d especies" % [pesca.spot.nombre, momento, r.x] + (", %d sin descubrir" % r.y if r.y > 0 else ", ¡todas descubiertas!")
 
 
 ## Ritmo de la pesca base en el panel: peces por minuto y lo que dan por minuto.

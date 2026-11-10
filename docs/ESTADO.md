@@ -374,18 +374,25 @@ A las 6-7 h los restaurantes son ~50 % de los ingresos.
   - La `mult_rareza` de la caña sube las calidades buenas; picando a mano, ×1,4 más.
 - Juego: las piezas de base van a la barca, se venden y alimentan la lonja y los restaurantes como siempre, pero no tocan el bestiario. `Juego.pez_data` busca también en `peces_base`.
 
-**Spots** (`SpotData` en `data/spots/`, escenas en `scenes/mundo/spots/`, script `spot.gd`):
-- Llegan como apariciones (EMERGER):
-  - La roca: (-3,-5), CLASICO, tras 150 peces y el viejo.
-  - El banco: (8,-2), BANCO, 150K ₽ tras la roca.
-  - La fosa: (3,-7), TROFEO, combo ×15 tras el banco.
-- `ViajeSpots` (nodo en main): sentado, `accion_extra` rema el donut a `Spot.punto_barca` del siguiente spot, o vuelve a la base (orden por `SpotData.orden`). La caja de acciones lo enseña ("[Extra] Ir a La roca").
-  - En un spot no te puedes levantar (`Jugador.puede_bajar`).
-  - Lo que sale vale `mult_valor` (×1,5).
-  - Rarezas por spot: `rareza_min/max`.
-  - El banco usa `notas_min/max`; la fosa espera más y tiene más raros.
-- En los spots va todo lo de antes: minijuego, carril (`Ritmo.empezar(pesca, pez, spot)`), carta, celebración, maestría y bestiario.
-- Se quitan las cañas rápida y tocha, y el selector de caña del menú. `CanaData.modo` ya no existe.
+**Spots** (`SpotData` en `data/spots/`, escenas en `scenes/mundo/spots/`, script `spot.gd`). Hay 2 (la 2ª vuelta quitó el banco y la fosa):
+- **O Penedo** (`spot_penedo`):
+  - Aparición en (-3,-5), con 500K ₽ y tras el ayuntamiento: en el simulador, ~3 h 20.
+  - CLASICO. Rareza 1-3, zona Galicia, `mult_rareza` 2, `mult_valor` 0,75. Usa la profundidad de la caña.
+- **Mar de Fóra** (`spot_fora`):
+  - (3,-8), con 4M ₽ y tras el sushi: ~6 h 40.
+  - TROFEO. Rareza 2-5, `peso_minimo_especie` 40, `profundidad_propia` 12, `mult_valor` 0,09 (los gigantes valen mucho de catálogo), `mult_espera` 1,4.
+- Filtros de `SpotData`: `rareza_min/max`, `zona`, `peso_minimo_especie`, `tipos_excluidos` (por defecto objetos, flora y equinodermos: sin botas viejas) y `profundidad_propia`. `Pesca.pica_en_spot` y `Pesca.especies_ahora` los aplican, más la hora y la estación de cada pez. Si a esa hora no pica ninguna del spot, se ignora el reloj.
+- Incentivo:
+  - En el spot, arriba (HUD `SpotInfo`): "O Penedo · Otoño, noche · pican 16 especies, 5 sin descubrir".
+  - Desde la base, la caja dice "[Extra] Ir a O Penedo (3 nuevas pican ahora)" (`ViajeSpots.resumen`).
+- **Remate de machacar:** se acabaron los tramos a mitad de cadena. Si el pez tiene `machacar_cada > 0` (tocho) y la cadena sale completa (`n >= pasos_perfect`), se añade un último paso de machacar `pesca_1` (X / 1). Si fallas, como antes: los legendarios y extraños se escapan y el resto sale peor.
+- **Carril vertical** (`ritmo.tscn` rehecho):
+  - Panel de cristal a la derecha.
+  - Nombre del pez y tensión arriba.
+  - 4 carriles finos translúcidos; las notas caen hasta la línea de golpe, con los botones abajo.
+  - Las notas largas tienen cola hacia arriba (`nota_ritmo.tscn`).
+- `ViajeSpots` (nodo en main): sentado, `accion_extra` rema al siguiente spot o vuelve a la base, y la cámara sigue al donut. En un spot no te levantas. Ahí van el minijuego, la carta, la celebración, la maestría y el bestiario.
+- Dinero (`/scratchpad spots_cal`, reproducible con `simular_carril.py` + pools): O Penedo ~1,25× la base a mano de su época y Mar de Fóra ~1,3×.
 
 **Árbol, rama Pesca**, en dos líneas:
 - Base, a la derecha del bonsái:
@@ -396,7 +403,7 @@ A las 6-7 h los restaurantes son ~50 % de los ingresos.
   - Mano dura, Ojo de tasador, Brazos de pulpo y Leyenda.
 - Maña (spots), a la izquierda: todo lo del minijuego.
   - Muñeca, sedal, ojo, pulso, lujo, más hondo, brazos, acero, tirón, ambidiestro y leer el agua.
-  - Bloqueada hasta `aparecido_spot_roca`.
+  - Bloqueada hasta `aparecido_spot_penedo`.
 
 **Llegadas:** el camino pide 85 peces (antes, puntos de pesca) y el puerto, 3.500 ₽ ganados.
 
@@ -419,4 +426,6 @@ A las 6-7 h los restaurantes son ~50 % de los ingresos.
 - No hay progreso offline.
 - No hay animación de remo: el donut se desliza.
 - La posición de los spots en el mapa es provisional.
-- Los objetivos de coleccionismo por spot (sus especies y premios) están por diseñar.
+- Los objetivos de coleccionismo por spot (premios por completar) están por diseñar.
+- Los épicos de O Penedo piden cadenas de ~23 y la caña de carbono llega a 21: completarlas y llegar al remate cuesta hasta mejorar caña o Maña.
+- Sin spot, el bestiario está vacío hasta el mid game (~3 h 20).

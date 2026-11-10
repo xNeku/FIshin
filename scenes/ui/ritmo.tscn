@@ -21,55 +21,49 @@ mouse_filter = 2
 [node name="Panel" type="PanelContainer" parent="Raiz"]
 material = ExtResource("3_cristal")
 layout_mode = 1
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -540.0
-offset_top = -400.0
-offset_right = 540.0
-offset_bottom = -60.0
-grow_horizontal = 2
-grow_vertical = 0
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -580.0
+offset_top = -480.0
+offset_right = -90.0
+offset_bottom = 480.0
+grow_horizontal = 0
+grow_vertical = 2
 mouse_filter = 2
 theme_type_variation = &"PanelCristal"
 
 [node name="Lista" type="VBoxContainer" parent="Raiz/Panel"]
 layout_mode = 2
 mouse_filter = 2
-theme_override_constants/separation = 8
+theme_override_constants/separation = 10
 
-[node name="Arriba" type="HBoxContainer" parent="Raiz/Panel/Lista"]
+[node name="Arriba" type="VBoxContainer" parent="Raiz/Panel/Lista"]
 layout_mode = 2
 mouse_filter = 2
-theme_override_constants/separation = 24
+theme_override_constants/separation = 6
 
 [node name="Contador" type="Label" parent="Raiz/Panel/Lista/Arriba"]
 layout_mode = 2
-size_flags_horizontal = 3
 theme_type_variation = &"Titulo"
-text = "Sardina ×0"
-
-[node name="Combo" type="Label" parent="Raiz/Panel/Lista/Arriba"]
-custom_minimum_size = Vector2(120, 0)
-layout_mode = 2
-theme_type_variation = &"Dinero"
-text = "x0"
-horizontal_alignment = 2
+text = "Atún rojo"
+horizontal_alignment = 1
+text_overrun_behavior = 3
 
 [node name="Tension" type="ProgressBar" parent="Raiz/Panel/Lista/Arriba"]
-custom_minimum_size = Vector2(320, 28)
+custom_minimum_size = Vector2(0, 26)
 layout_mode = 2
-size_flags_vertical = 4
 mouse_filter = 2
 value = 100.0
 show_percentage = false
 
 [node name="Pista" type="Control" parent="Raiz/Panel/Lista"]
 clip_contents = true
-custom_minimum_size = Vector2(1040, 260)
+custom_minimum_size = Vector2(440, 760)
 layout_mode = 2
+size_flags_horizontal = 4
 mouse_filter = 2
 
 [node name="Fondo" type="ColorRect" parent="Raiz/Panel/Lista/Pista"]
@@ -80,57 +74,57 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-color = Color(0.03, 0.12, 0.2, 0.55)
+color = Color(0.02, 0.08, 0.14, 0.3)
 
-[node name="Sedal1" type="ColorRect" parent="Raiz/Panel/Lista/Pista"]
+[node name="Carril1" type="ColorRect" parent="Raiz/Panel/Lista/Pista"]
 layout_mode = 1
-anchors_preset = 10
-anchor_right = 1.0
-offset_top = 32.0
-offset_bottom = 34.0
-grow_horizontal = 2
+anchors_preset = 11
+anchor_bottom = 1.0
+offset_left = 54.0
+offset_right = 56.0
+grow_vertical = 2
 mouse_filter = 2
-color = Color(0.85, 0.92, 1, 0.25)
+color = Color(0.85, 0.93, 1, 0.16)
 
-[node name="Sedal2" type="ColorRect" parent="Raiz/Panel/Lista/Pista"]
+[node name="Carril2" type="ColorRect" parent="Raiz/Panel/Lista/Pista"]
 layout_mode = 1
-anchors_preset = 10
-anchor_right = 1.0
-offset_top = 97.0
-offset_bottom = 99.0
-grow_horizontal = 2
+anchors_preset = 11
+anchor_bottom = 1.0
+offset_left = 164.0
+offset_right = 166.0
+grow_vertical = 2
 mouse_filter = 2
-color = Color(0.85, 0.92, 1, 0.25)
+color = Color(0.85, 0.93, 1, 0.16)
 
-[node name="Sedal3" type="ColorRect" parent="Raiz/Panel/Lista/Pista"]
+[node name="Carril3" type="ColorRect" parent="Raiz/Panel/Lista/Pista"]
 layout_mode = 1
-anchors_preset = 10
-anchor_right = 1.0
-offset_top = 162.0
-offset_bottom = 164.0
-grow_horizontal = 2
+anchors_preset = 11
+anchor_bottom = 1.0
+offset_left = 274.0
+offset_right = 276.0
+grow_vertical = 2
 mouse_filter = 2
-color = Color(0.85, 0.92, 1, 0.25)
+color = Color(0.85, 0.93, 1, 0.16)
 
-[node name="Sedal4" type="ColorRect" parent="Raiz/Panel/Lista/Pista"]
+[node name="Carril4" type="ColorRect" parent="Raiz/Panel/Lista/Pista"]
 layout_mode = 1
-anchors_preset = 10
-anchor_right = 1.0
-offset_top = 227.0
-offset_bottom = 229.0
-grow_horizontal = 2
+anchors_preset = 11
+anchor_bottom = 1.0
+offset_left = 384.0
+offset_right = 386.0
+grow_vertical = 2
 mouse_filter = 2
-color = Color(0.85, 0.92, 1, 0.25)
+color = Color(0.85, 0.93, 1, 0.16)
 
 [node name="LineaGolpe" type="ColorRect" parent="Raiz/Panel/Lista/Pista"]
 layout_mode = 1
-anchors_preset = 9
-anchor_bottom = 1.0
-offset_left = 78.0
-offset_right = 82.0
-grow_vertical = 2
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 674.0
+offset_bottom = 678.0
+grow_horizontal = 2
 mouse_filter = 2
-color = Color(1, 0.85, 0.35, 0.7)
+color = Color(1, 0.88, 0.45, 0.55)
 
 [node name="Notas" type="Control" parent="Raiz/Panel/Lista/Pista"]
 layout_mode = 1
@@ -143,54 +137,60 @@ mouse_filter = 2
 
 [node name="Golpe" type="Control" parent="Raiz/Panel/Lista/Pista"]
 layout_mode = 0
-offset_left = 80.0
-offset_right = 80.0
+offset_top = 676.0
+offset_bottom = 676.0
 mouse_filter = 2
 
 [node name="Boton1" type="TextureRect" parent="Raiz/Panel/Lista/Pista/Golpe"]
-modulate = Color(1, 1, 1, 0.8)
+modulate = Color(1, 1, 1, 0.85)
 texture_filter = 1
 layout_mode = 0
-offset_left = -30.0
-offset_top = 3.0
-offset_right = 30.0
-offset_bottom = 63.0
+offset_left = 19.0
+offset_top = -36.0
+offset_right = 91.0
+offset_bottom = 36.0
 mouse_filter = 2
 expand_mode = 1
 stretch_mode = 5
 
 [node name="Boton2" type="TextureRect" parent="Raiz/Panel/Lista/Pista/Golpe"]
-modulate = Color(1, 1, 1, 0.8)
+modulate = Color(1, 1, 1, 0.85)
 texture_filter = 1
 layout_mode = 0
-offset_left = -30.0
-offset_top = 68.0
-offset_right = 30.0
-offset_bottom = 128.0
+offset_left = 129.0
+offset_top = -36.0
+offset_right = 201.0
+offset_bottom = 36.0
 mouse_filter = 2
 expand_mode = 1
 stretch_mode = 5
 
 [node name="Boton3" type="TextureRect" parent="Raiz/Panel/Lista/Pista/Golpe"]
-modulate = Color(1, 1, 1, 0.8)
+modulate = Color(1, 1, 1, 0.85)
 texture_filter = 1
 layout_mode = 0
-offset_left = -30.0
-offset_top = 133.0
-offset_right = 30.0
-offset_bottom = 193.0
+offset_left = 239.0
+offset_top = -36.0
+offset_right = 311.0
+offset_bottom = 36.0
 mouse_filter = 2
 expand_mode = 1
 stretch_mode = 5
 
 [node name="Boton4" type="TextureRect" parent="Raiz/Panel/Lista/Pista/Golpe"]
-modulate = Color(1, 1, 1, 0.8)
+modulate = Color(1, 1, 1, 0.85)
 texture_filter = 1
 layout_mode = 0
-offset_left = -30.0
-offset_top = 198.0
-offset_right = 30.0
-offset_bottom = 258.0
+offset_left = 349.0
+offset_top = -36.0
+offset_right = 421.0
+offset_bottom = 36.0
 mouse_filter = 2
 expand_mode = 1
 stretch_mode = 5
+
+[node name="Combo" type="Label" parent="Raiz/Panel/Lista"]
+layout_mode = 2
+theme_type_variation = &"Dinero"
+text = "x0"
+horizontal_alignment = 1

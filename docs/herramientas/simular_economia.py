@@ -538,7 +538,8 @@ def partida(jugador=1.0, semilla=1, horas=4.0, informe=False, atencion=None):
         for ap, nombre in [("primera_isla", "primera isla"), ("isla_skilltree", "viejo y árbol"), ("camino", "camino"),
                            ("puerto_pesquero", "puerto"), ("lonja", "lonja"), ("camino_2", "camino 2"),
                            ("restaurante", "restaurante"), ("entrada_turistas", "entrada turistas"), ("cultivos", "cultivos"),
-                           ("ayuntamiento", "ayuntamiento"), ("taladro", "taladro"), ("sushi", "sushi")]:
+                           ("ayuntamiento", "ayuntamiento"), ("taladro", "taladro"), ("sushi", "sushi"),
+                           ("spot_penedo", "O Penedo"), ("spot_fora", "Mar de Fóra")]:
             if nombre not in hitos and cumple(ap):
                 hito(nombre)
                 if nombre == "puerto":

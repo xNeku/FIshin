@@ -226,6 +226,29 @@ func en_curso() -> bool:
 	return estado == Estado.PASO or estado == Estado.ENTRE_PASOS or estado == Estado.RITMO or estado == Estado.PICADA
 
 
+## Hasta qué profundidad pican en el spot (la caña y el árbol, o el fondo propio del spot).
+func profundidad_spot(s: SpotData = spot) -> int:
+	if s and s.profundidad_propia > 0:
+		return s.profundidad_propia
+	return Juego.cana().profundidad + int(Juego.efecto(&"profundidad")) + (s.profundidad_extra if s else 0)
+
+
+## Si una especie es de este spot (rareza, zona, tamaño y tipo; sin mirar la hora ni la profundidad).
+func pica_en_spot(p: PezData, s: SpotData) -> bool:
+	if p.rareza < s.rareza_min or p.rareza > s.rareza_max or p.tipo in s.tipos_excluidos:
+		return false
+	if s.zona >= 0 and p.zona != s.zona:
+		return false
+	return p.peso_max >= s.peso_minimo_especie
+
+
+## Especies que pueden picar ahora mismo en un spot (por hora, estación y profundidad). Para los avisos.
+func especies_ahora(s: SpotData) -> Array[PezData]:
+	var hondo: int = profundidad_spot(s)
+	return peces.filter(func(p: PezData) -> bool:
+		return pica_en_spot(p, s) and p.profundidad <= hondo and Juego.pez_disponible(p))
+
+
 ## Pesca base: ha picado y aún puedes pulsar.
 func esperando_boton() -> bool:
 	return estado == Estado.PICADA and not _auto_recogiendo
@@ -308,18 +331,18 @@ func _tirar_pez() -> PezData:
 	var posibles: Array[PezData] = []
 	var pesos: Array[float] = []
 	var total: float = 0.0
-	var hondo: int = cana.profundidad + int(Juego.efecto(&"profundidad")) + (spot.profundidad_extra if spot else 0)
+	var hondo: int = profundidad_spot()
 	var suerte: float = 1.0 + Juego.efecto(&"raros") + (Juego.efecto(&"raros_tormenta") if Juego.lloviendo else 0.0) \
 		+ (Juego.efecto(&"raros_tras_chill") if _tras_chill else 0.0)
 	# Solo los de esta estación y hora (si no queda ninguno, se ignora el reloj para que siempre pique algo).
-	var lista: Array[PezData] = peces.filter(func(p: PezData) -> bool: return p.profundidad <= hondo and Juego.pez_disponible(p))
+	var del_spot: Array[PezData] = peces.filter(func(p: PezData) -> bool: return spot == null or pica_en_spot(p, spot))
+	var lista: Array[PezData] = del_spot.filter(func(p: PezData) -> bool: return p.profundidad <= hondo and Juego.pez_disponible(p))
 	if lista.is_empty():
-		lista = peces
+		lista = del_spot
 	for p: PezData in lista:
 		if p.profundidad > hondo:
 			continue
-		# Cada spot tiene sus rarezas (el banco, comunes; el trofeo, raros o mejores).
-		if spot and (p.rareza < spot.rareza_min or p.rareza > spot.rareza_max):
+		if spot and not pica_en_spot(p, spot):
 			continue
 		# Cuanto más hondo pescas, menos salen los peces de arriba (siguen saliendo, pero menos).
 		var w: float = p.probabilidad * pow(stats.peso_por_nivel_arriba, hondo - p.profundidad)
@@ -357,12 +380,7 @@ func _generar_pasos() -> void:
 		# Modo flow: viendo lo que viene, se va bastante más rápido (y puede bajar del mínimo normal).
 		if hay_cola(i):
 			p.tiempo = maxf(stats.tiempo_minimo_cola, maxf(stats.tiempo_minimo, t_base) * stats.mult_tiempo_cola) * mult
-		if pez.machacar_cada > 0 and i > 0 and (i + 1) % pez.machacar_cada == 0:
-			p.tipo = Tipo.MACHACAR
-			p.acciones = [todas.pick_random()]
-			p.pulsaciones = pulsaciones
-			p.tiempo = pez.tiempo_machacar * mult
-		elif i + 1 >= dobles_desde and randf() < pez.prob_doble:
+		if i + 1 >= dobles_desde and randf() < pez.prob_doble:
 			p.tipo = Tipo.DOBLE
 			p.acciones = [NUMEROS.pick_random(), FLECHAS.pick_random()]
 			p.tiempo *= stats.mult_tiempo_doble
@@ -374,6 +392,14 @@ func _generar_pasos() -> void:
 			p.acciones = [a]
 		anterior = p.acciones[0]
 		pasos.append(p)
+	# Pez tocho con la cadena completa: el remate es machacar el botón principal (X / 1) muy rápido.
+	if pez.machacar_cada > 0 and n >= pez.pasos_perfect:
+		var remate := Paso.new()
+		remate.tipo = Tipo.MACHACAR
+		remate.acciones = [NUMEROS[0]]
+		remate.pulsaciones = pulsaciones
+		remate.tiempo = pez.tiempo_machacar * mult
+		pasos.append(remate)
 
 
 func _iniciar_paso() -> void:

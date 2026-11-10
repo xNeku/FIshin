@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="SpotData" format=3]
+
+[ext_resource type="Script" path="res://scripts/datos/spot_data.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"spot_fora"
+nombre = "Mar de Fóra"
+descripcion = "Mar abierto, sin fondo a la vista. Solo los gigantes: más de 40 kg, raros o mejores, de aquí y de fuera. Pelea larga en el carril: si la tensión se vacía, se escapa. Cada estación y cada hora traen otros."
+modo = 2
+orden = 2
+rareza_min = 2
+rareza_max = 5
+profundidad_propia = 12
+peso_minimo_especie = 40.0
+mult_valor = 0.09
+mult_espera = 1.4

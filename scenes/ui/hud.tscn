@@ -303,6 +303,23 @@ theme_override_font_sizes/font_size = 100
 text = "x0"
 horizontal_alignment = 1
 
+[node name="SpotInfo" type="Label" parent="."]
+visible = false
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -500.0
+offset_top = 30.0
+offset_right = 500.0
+offset_bottom = 70.0
+grow_horizontal = 2
+mouse_filter = 2
+theme_type_variation = &"Titulo"
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 8
+text = "O Penedo · Otoño, noche · pican 16 especies, 5 sin descubrir"
+horizontal_alignment = 1
+
 [node name="Popups" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 15

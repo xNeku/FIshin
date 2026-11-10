@@ -49,12 +49,25 @@ func puede_viajar() -> bool:
 	return not (celebracion and celebracion.celebrando)
 
 
-## Texto para la caja de acciones.
+## Especies de un spot que pican ahora (hora, estación, fondo) y cuántas no tienes en el bestiario.
+func resumen(datos: SpotData) -> Vector2i:
+	var lista: Array[PezData] = pesca.especies_ahora(datos)
+	var nuevas: int = 0
+	for p: PezData in lista:
+		if not Juego.coleccion.has(String(p.id)):
+			nuevas += 1
+	return Vector2i(lista.size(), nuevas)
+
+
+## Texto para la caja de acciones (avisa si ahora pican especies que no tienes).
 func texto_accion() -> String:
 	if not puede_viajar():
 		return ""
 	var s: Spot = siguiente()
-	return "[Extra] " + ("Volver a la base" if s == null else "Ir a %s" % s.datos.nombre)
+	if s == null:
+		return "[Extra] Volver a la base"
+	var r: Vector2i = resumen(s.datos)
+	return "[Extra] Ir a %s" % s.datos.nombre + (" (%d nuevas pican ahora)" % r.y if r.y > 0 else "")
 
 
 func _unhandled_input(event: InputEvent) -> void:
