@@ -1,6 +1,10 @@
 class_name Pesca
 extends Node
-## Lógica del minijuego de pesca. No toca nada visual: emite señales y lo visual reacciona.
+## Lógica de la pesca. No toca nada visual: emite señales y lo visual reacciona.
+## - En la base (spot == null): pesca sola. Cuando pica avisa (PICADA); si pulsas a tiempo te la quedas a
+##   valor entero y con más suerte; si no, la pesca automática la recoge tarde y peor (o se escapa sin ella).
+##   Salen calidades (data/peces_base), no especies.
+## - En un spot (SpotData): el minijuego de botones o el de carril, con especies, carta y bestiario.
 
 signal estado_cambiado(estado: Estado)
 signal pez_pica(pez: PezData)
@@ -22,11 +26,20 @@ signal picoteo(aviso: bool)
 signal pez_se_va(pez: PezData)
 ## La cadena entra en un tramo de racha nuevo (StatsPesca.racha_desde). Para lo visual.
 signal racha_subida(tramo: int)
-## Caña rápida: un banco entero (n peces de una especie) de una tacada.
+## Spot de banco: un banco entero (n peces de una especie) de una tacada.
 signal banco_capturado(pez: PezData, cantidad: int, valor: float)
+## Pesca base: ha picado y hay que pulsar (ventana de `ventana_picar` segundos).
+signal picada_base
+## Pesca base: pez dentro. manual = lo has picado tú.
+signal captura_base(captura: Dictionary, pez: PezData, manual: bool)
+## Pesca base: se ha ido (no pulsaste y no tienes pesca automática).
+signal escapa_base
+## Has llegado a un spot o has vuelto a la base (null).
+signal spot_cambiado(spot: SpotData)
 
-## RITMO: el minijuego de carril de las cañas rápida y tocha (lo lleva el nodo `ritmo`).
-enum Estado { INACTIVO, ESPERANDO, PASO, ENTRE_PASOS, RESULTADO, RITMO }
+## RITMO: el minijuego de carril de los spots de banco y trofeo (lo lleva el nodo `ritmo`).
+## PICADA: pesca base, el pez ha picado y espera tu botón (o la pesca automática).
+enum Estado { INACTIVO, ESPERANDO, PASO, ENTRE_PASOS, RESULTADO, RITMO, PICADA }
 enum Tipo { SIMPLE, DOBLE, MACHACAR }
 
 const NUMEROS: Array[StringName] = [&"pesca_1", &"pesca_2", &"pesca_3", &"pesca_4"]
@@ -49,12 +62,29 @@ class Paso:
 @export var pausa_entre_pasos: float = 0.12
 @export var duracion_resultado: float = 1.6
 
-## El minijuego de carril (cañas rápida y tocha).
+## El minijuego de carril (spots de banco y trofeo).
 @export var ritmo: Node
-## Lo que vale cada pez del banco (caña rápida) respecto a su valor base (luego, por su tramo de racha).
+## Lo que vale cada pez del banco respecto a su valor base (luego, por su tramo de racha).
 @export var mult_volumen: float = 0.18
-## Lo que vale el trofeo (caña tocha) respecto a su valor base.
+## Lo que vale el trofeo respecto a su valor base.
 @export var mult_trofeo: float = 0.7
+
+@export_group("Pesca base")
+@export_dir var carpeta_peces_base: String = "res://data/peces_base"
+## Segundos para pulsar desde que pica.
+@export var ventana_picar: float = 1.3
+## Sin pulsar, la pesca automática tarda esto de más en recogerla (se acorta con el árbol).
+@export var retraso_auto: float = 4.0
+## Sin pulsar, la pieza vale esto de su precio (sube con el árbol, nunca por encima de 1).
+@export var valor_auto: float = 0.55
+## Picando a mano, las calidades buenas salen esto más.
+@export var suerte_manual: float = 1.4
+## Pausa tras cada pieza de la base (recoger y volver a lanzar).
+@export var duracion_resultado_base: float = 0.4
+var spot: SpotData = null
+var peces_base: Array[PezData] = []
+## Pesca base: la ventana de pulsar ya pasó y la automática está recogiendo.
+var _auto_recogiendo: bool = false
 var estado: Estado = Estado.INACTIVO
 var pez: PezData
 var cana: CanaData
@@ -83,6 +113,10 @@ func _ready() -> void:
 			var limpio: String = f.trim_suffix(".remap")
 			if limpio.ends_with(".tres"):
 				peces.append(load(carpeta_peces.path_join(limpio)))
+	for f: String in DirAccess.get_files_at(carpeta_peces_base):
+		var limpio2: String = f.trim_suffix(".remap")
+		if limpio2.ends_with(".tres"):
+			peces_base.append(load(carpeta_peces_base.path_join(limpio2)))
 	if activa:
 		esperar()
 
@@ -111,10 +145,21 @@ func _process(delta: float) -> void:
 			_contador -= delta
 			if _contador <= 0.0:
 				esperar()
+		Estado.PICADA:
+			_contador -= delta
+			if _contador <= 0.0:
+				_sin_pulsar_base()
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if estado != Estado.PASO or event.is_echo():
+	if event.is_echo():
+		return
+	if estado == Estado.PICADA and not _auto_recogiendo:
+		if _accion_de(event) != &"":
+			get_viewport().set_input_as_handled()
+			_capturar_base(true)
+		return
+	if estado != Estado.PASO:
 		return
 	var accion: StringName = _accion_de(event)
 	if accion == &"":
@@ -157,7 +202,8 @@ func esperar() -> void:
 	# Las rebajas de espera del árbol van en hiperbólica: +100 % = la mitad de espera, nunca cero.
 	_espera_k = randf()
 	_contador = lerpf(stats.espera_min, stats.espera_max, _espera_k) * Juego.cana().mult_espera * Juego.mult_espera_cebo() \
-		/ (1.0 + Juego.efecto(&"espera"))
+		* (spot.mult_espera if spot else 1.0) / (1.0 + Juego.efecto(&"espera"))
+	_auto_recogiendo = false
 	_t_picoteo = randf_range(stats.picoteo_min, stats.picoteo_max)
 	_avisado = false
 	_cambiar_estado(Estado.ESPERANDO)
@@ -177,7 +223,20 @@ func reanudar() -> void:
 
 ## True mientras hay un pez enganchado (botones en pantalla o entre botones).
 func en_curso() -> bool:
-	return estado == Estado.PASO or estado == Estado.ENTRE_PASOS or estado == Estado.RITMO
+	return estado == Estado.PASO or estado == Estado.ENTRE_PASOS or estado == Estado.RITMO or estado == Estado.PICADA
+
+
+## Pesca base: ha picado y aún puedes pulsar.
+func esperando_boton() -> bool:
+	return estado == Estado.PICADA and not _auto_recogiendo
+
+
+## Pesca activa en un spot (null = volver a la base y pescar sola).
+func poner_spot(s: SpotData) -> void:
+	spot = s
+	spot_cambiado.emit(s)
+	if estado != Estado.INACTIVO:
+		esperar()
 
 
 func intensidad() -> float:
@@ -225,6 +284,9 @@ func _picar() -> void:
 	cana = Juego.cana()
 	_tras_chill = Juego.de_chill()
 	_tocado = false
+	if spot == null:
+		_picar_base()
+		return
 	pez = _tirar_pez()
 	if pez == null:
 		esperar()
@@ -232,10 +294,10 @@ func _picar() -> void:
 	indice = 0
 	aciertos = 0
 	machacar_fallados = 0
-	if cana.modo != CanaData.Modo.NORMAL and ritmo:
+	if spot.modo != SpotData.Modo.CLASICO and ritmo:
 		pez_pica.emit(pez)
 		_cambiar_estado(Estado.RITMO)
-		ritmo.empezar(self, pez, cana)
+		ritmo.empezar(self, pez, spot)
 		return
 	_generar_pasos()
 	pez_pica.emit(pez)
@@ -246,10 +308,7 @@ func _tirar_pez() -> PezData:
 	var posibles: Array[PezData] = []
 	var pesos: Array[float] = []
 	var total: float = 0.0
-	var hondo: int = cana.profundidad + int(Juego.efecto(&"profundidad"))
-	# Las cañas especiales llegan tan hondo como la mejor caña normal que tengas.
-	if cana.modo != CanaData.Modo.NORMAL:
-		hondo = maxi(hondo, Juego.mejor_cana_normal().profundidad + int(Juego.efecto(&"profundidad")))
+	var hondo: int = cana.profundidad + int(Juego.efecto(&"profundidad")) + (spot.profundidad_extra if spot else 0)
 	var suerte: float = 1.0 + Juego.efecto(&"raros") + (Juego.efecto(&"raros_tormenta") if Juego.lloviendo else 0.0) \
 		+ (Juego.efecto(&"raros_tras_chill") if _tras_chill else 0.0)
 	# Solo los de esta estación y hora (si no queda ninguno, se ignora el reloj para que siempre pique algo).
@@ -259,15 +318,13 @@ func _tirar_pez() -> PezData:
 	for p: PezData in lista:
 		if p.profundidad > hondo:
 			continue
-		# Caña rápida: bancos de comunes y poco comunes. Caña tocha: solo raros o mejores.
-		if cana.modo == CanaData.Modo.VOLUMEN and p.rareza > PezData.Rareza.POCO_COMUN:
-			continue
-		if cana.modo == CanaData.Modo.TROFEO and p.rareza < PezData.Rareza.RARO:
+		# Cada spot tiene sus rarezas (el banco, comunes; el trofeo, raros o mejores).
+		if spot and (p.rareza < spot.rareza_min or p.rareza > spot.rareza_max):
 			continue
 		# Cuanto más hondo pescas, menos salen los peces de arriba (siguen saliendo, pero menos).
 		var w: float = p.probabilidad * pow(stats.peso_por_nivel_arriba, hondo - p.profundidad)
 		if p.rareza >= PezData.Rareza.RARO:
-			w *= cana.mult_rareza * suerte
+			w *= cana.mult_rareza * suerte * (spot.mult_rareza if spot else 1.0)
 		if p.rareza >= PezData.Rareza.LEGENDARIO:
 			w *= 1.0 + Juego.efecto(&"legendarios")
 		posibles.append(p)
@@ -350,7 +407,6 @@ func _avanzar() -> void:
 
 func _tiempo_agotado() -> void:
 	# De chill y sin tocar nada: le dejas ir. Así se puede estar tumbado sin pescar mientras trabajan los demás
-	# (y la caña Sabia o la Pesca de memoria no pescan solas).
 	if indice == 0 and not _tocado and _tras_chill:
 		pez_se_va.emit(pez)
 		esperar()
@@ -363,9 +419,6 @@ func _tiempo_agotado() -> void:
 		else:
 			machacar_fallados += 1
 			_avanzar()
-	elif Juego.efecto(&"auto_pesca") > 0.0:
-		# Pesca de memoria: si no pulsas, te quedas el pez igualmente con lo que llevas.
-		_capturar()
 	else:
 		_fallar()
 
@@ -401,7 +454,7 @@ func _capturar() -> void:
 		mult *= stats.mult_perfecto
 	# Maestría: cuantas más llevas de esta especie, más vale (se cuenta la que entra ahora).
 	mult *= stats.mult_maestria(Juego.capturas_especie(pez.id) + 1)
-	var valor: float = pez.valor_base * (peso / ((pez.peso_min + pez.peso_max) * 0.5)) * mult
+	var valor: float = pez.valor_base * (peso / ((pez.peso_min + pez.peso_max) * 0.5)) * mult * (spot.mult_valor if spot else 1.0)
 	var captura: Dictionary = {
 		"id": String(pez.id), "peso": peso, "calidad": ratio, "perfecto": perfecto, "valor": valor,
 	}
@@ -424,8 +477,8 @@ func terminar_ritmo(acertadas: int, total: int, escapado: bool, suma: float = -1
 	if escapado or acertadas <= 0:
 		_escapar()
 		return
-	var maest: float = stats.mult_maestria(Juego.capturas_especie(pez.id) + 1)
-	if cana.modo == CanaData.Modo.VOLUMEN:
+	var maest: float = stats.mult_maestria(Juego.capturas_especie(pez.id) + 1) * spot.mult_valor
+	if spot.modo == SpotData.Modo.BANCO:
 		# Cada nota acertada es un pez del banco; vale poco cada uno, pero con su tramo de racha.
 		var total_valor: float = 0.0
 		var mult: float = suma / float(acertadas)
@@ -434,7 +487,7 @@ func terminar_ritmo(acertadas: int, total: int, escapado: bool, suma: float = -1
 			var v: float = pez.valor_base * mult_volumen * mult * maest * (peso / ((pez.peso_min + pez.peso_max) * 0.5))
 			total_valor += v
 			Juego.anadir_captura({"id": String(pez.id), "peso": peso, "calidad": 0.5, "perfecto": false, "valor": v}, pez)
-		Juego.registrar_combo(acertadas)
+		# El banco no cuenta como combo (son aciertos sueltos): el ×15 de la fosa se hace en la roca.
 		Juego.sumar_puntos_pesca(suma)
 		banco_capturado.emit(pez, acertadas, total_valor)
 		_terminar()
@@ -452,6 +505,81 @@ func terminar_ritmo(acertadas: int, total: int, escapado: bool, suma: float = -1
 	Juego.sumar_puntos_pesca(suma * (stats.mult_perfecto if perfecto else 1.0))
 	pez_capturado.emit(captura, pez)
 	_terminar()
+
+
+# --- Pesca base ---
+
+func _picar_base() -> void:
+	if peces_base.is_empty():
+		esperar()
+		return
+	_auto_recogiendo = false
+	_contador = ventana_picar
+	_cambiar_estado(Estado.PICADA)
+	picada_base.emit()
+
+
+func _sin_pulsar_base() -> void:
+	if _auto_recogiendo:
+		_capturar_base(false)
+		return
+	# Sin pesca automática (o de chill sin tocar nada) se va.
+	if Juego.efecto(&"auto_pesca") <= 0.0:
+		escapa_base.emit()
+		_contador = duracion_resultado_base
+		_cambiar_estado(Estado.RESULTADO)
+		return
+	_auto_recogiendo = true
+	_contador = retraso_auto / (1.0 + Juego.efecto(&"auto_ritmo"))
+
+
+## Calidad de la pieza: la caña y la Suerte suben las buenas; picando a mano, más.
+func tirar_calidad(manual: bool) -> PezData:
+	var suerte: float = cana.mult_rareza * (1.0 + Juego.efecto(&"raros") + (Juego.efecto(&"raros_tormenta") if Juego.lloviendo else 0.0)
+		+ (Juego.efecto(&"raros_tras_chill") if _tras_chill else 0.0)) * (suerte_manual if manual else 1.0)
+	var total: float = 0.0
+	var pesos: Array[float] = []
+	for p: PezData in peces_base:
+		var w: float = p.probabilidad
+		if p.rareza >= PezData.Rareza.RARO:
+			w *= suerte
+		elif p.rareza == PezData.Rareza.COMUN:
+			w /= cana.mult_rareza
+		pesos.append(w)
+		total += w
+	var r: float = randf() * total
+	for i in peces_base.size():
+		r -= pesos[i]
+		if r <= 0.0:
+			return peces_base[i]
+	return peces_base.back()
+
+
+## Lo que vale una pieza de la base: valor de la caña × calidad × peso × árbol; sin pulsar, menos.
+func valor_base(p: PezData, peso: float, manual: bool) -> float:
+	var v: float = cana.valor_pez * p.valor_base * (peso / ((p.peso_min + p.peso_max) * 0.5)) * (1.0 + Juego.efecto(&"calidad"))
+	if not manual:
+		v *= minf(1.0, valor_auto + Juego.efecto(&"auto_valor"))
+	return v
+
+
+func _capturar_base(manual: bool) -> void:
+	_auto_recogiendo = false
+	pez = tirar_calidad(manual)
+	var peso: float = randf_range(pez.peso_min, pez.peso_max) * (1.0 + Juego.efecto(&"peso"))
+	var captura: Dictionary = {
+		"id": String(pez.id), "peso": peso, "calidad": 1.0 if manual else 0.6, "perfecto": false,
+		"valor": valor_base(pez, peso, manual),
+	}
+	Juego.anadir_captura(captura, pez)
+	captura_base.emit(captura, pez, manual)
+	if randf() < Juego.efecto(&"pesca_doble"):
+		var otra: Dictionary = captura.duplicate()
+		Juego.anadir_captura(otra, pez)
+		captura_base.emit(otra, pez, manual)
+	Juego.consumir_cebo()
+	_contador = duracion_resultado_base
+	_cambiar_estado(Estado.RESULTADO)
 
 
 func _terminar() -> void:

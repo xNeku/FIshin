@@ -1,6 +1,9 @@
 # ESTADO (traspaso entre sesiones)
 
-## Dónde estamos (2 nov)
+## Dónde estamos (10 nov): REFORMATEO
+**La pesca se ha partido en dos.** En la base (el donut) pesca sola. En los spots se juega el minijuego y se colecciona. Ver la sección "Reformateo" al final y GDD §5. Lo de abajo (2 nov) sigue valiendo para la villa y la economía; lo que dice del minijuego es ahora de los spots.
+
+## Antes del reformateo (2 nov)
 El **early game está completo y balanceado** con el simulador v4: unas 4 h, del donut al pueblo con turistas. Falta la partida de prueba del diseñador (min 30-240).
 - **Pesca:**
   - 5 cañas: rota, decente, Sabia, fibra y carbono (profundidades 1 a 5).
@@ -351,3 +354,69 @@ A las 6-7 h los restaurantes son ~50 % de los ingresos.
   - En `Ritmo` (main.tscn, nodo Ritmo): antelación, ventanas, bpm, aceleración, probabilidad de notas largas y acordes, daño y cura de tensión.
   - En `Pesca`: `mult_volumen` y `mult_trofeo`.
   - En los .tres de las cañas: `cadena_min/max` (largo del banco) y `mult_espera`.
+
+## Reformateo (10 nov): pesca base automática + spots
+**Base** (`Pesca` con `spot == null`, estado PICADA):
+- Espera y pica: corcho al fondo, pose tensa, salpicadura y el botón botando encima de la cabeza (HUD `Popups/IconoPicar`).
+- Si pulsas cualquier botón de pesca en `ventana_picar` (1,3 s), sacas la pieza a mano.
+- Si no pulsas:
+  - Con "Pesca de memoria" (`auto_pesca`), la caña la recoge tras `retraso_auto` (4 s) y vale `valor_auto` (55 %).
+  - Sin ella, se escapa.
+- Señales: `picada_base`, `captura_base(captura, pez, manual)`, `escapa_base`.
+- Feedback (sin carta): el pez salta a la barca (`Vuelos`), un "+₽" del color de la calidad y un sonido que sube con la calidad. En el panel Info (tecla I), `RitmoPesca`: peces/min y ₽/min de los últimos 90 s.
+- Calidades = `PezData` con `bestiario = false` en `data/peces_base/`:
+  - Morralla ×0,35.
+  - Pescado del día ×1.
+  - Buen pescado ×2,5.
+  - Pieza gorda ×6.
+- Valor = `CanaData.valor_pez` × calidad × peso × árbol.
+  - `valor_pez` por caña: rota 18, decente 40, Sabia 72, fibra 100, carbono 150, coral 180, altura 200.
+  - La `mult_rareza` de la caña sube las calidades buenas; picando a mano, ×1,4 más.
+- Juego: las piezas de base van a la barca, se venden y alimentan la lonja y los restaurantes como siempre, pero no tocan el bestiario. `Juego.pez_data` busca también en `peces_base`.
+
+**Spots** (`SpotData` en `data/spots/`, escenas en `scenes/mundo/spots/`, script `spot.gd`):
+- Llegan como apariciones (EMERGER):
+  - La roca: (-3,-5), CLASICO, tras 150 peces y el viejo.
+  - El banco: (8,-2), BANCO, 150K ₽ tras la roca.
+  - La fosa: (3,-7), TROFEO, combo ×15 tras el banco.
+- `ViajeSpots` (nodo en main): sentado, `accion_extra` rema el donut a `Spot.punto_barca` del siguiente spot, o vuelve a la base (orden por `SpotData.orden`). La caja de acciones lo enseña ("[Extra] Ir a La roca").
+  - En un spot no te puedes levantar (`Jugador.puede_bajar`).
+  - Lo que sale vale `mult_valor` (×1,5).
+  - Rarezas por spot: `rareza_min/max`.
+  - El banco usa `notas_min/max`; la fosa espera más y tiene más raros.
+- En los spots va todo lo de antes: minijuego, carril (`Ritmo.empezar(pesca, pez, spot)`), carta, celebración, maestría y bestiario.
+- Se quitan las cañas rápida y tocha, y el selector de caña del menú. `CanaData.modo` ya no existe.
+
+**Árbol, rama Pesca**, en dos líneas:
+- Base, a la derecha del bonsái:
+  - Pesca de memoria: la automática, 120 ₽, clave.
+  - Paciencia.
+  - Caña despierta (`auto_ritmo`).
+  - Sedal con memoria (`auto_valor`).
+  - Mano dura, Ojo de tasador, Brazos de pulpo y Leyenda.
+- Maña (spots), a la izquierda: todo lo del minijuego.
+  - Muñeca, sedal, ojo, pulso, lujo, más hondo, brazos, acero, tirón, ambidiestro y leer el agua.
+  - Bloqueada hasta `aparecido_spot_roca`.
+
+**Llegadas:** el camino pide 85 peces (antes, puntos de pesca) y el puerto, 3.500 ₽ ganados.
+
+**Simulador v5** (`picada_base`, `ritmo_base`; `partida(..., atencion=)`):
+- El jugador pica a mano el 90 % de las veces sin automática y el 60 % con ella (anda haciendo otras cosas).
+- Las llegadas quedan a ±5 % de la v4: lonja 44 min, O Mar 74, entrada 94, ayuntamiento 173, taladro 269, sushi 309.
+- Muy activo (95 %): un 20-25 % antes. Casi AFK (30 %): la mitad de rápido.
+- `simular_carril.py` sigue sirviendo para el carril de los spots.
+
+**Ajustable:**
+- En `Pesca` (main.tscn), grupo "Pesca base": ventana, retraso y valor de la automática, suerte a mano y pausa entre piezas.
+- `valor_pez` en cada caña.
+- `data/peces_base/*.tres`: valor, peso y probabilidad de cada calidad.
+- `data/spots/*.tres`; la posición del donut en cada spot, con el nodo `PuntoBarca` de su escena.
+- `ViajeSpots.duracion_viaje`.
+- `HUD.ventana_ritmo` y `escala_popup_base`.
+
+**Sin hacer o sin probar:**
+- El tacto real en la tablet.
+- No hay progreso offline.
+- No hay animación de remo: el donut se desliza.
+- La posición de los spots en el mapa es provisional.
+- Los objetivos de coleccionismo por spot (sus especies y premios) están por diseñar.

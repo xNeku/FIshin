@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="SpotData" format=3]
+
+[ext_resource type="Script" path="res://scripts/datos/spot_data.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"spot_banco"
+nombre = "El banco"
+descripcion = "Aquí pasan los bancos de sardinas. Carril: cada nota es un pez, el ritmo se acelera."
+modo = 1
+orden = 2
+rareza_min = 0
+rareza_max = 1
+mult_valor = 1.5
+notas_min = 12
+notas_max = 30

@@ -15,6 +15,8 @@ const NOMBRES_RAREZA: Array[String] = ["Común", "Poco común", "Raro", "Épico"
 @export var icono: Texture2D
 ## Profundidad mínima de caña para que pueda picar.
 @export var profundidad: int = 1
+## false = pez de la pesca base (calidades de data/peces_base): no cuenta para el bestiario ni sale en los spots.
+@export var bestiario: bool = true
 
 @export_group("Ficha")
 @export var tipo: Tipo = Tipo.PEZ

@@ -3,13 +3,14 @@
 [ext_resource type="Script" path="res://scripts/datos/nodo_arbol_data.gd" id="1_script"]
 [ext_resource type="Resource" path="res://data/arbol/ramas/pesca.tres" id="2_rama"]
 [ext_resource type="Texture2D" path="res://art/ui/arbol/iconos/reloj.png" id="3_icono"]
+
 [ext_resource type="Resource" path="res://data/arbol/nodos/p_ojo.tres" id="r0"]
 
 [resource]
 script = ExtResource("1_script")
 id = &"p_pulso"
 nombre = "Pulso de cirujano"
-descripcion = "Aún más tiempo por botón: +{v} por nivel (llevas {total})."
+descripcion = "En los spots: aún más tiempo por botón, +{v} por nivel (llevas {total})."
 rama = ExtResource("2_rama")
 icono = ExtResource("3_icono")
 clave = false

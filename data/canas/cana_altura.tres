@@ -8,6 +8,7 @@ id = &"cana_altura"
 nombre = "Caña de altura"
 descripcion = "Para mar abierto: llega a la profundidad 7, con los peces del resto del mundo."
 profundidad = 7
+valor_pez = 200.0
 cadena_min = 8
 cadena_max = 28
 sesgo_cadena = 0.65

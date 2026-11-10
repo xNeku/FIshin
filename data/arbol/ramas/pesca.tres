@@ -7,6 +7,6 @@
 script = ExtResource("1_script")
 id = &"pesca"
 nombre = "Pesca"
-descripcion = "Manos, muñeca y paciencia: todo lo del minijuego."
+descripcion = "A la derecha, la pesca de la base (automática, ritmo, peso, calidad). A la izquierda, la Maña: lo del minijuego de los spots."
 color = Color(0.35, 0.82, 1.0, 1)
 icono = ExtResource("2_icono")

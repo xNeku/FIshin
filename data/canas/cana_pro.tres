@@ -8,6 +8,7 @@ id = &"cana_pro"
 nombre = "Sabia caña"
 descripcion = "Si se te pasa el primer botón, el pez se queda igual."
 profundidad = 3
+valor_pez = 72.0
 cadena_min = 3
 cadena_max = 16
 sesgo_cadena = 1.0

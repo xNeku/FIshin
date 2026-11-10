@@ -39,7 +39,7 @@ Marcas: [DECIDIDO] lo decidió el diseñador · [PROPUESTA] sugerencia de Claude
 - Nota: el combo x10 solo es posible con la Sabia caña (rota: hasta 5, decente: hasta 9). El puerto queda para después del viejo.
 - [DECIDIDO] **Lonja** (3×3 en x −1..1, y 7..9, al final del camino): centro de venta conceptual. No se va a ella a vender: desde que aparece, todo lo que vendas (también al comerciante) vale ×1,3. Con el porteador, el comerciante le lleva el cubo navegando. Con los restaurantes será el centro neurálgico del pescado: se verá cómo lanza el pescado a cada destino. Emerge del fondo del mar. Casa blanca medio moruna con toldo azul y blanco, bandera con un pez pocho y flotadores rojos y blancos.
 - [PROPUESTA] La lonja aparece cuando ya existe el camino y has ganado 1.500 ₽ en total. La fila de la casa (y = 9) no se pisa.
-- [PROPUESTA] Cañas del early game: Rota (1), Decente (2), Sabia (3), **Fibra** (4, la vende el comerciante desde la lonja) y **Carbono** (5, desde la entrada de turistas). [DECIDIDO] El early game tiene como tope un combo de 25. Las cañas rápida y pesada son del mid game. [DECIDIDO] Las dos usan el mismo minijuego, tipo Guitar Hero, solo con los botones de símbolo. [PROPUESTA] Es un carril de 4 líneas. La rápida pesca un banco: cada nota es un pez común. La tocha (la pesada) solo pesca raros o mejores, en una pelea con notas largas, acordes y tensión. Las dos llegan tan hondo como tu mejor caña normal, y en el menú se elige cuál llevas.
+- [PROPUESTA] Cañas del early game: Rota (1), Decente (2), Sabia (3), **Fibra** (4, la vende el comerciante desde la lonja) y **Carbono** (5, desde la entrada de turistas). [DECIDIDO] El early game tiene como tope un combo de 25. Las cañas rápida y pesada son del mid game. [DECIDIDO] Las dos usan el mismo minijuego, tipo Guitar Hero, solo con los botones de símbolo. (10 nov: ese carril pasa a los spots del banco y la fosa; las cañas especiales se quitan, ver §5.)
 - [DECIDIDO] **Dos alturas**: la zona de la lonja, el camino 2 y los restaurantes es un puerto alto sobre pilotes de madera (1,2 m). El camino 1 tiene una escalera en (0,4). La entrada de turistas queda abajo, a la altura de pesca, con su escalera en (4,5) hasta el camino 2 (se añadió el rellano (4,4)). Solo se cambia de altura por las escaleras. Se pesca desde abajo.
 - [DECIDIDO] De noche el náufrago fuma: sale humo y la brasa ilumina un poco.
 - [DECIDIDO] **Camino 2** (32 casillas): anillo alrededor de la lonja con plaza arriba, ramal a la izquierda y ramal al restaurante. Llega al tener el tercer pescador. Con él el comerciante ya no llega navegando a la lonja: aparca y va andando.
@@ -55,6 +55,31 @@ Marcas: [DECIDIDO] lo decidió el diseñador · [PROPUESTA] sugerencia de Claude
 - [PROPUESTA] E con el viejo abre su tienda (Sabia caña) con frases suyas; el árbol aún no existe y lo dice él. E en el bestiario abre el libro (especies pescadas con su mejor calidad; las demás en silueta "???"). Las charlas son diálogos tipo Pokémon.
 
 ## 5. Pesca (núcleo)
+
+### Reformateo (10 nov): pesca base automática + spots activos
+- [DECIDIDO] El juego mezclaba incremental y juego activo sin ser bien ninguno. Se separan.
+- [DECIDIDO] **Base:** sentado en el donut, el náufrago pesca solo todo el rato: sin minijuego y sin carta del pez. Es pura rueda comercial. Si se levanta, deja de pescar.
+- [DECIDIDO] **Al principio, picar:** cuando la caña avisa, pulsas un botón y sacas el pez.
+  - Pronto llega la pesca automática: si no pulsas, la recoge sola, pero más tarde y peor.
+  - Con mejoras va acercándose a la manual.
+- [DECIDIDO] El náufrago saca mejores cosas que nadie. Su meta es automatizarlo todo para irse a los minijuegos o a estar de chill.
+- [DECIDIDO] **Feedback:** animación, sonido y "+₽", y que se vea cuánto mejora y lo rápido que pesca. Si pulsas tú, pesca más rápido y saca cosas mejores.
+- [PROPUESTA] Picar a mano siempre da un plus pequeño: no hay retraso, cobras el valor entero y salen calidades buenas un 40 % más. La automática tarda 4 s de más y paga el 55 %. "Caña despierta" y "Sedal con memoria" acercan la automática hasta ~75-90 %.
+- [PROPUESTA] **En la base no salen especies, sale calidad:** Morralla, Pescado del día, Buen pescado y Pieza gorda (`data/peces_base/`).
+  - Cada caña pone su `valor_pez`, y su `mult_rareza` sube las calidades buenas.
+  - No cuentan para el bestiario.
+- [DECIDIDO] **Spots:** 2-3 sitios desbloqueables con pesca distinta, objetivos de coleccionismo y los minijuegos de siempre, con su animación de captura. Son los que cuentan para el bestiario.
+- [PROPUESTA] Spots hechos:
+  - **La roca:** minijuego clásico; llega tras 150 peces.
+  - **El banco:** carril, cada nota un pez; llega con 150K ₽.
+  - **La fosa:** pelea de trofeo, solo raros o mejores; se gana con un combo ×15 en la roca.
+- [PROPUESTA] Cómo se juegan los spots:
+  - Sentado, "acción extra" (R2) hace remar el donut al siguiente spot o de vuelta a la base.
+  - En un spot no te puedes levantar, y la pesca base se para.
+  - Lo pescado en los spots vale ×1,5, para que compense frente a quedarse en la base.
+- [PROPUESTA] Las cañas rápida y tocha desaparecen: su carril es ahora el de los spots del banco y la fosa.
+- Lo de abajo (cadenas, combos, dobles, machacar, celebración) es ahora el minijuego de los spots.
+
 - [DECIDIDO] En el donut el personaje espera a que pique. Cuando pica, sale un botón en pantalla.
 - [DECIDIDO] Cadena de botones: cada acierto mejora la calidad del pez y cada botón da menos tiempo que el anterior.
 - [DECIDIDO] La pesca acaba al fallar o al llegar al límite natural de la cadena. El límite sube con el árbol.

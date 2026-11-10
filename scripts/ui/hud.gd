@@ -57,7 +57,7 @@ extends CanvasLayer
 @export var destello_racha: float = 0.45
 
 ## Letras de las pistas "[E] ..." y su acción del Input Map.
-const TECLA_A_ACCION: Dictionary = {"E": &"interactuar", "Q": &"cambiar_modo", "Tab": &"menu"}
+const TECLA_A_ACCION: Dictionary = {"E": &"interactuar", "Q": &"cambiar_modo", "Tab": &"menu", "Extra": &"accion_extra"}
 
 @onready var efecto: ColorRect = $EfectoPantalla
 @onready var info: Control = $Info
@@ -89,7 +89,19 @@ const TECLA_A_ACCION: Dictionary = {"E": &"interactuar", "Q": &"cambiar_modo", "
 ## Botón de interactuar que flota encima de la cabeza (opcional: Popups/IconoInteractuar).
 @onready var icono_interactuar: TextureRect = get_node_or_null("Popups/IconoInteractuar")
 
+## Botón que salta encima de la cabeza cuando pica en la base (Popups/IconoPicar).
+@onready var icono_picar: TextureRect = get_node_or_null("Popups/IconoPicar")
+## Peces/min y ₽/min de la pesca base (Info/Lista/RitmoPesca).
+@onready var ritmo_pesca: Label = get_node_or_null("Info/Lista/RitmoPesca")
+## Segundos que se miran para calcular el ritmo de pesca.
+@export var ventana_ritmo: float = 90.0
+## Tamaño del "+₽" de cada pieza de la base (manual; sin pulsar, un 70 %).
+@export var escala_popup_base: float = 0.6
+
 var _rublos_mostrados: float = 0.0
+## Piezas recientes de la base: [tiempo, valor].
+var _piezas: Array[Vector2] = []
+var _t_reloj: float = 0.0
 var _intensidad_objetivo: float = 0.0
 var _intensidad: float = 0.0
 var _destello: float = 0.0
@@ -131,6 +143,7 @@ func _ready() -> void:
 		pesca.pez_escapado.connect(_on_escapado)
 		pesca.intensidad_cambiada.connect(func(i: float) -> void: _intensidad_objetivo = i)
 		pesca.racha_subida.connect(_on_racha)
+		pesca.captura_base.connect(_on_captura_base)
 		_on_estado(pesca.estado)
 	if comercio:
 		comercio.venta_terminada.connect(_on_vendido)
@@ -156,6 +169,8 @@ func _process(delta: float) -> void:
 	_info_villa()
 	_mostrar_acciones(dt)
 	_icono_interactuar(dt)
+	_icono_picar(dt)
+	_ritmo_pesca(dt)
 	if resultado.visible:
 		_t_carta -= dt
 		if _t_carta <= 0.0:
@@ -273,6 +288,9 @@ func _icono(accion: StringName, pulsada: bool = false) -> Texture2D:
 ## Caja de abajo a la derecha: lo que se puede hacer ahora. Si hay varias cosas, van alternando.
 func _mostrar_acciones(dt: float) -> void:
 	var lista: Array[String] = jugador.acciones() if jugador else []
+	var viaje: Node = get_tree().get_first_node_in_group("viaje_spots")
+	if viaje and viaje.texto_accion() != "":
+		lista.append(viaje.texto_accion())
 	caja_accion.visible = not lista.is_empty()
 	if lista.is_empty():
 		_t_accion = 0.0
@@ -305,6 +323,44 @@ func _icono_interactuar(dt: float) -> void:
 	var pantalla: Vector2 = popups.get_global_transform().affine_inverse() * camara.unproject_position(p)
 	var bote: float = sin(_t_icono * 4.0) * bote_icono
 	icono_interactuar.position = pantalla - icono_interactuar.size * 0.5 + Vector2(0.0, bote)
+
+
+## Pesca base: el botón de picar bota encima de la cabeza mientras se puede pulsar.
+func _icono_picar(_dt: float) -> void:
+	if icono_picar == null:
+		return
+	icono_picar.visible = pesca != null and pesca.esperando_boton() and camara != null
+	if not icono_picar.visible:
+		return
+	var pulsada: bool = fmod(_t_icono * 2.0, ritmo_icono * 2.0) >= ritmo_icono
+	icono_picar.texture = IconosInput.icono(&"pesca_1", pulsada)
+	var bote: float = absf(sin(_t_icono * 9.0)) * -bote_icono * 2.0
+	icono_picar.position = _sobre_la_cabeza() - icono_picar.size * 0.5 + Vector2(0.0, -40.0 + bote)
+	_t_icono += _dt
+
+
+func _on_captura_base(c: Dictionary, p: PezData, manual: bool) -> void:
+	_piezas.append(Vector2(_t_reloj, c.valor))
+	var col: Color = colores_rareza[mini(p.rareza, colores_rareza.size() - 1)]
+	var escala: float = escala_popup_base * (1.0 + 0.2 * p.rareza) * (1.0 if manual else 0.7)
+	_popup_en("+" + Formato.dinero(c.valor), col, _sobre_la_cabeza() + Vector2(randf_range(-30, 30), -70), escala)
+	if p.rareza >= PezData.Rareza.EPICO:
+		_destello = maxf(_destello, destello_captura)
+
+
+## Ritmo de la pesca base en el panel: peces por minuto y lo que dan por minuto.
+func _ritmo_pesca(dt: float) -> void:
+	_t_reloj += dt
+	while not _piezas.is_empty() and _t_reloj - _piezas[0].x > ventana_ritmo:
+		_piezas.pop_front()
+	if ritmo_pesca == null:
+		return
+	ritmo_pesca.visible = pesca != null and pesca.spot == null and pesca.estado != Pesca.Estado.INACTIVO
+	var minutos: float = minf(ventana_ritmo, maxf(_t_reloj, 20.0)) / 60.0
+	var total: float = 0.0
+	for v: Vector2 in _piezas:
+		total += v.y
+	ritmo_pesca.text = "Pescando: %.1f peces/min · %s/min" % [_piezas.size() / minutos, Formato.dinero(total / minutos)]
 
 
 ## Duración del aviso de fin de visita de turistas.

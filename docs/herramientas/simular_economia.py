@@ -1,4 +1,4 @@
-# Simulador de la economía de Fishin (v2). Copia la lógica de scripts/pesca/pesca.gd con los datos
+# Simulador de la economía de Fishin (v5: pesca base automática; picada() queda para los spots). Copia la lógica de scripts/pesca/pesca.gd con los datos
 # de data/ y un jugador "normal" (acierta según el tiempo que le da cada botón).
 # Uso: python3 docs/herramientas/simular_economia.py
 # Si cambias un .tres de peces, cañas o stats, cámbialo aquí también.
@@ -58,10 +58,11 @@ def _leer_canas():
     r = {}
     for f in glob.glob(os.path.join(_RAIZ, "data", "canas", "*.tres")):
         d = _leer_tres(f)
-        r[d["id"]] = dict(prof=int(d["profundidad"]), cmin=int(d["cadena_min"]), cmax=int(d["cadena_max"]),
-                          sesgo=float(d["sesgo_cadena"]), mt=float(d.get("mult_tiempo", 1)),
+        r[d["id"]] = dict(prof=int(d["profundidad"]), cmin=int(d.get("cadena_min", 1)), cmax=int(d.get("cadena_max", 5)),
+                          sesgo=float(d.get("sesgo_cadena", 2)), mt=float(d.get("mult_tiempo", 1)),
                           me=float(d.get("mult_espera", 1)), mr=float(d.get("mult_rareza", 1)),
-                          auto=d.get("auto_primer_boton") == "true", nombre=d["nombre"])
+                          auto=d.get("auto_primer_boton") == "true", nombre=d["nombre"],
+                          valor=float(d.get("valor_pez", 5)))
     return r
 
 
@@ -173,6 +174,59 @@ def picada(c, jugador=1.0, forzar=None, E=None):
     if random.random() < E.get("pesca_doble", 0):
         v *= 2
     return v, t, aciertos, True, n
+
+
+# --- v5: pesca base (sentado pesca solo) --- data/peces_base/*.tres y Pesca (main.tscn, grupo Pesca base)
+def _leer_peces_base():
+    r = []
+    for f in sorted(glob.glob(os.path.join(_RAIZ, "data", "peces_base", "*.tres"))):
+        d = _leer_tres(f)
+        r.append((d["id"], int(d.get("rareza", 0)), float(d["valor_base"]), float(d["probabilidad"])))
+    return r
+
+
+PECES_BASE = _leer_peces_base()
+BASE = dict(ventana=1.3, retraso_auto=4.0, valor_auto=0.55, suerte_manual=1.4, resultado=0.4,
+            lanzar=0.8, reaccion=0.45)
+
+
+def picada_base(c, E=None, atencion=0.8):
+    """Una pieza de la base. atencion = probabilidad de que el jugador pique a mano (0 = AFK).
+    Devuelve (valor, segundos, pescado)."""
+    E = E or {}
+    k = random.random()
+    t = (ESPERA[0] + (ESPERA[1] - ESPERA[0]) * k) * c["me"] / (1 + E.get("espera", 0)) + BASE["lanzar"] + BASE["resultado"]
+    manual = random.random() < atencion
+    auto = E.get("auto_pesca", 0) > 0
+    if manual:
+        t += BASE["reaccion"]
+    elif auto:
+        t += BASE["ventana"] + BASE["retraso_auto"] / (1 + E.get("auto_ritmo", 0))
+    else:
+        return 0.0, t + BASE["ventana"], False
+    suerte = c["mr"] * (1 + E.get("raros", 0)) * (BASE["suerte_manual"] if manual else 1)
+    ws = [(p, p[3] * (suerte if p[1] >= 2 else (1 / c["mr"] if p[1] == 0 else 1))) for p in PECES_BASE]
+    r = random.random() * sum(w for _, w in ws)
+    for p, w in ws:
+        r -= w
+        if r <= 0:
+            break
+    peso = random.uniform(0.8, 1.2) * (1 + E.get("peso", 0))
+    v = c["valor"] * p[2] * peso * (1 + E.get("calidad", 0))
+    if not manual:
+        v *= min(1.0, BASE["valor_auto"] + E.get("auto_valor", 0))
+    if random.random() < E.get("pesca_doble", 0):
+        v *= 2
+    return v, t, True
+
+
+def ritmo_base(cana, atencion=0.8, E=None, n=20000):
+    c = CANAS[cana]
+    d = tt = p = 0.0
+    for _ in range(n):
+        v, t, ok = picada_base(c, E, atencion)
+        d += v; tt += t; p += ok
+    return d / tt * 60, p / tt * 60
 
 
 def ritmo(cana, jugador=1.0, n=20000):
@@ -300,7 +354,9 @@ def _efectos(niv, mejoras):
 _EF_MEJORA = {}
 
 
-def partida(jugador=1.0, semilla=1, horas=4.0, informe=False):
+def partida(jugador=1.0, semilla=1, horas=4.0, informe=False, atencion=None):
+    """jugador: reflejos en los spots (no se usa en la base). atencion: % de picadas que pica a mano
+    (por defecto 0,9 sin pesca automática y luego 0,6: anda haciendo otras cosas)."""
     random.seed(semilla)
     CAPTURADOS.clear()
     PUNTOS[0] = 0.0
@@ -392,8 +448,9 @@ def partida(jugador=1.0, semilla=1, horas=4.0, informe=False):
     while t < 3600 * horas:
         E = _efectos(niv, mejoras)
         mv = (1 + E.get("precio_venta", 0) + (E.get("precio_lonja", 0) if "lonja" in hitos else 0)) * (LONJA if "lonja" in hitos else 1)
-        v, dt, cb, ok, n = picada(CANAS[cana], jugador, E=E)
-        combos.append((cana, cb if ok else 0))
+        at = atencion if atencion is not None else (0.6 if E.get("auto_pesca", 0) > 0 else 0.9)
+        v, dt, ok = picada_base(CANAS[cana], E, at)
+        combos.append((cana, 0))
         t += dt; peces += ok
         if ok:
             pend += v; vendidos.append(v)

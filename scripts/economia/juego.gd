@@ -17,6 +17,8 @@ const RUTA_COPIA := "user://partida.anterior.json"
 const RUTA_OPCIONES := "user://opciones.cfg"
 const RUTA_CANAS := "res://data/canas/%s.tres"
 const RUTA_PECES := "res://data/peces/%s.tres"
+## Calidades de la pesca base (no son especies: no van al bestiario).
+const RUTA_PECES_BASE := "res://data/peces_base/%s.tres"
 const RUTA_ARBOL := "res://data/arbol/arbol.tres"
 const RUTA_STATS := "res://data/stats_pesca.tres"
 const RUTA_RELOJ := "res://data/reloj.tres"
@@ -148,25 +150,6 @@ func cana() -> CanaData:
 	return _cana
 
 
-## Las cañas que puedes llevar: la mejor normal y las especiales que tengas.
-func canas_elegibles() -> Array[CanaData]:
-	var r: Array[CanaData] = [mejor_cana_normal()]
-	for id: String in canas:
-		var c: CanaData = load(RUTA_CANAS % id)
-		if c and c.modo != CanaData.Modo.NORMAL:
-			r.append(c)
-	return r
-
-
-func mejor_cana_normal() -> CanaData:
-	var mejor: CanaData = load(RUTA_CANAS % cana_inicial)
-	for id: String in canas:
-		var c: CanaData = load(RUTA_CANAS % id)
-		if c and c.modo == CanaData.Modo.NORMAL and c.profundidad > mejor.profundidad:
-			mejor = c
-	return mejor
-
-
 func cambiar_cana(nueva: CanaData) -> void:
 	if not String(nueva.id) in canas:
 		canas.append(String(nueva.id))
@@ -196,6 +179,8 @@ func consumir_cebo() -> void:
 # --- Inventario ---
 
 func pez_data(id_pez: String) -> PezData:
+	if ResourceLoader.exists(RUTA_PECES_BASE % id_pez):
+		return load(RUTA_PECES_BASE % id_pez) as PezData
 	return load(RUTA_PECES % id_pez) as PezData
 
 
@@ -230,11 +215,13 @@ func anadir_captura(captura: Dictionary, pez: PezData) -> void:
 	stats.peces_pescados += 1
 	if captura.perfecto:
 		stats.perfectos += 1
+	inventario_cambiado.emit()
+	if not pez.bestiario:
+		return
 	if pez.rareza >= PezData.Rareza.LEGENDARIO:
 		stats.legendarios += 1
 	coleccion[String(pez.id)] = maxf(coleccion.get(String(pez.id), 0.0), captura.calidad)
 	capturados[String(pez.id)] = int(capturados.get(String(pez.id), 0)) + 1
-	inventario_cambiado.emit()
 
 
 ## Si el pez puede picar ahora (estación y hora de su ficha).
@@ -524,7 +511,7 @@ func motivo_no_comprar(art: ArticuloData) -> String:
 	if art.tipo == ArticuloData.Tipo.CANA and art.cana:
 		if String(art.cana.id) in canas:
 			return "Ya la tienes"
-		if art.cana.modo == CanaData.Modo.NORMAL and art.cana.profundidad <= mejor_cana_normal().profundidad:
+		if art.cana.profundidad <= cana().profundidad:
 			return "Ya tienes algo mejor"
 	if art.tipo == ArticuloData.Tipo.CEBO and not cebo.is_empty():
 		return "Ya llevas cebo"

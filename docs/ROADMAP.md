@@ -53,6 +53,8 @@ Regla: no se pasa de fase hasta que la actual sea jugable y divertida. Cada tare
 - [x] Balance del early game con el simulador v4 (cañas de fibra y carbono, combos hasta 25)
 - [ ] Ayuntamiento: mejora de edificios con un sistema común + tienda de decoración (pre-midgame)
 - [x] Taladro de coral, sushi, cañas rápida y pesada (carril)
+- [x] Reformateo: pesca base automática (picar / auto) + spots con minijuego y bestiario
+- [ ] Objetivos de coleccionismo por spot
 - [ ] Marihuana y decoración (mid game)
 - [ ] Ingresos pasivos, stats por segundo
 - [ ] Progreso offline (si se decide)

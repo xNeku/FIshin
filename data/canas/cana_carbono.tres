@@ -8,6 +8,7 @@ id = &"cana_carbono"
 nombre = "Caña de carbono"
 descripcion = "Ligera como una pluma. Con ella los combos de 25 son posibles."
 profundidad = 5
+valor_pez = 150.0
 cadena_min = 6
 cadena_max = 21
 sesgo_cadena = 0.7

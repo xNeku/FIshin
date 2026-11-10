@@ -8,6 +8,7 @@ id = &"cana_rota"
 nombre = "Caña rota"
 descripcion = "Un palo, un hilo y fe."
 profundidad = 1
+valor_pez = 18.0
 cadena_min = 1
 cadena_max = 6
 sesgo_cadena = 1.6

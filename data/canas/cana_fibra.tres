@@ -8,6 +8,7 @@ id = &"cana_fibra"
 nombre = "Caña de fibra"
 descripcion = "Fibra de vidrio de verdad. Llega más hondo y aguanta cadenas largas."
 profundidad = 4
+valor_pez = 100.0
 cadena_min = 4
 cadena_max = 19
 sesgo_cadena = 0.9

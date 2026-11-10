@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="NodoArbolData" format=3]
+
+[ext_resource type="Script" path="res://scripts/datos/nodo_arbol_data.gd" id="1_script"]
+[ext_resource type="Resource" path="res://data/arbol/ramas/pesca.tres" id="2_rama"]
+[ext_resource type="Texture2D" path="res://art/ui/arbol/iconos/rayo.png" id="3_icono"]
+
+[ext_resource type="Resource" path="res://data/arbol/nodos/p_memoria.tres" id="r0"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"p_reflejos"
+nombre = "Caña despierta"
+descripcion = "La pesca automática recoge antes: +{v} de rapidez por nivel (llevas {total})."
+rama = ExtResource("2_rama")
+icono = ExtResource("3_icono")
+clave = false
+niveles = 5
+coste_base = 600.0
+crecimiento = 2.0
+efecto = &"auto_ritmo"
+valor_por_nivel = 0.3
+formato = 0
+requisitos = Array[Resource]([ExtResource("r0")])
+requiere_flag = ""
+texto_bloqueo = ""

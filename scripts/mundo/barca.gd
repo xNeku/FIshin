@@ -45,6 +45,9 @@ extends Node3D
 @export var hundimiento_aviso: float = 0.1
 @export var temblor_maximo: float = 0.12
 
+## Tamaño del pez que vuela a la barca en la pesca base.
+@export var escala_pieza_base: float = 1.0
+
 @export_group("Ondas")
 @export var periodo_calma: float = 2.0
 @export var periodo_picada: float = 0.45
@@ -81,6 +84,13 @@ func _ready() -> void:
 			_hundido = hundimiento_aviso if aviso else hundimiento_picoteo
 			_salpicar(4 if aviso else 2))
 		pesca.acierto.connect(func(_i: int, _n: int) -> void: _apretar())
+		# Pesca base: pica (corcho al fondo y caña tensa), sale volando a la barca o se va.
+		pesca.picada_base.connect(func() -> void:
+			_hundido = hundimiento_picada
+			_poner_pose(textura_tira, punta_tira)
+			_salpicar(14))
+		pesca.captura_base.connect(_on_captura_base)
+		pesca.escapa_base.connect(func() -> void: _salpicar(3))
 		pesca.intensidad_cambiada.connect(func(i: float) -> void: _intensidad = i)
 		_on_estado(pesca.estado)
 
@@ -93,6 +103,14 @@ func _on_estado(e: Pesca.Estado) -> void:
 				_lanzar()
 		Pesca.Estado.RESULTADO, Pesca.Estado.INACTIVO:
 			_recoger()
+
+
+## Pieza de la pesca base: salta del corcho a la barca (más grande cuanto mejor es).
+func _on_captura_base(_c: Dictionary, p: PezData, manual: bool) -> void:
+	_salpicar(10 + 6 * p.rareza)
+	_apretar()
+	if p.icono:
+		Vuelos.enviar(flotador, self, [p.icono], Callable(), Vuelos.sfx_pez, escala_pieza_base * (1.0 + 0.25 * p.rareza) * (1.0 if manual else 0.8))
 
 
 func _process(delta: float) -> void:

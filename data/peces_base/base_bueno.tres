@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="PezData" format=3]
+
+[ext_resource type="Script" path="res://scripts/datos/pez_data.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://art/peces/lubina.png" id="2_icono"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"base_bueno"
+nombre = "Buen pescado"
+rareza = 2
+icono = ExtResource("2_icono")
+bestiario = false
+valor_base = 2.5
+peso_min = 1.0
+peso_max = 3.5
+probabilidad = 12.0

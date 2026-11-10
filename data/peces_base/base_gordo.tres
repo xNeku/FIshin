@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="PezData" format=3]
+
+[ext_resource type="Script" path="res://scripts/datos/pez_data.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://art/peces/atun.png" id="2_icono"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"base_gordo"
+nombre = "Pieza gorda"
+rareza = 3
+icono = ExtResource("2_icono")
+bestiario = false
+valor_base = 6.0
+peso_min = 5.0
+peso_max = 15.0
+probabilidad = 3.0

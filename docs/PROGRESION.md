@@ -384,6 +384,7 @@ Nota: en tiendas de móvil la marihuana sube la clasificación por edad. Se acep
 - [PROPUESTA] Cada negocio tiene un **almacén** de lo que consume (pescado, algas...). Cada cliente gasta una ración: sin almacén no hay venta. Así la pesca (a mano o de los trabajadores) nunca deja de importar.
 
 ## Cañas (decidido)
+- [PROPUESTA] (10 nov, reformateo) En la base la caña pone `valor_pez`, la espera y la suerte de calidad. En los spots pone la profundidad, la cadena y el tiempo del minijuego. Los modos volumen y trofeo ya no son cañas: son los spots del banco y la fosa.
 - [DECIDIDO] Cañas diferentes; algunas tendrán funciones propias más adelante.
 - [DECIDIDO] **Modos de pesca según la caña** (para el futuro, de midgame):
   - **Caña de volumen**: cada tecla acertada es un pez, en cadena; cuando hay que pulsar más rápido, cada pulsación es un pez. Peores de calidad, pero no mucho. Sirve para nutrir los negocios.

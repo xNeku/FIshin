@@ -39,6 +39,14 @@ func _ready() -> void:
 		(perfecto if c.perfecto else captura).play())
 	pesca.pez_escapado.connect(func(_p: PezData) -> void: escapa.play())
 	pesca.intensidad_cambiada.connect(func(i: float) -> void: _intensidad = i)
+	# Pesca base: la picada suena igual; cada pieza, un "tin" más agudo cuanto mejor es (y la gorda, la de captura).
+	pesca.picada_base.connect(func() -> void: picada.play())
+	pesca.captura_base.connect(func(_c: Dictionary, p: PezData, manual: bool) -> void:
+		if p.rareza >= PezData.Rareza.EPICO:
+			captura.play()
+		else:
+			acierto.pitch_scale = 1.0 + 0.15 * p.rareza + (0.05 if manual else -0.1)
+			acierto.play())
 	if racha:
 		pesca.racha_subida.connect(func(tramo: int) -> void:
 			racha.pitch_scale = minf(tono_maximo, 1.0 + 0.08 * float(tramo - 1))

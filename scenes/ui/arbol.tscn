@@ -32,6 +32,8 @@
 [ext_resource type="Resource" path="res://data/arbol/nodos/p_tasador.tres" id="d_p_tasador"]
 [ext_resource type="Resource" path="res://data/arbol/nodos/p_acero.tres" id="d_p_acero"]
 [ext_resource type="Resource" path="res://data/arbol/nodos/p_memoria.tres" id="d_p_memoria"]
+[ext_resource type="Resource" path="res://data/arbol/nodos/p_auto_valor.tres" id="d_p_auto_valor"]
+[ext_resource type="Resource" path="res://data/arbol/nodos/p_reflejos.tres" id="d_p_reflejos"]
 [ext_resource type="Resource" path="res://data/arbol/nodos/p_hondo.tres" id="d_p_hondo"]
 [ext_resource type="Resource" path="res://data/arbol/nodos/p_lujo.tres" id="d_p_lujo"]
 [ext_resource type="Resource" path="res://data/arbol/nodos/p_pulpo.tres" id="d_p_pulpo"]
@@ -192,131 +194,147 @@ mouse_filter = 2
 
 [node name="p_munieca" parent="Raiz/Vista/Lienzo/Nodos" instance=ExtResource("nodo")]
 custom_minimum_size = Vector2(72.0, 72.0)
-offset_left = -36.0
-offset_top = -168.0
-offset_right = 36.0
-offset_bottom = -96.0
+offset_left = -180.0
+offset_top = -300.0
+offset_right = -108.0
+offset_bottom = -228.0
 datos = ExtResource("d_p_munieca")
 
 [node name="p_paciencia" parent="Raiz/Vista/Lienzo/Nodos" instance=ExtResource("nodo")]
 custom_minimum_size = Vector2(72.0, 72.0)
-offset_left = -168.0
-offset_top = -300.0
-offset_right = -96.0
-offset_bottom = -228.0
+offset_left = 96.0
+offset_top = -312.0
+offset_right = 168.0
+offset_bottom = -240.0
 datos = ExtResource("d_p_paciencia")
 
 [node name="p_sedal" parent="Raiz/Vista/Lienzo/Nodos" instance=ExtResource("nodo")]
 custom_minimum_size = Vector2(72.0, 72.0)
-offset_left = -36.0
-offset_top = -300.0
-offset_right = 36.0
-offset_bottom = -228.0
+offset_left = -180.0
+offset_top = -432.0
+offset_right = -108.0
+offset_bottom = -360.0
 datos = ExtResource("d_p_sedal")
 
 [node name="p_brazos" parent="Raiz/Vista/Lienzo/Nodos" instance=ExtResource("nodo")]
 custom_minimum_size = Vector2(72.0, 72.0)
-offset_left = 96.0
-offset_top = -300.0
-offset_right = 168.0
-offset_bottom = -228.0
+offset_left = -312.0
+offset_top = -432.0
+offset_right = -240.0
+offset_bottom = -360.0
 datos = ExtResource("d_p_brazos")
 
 [node name="p_ojo" parent="Raiz/Vista/Lienzo/Nodos" instance=ExtResource("nodo")]
 custom_minimum_size = Vector2(72.0, 72.0)
-offset_left = -36.0
-offset_top = -432.0
-offset_right = 36.0
-offset_bottom = -360.0
+offset_left = -180.0
+offset_top = -564.0
+offset_right = -108.0
+offset_bottom = -492.0
 datos = ExtResource("d_p_ojo")
 
 [node name="p_tiron" parent="Raiz/Vista/Lienzo/Nodos" instance=ExtResource("nodo")]
-custom_minimum_size = Vector2(96.0, 96.0)
-offset_left = -180.0
-offset_top = -444.0
-offset_right = -84.0
-offset_bottom = -348.0
+custom_minimum_size = Vector2(72.0, 72.0)
+offset_left = -444.0
+offset_top = -432.0
+offset_right = -372.0
+offset_bottom = -360.0
 datos = ExtResource("d_p_tiron")
 
 [node name="p_mano" parent="Raiz/Vista/Lienzo/Nodos" instance=ExtResource("nodo")]
 custom_minimum_size = Vector2(72.0, 72.0)
 offset_left = 96.0
-offset_top = -432.0
+offset_top = -444.0
 offset_right = 168.0
-offset_bottom = -360.0
+offset_bottom = -372.0
 datos = ExtResource("d_p_mano")
 
 [node name="p_pulso" parent="Raiz/Vista/Lienzo/Nodos" instance=ExtResource("nodo")]
 custom_minimum_size = Vector2(72.0, 72.0)
-offset_left = -36.0
-offset_top = -564.0
-offset_right = 36.0
-offset_bottom = -492.0
+offset_left = -180.0
+offset_top = -696.0
+offset_right = -108.0
+offset_bottom = -624.0
 datos = ExtResource("d_p_pulso")
 
 [node name="p_ambi" parent="Raiz/Vista/Lienzo/Nodos" instance=ExtResource("nodo")]
 custom_minimum_size = Vector2(72.0, 72.0)
-offset_left = -168.0
+offset_left = -444.0
 offset_top = -564.0
-offset_right = -96.0
+offset_right = -372.0
 offset_bottom = -492.0
 datos = ExtResource("d_p_ambi")
 
 [node name="p_tasador" parent="Raiz/Vista/Lienzo/Nodos" instance=ExtResource("nodo")]
 custom_minimum_size = Vector2(72.0, 72.0)
 offset_left = 96.0
-offset_top = -564.0
+offset_top = -576.0
 offset_right = 168.0
-offset_bottom = -492.0
+offset_bottom = -504.0
 datos = ExtResource("d_p_tasador")
 
 [node name="p_acero" parent="Raiz/Vista/Lienzo/Nodos" instance=ExtResource("nodo")]
 custom_minimum_size = Vector2(72.0, 72.0)
-offset_left = 228.0
+offset_left = -312.0
 offset_top = -564.0
-offset_right = 300.0
+offset_right = -240.0
 offset_bottom = -492.0
 datos = ExtResource("d_p_acero")
 
 [node name="p_memoria" parent="Raiz/Vista/Lienzo/Nodos" instance=ExtResource("nodo")]
 custom_minimum_size = Vector2(96.0, 96.0)
 offset_left = -48.0
-offset_top = -708.0
+offset_top = -180.0
 offset_right = 48.0
-offset_bottom = -612.0
+offset_bottom = -84.0
 datos = ExtResource("d_p_memoria")
 
 [node name="p_hondo" parent="Raiz/Vista/Lienzo/Nodos" instance=ExtResource("nodo")]
 custom_minimum_size = Vector2(72.0, 72.0)
-offset_left = -36.0
-offset_top = -828.0
-offset_right = 36.0
-offset_bottom = -756.0
+offset_left = -180.0
+offset_top = -960.0
+offset_right = -108.0
+offset_bottom = -888.0
 datos = ExtResource("d_p_hondo")
 
 [node name="p_lujo" parent="Raiz/Vista/Lienzo/Nodos" instance=ExtResource("nodo")]
 custom_minimum_size = Vector2(72.0, 72.0)
-offset_left = -168.0
+offset_left = -180.0
 offset_top = -828.0
-offset_right = -96.0
+offset_right = -108.0
 offset_bottom = -756.0
 datos = ExtResource("d_p_lujo")
 
 [node name="p_pulpo" parent="Raiz/Vista/Lienzo/Nodos" instance=ExtResource("nodo")]
 custom_minimum_size = Vector2(72.0, 72.0)
 offset_left = 96.0
-offset_top = -828.0
+offset_top = -708.0
 offset_right = 168.0
-offset_bottom = -756.0
+offset_bottom = -636.0
 datos = ExtResource("d_p_pulpo")
 
 [node name="p_leyenda" parent="Raiz/Vista/Lienzo/Nodos" instance=ExtResource("nodo")]
 custom_minimum_size = Vector2(96.0, 96.0)
-offset_left = -48.0
-offset_top = -972.0
-offset_right = 48.0
-offset_bottom = -876.0
+offset_left = 84.0
+offset_top = -852.0
+offset_right = 180.0
+offset_bottom = -756.0
 datos = ExtResource("d_p_leyenda")
+
+[node name="p_auto_valor" parent="Raiz/Vista/Lienzo/Nodos" instance=ExtResource("nodo")]
+custom_minimum_size = Vector2(72.0, 72.0)
+offset_left = -36.0
+offset_top = -444.0
+offset_right = 36.0
+offset_bottom = -372.0
+datos = ExtResource("d_p_auto_valor")
+
+[node name="p_reflejos" parent="Raiz/Vista/Lienzo/Nodos" instance=ExtResource("nodo")]
+custom_minimum_size = Vector2(72.0, 72.0)
+offset_left = -36.0
+offset_top = -312.0
+offset_right = 36.0
+offset_bottom = -240.0
+datos = ExtResource("d_p_reflejos")
 
 [node name="c_labia" parent="Raiz/Vista/Lienzo/Nodos" instance=ExtResource("nodo")]
 custom_minimum_size = Vector2(72.0, 72.0)
@@ -735,11 +753,11 @@ offset_bottom = 696.0
 datos = ExtResource("d_co_perlas")
 
 [node name="p_leer" parent="Raiz/Vista/Lienzo/Nodos" instance=ExtResource("nodo")]
-custom_minimum_size = Vector2(96.0, 96.0)
-offset_left = -180.0
-offset_top = -708.0
-offset_right = -84.0
-offset_bottom = -612.0
+custom_minimum_size = Vector2(72.0, 72.0)
+offset_left = -444.0
+offset_top = -696.0
+offset_right = -372.0
+offset_bottom = -624.0
 datos = ExtResource("d_p_leer")
 
 [node name="Chispas" type="CPUParticles2D" parent="Raiz/Vista/Lienzo"]

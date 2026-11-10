@@ -6,13 +6,10 @@ extends Resource
 @export var nombre: String = ""
 @export_multiline var descripcion: String = ""
 @export var icono: Texture2D
-## NORMAL: el minijuego de siempre. VOLUMEN (caña rápida) y TROFEO (caña tocha): minijuego de carril
-## (scripts/pesca/ritmo.gd). Volumen: un banco, cada nota es un pez. Trofeo: solo raros, pelea larga.
-enum Modo { NORMAL, VOLUMEN, TROFEO }
-
-@export var modo: Modo = Modo.NORMAL
-## Hasta qué profundidad llega. Los peces más profundos no pican.
+## Hasta qué profundidad llega en los spots. Los peces más profundos no pican.
 @export var profundidad: int = 1
+## Pesca base: lo que vale una pieza de "Pescado del día" con esta caña (las demás calidades, en proporción).
+@export var valor_pez: float = 5.0
 @export_group("Cadena")
 ## En cada picada se tira el largo de la cadena entre min y max.
 @export var cadena_min: int = 1

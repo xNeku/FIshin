@@ -8,6 +8,7 @@ id = &"cana_buena"
 nombre = "Caña decente"
 descripcion = "Llega más hondo. Ahí abajo hay bichos gordos."
 profundidad = 2
+valor_pez = 40.0
 cadena_min = 2
 cadena_max = 10
 sesgo_cadena = 1.2

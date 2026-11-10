@@ -53,6 +53,12 @@ layout_mode = 2
 theme_type_variation = &"Pequeno"
 text = "Barca: 0 peces"
 
+[node name="RitmoPesca" type="Label" parent="Info/Lista"]
+layout_mode = 2
+theme_type_variation = &"Pequeno"
+theme_override_colors/font_color = Color(0.55, 0.85, 1, 1)
+text = "Pescando: 0 peces/min"
+
 [node name="Cana" type="Label" parent="Info/Lista"]
 layout_mode = 2
 theme_type_variation = &"Titulo"
@@ -312,6 +318,16 @@ texture_filter = 1
 layout_mode = 0
 offset_right = 64.0
 offset_bottom = 64.0
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="IconoPicar" type="TextureRect" parent="Popups"]
+visible = false
+texture_filter = 1
+layout_mode = 0
+offset_right = 80.0
+offset_bottom = 80.0
 mouse_filter = 2
 expand_mode = 1
 stretch_mode = 5

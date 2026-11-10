@@ -87,7 +87,14 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func puede_bajar() -> bool:
 	return not andando and mundo.celdas_pisables().size() > 1 and not mundo.ocupado() \
-		and not pesca.en_curso() and not (celebracion and celebracion.celebrando)
+		and not pesca.en_curso() and not (celebracion and celebracion.celebrando) and pesca.spot == null \
+		and not _viajando()
+
+
+## El donut va o viene de un spot (ViajeSpots).
+func _viajando() -> bool:
+	var v: Node = get_tree().get_first_node_in_group("viaje_spots")
+	return v != null and v.viajando
 
 
 func en_barca() -> bool:

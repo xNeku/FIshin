@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="SpotData" format=3]
+
+[ext_resource type="Script" path="res://scripts/datos/spot_data.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"spot_roca"
+nombre = "La roca"
+descripcion = "Una piedra con mejillones donde pica de todo. El minijuego de botones de siempre: cadenas, combos y especies para el bestiario."
+modo = 0
+orden = 1
+rareza_min = 0
+rareza_max = 5
+mult_valor = 1.5

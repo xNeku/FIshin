@@ -1,9 +1,9 @@
 class_name Ritmo
 extends CanvasLayer
-## Minijuego de carril de las cañas especiales. Cuatro carriles, uno por botón de símbolo (pesca_1..4):
+## Minijuego de carril de los spots de banco y trofeo. Cuatro carriles, uno por botón de símbolo (pesca_1..4):
 ## las notas viajan por el sedal hasta la zona de golpe y hay que pulsar su botón al llegar.
-## - Banco (caña rápida): cada nota acertada es un pez; el ritmo se acelera; fallar solo pierde ese pez.
-## - Pelea (caña tocha): canción larga con notas que hay que mantener (el pez tira); los fallos bajan la
+## - Banco: cada nota acertada es un pez; el ritmo se acelera; fallar solo pierde ese pez.
+## - Pelea (trofeo): canción larga con notas que hay que mantener (el pez tira); los fallos bajan la
 ##   tensión y, si se vacía, el pez se escapa.
 ## La lógica cuenta con tiempos; lo visual (pista, notas) son nodos de ritmo.tscn y nota_ritmo.tscn.
 
@@ -14,7 +14,7 @@ const ACCIONES: Array[StringName] = [&"pesca_1", &"pesca_2", &"pesca_3", &"pesca
 @export var antelacion: float = 1.8
 @export var ventana_perfecta: float = 0.07
 @export var ventana_buena: float = 0.15
-@export_group("Banco (caña rápida)")
+@export_group("Banco")
 @export var bpm_banco: float = 120.0
 ## Cada nota, el ritmo se acelera esto.
 @export var acelera_banco: float = 0.012
@@ -22,7 +22,7 @@ const ACCIONES: Array[StringName] = [&"pesca_1", &"pesca_2", &"pesca_3", &"pesca
 @export var corcheas_desde: int = 5
 ## Hueco mínimo entre dos notas (s), por mucho que acelere.
 @export var separacion_minima: float = 0.18
-@export_group("Pelea (caña tocha)")
+@export_group("Pelea (trofeo)")
 @export var bpm_pelea: float = 96.0
 @export var prob_larga: float = 0.22
 ## Pulsos que dura una nota larga.
@@ -43,7 +43,7 @@ const ACCIONES: Array[StringName] = [&"pesca_1", &"pesca_2", &"pesca_3", &"pesca
 
 var activo: bool = false
 var _pesca: Node
-var _modo: CanaData.Modo
+var _modo: SpotData.Modo
 var _t: float = 0.0
 ## Notas: {t, carril, dur, nodo, estado (0 pendiente, 1 acertada, 2 fallada), mantenida}
 var _lista: Array[Dictionary] = []
@@ -60,10 +60,10 @@ func _ready() -> void:
 	raiz.visible = false
 
 
-func empezar(pesca: Node, pez: PezData, cana: CanaData) -> void:
+func empezar(pesca: Node, pez: PezData, spot: SpotData) -> void:
 	_pesca = pesca
 	_pez = pez
-	_modo = cana.modo
+	_modo = spot.modo
 	_t = 0.0
 	_aciertos = 0
 	_suma = 0.0
@@ -73,20 +73,20 @@ func empezar(pesca: Node, pez: PezData, cana: CanaData) -> void:
 	for n: Node in notas.get_children():
 		n.queue_free()
 	_lista.clear()
-	_generar(cana)
-	tension.visible = _modo == CanaData.Modo.TROFEO
+	_generar(spot)
+	tension.visible = _modo == SpotData.Modo.TROFEO
 	_pintar_botones()
 	_refrescar_textos()
 	raiz.visible = true
 	activo = true
 
 
-func _generar(cana: CanaData) -> void:
+func _generar(spot: SpotData) -> void:
 	var t: float = antelacion + 0.4
 	var ultimo: int = -1
 	var repetido: int = 0
-	if _modo == CanaData.Modo.VOLUMEN:
-		var n: int = randi_range(cana.cadena_min, cana.cadena_max) + int(Juego.efecto(&"cadena_extra"))
+	if _modo == SpotData.Modo.BANCO:
+		var n: int = randi_range(spot.notas_min, spot.notas_max) + int(Juego.efecto(&"cadena_extra"))
 		var pulso: float = 60.0 / bpm_banco
 		for i in n:
 			var c: int = _carril_nuevo(ultimo, repetido)
@@ -214,7 +214,7 @@ func _process(delta: float) -> void:
 		if _t >= n.t + n.dur:
 			_manteniendo.erase(k)
 			_quitar(n, true)
-	if _modo == CanaData.Modo.TROFEO:
+	if _modo == SpotData.Modo.TROFEO:
 		tension.value = _vida * 100.0
 		if _vida <= 0.0:
 			_fin(true)
@@ -258,7 +258,7 @@ func _pintar_botones() -> void:
 
 func _refrescar_textos() -> void:
 	combo.text = "x%d" % _combo if _combo > 1 else ""
-	if _modo == CanaData.Modo.VOLUMEN:
+	if _modo == SpotData.Modo.BANCO:
 		contador.text = "%s ×%d" % [_pez.nombre, _aciertos]
 	else:
 		contador.text = _pez.nombre

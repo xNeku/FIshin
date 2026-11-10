@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="SpotData" format=3]
+
+[ext_resource type="Script" path="res://scripts/datos/spot_data.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"spot_fosa"
+nombre = "La fosa"
+descripcion = "Agua negra y fondo que no se ve. Solo raros o mejores, en una pelea larga: si la tensión se vacía, se escapa."
+modo = 2
+orden = 3
+rareza_min = 2
+rareza_max = 5
+mult_valor = 1.5
+mult_espera = 1.4
+mult_rareza = 1.5

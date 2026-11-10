@@ -1,0 +1,46 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/mundo/spot.gd" id="1_script"]
+[ext_resource type="Resource" path="res://data/spots/spot_roca.tres" id="2_datos"]
+[ext_resource type="Texture2D" path="res://art/mundo/props/roca.png" id="t_roca"]
+
+[node name="SpotRoca" type="Node3D" node_paths=PackedStringArray("punto_barca")]
+script = ExtResource("1_script")
+datos = ExtResource("2_datos")
+punto_barca = NodePath("PuntoBarca")
+
+[node name="PuntoBarca" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.2)
+
+[node name="Roca1" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.3, 0.45, -0.5)
+billboard = 2
+alpha_cut = 1
+texture_filter = 0
+pixel_size = 0.05
+texture = ExtResource("t_roca")
+
+[node name="Roca2" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.1, 0.35, -0.9)
+billboard = 2
+alpha_cut = 1
+texture_filter = 0
+pixel_size = 0.05
+texture = ExtResource("t_roca")
+
+[node name="Roca3" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, 0.3, -1.6)
+billboard = 2
+alpha_cut = 1
+texture_filter = 0
+pixel_size = 0.05
+texture = ExtResource("t_roca")
+
+[node name="Cartel" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7, -0.8)
+billboard = 1
+texture_filter = 0
+pixel_size = 0.012
+modulate = Color(1, 0.95, 0.75, 1)
+outline_size = 8
+text = "La roca"

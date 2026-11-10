@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="PezData" format=3]
+
+[ext_resource type="Script" path="res://scripts/datos/pez_data.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://art/peces/sardina.png" id="2_icono"]
+
+[resource]
+script = ExtResource("1_script")
+id = &"base_dia"
+nombre = "Pescado del día"
+rareza = 1
+icono = ExtResource("2_icono")
+bestiario = false
+valor_base = 1.0
+peso_min = 0.3
+peso_max = 1.2
+probabilidad = 55.0
