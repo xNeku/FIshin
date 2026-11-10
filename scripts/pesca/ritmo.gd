@@ -33,13 +33,17 @@ const ACCIONES: Array[StringName] = [&"pesca_1", &"pesca_2", &"pesca_3", &"pesca
 @export var dano_fallo: float = 0.14
 @export var cura_acierto: float = 0.025
 
+## El carril se dibuja plano en `visor` (SubViewport) y `mastil` lo enseña en perspectiva (shaders/mastil.gdshader).
+@export var visor: SubViewport
+@export var mastil: TextureRect
+
 @onready var raiz: Control = $Raiz
-@onready var pista: Control = $Raiz/Panel/Lista/Pista
-@onready var notas: Control = $Raiz/Panel/Lista/Pista/Notas
-@onready var golpe: Control = $Raiz/Panel/Lista/Pista/Golpe
-@onready var combo: Label = $Raiz/Panel/Lista/Combo
-@onready var contador: Label = $Raiz/Panel/Lista/Arriba/Contador
-@onready var tension: ProgressBar = $Raiz/Panel/Lista/Arriba/Tension
+@onready var pista: Control = $Raiz/Visor/Pista
+@onready var notas: Control = $Raiz/Visor/Pista/Notas
+@onready var golpe: Control = $Raiz/Visor/Pista/Golpe
+@onready var combo: Label = $Raiz/Combo
+@onready var contador: Label = $Raiz/Cabecera/Arriba/Contador
+@onready var tension: ProgressBar = $Raiz/Cabecera/Arriba/Tension
 
 var activo: bool = false
 var _pesca: Node
@@ -58,6 +62,9 @@ var _pez: PezData
 
 func _ready() -> void:
 	raiz.visible = false
+	if visor and mastil:
+		mastil.texture = visor.get_texture()
+		visor.render_target_update_mode = SubViewport.UPDATE_DISABLED
 
 
 func empezar(pesca: Node, pez: PezData, spot: SpotData) -> void:
@@ -79,6 +86,8 @@ func empezar(pesca: Node, pez: PezData, spot: SpotData) -> void:
 	_refrescar_textos()
 	raiz.visible = true
 	activo = true
+	if visor:
+		visor.render_target_update_mode = SubViewport.UPDATE_ALWAYS
 
 
 func _generar(spot: SpotData) -> void:
@@ -241,6 +250,8 @@ func _quitar(nota: Dictionary, bien: bool) -> void:
 func _fin(escapado: bool) -> void:
 	activo = false
 	raiz.visible = false
+	if visor:
+		visor.render_target_update_mode = SubViewport.UPDATE_DISABLED
 	_pesca.terminar_ritmo(_aciertos, _lista.size(), escapado, _suma)
 
 

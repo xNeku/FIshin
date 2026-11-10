@@ -2,44 +2,60 @@
 
 [ext_resource type="Script" path="res://scripts/mundo/spot.gd" id="1_script"]
 [ext_resource type="Resource" path="res://data/spots/spot_fora.tres" id="2_datos"]
-[ext_resource type="Texture2D" path="res://art/mundo/props/flotador.png" id="t_flotador"]
+[ext_resource type="PackedScene" path="res://scenes/mundo/piezas/tablon.tscn" id="3_tablon"]
+[ext_resource type="Texture2D" path="res://art/mundo/props/antorcha.png" id="t_antorcha"]
 [ext_resource type="Texture2D" path="res://art/mundo/props/barril.png" id="t_barril"]
+[ext_resource type="Texture2D" path="res://art/mundo/props/caja.png" id="t_caja"]
+[ext_resource type="Texture2D" path="res://art/mundo/props/flotador.png" id="t_flotador"]
 
 [node name="SpotFora" type="Node3D" node_paths=PackedStringArray("punto_barca")]
 script = ExtResource("1_script")
 datos = ExtResource("2_datos")
 punto_barca = NodePath("PuntoBarca")
 
+[node name="Punta" parent="." instance=ExtResource("3_tablon")]
+
+[node name="Tablon" parent="." instance=ExtResource("3_tablon")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 0)
+
 [node name="PuntoBarca" type="Marker3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.2)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.3, 0, 0.4)
 
-[node name="Boya1" type="Sprite3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 0.3, -0.6)
+[node name="Farol" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.7, 0.9, -0.75)
 billboard = 2
 alpha_cut = 1
 texture_filter = 0
 pixel_size = 0.05
-texture = ExtResource("t_flotador")
-
-[node name="Boya2" type="Sprite3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 0.3, -0.6)
-billboard = 2
-alpha_cut = 1
-texture_filter = 0
-pixel_size = 0.05
-texture = ExtResource("t_flotador")
+texture = ExtResource("t_antorcha")
 
 [node name="Barril" type="Sprite3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.4, 0.35, -1.7)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 0.55, -0.6)
 billboard = 2
 alpha_cut = 1
 texture_filter = 0
 pixel_size = 0.05
 texture = ExtResource("t_barril")
 
+[node name="Caja" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.6, 0.5, 0.6)
+billboard = 2
+alpha_cut = 1
+texture_filter = 0
+pixel_size = 0.05
+texture = ExtResource("t_caja")
+
+[node name="Salvavidas" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.6, 0.55, -0.9)
+billboard = 2
+alpha_cut = 1
+texture_filter = 0
+pixel_size = 0.05
+texture = ExtResource("t_flotador")
+
 [node name="Cartel" type="Label3D" parent="."]
 visibility_range_begin = 9.0
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7, -0.8)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.0, 2.0, -0.8)
 billboard = 1
 texture_filter = 0
 pixel_size = 0.012

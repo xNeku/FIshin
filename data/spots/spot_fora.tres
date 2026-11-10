@@ -6,7 +6,7 @@
 script = ExtResource("1_script")
 id = &"spot_fora"
 nombre = "Mar de Fóra"
-descripcion = "Mar abierto, sin fondo a la vista. Solo los gigantes: más de 40 kg, raros o mejores, de aquí y de fuera. Pelea larga en el carril: si la tensión se vacía, se escapa. Cada estación y cada hora traen otros."
+descripcion = "El último pantalán del puerto, mirando a mar abierto, sin fondo a la vista. Solo los gigantes: más de 40 kg, raros o mejores, de aquí y de fuera. Pelea larga en el carril: si la tensión se vacía, se escapa. Cada estación y cada hora traen otros."
 modo = 2
 orden = 2
 rareza_min = 2

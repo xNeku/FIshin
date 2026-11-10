@@ -386,7 +386,17 @@ A las 6-7 h los restaurantes son ~50 % de los ingresos.
   - En el spot, arriba (HUD `SpotInfo`): "O Penedo · Otoño, noche · pican 16 especies, 5 sin descubrir".
   - Desde la base, la caja dice "[Extra] Ir a O Penedo (3 nuevas pican ahora)" (`ViajeSpots.resumen`).
 - **Remate de machacar:** se acabaron los tramos a mitad de cadena. Si el pez tiene `machacar_cada > 0` (tocho) y la cadena sale completa (`n >= pasos_perfect`), se añade un último paso de machacar `pesca_1` (X / 1). Si fallas, como antes: los legendarios y extraños se escapan y el resto sale peor.
-- **Carril vertical** (`ritmo.tscn` rehecho):
+- **Mástil en perspectiva** (10 nov, 3ª vuelta, tipo Guitar Hero / Rocksmith):
+  - El carril se dibuja plano en un SubViewport (`Raiz/Visor/Pista`, editable: fondo, bordes, carriles, trastes, línea de golpe y botones).
+  - `Raiz/Mastil` lo enseña centrado abajo, inclinado con perspectiva real y desvanecido al fondo (`shaders/mastil.gdshader`: `ancho_lejos`, `desvanecer`, `opacidad`).
+  - Arriba, una cabecera de cristal con el pez y la tensión; abajo, el combo.
+  - El visor solo se dibuja durante la pelea.
+- **Spots = bordes del puerto:**
+  - Pantalán de dos tablones sobre pilotes, con farol, barril, caja, salvavidas y cartel. El donut amarra en la punta (`PuntoBarca`).
+  - O Penedo sale de los cultivos hacia el oeste: (-11,0)-(-10,0). Mar de Fóra sale de la entrada hacia el este: (9,3)-(8,3).
+  - Sitios provisionales: se cambian en `data/apariciones/spot_*.tres` (`ancla` y `celdas`).
+  - De momento no se pisan; se llega remando con el donut.
+- (Antes) **Carril vertical** (`ritmo.tscn` rehecho):
   - Panel de cristal a la derecha.
   - Nombre del pez y tensión arriba.
   - 4 carriles finos translúcidos; las notas caen hasta la línea de golpe, con los botones abajo.

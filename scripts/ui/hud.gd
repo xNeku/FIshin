@@ -104,6 +104,8 @@ var _rublos_mostrados: float = 0.0
 ## Piezas recientes de la base: [tiempo, valor].
 var _piezas: Array[Vector2] = []
 var _t_reloj: float = 0.0
+var _spot_mostrado: SpotData = null
+var _t_spot_info: float = -1.0
 var _intensidad_objetivo: float = 0.0
 var _intensidad: float = 0.0
 var _destello: float = 0.0
@@ -354,9 +356,15 @@ func _on_captura_base(c: Dictionary, p: PezData, manual: bool) -> void:
 func _info_spot() -> void:
 	if spot_info == null:
 		return
-	spot_info.visible = pesca != null and pesca.spot != null
-	if not spot_info.visible or Engine.get_process_frames() % 30 != 0:
+	spot_info.visible = pesca != null and pesca.spot != null and pesca.estado != Pesca.Estado.RITMO
+	if not spot_info.visible:
+		_spot_mostrado = null
 		return
+	# Se rehace al cambiar de spot y luego cada medio segundo (la hora y la estación cambian despacio).
+	if pesca.spot == _spot_mostrado and _t_reloj - _t_spot_info < 0.5:
+		return
+	_spot_mostrado = pesca.spot
+	_t_spot_info = _t_reloj
 	var viaje: Node = get_tree().get_first_node_in_group("viaje_spots")
 	var r: Vector2i = viaje.resumen(pesca.spot) if viaje else Vector2i.ZERO
 	var rd: RelojData = Juego.reloj_data

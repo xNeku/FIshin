@@ -6,7 +6,7 @@
 script = ExtResource("1_script")
 id = &"spot_penedo"
 nombre = "O Penedo"
-descripcion = "Una piedra en mar abierto donde se arriman los buenos de aquí: poco comunes, raros y, si hay suerte, épicos. Minijuego de botones; a los tochos se les remata machacando. Lo que pica cambia con la hora y la estación."
+descripcion = "Un pantalán apartado al oeste, con la puesta de sol de frente. Aquí se arriman los buenos de aquí: poco comunes, raros y, si hay suerte, épicos. Minijuego de botones; a los tochos se les remata machacando. Lo que pica cambia con la hora y la estación."
 modo = 0
 orden = 1
 rareza_min = 1
