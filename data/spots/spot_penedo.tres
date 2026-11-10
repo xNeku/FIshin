@@ -1,6 +1,8 @@
 [gd_resource type="Resource" script_class="SpotData" format=3]
 
 [ext_resource type="Script" path="res://scripts/datos/spot_data.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://art/personajes/retrete.png" id="2_asiento"]
+[ext_resource type="Texture2D" path="res://art/personajes/retrete_frente.png" id="3_frente"]
 
 [resource]
 script = ExtResource("1_script")
@@ -8,6 +10,8 @@ id = &"spot_penedo"
 nombre = "O Penedo"
 descripcion = "Un pantalán apartado al oeste, con la puesta de sol de frente. Aquí se arriman los buenos de aquí: poco comunes, raros y, si hay suerte, épicos. Minijuego de botones; a los tochos se les remata machacando. Lo que pica cambia con la hora y la estación."
 modo = 0
+asiento = ExtResource("2_asiento")
+asiento_frente = ExtResource("3_frente")
 orden = 1
 rareza_min = 1
 rareza_max = 3

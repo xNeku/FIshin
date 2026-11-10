@@ -391,6 +391,7 @@ A las 6-7 h los restaurantes son ~50 % de los ingresos.
   - `Raiz/Mastil` lo enseña centrado abajo, inclinado con perspectiva real y desvanecido al fondo (`shaders/mastil.gdshader`: `ancho_lejos`, `desvanecer`, `opacidad`).
   - Arriba, una cabecera de cristal con el pez y la tensión; abajo, el combo.
   - El visor solo se dibuja durante la pelea.
+- **Asientos de los spots:** se llega remando en el donut y al amarrar se cambia, con un chapuzón, por el asiento del spot (`SpotData.asiento` / `asiento_frente`, mismas capas que el donut; `Barca.poner_asiento`). O Penedo: un retrete. Mar de Fóra: un sofá. Placeholders de `docs/herramientas/generar_asientos.py` (`art/personajes/retrete*.png` y `sofa*.png`).
 - **Spots = bordes del puerto:**
   - Pantalán de dos tablones sobre pilotes, con farol, barril, caja, salvavidas y cartel. El donut amarra en la punta (`PuntoBarca`).
   - O Penedo sale de los cultivos hacia el oeste: (-11,0)-(-10,0). Mar de Fóra sale de la entrada hacia el este: (9,3)-(8,3).

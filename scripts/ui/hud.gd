@@ -371,7 +371,10 @@ func _info_spot() -> void:
 	var momento: String = ""
 	if rd:
 		momento = " · %s, %s" % [RelojData.ESTACIONES[rd.estacion(Juego.reloj)], "ocaso" if rd.es_ocaso(Juego.reloj) else ("noche" if rd.es_noche(Juego.reloj) else "día")]
-	spot_info.text = "%s%s · pican %d especies" % [pesca.spot.nombre, momento, r.x] + (", %d sin descubrir" % r.y if r.y > 0 else ", ¡todas descubiertas!")
+	if r.x == 0:
+		spot_info.text = "%s%s · ahora no pica nada aquí: prueba a otra hora o con mejor caña" % [pesca.spot.nombre, momento]
+	else:
+		spot_info.text = "%s%s · pican %d especies" % [pesca.spot.nombre, momento, r.x] + (", %d sin descubrir" % r.y if r.y > 0 else ", ¡todas descubiertas!")
 
 
 ## Ritmo de la pesca base en el panel: peces por minuto y lo que dan por minuto.

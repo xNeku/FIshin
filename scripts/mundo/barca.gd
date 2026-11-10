@@ -61,6 +61,8 @@ extends Node3D
 @onready var salpicadura: CPUParticles3D = $Salpicadura
 @onready var sombra: Sprite3D = $Sombra
 @onready var espuma: Sprite3D = $Espuma
+@onready var asiento_atras: Sprite3D = $DonutAtras
+@onready var asiento_delante: Sprite3D = $DonutDelante
 
 var _t: float = 0.0
 var _intensidad: float = 0.0
@@ -68,9 +70,13 @@ var _hundido: float = 0.0
 var _corcho_en_agua: bool = false
 var _volando: bool = false
 var _t_onda: float = 0.0
+var _donut_atras: Texture2D
+var _donut_delante: Texture2D
 
 
 func _ready() -> void:
+	_donut_atras = asiento_atras.texture
+	_donut_delante = asiento_delante.texture
 	_poner_pose(textura_chill, punta_chill)
 	flotador.global_position = punta.global_position
 	ondas.visible = false
@@ -103,6 +109,22 @@ func _on_estado(e: Pesca.Estado) -> void:
 				_lanzar()
 		Pesca.Estado.RESULTADO, Pesca.Estado.INACTIVO:
 			_recoger()
+
+
+## Cambia el donut por el asiento de un spot (retrete, sofá...) o vuelve al donut (null), con un chapuzón.
+func poner_asiento(datos: SpotData) -> void:
+	var atras: Texture2D = datos.asiento if datos and datos.asiento else _donut_atras
+	var delante: Texture2D = datos.asiento_frente if datos and datos.asiento else _donut_delante
+	if asiento_atras.texture == atras:
+		return
+	asiento_atras.texture = atras
+	asiento_delante.texture = delante
+	salpicadura.global_position = global_position + Vector3.UP * 0.3
+	salpicadura.amount = 24
+	salpicadura.restart()
+	salpicadura.emitting = true
+	scale = Vector3(1.15, 0.85, 1.0)
+	create_tween().tween_property(self, "scale", Vector3.ONE, 0.3).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 
 
 ## Pieza de la pesca base: salta del corcho a la barca (más grande cuanto mejor es).

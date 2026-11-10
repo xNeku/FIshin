@@ -11,6 +11,10 @@ enum Modo { CLASICO, BANCO, TROFEO }
 @export var nombre: String = ""
 @export_multiline var descripcion: String = ""
 @export var modo: Modo = Modo.CLASICO
+## En qué pesca sentado aquí (en vez del donut): capa de detrás y de delante, mismo lienzo que el donut.
+## Vacío = el donut. Se llega remando en el donut y al llegar se cambia.
+@export var asiento: Texture2D
+@export var asiento_frente: Texture2D
 ## Orden al cambiar de spot con "accion_extra" (base → 1 → 2 → 3 → base).
 @export var orden: int = 1
 ## Rarezas que pican aquí (PezData.Rareza, ambos incluidos).

@@ -76,6 +76,7 @@ Marcas: [DECIDIDO] lo decidió el diseñador · [PROPUESTA] sugerencia de Claude
 - [DECIDIDO] Cada spot va tematizado. Lo que pica cambia de día, de noche y con la estación, para que siempre haya un motivo para intentarlo.
 - [DECIDIDO] **Spot de mid game: el minijuego básico.** Luego se compra "Leer el agua" para ver lo que viene. Si es un pez tocho y completas la cadena, el remate es machacar muy rápido el mismo botón (X / 1).
 - [DECIDIDO] **Spot de gigantes: tipo Guitar Hero.** Va en el centro de la pantalla, translúcido y con ángulo 3D, como el mástil del Guitar Hero o de Rocksmith, y con la estética de nuestra interfaz.
+- [DECIDIDO] Se va a los spots en el donut, pero allí se pesca sentado en otra cosa para variar: en O Penedo, un retrete; en Mar de Fóra, un sofá.
 - [DECIDIDO] Los spots son bordes del puerto. Salen donde diga el diseñador, por lo general con buenas vistas y algo apartados de todo.
 - [PROPUESTA] **O Penedo** (mid game, llega con 500K ₽ y tras el ayuntamiento, hacia las 3 h 20):
   - Peces de Galicia de poco comunes a épicos, sin objetos, flora ni equinodermos (52 especies).

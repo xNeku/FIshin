@@ -80,6 +80,8 @@ func ir_a(destino: Spot) -> void:
 	viajando = true
 	viaje_empezado.emit(destino)
 	pesca.pausar()
+	if barca.has_method("poner_asiento"):
+		barca.poner_asiento(null)
 	if camara:
 		camara.seguir(barca)
 	var desde: Vector3 = barca.position
@@ -93,6 +95,8 @@ func ir_a(destino: Spot) -> void:
 	await tw.finished
 	actual = destino
 	viajando = false
+	if destino and barca.has_method("poner_asiento"):
+		barca.poner_asiento(destino.datos)
 	if camara and destino == null:
 		camara.seguir(null)
 	pesca.poner_spot(destino.datos if destino else null)
