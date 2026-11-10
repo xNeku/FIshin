@@ -76,18 +76,23 @@ Marcas: [DECIDIDO] lo decidió el diseñador · [PROPUESTA] sugerencia de Claude
 - [DECIDIDO] Cada spot va tematizado. Lo que pica cambia de día, de noche y con la estación, para que siempre haya un motivo para intentarlo.
 - [DECIDIDO] **Spot de mid game: el minijuego básico.** Luego se compra "Leer el agua" para ver lo que viene. Si es un pez tocho y completas la cadena, el remate es machacar muy rápido el mismo botón (X / 1).
 - [DECIDIDO] **Spot de gigantes: tipo Guitar Hero.** Va en el centro de la pantalla, translúcido y con ángulo 3D, como el mástil del Guitar Hero o de Rocksmith, y con la estética de nuestra interfaz.
+- [DECIDIDO] En los spots vale cualquier caña: con una mejor simplemente sale mejor botín. Lo que cambia la forma de pescar es el sitio, no la caña.
+- [PROPUESTA] Implementado así:
+  - Pica todo lo del spot (a su hora y estación) con cualquier caña.
+  - La caña sube los raros (`mult_rareza`) y tira hacia los peces de su fondo: los más hondos, ×0,5 por nivel; los menos hondos, ×0,75 por nivel.
+  - La cadena del minijuego también sale de la caña.
 - [DECIDIDO] Se va a los spots en el donut, pero allí se pesca sentado en otra cosa para variar: en O Penedo, un retrete; en Mar de Fóra, un sofá.
 - [DECIDIDO] Los spots son bordes del puerto. Salen donde diga el diseñador, por lo general con buenas vistas y algo apartados de todo.
 - [PROPUESTA] **O Penedo** (mid game, llega con 500K ₽ y tras el ayuntamiento, hacia las 3 h 20):
   - Peces de Galicia de poco comunes a épicos, sin objetos, flora ni equinodermos (52 especies).
   - Raros y épicos, ×2.
-  - Usa la profundidad de tu caña: mejores cañas, más especies.
+  - Con cualquier caña; una mejor saca más raros y más del fondo.
 - [PROPUESTA] **Mar de Fóra** (late game, 4M ₽ y tras el sushi, hacia las 6 h 40):
   - Gigantes de más de 40 kg, raros o mejores, de aquí y de fuera (31 especies).
-  - Su propio fondo: profundidad 12.
+  - Tira 3 niveles más hondo que tu caña (`profundidad_extra`).
   - Carril vertical con tensión.
 - [PROPUESTA] Arriba, en el spot, se ve qué pica ahora y cuántas especies faltan por descubrir. Desde la base, el aviso dice "Ir a O Penedo (3 nuevas pican ahora)".
-- [PROPUESTA] Dinero: cada spot paga ~1,25-1,3× la pesca base de su época (O Penedo `mult_valor` 0,75; Mar de Fóra 0,09, porque los gigantes valen mucho de catálogo). Se va por coleccionar y por el reto, no porque sea obligatorio.
+- [PROPUESTA] Dinero: cada spot paga ~1,25-1,3× la pesca base de su época (O Penedo `mult_valor` 0,85; Mar de Fóra 0,22, porque los gigantes valen mucho de catálogo). Se va por coleccionar y por el reto, no porque sea obligatorio.
 - [PROPUESTA] Las cañas rápida y tocha desaparecen: su carril de trofeo es ahora el de Mar de Fóra (el modo banco queda en el código, sin spot).
 - Lo de abajo (cadenas, combos, dobles, machacar, celebración) es ahora el minijuego de los spots.
 

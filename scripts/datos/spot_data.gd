@@ -20,10 +20,9 @@ enum Modo { CLASICO, BANCO, TROFEO }
 ## Rarezas que pican aquí (PezData.Rareza, ambos incluidos).
 @export_range(0, 5) var rareza_min: int = 0
 @export_range(0, 5) var rareza_max: int = 5
-## Profundidad de más sobre la de tu caña.
+## En el spot pica todo lo suyo con cualquier caña; la profundidad de la caña (más esto) solo decide hacia
+## dónde tira el botín (Pesca.peso_mas_hondo / peso_menos_hondo).
 @export var profundidad_extra: int = 0
-## Si es > 0, el spot tiene su propio fondo (ignora la caña): pican los peces hasta esta profundidad.
-@export var profundidad_propia: int = 0
 ## -1 = de cualquier sitio; 0 = solo de Galicia; 1 = solo del resto del mundo (PezData.Zona).
 @export_range(-1, 1) var zona: int = -1
 ## Solo especies que pueden pesar al menos esto (kg, su peso_max). 0 = todas.

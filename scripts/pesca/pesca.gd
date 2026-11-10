@@ -69,6 +69,11 @@ class Paso:
 ## Lo que vale el trofeo respecto a su valor base.
 @export var mult_trofeo: float = 0.7
 
+## Spots: los peces más hondos que tu caña salen esto menos por nivel (pueden salir, pero cuesta).
+@export var peso_mas_hondo: float = 0.5
+## Spots: los de menos fondo que tu caña salen esto menos por nivel (suave: hacen falta para el bestiario).
+@export var peso_menos_hondo: float = 0.75
+
 @export_group("Pesca base")
 @export_dir var carpeta_peces_base: String = "res://data/peces_base"
 ## Segundos para pulsar desde que pica.
@@ -226,10 +231,8 @@ func en_curso() -> bool:
 	return estado == Estado.PASO or estado == Estado.ENTRE_PASOS or estado == Estado.RITMO or estado == Estado.PICADA
 
 
-## Hasta qué profundidad pican en el spot (la caña y el árbol, o el fondo propio del spot).
+## Profundidad "buena" de la caña en el spot: no limita lo que pica, solo hacia dónde tira el botín.
 func profundidad_spot(s: SpotData = spot) -> int:
-	if s and s.profundidad_propia > 0:
-		return s.profundidad_propia
 	return Juego.cana().profundidad + int(Juego.efecto(&"profundidad")) + (s.profundidad_extra if s else 0)
 
 
@@ -242,11 +245,9 @@ func pica_en_spot(p: PezData, s: SpotData) -> bool:
 	return p.peso_max >= s.peso_minimo_especie
 
 
-## Especies que pueden picar ahora mismo en un spot (por hora, estación y profundidad). Para los avisos.
+## Especies que pueden picar ahora mismo en un spot (por hora y estación; la caña no limita). Para los avisos.
 func especies_ahora(s: SpotData) -> Array[PezData]:
-	var hondo: int = profundidad_spot(s)
-	return peces.filter(func(p: PezData) -> bool:
-		return pica_en_spot(p, s) and p.profundidad <= hondo and Juego.pez_disponible(p))
+	return peces.filter(func(p: PezData) -> bool: return pica_en_spot(p, s) and Juego.pez_disponible(p))
 
 
 ## Pesca base: ha picado y aún puedes pulsar.
@@ -334,18 +335,18 @@ func _tirar_pez() -> PezData:
 	var hondo: int = profundidad_spot()
 	var suerte: float = 1.0 + Juego.efecto(&"raros") + (Juego.efecto(&"raros_tormenta") if Juego.lloviendo else 0.0) \
 		+ (Juego.efecto(&"raros_tras_chill") if _tras_chill else 0.0)
-	# Solo los de esta estación y hora (si no queda ninguno, se ignora el reloj para que siempre pique algo).
+	# En los spots vale cualquier caña: pica todo lo del sitio a su hora y estación (si a esta hora no hay
+	# nada del spot, se ignora el reloj). La caña solo mejora el botín: más raros y más de los de su fondo.
 	var del_spot: Array[PezData] = peces.filter(func(p: PezData) -> bool: return spot == null or pica_en_spot(p, spot))
-	var lista: Array[PezData] = del_spot.filter(func(p: PezData) -> bool: return p.profundidad <= hondo and Juego.pez_disponible(p))
+	var lista: Array[PezData] = del_spot.filter(func(p: PezData) -> bool: return Juego.pez_disponible(p))
 	if lista.is_empty():
 		lista = del_spot
 	for p: PezData in lista:
+		var w: float = p.probabilidad
 		if p.profundidad > hondo:
-			continue
-		if spot and not pica_en_spot(p, spot):
-			continue
-		# Cuanto más hondo pescas, menos salen los peces de arriba (siguen saliendo, pero menos).
-		var w: float = p.probabilidad * pow(stats.peso_por_nivel_arriba, hondo - p.profundidad)
+			w *= pow(peso_mas_hondo, p.profundidad - hondo)
+		else:
+			w *= pow(peso_menos_hondo, hondo - p.profundidad)
 		if p.rareza >= PezData.Rareza.RARO:
 			w *= cana.mult_rareza * suerte * (spot.mult_rareza if spot else 1.0)
 		if p.rareza >= PezData.Rareza.LEGENDARIO:

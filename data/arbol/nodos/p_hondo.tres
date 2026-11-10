@@ -10,7 +10,7 @@
 script = ExtResource("1_script")
 id = &"p_hondo"
 nombre = "Más hondo"
-descripcion = "En los spots: la caña llega {v} nivel más hondo por nivel. Peces nuevos."
+descripcion = "En los spots: tu caña tira {v} nivel más hondo por nivel (salen más peces del fondo)."
 rama = ExtResource("2_rama")
 icono = ExtResource("3_icono")
 clave = false

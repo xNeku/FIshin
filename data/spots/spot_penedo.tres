@@ -16,5 +16,5 @@ orden = 1
 rareza_min = 1
 rareza_max = 3
 zona = 0
-mult_valor = 0.75
+mult_valor = 0.85
 mult_rareza = 2.0

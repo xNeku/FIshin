@@ -377,11 +377,16 @@ A las 6-7 h los restaurantes son ~50 % de los ingresos.
 **Spots** (`SpotData` en `data/spots/`, escenas en `scenes/mundo/spots/`, script `spot.gd`). Hay 2 (la 2ª vuelta quitó el banco y la fosa):
 - **O Penedo** (`spot_penedo`):
   - Aparición en (-3,-5), con 500K ₽ y tras el ayuntamiento: en el simulador, ~3 h 20.
-  - CLASICO. Rareza 1-3, zona Galicia, `mult_rareza` 2, `mult_valor` 0,75. Usa la profundidad de la caña.
+  - CLASICO. Rareza 1-3, zona Galicia, `mult_rareza` 2, `mult_valor` 0,85.
 - **Mar de Fóra** (`spot_fora`):
   - (3,-8), con 4M ₽ y tras el sushi: ~6 h 40.
-  - TROFEO. Rareza 2-5, `peso_minimo_especie` 40, `profundidad_propia` 12, `mult_valor` 0,09 (los gigantes valen mucho de catálogo), `mult_espera` 1,4.
-- Filtros de `SpotData`: `rareza_min/max`, `zona`, `peso_minimo_especie`, `tipos_excluidos` (por defecto objetos, flora y equinodermos: sin botas viejas) y `profundidad_propia`. `Pesca.pica_en_spot` y `Pesca.especies_ahora` los aplican, más la hora y la estación de cada pez. Si a esa hora no pica ninguna del spot, se ignora el reloj.
+  - TROFEO. Rareza 2-5, `peso_minimo_especie` 40, `profundidad_extra` 3, `mult_valor` 0,22 (los gigantes valen mucho de catálogo), `mult_espera` 1,4.
+- **Cualquier caña vale en los spots.** Pica todo lo del sitio a su hora y estación. La caña solo cambia el botín:
+  - Sus raros (`mult_rareza`).
+  - Hacia qué fondo tira (`Pesca.peso_mas_hondo` 0,5 y `peso_menos_hondo` 0,75 por nivel de distancia a la profundidad de la caña + `profundidad_extra`).
+  - La cadena del minijuego.
+- Probado: con la rota y con la de altura salen todas las especies. Con la de altura, más del fondo y más raros.
+- Filtros de `SpotData`: `rareza_min/max`, `zona`, `peso_minimo_especie` y `tipos_excluidos` (por defecto objetos, flora y equinodermos: sin botas viejas). `Pesca.pica_en_spot` y `Pesca.especies_ahora` los aplican, más la hora y la estación de cada pez. Si a esa hora no pica ninguna del spot, se ignora el reloj.
 - Incentivo:
   - En el spot, arriba (HUD `SpotInfo`): "O Penedo · Otoño, noche · pican 16 especies, 5 sin descubrir".
   - Desde la base, la caja dice "[Extra] Ir a O Penedo (3 nuevas pican ahora)" (`ViajeSpots.resumen`).
@@ -403,7 +408,7 @@ A las 6-7 h los restaurantes son ~50 % de los ingresos.
   - 4 carriles finos translúcidos; las notas caen hasta la línea de golpe, con los botones abajo.
   - Las notas largas tienen cola hacia arriba (`nota_ritmo.tscn`).
 - `ViajeSpots` (nodo en main): sentado, `accion_extra` rema al siguiente spot o vuelve a la base, y la cámara sigue al donut. En un spot no te levantas. Ahí van el minijuego, la carta, la celebración, la maestría y el bestiario.
-- Dinero (`/scratchpad spots_cal`, reproducible con `simular_carril.py` + pools): O Penedo ~1,25× la base a mano de su época y Mar de Fóra ~1,3×.
+- Dinero (calculado con `simular_carril.py` + los pools): O Penedo ~1,4× la base a mano con carbono y ~1,05× con altura; Mar de Fóra ~1,25× con coral y altura.
 
 **Árbol, rama Pesca**, en dos líneas:
 - Base, a la derecha del bonsái:
