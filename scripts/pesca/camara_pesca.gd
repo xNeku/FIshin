@@ -96,8 +96,10 @@ func _process(delta: float) -> void:
 	_peso_foco = lerpf(_peso_foco, 1.0 if _t_foco > 0.0 else 0.0, 1.0 - exp(-velocidad_foco * dt))
 	var desp: Vector3 = (_foco - _mirar_base) * _peso_foco
 	var atras: Vector3 = (_pos_base - _mirar_base).normalized() * _alejar_foco * _peso_foco
-	global_position = _pos_base.lerp(obj, acercamiento * z) + desp + atras
-	look_at(_mirar_base.lerp(obj, z) + desp)
+	# El zoom ya va hacia el objetivo (que se mueve con el donut): el desplazamiento por seguir se quita a la
+	# vez que se acerca, para no contarlo dos veces (celebraciones en los spots).
+	global_position = _pos_base.lerp(obj, acercamiento * z) + (desp + atras) * (1.0 - acercamiento * z)
+	look_at(_mirar_base.lerp(obj, z) + desp * (1.0 - z))
 	_patada = lerpf(_patada, 0.0, 1.0 - exp(-10.0 * dt))
 	fov = lerpf(_fov_base, fov_zoom_maximo, z) - _patada
 	_golpe = lerpf(_golpe, 0.0, 1.0 - exp(-decaimiento_golpe * dt))
