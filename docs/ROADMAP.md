@@ -14,13 +14,13 @@ Regla: no se pasa de fase hasta que la actual sea jugable y divertida. Cada tare
 - [x] Calidad del pez según la cadena
 - [x] Datos de peces (`.tres`) y tirada de pez
 - [x] Juice básico (sonido placeholder, screenshake, popups)
-- **Hito:** pescar 5 minutos seguidos engancha. (Sin confirmar por el diseñador en partida larga.)
+- **Hito:** pescar 5 minutos seguidos engancha. (Tras el reformateo esto es de los spots; falta la prueba larga del diseñador.)
 
 ## Fase 2 — Economía mínima
 - [x] Inventario de la barca
 - [x] Barco comerciante: tienda (caña, cebo, hueco) y vender todo
 - [x] HUD de dinero
-- [x] Primeras mejoras compradas (cañas con profundidad, cebo, huecos)
+- [x] Primeras mejoras compradas (cañas, cebo; los huecos de la barca se quitaron)
 - **Hito:** bucle pescar → vender → mejorar.
 
 ## Fase 3 — Mundo y expansión
@@ -32,16 +32,16 @@ Regla: no se pasa de fase hasta que la actual sea jugable y divertida. Cada tare
 - **Hito:** se nota que el mundo crece.
 
 ## Fase 4 — Menú y progresión
-- [x] Menú (Tab) con pestañas (barca con huecos apilados, stats, opciones)
-- [x] Árbol de habilidades (datos + UI en el viejo): 60 nodos de propuesta, a revisar por el diseñador
-- [x] Auto-pesca (nodo Pesca de memoria)
-- [ ] Modos de pesca por caña: volumen y trofeo (midgame)
+- [x] Menú (Tab) con pestañas (barca con pilas por especie, stats, opciones)
+- [x] Árbol de habilidades (datos + UI en el viejo): ~70 nodos en 5 ramas; Pesca partida en Base y Maña
+- [x] Auto-pesca (nodo Pesca de memoria; desde el reformateo es la pesca automática de la base)
+- [x] ~~Modos de pesca por caña: volumen y trofeo~~ → sustituido por los spots (reformateo, 10 nov)
 - [ ] Modo infinito con récords
 - [ ] Rehacer el cebo (probabilidades + duración)
-- [x] Mecánicas avanzadas de pesca: machacar y pulsación doble (adelantado)
-- [x] Racha de combo por tramos (osu! + Guitar Hero), modo flow más rápido (Leer el agua)
-- [x] Pesca tranquila: esperas de 8-20 s, picoteos, chill que deja pasar el pez
-- [x] Puntos de pesca: el que pesca mejor desbloquea antes (camino y puerto)
+- [x] Mecánicas avanzadas de pesca: machacar y pulsación doble (machacar es ahora el remate de los peces tochos en O Penedo)
+- [x] Racha de combo por tramos (osu! + Guitar Hero), modo flow más rápido (Leer el agua, ahora en la Maña)
+- [x] Pesca tranquila: esperas, picoteos, chill que deja pasar el pez
+- [x] ~~Puntos de pesca~~ → el camino pide peces y el puerto rublos (reformateo)
 - [x] Racha entre peces: descartada (el combo es de cada pez); más cadenas largas al principio
 
 
@@ -51,25 +51,32 @@ Regla: no se pasa de fase hasta que la actual sea jugable y divertida. Cada tare
 - [x] Restaurante O Mar (despensa, mejoras, cosecha), turistas en 3 niveles, cultivos con hozazo y chaval, porteador
 - [x] Dos alturas (puerto alto sobre pilotes y escaleras)
 - [x] Balance del early game con el simulador v4 (cañas de fibra y carbono, combos hasta 25)
-- [ ] Ayuntamiento: mejora de edificios con un sistema común + tienda de decoración (pre-midgame)
-- [x] Taladro de coral, sushi, cañas rápida y pesada (carril)
-- [x] Reformateo: pesca base automática (picar / auto) + spots con minijuego y bestiario
-- [ ] Objetivos de coleccionismo por spot
-- [ ] Marihuana y decoración (mid game)
-- [ ] Ingresos pasivos, stats por segundo
+- [x] Ayuntamiento: mejora de edificios con un sistema común
+- [ ] Tienda de decoración en el ayuntamiento (la decoración sube el atractivo para turistas)
+- [x] Taladro de coral y restaurante de sushi
+- [x] ~~Cañas rápida y pesada~~ → su carril pasa a Mar de Fóra
+- [x] Reformateo: pesca base automática (picar a mano / automática, calidades en vez de especies, ₽/min)
+- [x] Spots: O Penedo (mid, minijuego clásico + remate) y Mar de Fóra (late, gigantes en carril 3D tipo Guitar Hero); bordes del puerto, retrete y sofá, cualquier caña vale
+- [x] Simulador v5 con la pesca base (llegadas a ±5 % de la v4)
+- [ ] Objetivos de coleccionismo por spot (premios por completar)
+- [ ] Posición final de los spots en el mapa (el diseñador decide)
+- [ ] Plantación de marihuana (mid game)
+- [x] Ritmo de pesca en el panel (peces/min y ₽/min)
+- [ ] Más stats por segundo (villa entera)
 - [ ] Progreso offline (si se decide)
-- [x] Balance de curvas del early game (~4 h) con el simulador v4; falta el mid game
+- [x] Balance de curvas del early game y primer tramo del mid game (simulador v5, ~7 h)
 
 ## Fase 6 — Contenido
 - [x] Catálogo de peces del Excel del diseñador: 201 especies (Galicia + mundo), 6 rarezas, iconos placeholder
 - [x] Maestría por especie en el bestiario
 - [ ] Bestiario con filtros por zona o fichas compactas (hay 201)
 - [ ] Peces que desbloquean edificios (sushi...)
-- [ ] Simulador: modelar cada sistema del mid game antes de meterlo
+- [ ] Simulador: modelar la marihuana y la decoración antes de meterlas
 - [x] Tiempo del juego: día/noche (20 min) y estaciones (2 h), noche con luna, peces por estación y hora
 - [ ] Más edificios, ramas e hitos
 
 ## Fase 7 — Pulido
+- [x] Capturas del juego en `docs/capturas/`
 - [x] Estilo pixelado (B), mar con olas y reflejos, clima
 - [x] Prota en donut con caña, corcho y ondas; suelos con textura y props en sprite
 - [x] Barco comerciante en sprite, donut que flota sobre la ola
